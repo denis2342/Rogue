@@ -1844,7 +1844,7 @@ __graphch:
 	MOVEQ	#$00,D3
 	MOVE.B	D4,D3
 	MOVE.W	D3,-(A7)
-	JSR	__addch(PC)
+	JSR	__addch
 	ADDQ.W	#2,A7
 L00103:
 	MOVEM.L	(A7)+,D4-D7/a2/a6
@@ -2710,7 +2710,7 @@ L00144:
 
 	JSR	_standout
 	MOVE.L	$0008(A5),-(A7)
-	JSR	_addstr(PC)
+	JSR	_addstr
 	ADDQ.W	#4,A7
 	JSR	_standend
 L00145:
@@ -2730,7 +2730,7 @@ L00145:
 	JSR	_movequick
 
 	PEA	-$0054(A5)
-	JSR	_addstr(PC)
+	JSR	_addstr
 	ADDQ.W	#4,A7
 	CLR.W	-$0056(A5)
 	BRA.B	L00147
@@ -2744,7 +2744,7 @@ L00146:
 
 	JSR	_standout
 	MOVE.L	$0008(A5),-(A7)
-	JSR	_addstr(PC)
+	JSR	_addstr
 	ADDQ.W	#4,A7
 	JSR	_standend
 	MOVE.W	#$0001,-$0056(A5)
@@ -2756,7 +2756,7 @@ L00148:
 	JSR	_movequick
 
 	PEA	-$0054(A5)
-	JSR	_addstr(PC)
+	JSR	_addstr
 	ADDQ.W	#4,A7
 	MOVEM.L	(A7)+,D4/D5
 	UNLK	A5
@@ -2795,6 +2795,7 @@ _doadd:
 _putmsg:
 	LINK	A5,#-$0002
 	MOVEM.L	D4/A2/A3,-(A7)
+
 	SUBA.L	A3,A3
 	MOVEA.L	$000A(A5),A2
 L00149:
@@ -2810,6 +2811,7 @@ L00149:
 	MOVE.W	D0,-$77BA(A4)
 	CMPI.W	#$0050,-$0002(A5)
 	BLE.B	L0014D
+
 	PEA	L0014E(PC)
 	JSR	_more(PC)
 	ADDQ.W	#4,A7
@@ -2822,6 +2824,7 @@ L0014A:
 	MOVE.L	D0,D4
 ;	TST.L	D4
 	BEQ.B	L0014B
+
 	MOVEA.L	A3,A6
 	ADDA.L	#$00000050,A6
 	CMP.L	A6,D4
@@ -2837,17 +2840,20 @@ L0014C:
 	ADDA.L	#$00000050,A6
 	CMP.L	A6,D4
 	BCC.B	L0014D
+
 	MOVE.L	A2,-(A7)
 	JSR	_strlen
 	ADDQ.W	#4,A7
 	CMP.W	#$0050,D0
 	BLT.B	L0014D
+
 	MOVEA.L	D4,A2
 	ADDQ.L	#1,A2
 	BRA.B	L0014A
 L0014D:
 	CMPI.W	#$0050,-$0002(A5)
 	BGT.W	L00149
+
 	MOVEM.L	(A7)+,D4/A2/A3
 	UNLK	A5
 	RTS
@@ -3194,12 +3200,12 @@ L00171:
 	CMPI.W	#$0001,-$0006(A5)
 	BNE.W	L0017B
 	MOVE.W	#$005F,-(A7)
-	JSR	__addch(PC)
+	JSR	__addch
 	ADDQ.W	#2,A7
 	JSR	_readchar
 	MOVE.B	D0,D4
 	MOVE.W	#$0020,-(A7)
-	JSR	__addch(PC)
+	JSR	__addch
 	ADDQ.W	#2,A7
 	MOVE.B	D4,D0
 	EXT.W	D0
@@ -3243,7 +3249,7 @@ L00177:
 	MOVE.B	D4,D3
 	EXT.W	D3
 	MOVE.W	D3,-(A7)
-	JSR	_addch(PC)
+	JSR	_addch
 	ADDQ.W	#2,A7
 	MOVEA.L	$0008(A5),A6
 	ADDQ.L	#1,$0008(A5)
@@ -3323,7 +3329,7 @@ L0017E:
 	MOVE.B	(A6),D3
 	EXT.W	D3
 	MOVE.W	D3,-(A7)
-	JSR	_addch(PC)
+	JSR	_addch
 	ADDQ.W	#2,A7
 	JSR	_standend
 	BRA.B	L0017D
@@ -8440,7 +8446,7 @@ _show_count:
 	BRA.B	L003D2
 L003D1:
 	PEA	L003D4(PC)
-	JSR	_addstr(PC)
+	JSR	_addstr
 	ADDQ.W	#4,A7
 L003D2:
 ;	UNLK	A5
@@ -9668,7 +9674,7 @@ L00451:
 
 	ASL.L	#2,D3
 
-	MOVE.W	(A1)+,$12(A6,D3.w)
+	MOVE.W	(A1)+,$14(A6,D3.w)
 	MOVE.W	(A1),$14(A6,D3.w)
 
 	MOVEM.L	(A7)+,D4/D5
@@ -10907,7 +10913,7 @@ _mvaddstr:
 	JSR	_movequick
 
 	MOVE.L	$000C(A5),-(A7)
-	JSR	_addstr(PC)
+	JSR	_addstr
 	ADDQ.W	#4,A7
 	UNLK	A5
 	RTS
@@ -10993,7 +10999,7 @@ L004DD:
 	MOVEQ	#$00,D3
 	MOVE.B	D4,D3
 	MOVE.W	D3,-(A7)
-	JSR	__addch(PC)
+	JSR	__addch
 	ADDQ.W	#2,A7
 	BRA.W	L004E1
 L004DE:
@@ -11035,7 +11041,7 @@ L004DF:
 	MOVEQ	#$00,D3
 	MOVE.B	D4,D3
 	MOVE.W	D3,-(A7)
-	JSR	__addch(PC)
+	JSR	__addch
 	ADDQ.W	#2,A7
 L004E0:
 	MOVEQ	#$00,D3
@@ -11164,7 +11170,7 @@ _printw:
 	JSR	_sprintf
 	LEA	$0028(A7),A7
 	PEA	-$0084(A5)
-	JSR	_addstr(PC)
+	JSR	_addstr
 	ADDQ.W	#4,A7
 	UNLK	A5
 	RTS
@@ -12673,7 +12679,7 @@ L0057A:
 	BRA.B	L0057C
 L0057B:
 	PEA	L00585(PC)	;"-Press space to continue-"
-	JSR	_addstr(PC)
+	JSR	_addstr
 	ADDQ.W	#4,A7
 L0057C:
 	MOVE.B	#$01,-$66B0(A4)
@@ -15088,7 +15094,7 @@ L00689:
 	CMP.W	#$0046,D0
 	BGE.B	L0068A
 	PEA	-$0050(A5)
-	JSR	_addstr(PC)
+	JSR	_addstr
 	ADDQ.W	#4,A7
 L0068A:
 	BRA.B	L0068E
@@ -15097,7 +15103,7 @@ L0068B:
 	CMPI.W	#$0002,$002A(A6)
 	BNE.B	L0068C
 	PEA	L00694(PC)	;" A total winner!"
-	JSR	_addstr(PC)
+	JSR	_addstr
 	ADDQ.W	#4,A7
 	BRA.B	L0068E
 L0068C:
@@ -15105,7 +15111,7 @@ L0068C:
 	CMPI.W	#26,$002C(A6)	; level 26
 	BLT.B	L0068D
 	PEA	L00695(PC)	;" Honored by the Guild"
-	JSR	_addstr(PC)
+	JSR	_addstr
 	ADDQ.W	#4,A7
 	BRA.B	L0068E
 L0068D:
@@ -15352,7 +15358,7 @@ _total_winner:
 	MOVEM.L	D4-D6/A2,-(A7)
 	JSR	_clear
 	PEA	L006DA(PC)
-	JSR	_addstr(PC)
+	JSR	_addstr
 	ADDQ.W	#4,A7
 	PEA	L006DB(PC)
 	CLR.W	-(A7)
@@ -17233,7 +17239,7 @@ L0081B:
 	BNE.B	L0081C
 
 	MOVE.W	#$0020,-(A7)
-	JSR	_addch(PC)
+	JSR	_addch
 	ADDQ.W	#2,A7
 L0081C:
 	BRA.B	L0081F
@@ -17271,7 +17277,7 @@ L0081E:
 	BNE.B	L0081F
 
 	MOVE.W	#$0023,-(A7)
-	JSR	_addch(PC)
+	JSR	_addch
 	ADDQ.W	#2,A7
 L0081F:
 	ADDQ.W	#1,D5
@@ -17470,7 +17476,7 @@ L00832:
 	MOVEQ	#$00,D3
 	MOVE.B	D6,D3
 	MOVE.W	D3,-(A7)
-	JSR	_addch(PC)
+	JSR	_addch
 	ADDQ.W	#2,A7
 
 	JSR	_standend
@@ -19756,7 +19762,7 @@ L00920:
 	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	MOVE.W	D3,-(A7)
-	JSR	_addch(PC)
+	JSR	_addch
 	ADDQ.W	#2,A7
 	BRA.B	L00922
 L00921:
@@ -19773,7 +19779,7 @@ L00921:
 	MOVEQ	#$00,D3
 	MOVE.B	$0010(A6),D3
 	MOVE.W	D3,-(A7)
-	JSR	_addch(PC)
+	JSR	_addch
 	ADDQ.W	#2,A7
 L00922:
 	ADDQ.W	#1,D5
@@ -19858,7 +19864,7 @@ L0092C:
 	CMP.B	#$20,D3
 	BNE.B	L0092D
 	MOVE.W	#$0020,-(A7)
-	JSR	_addch(PC)
+	JSR	_addch
 	ADDQ.W	#2,A7
 L0092D:
 	BRA.B	L00931
@@ -19880,7 +19886,7 @@ L0092F:
 	MOVEQ	#$00,D3
 	MOVE.B	D6,D3
 	MOVE.W	D3,-(A7)
-	JSR	_addch(PC)
+	JSR	_addch
 	ADDQ.W	#2,A7
 	BRA.B	L00931
 L00930:
@@ -23265,7 +23271,7 @@ L00ABB:
 	LEA	-$6EF0(A4),A6	;_s_magic
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L00AF3(PC)	;"of %s"
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	ADDQ.W	#8,A7
 	BRA.B	L00ABE
 L00ABC:
@@ -23281,7 +23287,7 @@ L00ABC:
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 	PEA	L00AF4(PC)	;"called %s"
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	ADDQ.W	#8,A7
 	BRA.B	L00ABE
 L00ABD:
@@ -23300,7 +23306,7 @@ L00ABF:
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 	PEA	L00AF5(PC)	;"titled '%s'"
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	ADDQ.W	#8,A7
 L00AC0:
 	BRA.W	L00AEB
@@ -23330,7 +23336,7 @@ L00AC1:
 	LEA	-$6E78(A4),A6	;_p_magic
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L00AF7(PC)	;"of %s(%s)"
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	LEA	$000C(A7),A7
 	BRA.B	L00AC4
 L00AC2:
@@ -23351,7 +23357,7 @@ L00AC2:
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 	PEA	L00AF8(PC)	;"called %s(%s)"
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	LEA	$000C(A7),A7
 	BRA.B	L00AC4
 L00AC3:
@@ -23400,19 +23406,19 @@ L00AC7:
 	BNE.B	L00AC8
 
 	PEA	L00AFA(PC)	;"Some food"
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	ADDQ.W	#4,A7
 	BRA.B	L00AC9
 L00AC8:
 	MOVE.W	$001E(A2),-(A7)
 	PEA	L00AFB(PC)	;"%d rations of food"
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	ADDQ.W	#6,A7
 L00AC9:
 	BRA.B	L00ACB
 L00ACA:
 	PEA	L00AFC(PC)	;"food"
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	ADDQ.W	#4,A7
 L00ACB:
 	BRA.W	L00AEB
@@ -23425,7 +23431,7 @@ L00ACC:
 	BLE.B	L00ACD
 	MOVE.W	$001E(A2),-(A7)
 	PEA	L00AFD(PC)	;"%d"
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	ADDQ.W	#6,A7
 	BRA.B	L00ACE
 L00ACD:
@@ -23438,7 +23444,7 @@ L00ACD:
 	ADDQ.W	#4,A7
 	MOVE.L	D0,-(A7)
 	PEA	L00AFE(PC)	;"A%s"
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	ADDQ.W	#8,A7
 L00ACE:
 	MOVE.W	D4,D3
@@ -23455,7 +23461,7 @@ L00ACE:
 	JSR	_num(PC)
 	ADDQ.W	#6,A7
 	MOVE.L	D0,-(A7)
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	ADDQ.W	#4,A7
 L00ACF:
 	CMPI.W	#$0001,$001E(A2)
@@ -23479,7 +23485,7 @@ L00AD1:
 	LEA	-$6F5C(A4),A6	;_w_names
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L00AFF(PC)	;"%s%s"
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	LEA	$000C(A7),A7
 	MOVE.W	D4,D3
 	AND.W	#$0040,D3
@@ -23499,7 +23505,7 @@ L00AD1:
 	LEA	-$6CA8(A4),A6	;_monsters
 	MOVE.L	$00(A6,D3.L),-(A7)
 	PEA	L00B02(PC)	;"of %s slaying"
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	ADDQ.W	#8,A7
 L00AD2:
 	BRA.W	L00AEB
@@ -23530,7 +23536,7 @@ L00AD3:
 	ADDQ.W	#6,A7
 	MOVE.L	D0,-(A7)
 	PEA	L00B03(PC)	;"%s %s"
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	LEA	$000C(A7),A7
 	MOVE.W	D4,D3
 	AND.W	#$0040,D3
@@ -23541,7 +23547,7 @@ L00AD3:
 	NEG.W	D3
 	MOVE.W	D3,-(A7)
 	PEA	L00B04(PC)	;"[armor class %d]"
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	ADDQ.W	#6,A7
 L00AD4:
 	BRA.B	L00AD6
@@ -23551,13 +23557,13 @@ L00AD5:
 	ASL.w	#2,D3
 	LEA	-$6F30(A4),A6		;_a_names
 	MOVE.L	$00(A6,D3.w),-(A7)
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	ADDQ.W	#4,A7
 L00AD6:
 	BRA.W	L00AEB
 L00AD7:
 	PEA	L00B05(PC)	;"The Amulet of Yendor"
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	ADDQ.W	#4,A7
 	BRA.W	L00AEB
 L00AD8:
@@ -23664,7 +23670,7 @@ L00ADF:
 	JSR	_charge_str
 	ADDQ.W	#4,A7
 	MOVE.L	D0,-(A7)
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	ADDQ.W	#4,A7
 L00AE0:
 	BRA.W	L00AEB
@@ -23769,26 +23775,26 @@ L00AEB:
 	CMPA.L	-$5294(A4),A2	;_cur_armor
 	BNE.B	L00AEC
 	PEA	L00B0D(PC)	;"(being worn)"
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	ADDQ.W	#4,A7
 L00AEC:
 	CMPA.L	-$5298(A4),A2	;_cur_weapon
 	BNE.B	L00AED
 	PEA	L00B0E(PC)	;"(weapon in hand)"
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	ADDQ.W	#4,A7
 L00AED:
 	CMPA.L	-$5190(A4),A2	;_cur_ring_1
 	BNE.B	L00AEE
 	PEA	L00B0F(PC)	;"(on left hand)"
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	ADDQ.W	#4,A7
 	BRA.B	L00AEF
 L00AEE:
 	CMPA.L	-$518C(A4),A2	;_cur_ring_2
 	BNE.B	L00AEF
 	PEA	L00B10(PC)	;"(on right hand)"
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	ADDQ.W	#4,A7
 L00AEF:
 	MOVE.W	D4,D3
@@ -23870,9 +23876,11 @@ L00B10:	dc.b	"(on right hand)",0
 
 _nmadd:
 	LINK	A5,#-$0000
+
 	MOVEA.L	-$5336(A4),A6
 	CMPA.L	-$5258(A4),A6	;_prbuf
 	BEQ.B	L00B11
+
 	MOVEA.L	-$5336(A4),A6
 	ADDQ.L	#1,-$5336(A4)
 	MOVE.B	#$20,(A6)
@@ -23889,6 +23897,7 @@ L00B12:
 	MOVEA.L	-$5336(A4),A6
 	TST.B	(A6)
 	BEQ.B	L00B13
+
 	ADDQ.L	#1,-$5336(A4)
 	BRA.B	L00B12
 L00B13:
@@ -23919,12 +23928,12 @@ L00B14:
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	$001E(A6),-(A7)
 	PEA	L00B19(PC)	;"%d %ss"
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	LEA	$000A(A7),A7
 	BRA.B	L00B17
 L00B16:
 	MOVE.L	$000E(A5),-(A7)
-	JSR	_nmadd(PC)
+	JSR	_nmadd
 	ADDQ.W	#4,A7
 L00B17:
 	UNLK	A5
@@ -24395,14 +24404,14 @@ _xfer_all:
 	MOVEM.L	D4/D5/A2/A3,-(A7)
 	MOVE.W	#$0050,-(A7)
 	PEA	-$672B(A4)	;_whoami
-	JSR	_xfer(PC)
+	JSR	_xfer
 	ADDQ.W	#6,A7
 	LEA	-$5ADC(A4),A6	;_SV_END
 	LEA	-$674E(A4),A1
 	SUBA.L	A1,A6
 	MOVE.W	A6,-(A7)
 	PEA	-$674E(A4)
-	JSR	_xfer(PC)
+	JSR	_xfer
 	ADDQ.W	#6,A7
 	MOVE.W	#$000F,-(A7)
 	PEA	-$66A6(A4)
@@ -24431,27 +24440,27 @@ _xfer_all:
 	ADDQ.W	#8,A7
 	CLR.L	-(A7)
 	PEA	-$6CB0(A4)	;_lvl_obj
-	JSR	_xfer_pthing(PC)
+	JSR	_xfer_pthing
 	ADDQ.W	#8,A7
 	CLR.L	-(A7)
 	PEA	-$6CAC(A4)	;_mlist
-	JSR	_xfer_pthing(PC)
+	JSR	_xfer_pthing
 	ADDQ.W	#8,A7
 	CLR.L	-(A7)
 	PEA	-$5298(A4)	;_cur_weapon
-	JSR	_xfer_pthing(PC)
+	JSR	_xfer_pthing
 	ADDQ.W	#8,A7
 	CLR.L	-(A7)
 	PEA	-$5294(A4)	;_cur_armor
-	JSR	_xfer_pthing(PC)
+	JSR	_xfer_pthing
 	ADDQ.W	#8,A7
 	CLR.L	-(A7)
 	PEA	-$5190(A4)	;_cur_ring_1
-	JSR	_xfer_pthing(PC)
+	JSR	_xfer_pthing
 	ADDQ.W	#8,A7
 	CLR.L	-(A7)
 	PEA	-$518C(A4)	;_cur_ring_2
-	JSR	_xfer_pthing(PC)
+	JSR	_xfer_pthing
 	ADDQ.W	#8,A7
 	TST.W	-$532E(A4)
 	BNE.B	L00B44
@@ -24543,7 +24552,7 @@ L00B49:
 	MOVE.W	D0,-$0002(A5)
 	MOVE.W	#$0002,-(A7)
 	PEA	-$0002(A5)
-	JSR	_xfer(PC)
+	JSR	_xfer
 	ADDQ.W	#6,A7
 	TST.W	-$0002(A5)
 	BEQ.B	L00B4A
@@ -24552,14 +24561,14 @@ L00B49:
 	MULU.W	#21,D3
 	ADD.L	$0008(A5),D3
 	MOVE.L	D3,-(A7)
-	JSR	_xfer(PC)
+	JSR	_xfer
 	ADDQ.W	#6,A7
 L00B4A:
 	BRA.B	L00B4D
 L00B4B:
 	MOVE.W	#$0002,-(A7)
 	PEA	-$0002(A5)
-	JSR	_xfer(PC)
+	JSR	_xfer
 	ADDQ.W	#6,A7
 	TST.W	-$0002(A5)
 	BEQ.B	L00B4C
@@ -24568,7 +24577,7 @@ L00B4B:
 	MULU.W	#21,D3
 	ADD.L	$0008(A5),D3
 	MOVE.L	D3,-(A7)
-	JSR	_xfer(PC)
+	JSR	_xfer
 	ADDQ.W	#6,A7
 L00B4C:
 	MOVE.W	D4,D3
@@ -24615,7 +24624,7 @@ L00B51:
 L00B52:
 	MOVE.W	#$0002,-(A7)
 	PEA	-$0002(A5)
-	JSR	_xfer(PC)
+	JSR	_xfer
 	ADDQ.W	#6,A7
 	TST.W	-$532E(A4)
 	BNE.B	L00B53
@@ -24656,7 +24665,7 @@ L00B56:
 L00B57:
 	MOVE.W	#$0002,-(A7)
 	PEA	-$0002(A5)
-	JSR	_xfer(PC)
+	JSR	_xfer
 	ADDQ.W	#6,A7
 	TST.W	-$532E(A4)
 	BNE.B	L00B58
@@ -24696,7 +24705,7 @@ L00B59:
 	MOVE.W	D3,-$0004(A5)
 	MOVE.W	#$0002,-(A7)
 	PEA	-$0004(A5)
-	JSR	_xfer(PC)
+	JSR	_xfer
 	ADDQ.W	#6,A7
 	TST.W	-$0004(A5)
 	BEQ.B	L00B5A
@@ -24732,14 +24741,14 @@ L00B5F:
 	MOVE.W	D3,-$0002(A5)
 	MOVE.W	#$0002,-(A7)
 	PEA	-$0002(A5)
-	JSR	_xfer(PC)
+	JSR	_xfer
 	ADDQ.W	#6,A7
 L00B60:
 	TST.W	-$532E(A4)
 	BNE.B	L00B64
 	MOVE.W	#$0002,-(A7)
 	PEA	-$0004(A5)
-	JSR	_xfer(PC)
+	JSR	_xfer
 	ADDQ.W	#6,A7
 	MOVEA.L	D4,A6
 	TST.W	-$0004(A5)
@@ -24751,7 +24760,7 @@ L00B61:
 L00B62:
 	MOVE.W	#$0002,-(A7)
 	PEA	-$0002(A5)
-	JSR	_xfer(PC)
+	JSR	_xfer
 	ADDQ.W	#6,A7
 	TST.W	-$0004(A5)
 	BEQ.B	L00B63
@@ -24828,7 +24837,7 @@ L00B67:
 L00B68:
 	MOVE.W	#$0002,-(A7)
 	PEA	-$0002(A5)
-	JSR	_xfer(PC)
+	JSR	_xfer
 	ADDQ.W	#6,A7
 L00B69:
 	BRA.B	L00B6F
@@ -24841,7 +24850,7 @@ L00B6A:
 L00B6B:
 	MOVE.W	#$0002,-(A7)
 	PEA	-$0002(A5)
-	JSR	_xfer(PC)
+	JSR	_xfer
 	ADDQ.W	#6,A7
 L00B6C:
 	MOVE.W	-$0002(A5),D3
@@ -24900,7 +24909,7 @@ L00B70:
 L00B71:
 	MOVE.W	#$0002,-(A7)
 	PEA	-$0002(A5)
-	JSR	_xfer(PC)
+	JSR	_xfer
 	ADDQ.W	#6,A7
 L00B72:
 	BRA.B	L00B77
@@ -24913,7 +24922,7 @@ L00B73:
 L00B74:
 	MOVE.W	#$0002,-(A7)
 	PEA	-$0002(A5)
-	JSR	_xfer(PC)
+	JSR	_xfer
 	ADDQ.W	#6,A7
 L00B75:
 	MOVE.W	-$0002(A5),D3
@@ -24952,7 +24961,7 @@ L00B78:
 	BNE.B	L00B79
 	MOVE.W	#$0032,-(A7)
 	MOVE.L	A2,-(A7)
-	JSR	_xfer(PC)
+	JSR	_xfer
 	ADDQ.W	#6,A7
 L00B79:
 	TST.B	$0008(A2)
@@ -25046,15 +25055,15 @@ L00B83:
 L00B84:
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	A2,-(A7)
-	JSR	_xfer_pthing(PC)
+	JSR	_xfer_pthing
 	ADDQ.W	#6,A7
 	MOVE.W	#$0001,-(A7)
 	PEA	$0004(A2)
-	JSR	_xfer_pthing(PC)
+	JSR	_xfer_pthing
 	ADDQ.W	#6,A7
 	MOVE.W	#$0001,-(A7)
 	PEA	$002E(A2)
-	JSR	_xfer_pthing(PC)
+	JSR	_xfer_pthing
 	ADDQ.W	#6,A7
 	MOVE.W	#$0001,-(A7)
 	PEA	$002A(A2)
@@ -25115,7 +25124,7 @@ L00B87:
 L00B88:
 	MOVE.W	#$0032,-(A7)
 	MOVE.L	A2,-(A7)
-	JSR	_xfer(PC)
+	JSR	_xfer
 	ADDQ.W	#6,A7
 L00B89:
 	MOVEA.L	(A7)+,A2
@@ -25155,12 +25164,12 @@ L00B8C:
 L00B8D:
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	$0008(A5),-(A7)
-	JSR	_xfer_pthing(PC)
+	JSR	_xfer_pthing
 	ADDQ.W	#6,A7
 	MOVE.W	#$0001,-(A7)
 	MOVEA.L	$0008(A5),A6
 	PEA	$0004(A6)
-	JSR	_xfer_pthing(PC)
+	JSR	_xfer_pthing
 	ADDQ.W	#6,A7
 	TST.W	-$532E(A4)
 	BEQ.B	L00B90
@@ -25180,7 +25189,7 @@ L00B8E:
 L00B8F:
 	MOVE.W	#$0032,-(A7)
 	MOVE.L	$0008(A5),-(A7)
-	JSR	_xfer(PC)
+	JSR	_xfer
 	ADDQ.W	#6,A7
 L00B90:
 	UNLK	A5
