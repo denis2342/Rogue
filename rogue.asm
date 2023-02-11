@@ -1138,9 +1138,9 @@ L000B8:
 	BRA.B	L000BC
 L000B9:
 	CLR.B	-$66B6(A4)	;_running
-	MOVE.W	D4,-(A7)
+	MOVE.W	D4,d0
 	JSR	_isupper
-	ADDQ.W	#2,A7
+
 	TST.W	D0
 	BNE.B	L000BA
 
@@ -1289,9 +1289,9 @@ L000C9:
 	MOVE.W	D4,-(A7)
 	JSR	_winat
 	ADDQ.W	#4,A7
-	MOVE.W	D0,-(A7)
+
 	JSR	_isupper
-	ADDQ.W	#2,A7
+
 	TST.W	D0
 	BEQ.B	L000CA
 
@@ -1389,9 +1389,10 @@ L000D0:
 	ADDQ.W	#2,A7
 	ADD.W	D0,-$60AC(A4)	;_no_command
 	ANDI.W	#~C_ISRUN,-$52B4(A4)	;clear C_ISRUN, _player + 22
-	PEA	L000E6(PC)	;"strange white "
+
+	LEA	L000E6(PC),a0	;"strange white "
 	JSR	_noterse
-	ADDQ.W	#4,A7
+
 	MOVE.L	D0,-(A7)
 	PEA	L000E5(PC)	;"a %smist envelops you and you fall asleep"
 	JSR	_msg
@@ -2388,9 +2389,10 @@ _wear:
 	MOVEA.L	$0008(A5),A2
 	TST.L	-$5294(A4)	;_cur_armor
 	BEQ.B	L0012A
-	PEA	L0012F(PC)	;".  You'll have to take it off first"
+
+	LEA	L0012F(PC),a0	;".  You'll have to take it off first"
 	JSR	_noterse
-	ADDQ.W	#4,A7
+
 	MOVE.L	D0,-(A7)
 	PEA	L0012E(PC)	;"you are already wearing some%s."
 	JSR	_msg
@@ -2612,10 +2614,9 @@ L0013C:
 	ADDQ.W	#4,A7
 L0013D:
 	MOVEA.L	-$51A4(A4),A6	;_msgbuf
-	MOVE.B	(A6),D3
-	MOVE.W	D3,-(A7)
+	MOVE.B	(A6),D0
 	JSR	_islower
-	ADDQ.W	#2,A7
+
 	TST.W	D0
 	BEQ.B	L0013E
 	MOVEA.L	-$51A4(A4),A6	;_msgbuf
@@ -2921,30 +2922,30 @@ L00154:	dc.b	"%.80s",0
 
 _unctrl:
 	LINK	A5,#-$0000
-	MOVEQ	#$00,D3
-	MOVE.B	$0009(A5),D3
-	MOVE.W	D3,-(A7)
+	MOVE.B	$0009(A5),D0
+
 	JSR	_isspace(PC)
-	ADDQ.W	#2,A7
+
 	TST.W	D0
 	BEQ.B	L00155
+
 	PEA	L0015A(PC)
 	PEA	-$54F6(A4)
 	JSR	_strcpy
 	ADDQ.W	#8,A7
 	BRA.B	L00159
 L00155:
-	MOVEQ	#$00,D3
-	MOVE.B	$0009(A5),D3
-	MOVE.W	D3,-(A7)
+	MOVE.B	$0009(A5),D0
 	JSR	_isprint(PC)
-	ADDQ.W	#2,A7
+
 	TST.W	D0
 	BNE.B	L00158
+
 	MOVEQ	#$00,D3
 	MOVE.B	$0009(A5),D3
 	CMP.W	#$0020,D3
 	BCC.B	L00156
+
 	MOVEQ	#$00,D3
 	MOVE.B	$0009(A5),D3
 	ADD.W	#$0040,D3
@@ -3334,21 +3335,14 @@ L0017F:
 	RTS
 
 _noterse:
-;	LINK	A5,#-$0000
-
 	TST.B	-$66B2(A4)	;_terse
-	BNE.B	L00180
+	BNE.B	1$
 
 	TST.B	-$66AB(A4)	;_expert
-	BEQ.B	L00181
-L00180:
-	LEA	-$69CC(A4),A6	;_nullstr
-	MOVE.L	A6,D0
-	BRA.B	L00182
-L00181:
-	MOVE.L	$0004(A7),D0
-L00182:
-;	UNLK	A5
+	BEQ.B	2$
+
+1$	LEA	-$69CC(A4),A0	;_nullstr
+2$	MOVE.L	A0,D0
 	RTS
 
 ;/*
@@ -4241,9 +4235,9 @@ L001D3:
 
 L001D4:
 	JSR	_s_remove(PC)
-	PEA	L001FB(PC)	;"you feel as if "
+	LEA	L001FB(PC),a0	;"you feel as if "
 	JSR	_noterse
-	ADDQ.W	#4,A7
+
 	MOVE.L	D0,-(A7)
 	PEA	L001FA(PC)	;"%ssomebody is watching over you"
 	JSR	_msg
@@ -6259,9 +6253,9 @@ L002B2:
 
 	MOVEA.L	-$519C(A4),A6	;__level
 	MOVE.B	D7,$00(A6,D0.W)
-	PEA	L002CE(PC)	;" as you pick it up"
+
+	LEA	L002CE(PC),a0	;" as you pick it up"
 	JSR	_noterse
-	ADDQ.W	#4,A7
 
 	MOVE.L	D0,-(A7)
 	PEA	L002CD(PC)	;"the scroll turns to dust%s."
@@ -7866,11 +7860,13 @@ L0037A:
 	ADDQ.W	#2,A7
 	TST.W	D0
 	BNE.W	L00380
+
 	TST.B	-$0083(A5)
 	BEQ.B	L0037C
-	PEA	L00392(PC)	;" from the Ice Monster"
+
+	LEA	L00392(PC),a0	;" from the Ice Monster"
 	JSR	_noterse
-	ADDQ.W	#4,A7
+
 	MOVE.L	D0,-(A7)
 	PEA	L00391(PC)	;"You are frozen by a blast of frost%s."
 	JSR	_msg
@@ -10128,53 +10124,45 @@ L00472:
 	BRA.B	L00471
 
 _isupper:
-	moveq	#$1,d0
+	moveq	#$1,d3
 	bra	chartest
 
 _islower:
-	moveq	#$2,d0
+	moveq	#$2,d3
 	bra	chartest
 
 _isalpha:
-	moveq	#$3,d0
+	moveq	#$3,d3
 	bra	chartest
 
 _isdigit:
-	moveq	#$4,d0
+	moveq	#$4,d3
 	bra	chartest
 
 _isspace:
-	moveq	#$10,d0
+	moveq	#$10,d3
 	bra	chartest
 
 _isprint:
-	move.w	#$c7,d0		;upper | lower | digit | $40 | $80
+	move.w	#$c7,d3		;upper | lower | digit | $40 | $80
 ;	bra	chartest
 
 chartest:
-	moveq	#0,d3
-	MOVE.B	$0005(A7),D3
+	ext.w	d0
 	BMI.B	2$
 	LEA	-$55CA(A4),A6		;_ctp_
-	AND.B	$00(A6,D3.W),D0
+	AND.B	$00(A6,D0.W),D3
+	move.b	d3,d0
 	RTS
 
 2$	MOVEQ	#$00,D0
 	rts
 
-_toascii:
-;	LINK	A5,#-$0000
-	moveq	#$007F,D0
-	AND.W	$0004(A7),D0
-;	UNLK	A5
-	RTS
-
 _toupper:
 	LINK	A5,#-$0000
-	MOVE.B	$0009(A5),D3
-	MOVE.W	D3,-(A7)
+	MOVE.B	$0009(A5),D0
 	JSR	_islower(PC)
-	ADDQ.W	#2,A7
+
 	TST.W	D0
 	BEQ.B	L0047F
 
@@ -10191,10 +10179,9 @@ L00480:
 _tolower:
 	LINK	A5,#-$0000
 
-	MOVE.B	$0009(A5),D3
-	MOVE.W	D3,-(A7)
+	MOVE.B	$0009(A5),d0
 	JSR	_isupper(PC)
-	ADDQ.W	#2,A7
+
 	TST.W	D0
 	BEQ.B	L00481
 
@@ -10559,9 +10546,9 @@ L004A5:
 	JSR	_add_str(PC)
 	ADDQ.W	#6,A7
 L004A6:
-	PEA	L004BF(PC)	;"hey, this tastes great.  It makes "
+	LEA	L004BF(PC),a0	;"hey, this tastes great.  It makes "
 	JSR	_noterse
-	ADDQ.W	#4,A7
+
 	MOVE.L	D0,-(A7)
 	PEA	L004BE(PC)	;"%syou feel warm all over"
 	JSR	_msg
@@ -11995,9 +11982,9 @@ L00529:
 
 _stuck:
 ;	LINK	A5,#-$0000
-	PEA	L0052B(PC)	;"can't drop it, "
+	LEA	L0052B(PC),a0	;"can't drop it, "
 	JSR	_noterse
-	ADDQ.W	#4,A7
+
 	MOVE.L	D0,-(A7)
 	PEA	L0052A(PC)	;"%sit appears to be stuck in your pack!"
 	JSR	_msg
@@ -12643,50 +12630,40 @@ L00575:
 
 _set_order:
 	LINK	A5,#-$0000
-	MOVEM.L	D4-D6,-(A7)
+	MOVEM.L	D4-D5,-(A7)
+
 	MOVEQ	#$00,D4
+	MOVEA.L	$0008(A5),A6	;A6 valid for complete function
 	BRA.B	L00577
 L00576:
 	MOVE.W	D4,D3
-	EXT.L	D3
-	ASL.L	#1,D3
-	MOVEA.L	$0008(A5),A6
-	MOVE.W	D4,$00(A6,D3.L)
+;	EXT.L	D3
+	ASL.w	#1,D3
+	MOVE.W	D4,$00(A6,D3.w)
 	ADDQ.W	#1,D4
 L00577:
 	CMP.W	$000C(A5),D4
 	BLT.B	L00576
+
 	MOVE.W	$000C(A5),D4
 	BRA.B	L00579
 L00578:
 	MOVE.W	D4,D0
 	JSR	_rnd
-	MOVE.W	D0,D5
+
 	MOVE.W	D4,D3
 	SUBQ.W	#1,D3
-	EXT.L	D3
-	ASL.L	#1,D3
-	MOVEA.L	$0008(A5),A6
-	MOVE.W	$00(A6,D3.L),D6
-	MOVE.W	D4,D3
-	SUBQ.W	#1,D3
-	EXT.L	D3
-	ASL.L	#1,D3
-	MOVEA.L	$0008(A5),A6
-	MOVE.W	D5,D2
-	EXT.L	D2
-	ASL.L	#1,D2
-	MOVE.W	$00(A6,D2.L),$00(A6,D3.L)
-	MOVE.W	D5,D3
-	EXT.L	D3
-	ASL.L	#1,D3
-	MOVEA.L	$0008(A5),A6
-	MOVE.W	D6,$00(A6,D3.L)
+	ASL.w	#1,D3
+	MOVE.W	$00(A6,D3.w),D5
+	ASL.w	#1,D0
+	MOVE.W	$00(A6,D0.w),$00(A6,D3.w)
+	MOVE.W	D5,$00(A6,D0.w)
 	SUBQ.W	#1,D4
 L00579:
 	CMP.W	#$0000,D4
 	BGT.B	L00578
-	MOVEM.L	(A7)+,D4-D6
+
+	MOVEM.L	(A7)+,D4-D5
 	UNLK	A5
 	RTS
 
@@ -12715,10 +12692,12 @@ _sel_char:
 _add_line:
 	LINK	A5,#-$0004
 	MOVE.L	D4,-(A7)
+
 	MOVEQ	#$20,D4
 	JSR	_wtext
 	CMPI.W	#$0014,-$54BC(A4)
 	BGE.B	L0057A
+
 	TST.L	$000C(A5)
 	BNE.B	L0057F
 L0057A:
@@ -12729,6 +12708,7 @@ L0057A:
 	MOVEA.L	$0008(A5),A6
 	TST.B	(A6)
 	BEQ.B	L0057B
+
 	MOVE.L	$0008(A5),-(A7)
 	PEA	L00584(PC)	;"-Select item to %s. Esc to cancel-"
 	JSR	_printw
@@ -12745,11 +12725,13 @@ L0057D:
 	MOVE.W	D0,D4
 	CMP.W	#$001B,D4	;escape
 	BEQ.B	L0057E
+
 	CMP.W	#$0020,D4	;' '
 	BEQ.B	L0057E
-	MOVE.W	D4,-(A7)
+
+	MOVE.W	D4,d0
 	JSR	_islower
-	ADDQ.W	#2,A7
+
 	TST.W	D0
 	BEQ.B	L0057D
 L0057E:
@@ -12760,8 +12742,10 @@ L0057E:
 L0057F:
 	TST.L	$000C(A5)
 	BEQ.B	L00582
+
 	TST.W	-$54BC(A4)
 	BNE.B	L00580
+
 	MOVEA.L	$000C(A5),A6
 	MOVE.B	(A6),D3
 	EXT.W	D3
@@ -12770,9 +12754,10 @@ L0057F:
 L00580:
 	CMP.W	#$001B,D4	;escape
 	BEQ.B	L00582
-	MOVE.W	D4,-(A7)
+
+	MOVE.W	D4,d0
 	JSR	_islower
-	ADDQ.W	#2,A7
+
 	TST.W	D0
 	BNE.B	L00582
 
@@ -12794,6 +12779,7 @@ L00580:
 	ADDQ.W	#8,A7
 	TST.W	-$0002(A5)
 	BEQ.B	L00581
+
 	MOVE.W	-$0004(A5),D3
 	ADDQ.W	#1,D3
 	MOVE.W	D3,-$54BC(A4)
@@ -12803,6 +12789,7 @@ L00581:
 L00582:
 	TST.W	-$54BC(A4)
 	BNE.B	L00583
+
 	JSR	_wmap
 L00583:
 	MOVE.W	D4,D0
@@ -13841,9 +13828,9 @@ L00612:
 	TST.B	$000D(A5)
 	BEQ.B	L00613
 
-	PEA	L00615(PC)	;" as it hits the ground"
+	LEA	L00615(PC),a0	;" as it hits the ground"
 	JSR	_noterse
-	ADDQ.W	#4,A7
+
 	MOVE.L	D0,-(A7)
 	CLR.W	-(A7)
 	MOVE.L	$0008(A5),-(A7)
@@ -14540,9 +14527,10 @@ L00650:
 	CLR.B	-$66B6(A4)	;_running
 	CLR.W	-$60A4(A4)	;_count
 	MOVE.W	#$0003,-$609A(A4)	;_hungry_state
-	PEA	L00658(PC)	;"you feel very weak. "
+
+	LEA	L00658(PC),a0	;"you feel very weak. "
 	JSR	_noterse
-	ADDQ.W	#4,A7
+
 	MOVE.L	D0,-(A7)
 	PEA	L00657(PC)	;"%syou faint from lack of food"
 	JSR	_msg
@@ -14690,9 +14678,10 @@ L00661:
 	PEA	_runners(PC)
 	JSR	_daemon(PC)
 	ADDQ.W	#6,A7
-	PEA	L00664(PC)	; Welcome...
+
+	LEA	L00664(PC),a0	; Welcome...
 	JSR	_noterse
-	ADDQ.W	#4,A7
+
 	MOVE.L	D0,-(A7)
 	PEA	-$672B(A4)	;_whoami
 	PEA	L00663(PC)	; Hello...
@@ -15112,9 +15101,10 @@ L00689:
 	JSR	_printw
 	LEA	$000E(A7),A7
 	MOVEA.L	$000A(A5),A6
-	MOVE.W	$002A(A6),-(A7)
+
+	MOVE.W	$002A(A6),d0
 	JSR	_isalpha(PC)
-	ADDQ.W	#2,A7
+
 	TST.W	D0
 	BEQ.B	L0068B
 	MOVEA.L	$000A(A5),A6
@@ -16047,8 +16037,9 @@ _draw_maze:
 	CLR.W	-$53B4(A4)
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	$0002(A6),-$53B8(A4)
-	TST.W	-$53B8(A4)
+;	TST.W	-$53B8(A4)
 	BNE.B	L00799
+
 	MOVEA.L	$0008(A5),A6
 	ADDQ.W	#1,$0002(A6)
 	MOVE.W	$0002(A6),-$53B8(A4)
@@ -16718,10 +16709,10 @@ L007D3:
 L007D4:
 	MOVEA.L	-$0004(A5),A6
 	MOVE.L	A6,-(A7)
-	MOVE.B	-$53A8(A4),D3
-	MOVE.W	D3,-(A7)
+	MOVE.B	-$53A8(A4),D0
+
 	JSR	_isdigit(PC)
-	ADDQ.W	#2,A7
+
 	MOVEA.L	(A7)+,A6
 
 	TST.W	D0
@@ -18367,9 +18358,10 @@ L00894:
 	EXT.W	D3
 ;	TST.W	D3
 	BNE.B	L00896
-	PEA	L00898(PC)	;"what do you want to "
+
+	LEA	L00898(PC),a0	;"what do you want to "
 	JSR	_noterse
-	ADDQ.W	#4,A7
+
 	MOVE.L	D0,-(A7)
 	PEA	L00897(PC)	;"%scall it? "
 	JSR	_msg
@@ -19922,12 +19914,9 @@ L0092A:
 	ADDQ.W	#2,A7
 ;	EXT.L	D0
 	BRA.B	L00930
-L0092B:
-	BRA.B	L00931
 L0092C:
-	MOVEQ	#$00,D3
 	MOVE.B	D6,D3
-	CMP.W	#$0020,D3
+	CMP.B	#$20,D3
 	BNE.B	L0092D
 	MOVE.W	#$0020,-(A7)
 	JSR	_addch(PC)
@@ -19935,14 +19924,11 @@ L0092C:
 L0092D:
 	BRA.B	L00931
 L0092E:
-	MOVEQ	#$00,D3
-	MOVE.B	D7,D3
-	MOVE.W	D3,-(A7)
-	JSR	_toascii(PC)
-	ADDQ.W	#2,A7
-	MOVE.W	D0,-(A7)
+	MOVE.B	D7,D0
+	AND.W	#$007F,D0
+
 	JSR	_isupper
-	ADDQ.W	#2,A7
+
 	TST.W	D0
 	BEQ.B	L0092F
 	MOVE.W	D5,-(A7)
@@ -19960,13 +19946,13 @@ L0092F:
 	BRA.B	L00931
 L00930:
 	SUB.w	#$000E,D0
-	BEQ.B	L0092B
+	BEQ.B	L00931
 	SUB.w	#$0012,D0
-	BEQ.B	L0092B
+	BEQ.B	L00931
 	SUBQ.w	#3,D0
-	BEQ.B	L0092B
+	BEQ.B	L00931
 	SUBQ.w	#2,D0
-	BEQ.B	L0092B
+	BEQ.B	L00931
 	SUB.w	#$0009,D0
 	BEQ.B	L0092C
 	BRA.B	L0092E
@@ -19985,6 +19971,7 @@ L00933:
 	SUBQ.W	#1,D3
 	CMP.W	D3,D4
 	BLT.W	L00929
+
 	MOVE.L	A3,-(A7)
 	JSR	_door_open
 	ADDQ.W	#4,A7
@@ -20000,6 +19987,7 @@ L00933:
 _fight:
 	LINK	A5,#-$0002
 	MOVEM.L	D4/D5/A2/A3,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	MOVEA.L	$000E(A5),A3
 	MOVE.W	(A2),-(A7)
@@ -20023,24 +20011,22 @@ L00935:
 	ADDQ.W	#4,A7
 	MOVEA.L	D4,A6
 	MOVE.B	$000F(A6),D3
-	EXT.W	D3
-	CMP.W	#$0058,D3	;'X'
+	CMP.B	#$58,D3		;'X' xeroc
 	BNE.B	L00937
 
-	MOVEA.L	D4,A6
-	MOVEQ	#$00,D3
 	MOVE.B	$0010(A6),D3
-	CMP.W	#$0058,D3	;'X'
+	CMP.B	#$58,D3		;'X' xeroc
 	BEQ.B	L00937
 
 	MOVE.W	-$52B4(A4),D3	;_player + 22
 	AND.W	#$0001,D3	;ISBLIND
 	BNE.B	L00937
-	MOVEA.L	D4,A6
-	MOVE.B	#$58,$0010(A6)
-	MOVE.B	#$58,$000D(A5)
+
+	MOVE.B	#$58,$0010(A6)	;'X' xeroc
+	MOVE.B	#$58,$000D(A5)	;'X' xeroc
 	TST.B	$0013(A5)
 	BEQ.B	L00936
+
 	MOVEQ	#$00,D0
 	BRA.B	L00934
 L00936:
@@ -20057,6 +20043,7 @@ L00937:
 	MOVE.W	-$52B4(A4),D3	;_player + 22
 	AND.W	#$0001,D3	;ISBLIND
 	BEQ.B	L00938
+
 	MOVE.L	-$69BE(A4),D5	;_it
 L00938:
 	MOVEQ	#$00,D3
@@ -20069,14 +20056,17 @@ L00938:
 	LEA	$000E(A7),A7
 	TST.W	D0
 	BNE.B	L00939
+
 	MOVE.L	A3,D3
 	BEQ.W	L00940
+
 	CMPI.W	#$0021,$000A(A3)
 	BNE.W	L00940
 L00939:
 	CLR.B	-$0001(A5)
 	TST.B	$0013(A5)
 	BEQ.B	L0093A
+
 	PEA	L00946(PC)	;"hit"
 	PEA	L00945(PC)	;"hits"
 	MOVE.L	D5,-(A7)
@@ -20092,12 +20082,14 @@ L0093A:
 L0093B:
 	CMPI.W	#$0021,$000A(A3)	;'!' potions
 	BNE.B	L0093C
+
 	MOVE.L	D4,-(A7)
 	MOVE.L	A3,-(A7)
 	JSR	_th_effect(PC)
 	ADDQ.W	#8,A7
 	TST.B	$0013(A5)
 	BNE.B	L0093C
+
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	A3,-(A7)
 	JSR	_unpack
@@ -20110,6 +20102,7 @@ L0093C:
 	MOVE.W	-$52B4(A4),D3	;_player + 22
 	AND.W	#$0400,D3	;CANHUH
 	BEQ.B	L0093D
+
 	MOVE.B	#$01,-$0001(A5)
 	MOVEA.L	D4,A6
 	ORI.W	#$0100,$0016(A6)	;ISHUH
@@ -20121,6 +20114,7 @@ L0093D:
 	MOVEA.L	D4,A6
 	CMPI.W	#$0000,$0022(A6)
 	BGT.B	L0093E
+
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	D4,-(A7)
 	JSR	_killed(PC)
@@ -20129,6 +20123,7 @@ L0093D:
 L0093E:
 	TST.B	-$0001(A5)
 	BEQ.B	L0093F
+
 	MOVE.W	-$52B4(A4),D3	;_player + 22
 	AND.W	#$0001,D3	;ISBLIND
 	BNE.B	L0093F
@@ -20142,6 +20137,7 @@ L0093F:
 L00940:
 	TST.B	$0013(A5)
 	BEQ.B	L00941
+
 	PEA	L0094A(PC)	;"missed"
 	PEA	L00949(PC)	;"misses"
 	MOVE.L	D5,-(A7)
@@ -20162,10 +20158,11 @@ L00942:
 	cmp.b	#$53,$000F(A6)
 	BNE.B	L00943
 
-	MOVEq	#$0064,D0
+	MOVEq	#100,D0
 	JSR	_rnd
-	CMP.W	#$0019,D0
+	CMP.W	#25,D0		;25% chance that the slime splits
 	BLE.B	L00943
+
 	MOVE.L	D4,-(A7)
 	JSR	_slime_split
 	ADDQ.W	#4,A7
@@ -20318,13 +20315,15 @@ L00957:
 	MOVE.W	#$FFFF,-(A7)
 	JSR	_chg_str
 	ADDQ.W	#2,A7
-	PEA	L0097A(PC)	;" and now feel weaker"
+
+	LEA	L0097A(PC),a0	;" and now feel weaker"
 	JSR	_noterse
-	ADDQ.W	#4,A7
+
 	MOVE.L	D0,-(A7)
 	PEA	L00979(PC)	;"you feel a bite in your leg%s"
 	JSR	_msg
 	ADDQ.W	#8,A7
+
 	BRA.B	L00959
 L00958:
 	PEA	L0097B(PC)	;"a bite momentarily weakens you"
@@ -20963,6 +20962,7 @@ L00998:
 	ADDQ.W	#2,A7
 
 	MOVEM.L	D0-D7/A0-A3,-(A7)	;DEBUG here
+	move.w	$000A(A3),-(a7)
 	moveq	#11,d1
 	sub.w	-$000A(A5),d1
 	move.w	d1,-(a7)		;def_arm
@@ -20972,8 +20972,8 @@ L00998:
 	move.w	-$0008(A5),-(a7)	;nsides
 	move.w	-$0006(A5),-(a7)	;ndice
 	pea	debugtext
-	jsr	_printf
-	LEA	$0010(A7),A7
+	jsr	_db_print
+	LEA	$0012(A7),A7
 	MOVEM.L	(A7)+,D0-D7/A0-A3
 
 	ADD.W	D6,D0
@@ -21024,7 +21024,7 @@ L0099E:
 L0099F:
 	dc.w	$0000
 
-debugtext:	dc.b	"Damage for %dd%d came out %2d, dplus = %d, add_dam = %d, def_arm = %d",10,0,0
+debugtext:	dc.b	"Damage for %dd%d came out %2d, dplus = %d, add_dam = %d, def_arm = %d, def_hp = %2d",10,0,0
 
 ;/*
 ; * prname:
@@ -23857,10 +23857,9 @@ L00AEF:
 	AND.W	#$0020,D3
 	BNE.B	L00AF0
 	MOVEA.L	-$5258(A4),A6	;_prbuf
-	MOVE.B	(A6),D3
-	MOVE.W	D3,-(A7)
+	MOVE.B	(A6),D0
 	JSR	_isupper
-	ADDQ.W	#2,A7
+
 	TST.W	D0
 	BEQ.B	L00AF0
 	MOVEA.L	-$5258(A4),A6	;_prbuf
@@ -23878,10 +23877,8 @@ L00AF0:
 	AND.W	#$0020,D3
 	BEQ.B	L00AF1
 	MOVEA.L	-$5258(A4),A6	;_prbuf
-	MOVE.B	(A6),D3
-	MOVE.W	D3,-(A7)
+	MOVE.B	(A6),D0
 	JSR	_islower
-	ADDQ.W	#2,A7
 
 	TST.W	D0
 	BEQ.B	L00AF1
