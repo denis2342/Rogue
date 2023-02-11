@@ -3032,6 +3032,7 @@ L0015F:
 L00160:
 	TST.B	-$66FB(A4)	;_new_stats
 	BNE.B	L00161
+
 	MOVE.W	-$54E4(A4),D3
 	CMP.W	-$60B2(A4),D3	;_purse
 	BEQ.B	L00162
@@ -3048,6 +3049,7 @@ L00161:
 L00162:
 	TST.L	-$5294(A4)	;_cur_armor
 	BEQ.B	L00163
+
 	MOVEA.L	-$5294(A4),A6	;_cur_armor
 	MOVE.W	$0026(A6),D4
 	BRA.B	L00164
@@ -3056,22 +3058,23 @@ L00163:
 L00164:
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L00165
+
 	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	CMP.W	#R_PROTECT,$0020(A6)
 	BNE.B	L00165
-;	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	SUB.W	$0026(A6),D4
 L00165:
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BEQ.B	L00166
+
 	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	CMP.W	#R_PROTECT,$0020(A6)
 	BNE.B	L00166
-;	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	SUB.W	$0026(A6),D4
 L00166:
 	TST.B	-$66FB(A4)	;_new_stats
 	BNE.B	L00167
+
 	MOVE.W	-$54E2(A4),D3
 	CMP.W	D4,D3
 	BEQ.B	L00168
@@ -5876,7 +5879,7 @@ L00287:
 	MOVEQ	#$01,D0
 	BRA.B	L00286
 L00288:
-	MOVE.W	D4,-$0002(A5)	;will they ever read back?
+	MOVE.W	D4,-$0002(A5)
 	MOVE.W	D5,-$0004(A5)
 
 	PEA	-$0004(A5)
@@ -9221,11 +9224,10 @@ L00428:
 	MOVEA.L	-$0008(A5),A6
 	MOVE.W	(A6),-$0026(A5)
 L00429:
-	MOVE.W	-$0020(A5),D3
-	SUB.W	-$0024(A5),D3
-	MOVE.W	D3,-(A7)
+	MOVE.W	-$0020(A5),D0
+	SUB.W	-$0024(A5),D0
 	JSR	__abs(PC)
-	ADDQ.W	#2,A7
+
 	SUBQ.W	#1,D0
 	MOVE.W	D0,-$000A(A5)
 	CLR.W	-$001C(A5)
@@ -9237,11 +9239,10 @@ L00429:
 L0042A:
 	MOVE.W	#$FFFF,-$001E(A5)
 L0042B:
-	MOVE.W	-$0022(A5),D3
-	SUB.W	-$0026(A5),D3
-	MOVE.W	D3,-(A7)
+	MOVE.W	-$0022(A5),D0
+	SUB.W	-$0026(A5),D0
 	JSR	__abs(PC)
-	ADDQ.W	#2,A7
+
 	MOVE.W	D0,-$000E(A5)
 	BRA.W	L00436
 L0042C:
@@ -9332,11 +9333,10 @@ L00432:
 	MOVEA.L	-$0008(A5),A6
 	MOVE.W	$0002(A6),-$0024(A5)
 L00433:
-	MOVE.W	-$0022(A5),D3
-	SUB.W	-$0026(A5),D3
-	MOVE.W	D3,-(A7)
+	MOVE.W	-$0022(A5),D0
+	SUB.W	-$0026(A5),D0
 	JSR	__abs(PC)
-	ADDQ.W	#2,A7
+
 	SUBQ.W	#1,D0
 	MOVE.W	D0,-$000A(A5)
 	MOVE.W	-$0020(A5),D3
@@ -9348,11 +9348,10 @@ L00434:
 	MOVE.W	#$FFFF,-$001C(A5)
 L00435:
 	CLR.W	-$001E(A5)
-	MOVE.W	-$0020(A5),D3
-	SUB.W	-$0024(A5),D3
-	MOVE.W	D3,-(A7)
+	MOVE.W	-$0020(A5),D0
+	SUB.W	-$0024(A5),D0
 	JSR	__abs(PC)
-	ADDQ.W	#2,A7
+
 	MOVE.W	D0,-$000E(A5)
 L00436:
 	MOVE.W	-$000A(A5),D3
@@ -9939,13 +9938,10 @@ _psplat:
 	RTS
 
 __abs:
-;	LINK	A5,#-$0000
-	MOVE.W	$0004(A7),D0
-	BGE.B	L00462
+	TST.W	D0
+	BGE.B	1$
 	NEG.W	D0
-L00462:
-;	UNLK	A5
-	RTS
+1$	RTS
 
 ;/*
 ; * detach:
@@ -12134,6 +12130,7 @@ L0053A:
 	MOVE.W	$0028(A2),D3
 	AND.W	#$0001,D3	; check for ISCURSED bit
 	BEQ.B	L0053B
+
 	PEA	L00543(PC)	;"you can't.  It appears to be cursed"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -12208,6 +12205,7 @@ _new_thing:
 	MOVEA.L	D0,A2
 	TST.L	D0
 	BNE.B	L00545
+
 	MOVEQ	#$00,D0
 L00544:
 	MOVEM.L	(A7)+,D4/D5/A2
@@ -12219,13 +12217,14 @@ L00545:
 	CLR.W	$0022(A2)
 	MOVE.L	-$69AE(A4),$001A(A2)
 	MOVE.L	$001A(A2),$0016(A2)
-	MOVE.W	#$000B,$0026(A2)
-	MOVE.W	#$0001,$001E(A2)
+	MOVE.W	#$000B,$0026(A2)	;armor class base value
+	MOVE.W	#$0001,$001E(A2)	;one item
 	CLR.W	$002C(A2)
-	CLR.W	$0028(A2)
+	CLR.W	$0028(A2)		;flags like cursed and so on
 	CLR.B	$002A(A2)
 	CMPI.W	#$0003,-$60A6(A4)
 	BLE.B	L00546
+
 	MOVEQ	#$02,D0
 	BRA.B	L00547
 L00546:
@@ -12293,7 +12292,7 @@ L0054D:
 	CMP.W	#10,D0
 	BGE.B	L0054E
 
-	ORI.W	#O_ISCURSED,$0028(A2)	; 10% chance that the armor is cursed
+	ORI.W	#O_ISCURSED,$0028(A2)	; 10% chance that the weapon is cursed
 
 	MOVEq	#$0003,D0
 	JSR	_rnd
@@ -13420,6 +13419,7 @@ L005CF:
 	JSR	_rnd
 	TST.W	D0
 	BNE.B	L005D9
+
 	MOVEq	#$0001,D0
 	BRA.B	L005CB
 L005D2:
@@ -13481,11 +13481,12 @@ L005DE:
 ;	EXT.L	D0
 	BRA.B	L005E2
 L005DF:
-	MOVE.W	#$003D,-(A7)
+	MOVE.W	#$003D,-(A7)	;'=' ring
 	CLR.W	-(A7)
 	MOVE.W	$0026(A2),-(A7)
 	JSR	_num(PC)
 	ADDQ.W	#6,A7
+
 	MOVE.L	D0,-(A7)
 	MOVE.L	-$51A0(A4),-(A7)
 	JSR	_strcpy
@@ -13958,54 +13959,45 @@ L00619:
 
 _num:
 	LINK	A5,#-$0000
-	MOVEM.L	D4-D6,-(A7)
-	MOVE.W	$0008(A5),D4
-	MOVE.W	$000A(A5),D5
-	MOVE.B	$000D(A5),D6
-	MOVE.W	D4,-(A7)
-;	CMP.W	#$0000,D4
-	BGE.B	L0061A
-	LEA	L00620(PC),A6	;"",0
-	MOVE.L	A6,D3
-	BRA.B	L0061B
-L0061A:
-	LEA	L00621(PC),A6	;"+"
-	MOVE.L	A6,D3
-L0061B:
-	MOVE.L	D3,-(A7)
+
+	MOVE.W	$0008(A5),-(A7)
+	BGE.B	1$
+
+	PEA	L00620(PC)	;"",0
+	BRA.B	2$
+1$
+	PEA	L00621(PC)	;"+"
+2$
 	PEA	L0061F(PC)	;"%s%d"
 	PEA	-$53CA(A4)
 	JSR	_sprintf
 	LEA	$000E(A7),A7
-	MOVE.B	D6,D3
-;	EXT.W	D3
-	CMP.b	#$6D,D3		; m weapon type
+
+	CMP.b	#$6D,$000D(A5)	; m weapon type
 	BNE.B	L0061E
-	MOVE.W	D5,-(A7)
-;	CMP.W	#$0000,D5
-	BGE.B	L0061C
-	LEA	L00620(PC),A6
-	MOVE.L	A6,D3
-	BRA.B	L0061D
-L0061C:
-	LEA	L00621(PC),A6	;"+"
-	MOVE.L	A6,D3
-L0061D:
-	MOVE.L	D3,-(A7)
-	PEA	L00622(PC)	;",%s%d"
+
+	MOVE.W	$000A(A5),-(A7)
+	BGE.B	3$
+
+	PEA	L00620(PC)	;"",0
+	BRA.B	4$
+
+3$	PEA	L00621(PC)	;"+"
+
+4$	PEA	L00622(PC)	;",%s%d"
 	PEA	-$53CA(A4)
 	JSR	_strlen
 	ADDQ.W	#4,A7
-	EXT.L	D0
+
 	LEA	-$53CA(A4),A6
-	ADD.L	A6,D0
-	MOVE.L	D0,-(A7)
+	ADD.W	D0,A6
+	MOVE.L	A6,-(A7)
 	JSR	_sprintf
 	LEA	$000E(A7),A7
 L0061E:
 	LEA	-$53CA(A4),A6
 	MOVE.L	A6,D0
-	MOVEM.L	(A7)+,D4-D6
+
 	UNLK	A5
 	RTS
 
@@ -14736,7 +14728,6 @@ L00665:
 	dc.b	" have to allow it",0
 
 _ran:
-;	LINK	A5,#-$0000
 	MOVE.L	-$6094(A4),D0	;_seed
 	MOVEQ	#$7D,D1
 	JSR	_mulu
@@ -14748,7 +14739,6 @@ _ran:
 	JSR	_mulu
 	SUB.L	D0,-$6094(A4)	;_seed
 	MOVE.L	-$6094(A4),D0	;_seed
-;	UNLK	A5
 	RTS
 
 ;/*
@@ -14770,9 +14760,8 @@ _rnd:
 	BRA.B	2$
 
 1$	BSR.B	_ran
-	MOVE.L	D0,-(A7)
-	BSR.B	_ran
-	MOVE.L	(A7)+,D3
+	MOVE.L	D0,D3
+	BSR.B	_ran		;this does not change D3
 	ADD.L	D0,D3
 	MOVE.L	D3,D0
 	AND.L	#$7FFFFFFF,D0
@@ -20644,16 +20633,14 @@ L0097F:	dc.b	"she stole %s!",0
 ; */
 
 _swing:
-	LINK	A5,#-$0000
-	MOVEM.L	D4/D5,-(A7)
 	MOVEq	#20,D0
 	JSR	_rnd
 
-	MOVEQ	#20,D5
-	SUB.W	$0008(A5),D5
-	SUB.W	$000A(A5),D5
-	ADD.W	$000C(A5),D0
-	CMP.W	D5,D0
+	MOVEQ	#20,D3
+	SUB.W	$0004(A7),D3
+	SUB.W	$0006(A7),D3
+	ADD.W	$0008(A7),D0
+	CMP.W	D3,D0
 	BLT.B	1$
 
 	MOVEq	#$0001,D0
@@ -20661,9 +20648,7 @@ _swing:
 
 1$	CLR.W	D0
 
-2$	MOVEM.L	(A7)+,D4/D5
-	UNLK	A5
-	RTS
+2$	RTS
 
 ;/*
 ; * check_level:
@@ -20749,14 +20734,14 @@ _roll_em:
 	ADDA.L	#$00000018,A3
 
 	TST.L	$0010(A5)	;test for weapon
-	BNE.B	L00988
+	BNE.B	1$
 
 	MOVE.L	$000C(A2),-$0004(A5)
 	MOVEQ	#$00,D6
 	MOVEQ	#$00,D5
 	BRA.W	L00994
-L00988:
-	MOVEA.L	$0010(A5),A6
+
+1$	MOVEA.L	$0010(A5),A6
 	MOVE.W	$0022(A6),D5	;hplus from weapon
 	MOVE.W	$0024(A6),D6	;dplus from weapon
 
@@ -20936,20 +20921,24 @@ L00998:
 	MOVE.L	-$0004(A5),-(A7)
 	JSR	_atoi(PC)
 	ADDQ.W	#4,A7
-	MOVE.W	D0,-$0006(A5)
-	MOVE.W	#$0064,-(A7)
+
+	MOVE.W	D0,-$0006(A5)	;ndice
+
+	MOVE.W	#100,-(A7)
 	MOVE.L	-$0004(A5),-(A7)
 	JSR	_index
 	ADDQ.W	#6,A7
-	MOVE.L	D0,-$0004(A5)
+
+	MOVE.L	D0,-$0004(A5)	;cp
 ;	TST.L	D0
 	BEQ.W	L0099E
 
-	ADDQ.L	#1,-$0004(A5)
+	ADDQ.L	#1,-$0004(A5)	;cp
 	MOVE.L	-$0004(A5),-(A7)
 	JSR	_atoi(PC)
 	ADDQ.W	#4,A7
-	MOVE.W	D0,-$0008(A5)
+
+	MOVE.W	D0,-$0008(A5)	;nsides
 	MOVE.W	(A2),-(A7)
 	JSR	_str_plus(PC)
 	ADDQ.W	#2,A7
@@ -20967,60 +20956,75 @@ L00998:
 	MOVE.W	-$0006(A5),-(A7)
 	JSR	_roll
 	ADDQ.W	#4,A7
+
 	MOVE.W	D0,-$000C(A5)
 	MOVE.W	(A2),-(A7)
 	JSR	_add_dam(PC)
 	ADDQ.W	#2,A7
+
+	MOVEM.L	D0-D7/A0-A3,-(A7)	;DEBUG here
+	moveq	#11,d1
+	sub.w	-$000A(A5),d1
+	move.w	d1,-(a7)		;def_arm
+	move.w	d0,-(a7)		;add_dam
+	move.w	d6,-(a7)		;dplus
+	move.w	-$000c(A5),-(a7)	;proll
+	move.w	-$0008(A5),-(a7)	;nsides
+	move.w	-$0006(A5),-(a7)	;ndice
+	pea	debugtext
+	jsr	_printf
+	LEA	$0010(A7),A7
+	MOVEM.L	(A7)+,D0-D7/A0-A3
+
 	ADD.W	D6,D0
 	MOVE.W	D0,D7
 	ADD.W	-$000C(A5),D7
-	LEA	-$52CA(A4),A6
-	MOVEA.L	$000C(A5),A1
-	CMPA.L	A6,A1
+	LEA	-$52CA(A4),A6	;_player
+	CMPA.L	$000C(A5),A6	;same as creature who is fighting here?
 	BNE.B	L00999
 
 	CMPI.W	#$0001,-$60BA(A4)	;_ntraps
 	BNE.B	L00999
 
-	MOVE.W	D7,D3
-	ADDQ.W	#1,D3
-	MOVE.W	D3,D7
+	ADDQ.W	#1,D7		;divide damage by half, if level == 1
 	EXT.L	D7
 	DIVS.W	#$0002,D7
 L00999:
-;	TST.W	-$47AA(A4)	;_all_clear
-;	BNE.B	L0099A
-;	MULU.W	#$0006,D7
-;L0099A:
 	MOVEQ	#$00,D3
 	CMP.W	D7,D3
 	BLE.B	L0099B
+
 ;	MOVEQ	#$00,D3
 	BRA.B	L0099C
 L0099B:
 	MOVE.W	D7,D3
-L0099C:
 	SUB.W	D3,$000A(A3)
-	MOVEQ	#$01,D4
+L0099C:
+	MOVEQ	#$01,D4		;did_hit = TRUE
+
 L0099D:
 	MOVE.W	#$002F,-(A7)	;'/'
 	MOVE.L	-$0004(A5),-(A7)
 	JSR	_index
 	ADDQ.W	#6,A7
-	MOVE.L	D0,-$0004(A5)
+
+	MOVE.L	D0,-$0004(A5)	;test cp for NULL
 ;	TST.L	D0
 	BEQ.B	L0099E
-	ADDQ.L	#1,-$0004(A5)
+
+	ADDQ.L	#1,-$0004(A5)	;cp++
 	BRA.W	L00998
 L0099E:
 ;	MOVEQ	#$00,D0
-	MOVE.L	D4,D0
+	MOVE.L	D4,D0		;return did_hit
 	MOVEM.L	(A7)+,D4-D7/A2/A3
 	UNLK	A5
 	RTS
 
 L0099F:
 	dc.w	$0000
+
+debugtext:	dc.b	"Damage for %dd%d came out %2d, dplus = %d, add_dam = %d, def_arm = %d",10,0,0
 
 ;/*
 ; * prname:
@@ -21340,7 +21344,7 @@ L009DA:
 
 _str_plus:
 	LINK	A5,#-$0000
-	MOVEM.L	D5,-(A7)
+	MOVE.L	D5,-(A7)
 	MOVE.W	$0008(A5),D0
 	MOVEQ	#$04,D5
 	CMP.W	#$0008,D0
@@ -21348,7 +21352,7 @@ _str_plus:
 
 	SUBQ.W	#7,D0
 L009DB:
-	MOVEM.L	(A7)+,D5
+	MOVE.L	(A7)+,D5
 	UNLK	A5
 	RTS
 
@@ -22181,19 +22185,19 @@ L00A34:
 	BNE.W	L00A39
 
 	MOVE.W	-$52B4(A4),D3	;_player + 22
-	AND.W	#C_ISBLIND,D3	;ISBLIND
+	AND.W	#C_ISBLIND,D3	;we are blind, so we can't see the medusas gaze
 	BNE.W	L00A39
 
 	MOVE.W	$0016(A2),D3
-	AND.W	#C_ISFOUND,D3
+	AND.W	#C_ISFOUND,D3	;we saw her already
 	BNE.W	L00A39
 
 	MOVE.W	$0016(A2),D3
-	AND.W	#C_ISCANC,D3	;C_ISCANC
+	AND.W	#C_ISCANC,D3	;her abilities are canceled
 	BNE.W	L00A39
 
 	MOVE.W	$0016(A2),D3
-	AND.W	#C_ISRUN,D3	;C_ISRUN
+	AND.W	#C_ISRUN,D3	;shes coming at us
 	BEQ.W	L00A39
 
 	MOVEA.L	-$52A0(A4),A3	;_player + 42
@@ -22206,6 +22210,7 @@ L00A34:
 	MOVE.W	D0,D5
 	MOVE.L	A3,D3
 	BEQ.B	L00A35
+
 	MOVE.L	A3,-(A7)
 	JSR	_is_dark
 	ADDQ.W	#4,A7
@@ -22229,6 +22234,7 @@ L00A36:
 	MOVE.W	#$0014,-(A7)
 	JSR	_spread
 	ADDQ.W	#2,A7
+
 	MOVE.W	(A7)+,D3
 	ADD.W	D0,D3
 	MOVE.W	D3,-(A7)
@@ -22462,6 +22468,7 @@ L00A69:
 ;	EXT.L	D3
 	AND.L	#$00000004,D3
 	BEQ.B	L00A6A
+
 	MOVE.W	#$0001,-$001C(A5)
 L00A6A:
 	MOVEA.L	-$0010(A5),A6
@@ -22469,6 +22476,7 @@ L00A6A:
 ;	EXT.L	D3
 	AND.L	#$00000001,D3
 	BEQ.B	L00A6B
+
 	MOVE.W	#$0001,-$001A(A5)
 L00A6B:
 	ADDI.L	#$00000010,-$0010(A5)
@@ -23503,7 +23511,7 @@ L00ACE:
 	AND.W	#O_ISKNOW,D3
 	BEQ.B	L00ACF
 
-	MOVE.W	#$006D,-(A7)
+	MOVE.W	#$006D,-(A7)	;m weapon type
 	MOVE.W	$0024(A2),-(A7)
 	MOVE.W	$0022(A2),-(A7)
 	JSR	_num(PC)
@@ -23571,7 +23579,7 @@ L00AD3:
 	ASL.w	#2,D3
 	LEA	-$6F30(A4),A6		;_a_names
 	MOVE.L	$00(A6,D3.w),-(A7)
-	MOVE.W	#$0061,-(A7)
+	MOVE.W	#$0061,-(A7)	;a armor type
 	CLR.W	-(A7)
 	MOVE.W	D5,D3
 ;	EXT.L	D3
