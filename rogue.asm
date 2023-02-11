@@ -14599,6 +14599,8 @@ _main:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
 	JSR	_init_ds
+	JSR	_initscr(PC)
+	JSR	_setup(PC)	;bugfix, now process can return from -s option
 	CLR.W	-$60B6(A4)	;_dnum
 L0065B:
 	SUBQ.W	#1,$0008(A5)
@@ -14621,8 +14623,8 @@ L0065C:
 ;	EXT.L	D0
 	BRA.B	L0065E
 L0065D:
-	JSR	_initscr(PC)
 	ST	-$66F8(A4)	;_noscore
+
 	CLR.W	-(A7)
 	CLR.W	-(A7)
 	CLR.W	-(A7)
@@ -14640,8 +14642,6 @@ L0065E:
 L0065F:
 	BRA.B	L0065B
 L00660:
-	JSR	_initscr(PC)
-	JSR	_setup(PC)
 	TST.W	-$60B6(A4)	;_dnum
 	BNE.B	L00661
 	JSR	_srand(PC)
