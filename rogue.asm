@@ -39,7 +39,7 @@ MAXARMORS	equ	8
 ISCURSED	equ	1
 ISKNOW		equ	2
 ISMISL		equ	4
-ISMANY		equ	10
+ISMANY		equ	20
 
 	SECTION "",CODE       ;000 084512
 
@@ -3339,9 +3339,9 @@ _new_level:
 	ANDI.W	#$FF7F,-$52B4(A4)	;clear ISHELD ($80) _player + 22
 	CLR.B	-$66FA(A4)
 	MOVE.W	-$60B4(A4),D3	;_level
-	CMP.W	-$60BA(A4),D3
+	CMP.W	-$60BA(A4),D3	;_ntraps
 	BLE.B	L00183
-	MOVE.W	-$60B4(A4),-$60BA(A4)	;_level
+	MOVE.W	-$60B4(A4),-$60BA(A4)	;_level,_ntraps
 L00183:
 	MOVE.W	#$0020,-(A7)
 	MOVE.W	#$06E0,-(A7)
@@ -3406,6 +3406,7 @@ L00187:
 	SUBQ.W	#1,D5
 	TST.W	D3
 	BEQ.B	L00188
+
 	PEA	-$0004(A5)
 	JSR	_blank_spot	;-$7D26(A4)
 	ADDQ.W	#4,A7
@@ -3461,27 +3462,22 @@ L00188:
 
 _rnd_room:
 ;	LINK	A5,#-$0000
-	MOVE.L	D4,-(A7)
 L00189:
 	MOVE.W	#$0009,-(A7)
 	JSR	_rnd		;-$7DD6(A4)
 	ADDQ.W	#2,A7
-	MOVE.W	D0,D4
-	MOVE.W	D4,D3
-	MULS.W	#$0042,D3
-	LEA	-$607A(A4),A6
+	MOVE.W	D0,D3
+	MULU.W	#66,D3
+	LEA	-$607A(A4),A6	;_rooms + 14 (r_flags)
+
 	MOVE.W	$00(A6,D3.L),D2
-	AND.W	#$0002,D2
+	AND.W	#$0002,D2	;ISGONE?
 	BEQ.B	L0018A
-	MOVE.W	D4,D3
-	MULS.W	#$0042,D3
-	LEA	-$607A(A4),A6
+
 	MOVE.W	$00(A6,D3.L),D2
-	AND.W	#$0004,D2
+	AND.W	#$0004,D2	;ISMAZE?
 	BEQ.B	L00189
 L0018A:
-	MOVE.W	D4,D0
-	MOVE.L	(A7)+,D4
 ;	UNLK	A5
 	RTS
 
@@ -3497,7 +3493,7 @@ _put_things:
 	TST.B	-$66BC(A4)	;_saw_amulet
 	BEQ.B	L0018B
 	MOVE.W	-$60B4(A4),D3	;_level
-	CMP.W	-$60BA(A4),D3
+	CMP.W	-$60BA(A4),D3	;_ntraps
 	BGE.B	L0018B
 	MOVEQ	#$08,D4
 	BRA.W	L0018F
@@ -3526,7 +3522,7 @@ L0018C:
 	PEA	-$0004(A5)
 	MOVE.W	D5,D3
 	MULS.W	#$0042,D3
-	LEA	-$6088(A4),A6
+	LEA	-$6088(A4),A6	;_rooms
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 	JSR	_rnd_pos	;-$7D16(A4)
@@ -3583,7 +3579,7 @@ L00191:
 	PEA	-$0004(A5)
 	MOVE.W	D5,D3
 	MULS.W	#$0042,D3
-	LEA	-$6088(A4),A6
+	LEA	-$6088(A4),A6	;_rooms
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 	JSR	_rnd_pos	;-$7D16(A4)
@@ -3636,7 +3632,7 @@ _treas_room:
 	MOVEM.L	A2/A3,-(A7)
 	JSR	_rnd_room(PC)
 	MULS.W	#$0042,D0
-	LEA	-$6088(A4),A6
+	LEA	-$6088(A4),A6	;_rooms
 	MOVEA.L	D0,A3
 	ADDA.L	A6,A3
 	MOVE.W	$0006(A3),D3
@@ -4023,42 +4019,42 @@ L001C1:
 	MOVEQ	#$20,D6
 	BRA.B	L001C3
 L001C2:
-	SUB.L	#$00000023,D0
+	SUB.w	#$0023,D0	;'#'
 	BEQ.B	L001BF
-	SUBQ.L	#2,D0
+	SUBQ.w	#2,D0		;'%'
 	BEQ.B	L001BF
-	SUBQ.L	#6,D0
+	SUBQ.w	#6,D0		;'+'
 	BEQ.B	L001BF
-	SUBQ.L	#2,D0
+	SUBQ.w	#2,D0		;'-'
 	BEQ.B	L001BE
-	SUB.L	#$0000000F,D0
+	SUB.w	#$000F,D0	;'<'
 	BEQ.B	L001BE
-	SUBQ.L	#2,D0
+	SUBQ.w	#2,D0		;'>'
 	BEQ.B	L001BE
-	SUB.L	#$0000003D,D0
+	SUB.w	#$003D,D0	;'{'
 	BEQ.B	L001BE
-	SUBQ.L	#1,D0
+	SUBQ.w	#1,D0		;'|'
 	BEQ.B	L001BE
-	SUBQ.L	#1,D0
+	SUBQ.w	#1,D0		;'}'
 	BEQ.B	L001BE
 	BRA.B	L001C1
 L001C3:
 	MOVEQ	#$00,D3
 	MOVE.B	D6,D3
-	CMP.W	#$002B,D3
+	CMP.W	#$002B,D3	;'+'
 	BNE.B	L001C4
 	MOVE.W	D5,-(A7)
 	MOVE.W	D4,-(A7)
 	JSR	_move		;-$7E56(A4)
 	ADDQ.W	#4,A7
 	JSR	_inch(PC)
-	CMP.W	#$002B,D0
+	CMP.W	#$002B,D0	;'+'
 	BEQ.B	L001C4
 	JSR	_standout	;-$7FBE(A4)
 L001C4:
 	MOVEQ	#$00,D3
 	MOVE.B	D6,D3
-	CMP.W	#$0020,D3
+	CMP.W	#$0020,D3	;' '
 	BEQ.B	L001C5
 	MOVEQ	#$00,D3
 	MOVE.B	D6,D3
@@ -4260,7 +4256,7 @@ L001DE:
 	MOVE.L	A6,D3
 	BRA.B	L001E0
 L001DF:
-	MOVE.L	-$69C6(A4),D3
+	MOVE.L	-$69C6(A4),D3	;_intense
 L001E0:
 	MOVE.L	D3,-(A7)
 	MOVEA.L	-$5298(A4),A6	;_cur_weapon
@@ -4269,7 +4265,7 @@ L001E0:
 	ASL.L	#2,D3
 	LEA	-$6F5C(A4),A6	;_w_names
 	MOVE.L	$00(A6,D3.L),-(A7)
-	MOVE.L	-$69C2(A4),-(A7)
+	MOVE.L	-$69C2(A4),-(A7)	;_flash
 	JSR	_msg		;-$7F76(A4)
 	LEA	$000C(A7),A7
 	MOVE.W	#$0001,-(A7)
@@ -5643,7 +5639,7 @@ _roomin:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/A2/A3,-(A7)
 	MOVEA.L	$0008(A5),A2
-	LEA	-$6088(A4),A6
+	LEA	-$6088(A4),A6	;_rooms
 	MOVEA.L	A6,A3
 L0027C:
 	MOVE.W	(A3),D3
@@ -5890,6 +5886,11 @@ L00294:
 	MOVE.L	A6,D0
 	BRA.B	L0028C
 
+;/*
+; * leave_pack:
+; *  take an item out of the pack
+; */
+
 _unpack:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
@@ -6003,11 +6004,16 @@ L002A2:
 	UNLK	A5
 	RTS
 
+;/*
+; * pack_char:
+; *  Return the next unused pack character.
+; */
+
 _pack_obj:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/A2,-(A7)
 	MOVEA.L	-$529C(A4),A2	;_player + 46
-	MOVEQ	#$61,D4
+	MOVEQ	#$61,D4	;'a'
 	BRA.B	L002A6
 L002A3:
 	MOVEQ	#$00,D3
@@ -6809,7 +6815,7 @@ _do_zap:
 	MOVEM.L	D4-D7/A2/A3,-(A7)
 	TST.L	$0008(A5)
 	BNE.B	L00310
-	MOVE.W	#$002F,-(A7)
+	MOVE.W	#$002F,-(A7)	;'/'
 	PEA	L00347(PC)	;"zap with"
 	JSR	_get_item	;-$7EE6(A4)
 	ADDQ.W	#6,A7
@@ -6824,9 +6830,9 @@ L0030F:
 L00310:
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	$0020(A6),-$0006(A5)
-	MOVEA.L	$0008(A5),A6
-	CMPI.W	#$002F,$000A(A6)
+	CMPI.W	#$002F,$000A(A6)	;'/'
 	BEQ.B	L00311
+
 	PEA	L00348(PC)	;"you can't zap with that!"
 	JSR	_msg		;-$7F76(A4)
 	ADDQ.W	#4,A7
@@ -6844,6 +6850,9 @@ L00312:
 	MOVE.W	-$0006(A5),D0
 ;	EXT.L	D0
 	BRA.W	L00343
+
+; light
+
 L00313:
 	MOVE.W	-$52B4(A4),D3	;_player + 22
 	AND.W	#$0001,D3	;ISBLIND
@@ -6872,12 +6881,15 @@ L00316:
 	AND.W	#$0002,D3
 	BNE.B	L00317
 	MOVEA.L	-$52A0(A4),A6	;_player + 42
-	ANDI.W	#$FFFE,$000E(A6)
+	ANDI.W	#$FFFE,$000E(A6)	;clear ISBLIND
 	PEA	-$52C0(A4)	;_player + 10
 	JSR	_enter_room	;-$7D0E(A4)
 	ADDQ.W	#4,A7
 L00317:
 	BRA.W	L00345
+
+; drain life
+
 L00318:
 	CMPI.W	#$0002,-$52A8(A4)	;_player + 34 (hp)
 	BGE.B	L00319
@@ -6888,6 +6900,9 @@ L00318:
 L00319:
 	JSR	_drain(PC)
 	BRA.W	L00345
+
+; polymorph, teleport to, teleport away and cancellation
+
 L0031A:
 	MOVE.W	-$52BE(A4),D4	;_player + 12
 	MOVE.W	-$52C0(A4),D5	;_player + 10
@@ -6915,13 +6930,11 @@ L0031C:
 	MOVEA.L	-$0004(A5),A6
 	MOVE.B	$000F(A6),D6
 	MOVE.B	D6,-$0007(A5)
-	MOVEQ	#$00,D3
-	MOVE.B	D6,D3
-	CMP.W	#$0046,D3
+	CMP.b	#$46,D6		;'F'
 	BNE.B	L0031D
 	ANDI.W	#$FF7F,-$52B4(A4)	;clear ISHELD ($80) for _player + 22
 L0031D:
-	CMPI.W	#$0005,-$0006(A5)
+	CMPI.W	#$0005,-$0006(A5)	;5 = polymorph
 	BNE.W	L00322
 	MOVEA.L	-$0004(A5),A6
 	MOVE.L	$002E(A6),-$000C(A5)
@@ -6955,7 +6968,7 @@ L0031E:
 	MOVE.W	#$001A,-(A7)
 	JSR	_rnd		;-$7DD6(A4)
 	ADDQ.W	#2,A7
-	ADD.W	#$0041,D0
+	ADD.W	#$0041,D0	;'A'
 	MOVE.B	D0,D6
 	MOVEQ	#$00,D3
 	MOVE.B	D0,D3
@@ -6998,9 +7011,7 @@ L00322:
 	BNE.B	L00323
 	MOVEA.L	-$0004(A5),A6
 	ORI.W	#$1000,$0016(A6)	;ISCANC
-	MOVEA.L	-$0004(A5),A6
 	ANDI.W	#$FBEF,$0016(A6)	;clear ISINVIS+CANHUH
-	MOVEA.L	-$0004(A5),A6
 	MOVE.B	$000F(A6),$0010(A6)
 	BRA.W	L0032A
 L00323:
@@ -7022,7 +7033,6 @@ L00324:
 	BNE.B	L00326
 	MOVEA.L	-$0004(A5),A6
 	MOVE.B	#$22,$0011(A6)
-	MOVEA.L	-$0004(A5),A6
 	PEA	$000A(A6)
 	JSR	_blank_spot	;-$7D26(A4)
 	ADDQ.W	#4,A7
@@ -7035,9 +7045,7 @@ L00324:
 	MOVEQ	#$00,D3
 	MOVE.B	$0010(A6),D3
 	MOVE.W	D3,-(A7)
-	MOVEA.L	-$0004(A5),A6
 	MOVE.W	$000A(A6),-(A7)
-	MOVEA.L	-$0004(A5),A6
 	MOVE.W	$000C(A6),-(A7)
 	JSR	_mvaddch(PC)
 	ADDQ.W	#6,A7
@@ -7048,7 +7056,6 @@ L00326:
 	MOVE.W	-$52BE(A4),D3	;_player + 12
 	ADD.W	-$608A(A4),D3
 	MOVE.W	D3,$000C(A6)
-	MOVEA.L	-$0004(A5),A6
 	MOVE.W	-$52C0(A4),D3	;_player + 10
 	ADD.W	-$608C(A4),D3
 	MOVE.W	D3,$000A(A6)
@@ -7065,16 +7072,14 @@ L00328:
 	MOVE.W	$000C(A6),D3
 	CMP.W	D4,D3
 	BNE.B	L00329
-	MOVEA.L	-$0004(A5),A6
+
 	MOVE.W	$000A(A6),D3
 	CMP.W	D5,D3
 	BEQ.B	L0032A
 L00329:
 	MOVEA.L	-$0004(A5),A6
 	MOVE.L	A6,-(A7)
-	MOVEA.L	-$0004(A5),A6
 	MOVE.W	$000A(A6),-(A7)
-	MOVEA.L	-$0004(A5),A6
 	MOVE.W	$000C(A6),-(A7)
 	JSR	_mvinch(PC)
 	ADDQ.W	#4,A7
@@ -7084,10 +7089,12 @@ L0032A:
 	MOVEA.L	-$0004(A5),A6
 	LEA	-$52C0(A4),A1	;_player + 10
 	MOVE.L	A1,$0012(A6)
-	MOVEA.L	-$0004(A5),A6
 	ORI.W	#$0004,$0016(A6)	;ISRUN
 L0032B:
 	BRA.W	L00345
+
+; magic missile
+
 L0032C:
 	MOVE.B	#$01,-$66C5(A4)
 	MOVE.W	#$000A,-$0018(A5)
@@ -7097,8 +7104,10 @@ L0032C:
 	MOVE.W	#$03E8,-$0016(A5)	;1000
 	MOVE.W	#$0001,-$0014(A5)
 	MOVE.W	#$0010,-$0010(A5)
+
 	TST.L	-$5298(A4)	;_cur_weapon
 	BEQ.B	L0032D
+
 	MOVEA.L	-$5298(A4),A6	;_cur_weapon
 	MOVE.B	$0021(A6),-$0024(A5)
 L0032D:
@@ -7116,12 +7125,14 @@ L0032D:
 	MOVE.L	D0,-$0004(A5)
 ;	TST.L	D0
 	BEQ.B	L0032E
+
 	MOVE.L	-$0004(A5),-(A7)
 	MOVE.W	#$0003,-(A7)
 	JSR	_save_throw	;-$7CE6(A4)
 	ADDQ.W	#6,A7
 	TST.W	D0
 	BNE.B	L0032E
+
 	PEA	-$0038(A5)
 	MOVE.W	-$002C(A5),-(A7)
 	MOVE.W	-$002A(A5),-(A7)
@@ -7134,6 +7145,9 @@ L0032E:
 	ADDQ.W	#4,A7
 L0032F:
 	BRA.W	L00345
+
+; striking
+
 L00330:
 	MOVE.W	-$52BE(A4),D3	;_player + 12
 	ADD.W	D3,-$608A(A4)
@@ -7175,6 +7189,9 @@ L00332:
 	LEA	$000E(A7),A7
 L00333:
 	BRA.W	L00345
+
+; haste monster, slow monster
+
 L00334:
 	MOVE.W	-$52BE(A4),D4	;_player + 12
 	MOVE.W	-$52C0(A4),D5	;_player + 10
@@ -7199,18 +7216,18 @@ L00336:
 	MOVE.L	D0,-$0004(A5)
 ;	TST.L	D0
 	BEQ.B	L0033D
-	CMPI.W	#$0007,-$0006(A5)
+	CMPI.W	#$0007,-$0006(A5)	;7 = haste monster
 	BNE.B	L00339
 	MOVEA.L	-$0004(A5),A6
 	MOVE.W	$0016(A6),D3
-	AND.W	#$2000,D3	;ISSLOW
+	AND.W	#$2000,D3	;check for ISSLOW
 	BEQ.B	L00337
 	MOVEA.L	-$0004(A5),A6
-	ANDI.W	#$DFFF,$0016(A6)	;ISSLOW
+	ANDI.W	#$DFFF,$0016(A6)	;clear ISSLOW
 	BRA.B	L00338
 L00337:
 	MOVEA.L	-$0004(A5),A6
-	ORI.W	#$4000,$0016(A6)	;ISHASTE
+	ORI.W	#$4000,$0016(A6)	;set ISHASTE
 L00338:
 	BRA.B	L0033C
 L00339:
@@ -7235,6 +7252,9 @@ L0033C:
 	ADDQ.W	#4,A7
 L0033D:
 	BRA.B	L00345
+
+; lightning, fire and cold
+
 L0033E:
 	CMPI.W	#$0002,-$0006(A5)
 	BNE.B	L0033F
@@ -7255,29 +7275,32 @@ L00341:
 	LEA	$000C(A7),A7
 	MOVE.W	-$0006(A5),D3
 	LEA	-$66CB(A4),A6	;_ws_know
-	MOVE.B	#$01,$00(A6,D3.W)
+	ST	$00(A6,D3.W)
 	BRA.B	L00345
 L00342:
-	dc.w	L00313-L00344
-	dc.w	L00330-L00344
-	dc.w	L0033E-L00344
-	dc.w	L0033E-L00344
-	dc.w	L0033E-L00344
-	dc.w	L0031A-L00344
-	dc.w	L0032C-L00344
-	dc.w	L00334-L00344
-	dc.w	L00334-L00344
-	dc.w	L00318-L00344
-	dc.w	L00345-L00344
-	dc.w	L0031A-L00344
-	dc.w	L0031A-L00344
-	dc.w	L0031A-L00344
+	dc.w	L00313-L00344	;light
+	dc.w	L00330-L00344	;striking
+	dc.w	L0033E-L00344	;lightning
+	dc.w	L0033E-L00344	;fire
+	dc.w	L0033E-L00344	;cold
+	dc.w	L0031A-L00344	;polymorph
+	dc.w	L0032C-L00344	;magic missile
+	dc.w	L00334-L00344	;haste monster
+	dc.w	L00334-L00344	;slow monster
+	dc.w	L00318-L00344	;drain life
+	dc.w	L00345-L00344	;nothing
+	dc.w	L0031A-L00344	;teleport to
+	dc.w	L0031A-L00344	;teleport away
+	dc.w	L0031A-L00344	;cancellation
 L00343:
 	CMP.w	#$000E,D0
 	BCC.B	L00345
 	ASL.w	#1,D0
 	MOVE.W	L00342(PC,D0.W),D0
 L00344:	JMP	L00344(PC,D0.W)
+
+; nothing
+
 L00345:
 	MOVEA.L	$0008(A5),A6
 	SUBQ.W	#1,$0026(A6)
@@ -8860,7 +8883,7 @@ L00421:
 L00422:
 	MOVE.W	D5,D3
 	MULS.W	#$0042,D3
-	LEA	-$6088(A4),A6
+	LEA	-$6088(A4),A6	;_rooms
 	ADD.L	A6,D3
 	MOVE.L	D3,-$0004(A5)
 	CMPI.W	#$0064,-$0012(A5)
@@ -8869,7 +8892,7 @@ L00422:
 	ADDQ.W	#3,D4
 	MOVE.W	D4,D3
 	MULS.W	#$0042,D3
-	LEA	-$6088(A4),A6
+	LEA	-$6088(A4),A6	;_rooms
 	ADD.L	A6,D3
 	MOVE.L	D3,-$0008(A5)
 	CLR.W	-$0016(A5)
@@ -8980,7 +9003,7 @@ L0042C:
 	ADDQ.W	#1,D4
 	MOVE.W	D4,D3
 	MULS.W	#$0042,D3
-	LEA	-$6088(A4),A6
+	LEA	-$6088(A4),A6	;_rooms
 	ADD.L	A6,D3
 	MOVE.L	D3,-$0008(A5)
 	MOVE.W	#$0001,-$0016(A5)
@@ -9505,7 +9528,7 @@ L00457:
 	LEA	-$5ADC(A4),A6
 	CMPA.L	A6,A2
 	BCS.B	L00457
-	LEA	-$6088(A4),A6
+	LEA	-$6088(A4),A6	;_rooms
 	MOVEA.L	A6,A2
 L00458:
 	MOVEQ	#$00,D4
@@ -10748,8 +10771,11 @@ _clrtoeol:
 	MOVE.W	D2,-(A7)
 	MOVEQ	#$00,D0
 	MOVE.B	-$7066(A4),D0		;_c_row
-	MOVEQ	#80,D1
-	JSR	_mulu		;-$7BC6(A4)
+
+;	MOVEQ	#80,D1
+;	JSR	_mulu		;-$7BC6(A4)
+	mulu.w	#80,d0
+
 	MOVEQ	#$00,D3
 	MOVE.B	-$7065(A4),D3		;_c_col
 	ADD.L	D3,D0
@@ -10811,11 +10837,14 @@ _mvinch:
 	RTS
 
 _inch:
-	LINK	A5,#-$0000
+;	LINK	A5,#-$0000
 	MOVEQ	#$00,D0
 	MOVE.B	-$7066(A4),D0
-	MOVEQ	#80,D1
-	JSR	_mulu		;-$7BC6(A4)
+
+;	MOVEQ	#80,D1
+;	JSR	_mulu		;-$7BC6(A4)
+	mulu.w	#80,d0
+
 	MOVEQ	#$00,D3
 	MOVE.B	-$7065(A4),D3
 	ADD.L	D3,D0
@@ -10823,7 +10852,7 @@ _inch:
 	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.L),D3
 	MOVE.W	D3,D0
-	UNLK	A5
+;	UNLK	A5
 	RTS
 
 _addch:
@@ -10868,8 +10897,11 @@ L004DE:
 	MOVE.B	D4,D3
 	MOVEQ	#$00,D0
 	MOVE.B	-$7066(A4),D0
-	MOVEQ	#80,D1
-	JSR	_mulu		;-$7BC6(A4)
+
+;	MOVEQ	#80,D1
+;	JSR	_mulu		;-$7BC6(A4)
+	mulu.w	#80,d0
+
 	MOVEQ	#$00,D2
 	MOVE.B	-$7065(A4),D2
 	ADD.L	D2,D0
@@ -10909,8 +10941,11 @@ L004E0:
 	BCC.B	L004E1
 	MOVEQ	#$00,D0
 	MOVE.B	-$7066(A4),D0
-	MOVEQ	#80,D1
-	JSR	_mulu		;-$7BC6(A4)
+
+;	MOVEQ	#80,D1
+;	JSR	_mulu		;-$7BC6(A4)
+	mulu.w	#80,d0
+
 	MOVEQ	#$00,D3
 	MOVE.B	-$7065(A4),D3
 	ADD.L	D3,D0
@@ -13667,8 +13702,11 @@ _init_weapon:
 	MOVEA.L	$0008(A5),A2
 	MOVEQ	#$00,D0
 	MOVE.B	$000D(A5),D0
-	MOVEQ	#12,D1
-	JSR	_mulu		;-$7BC6(A4)
+
+;	MOVEQ	#12,D1
+;	JSR	_mulu		;-$7BC6(A4)
+	mulu.w	#12,d0
+
 	LEA	-$6FDA(A4),A6	;_w_magic
 	MOVEA.L	D0,A3
 	ADDA.L	A6,A3
@@ -13680,7 +13718,7 @@ _init_weapon:
 	MOVE.B	$0008(A3),$0014(A2)
 	MOVE.W	$000A(A3),$0028(A2)
 	MOVE.W	$0028(A2),D3
-	AND.W	#$0020,D3	; check for ISMANY
+	AND.W	#ISMANY,D3	; check for ISMANY
 	BEQ.B	L00616
 
 	MOVE.W	#$0008,-(A7)
@@ -14026,45 +14064,38 @@ _typeof:
 	RTS
 
 _typech:
-	LINK	A5,#-$0000
-	MOVE.L	D4,-(A7)
-	MOVE.B	$0009(A5),D4
-	MOVE.B	D4,D3
-;	EXT.W	D3
-	CMP.b	#$6D,D3		; m weapon type
-	BLT.B	L0063A
-;	MOVE.B	D4,D3
-;	EXT.W	D3
-	CMP.b	#$79,D3		; y
-	BGE.B	L0063C
-	MOVEQ	#$6D,D4		; m
-	BRA.B	L0063C
-L0063A:
-;	MOVE.B	D4,D3
-;	EXT.W	D3
-	CMP.b	#$61,D3		; a armor type
-	BLT.B	L0063B
-;	MOVE.B	D4,D3
-;	EXT.W	D3
-	CMP.b	#$69,D3		; i
-	BGE.B	L0063C
-	MOVEQ	#$61,D4		; a
-	BRA.B	L0063C
-L0063B:
-;	MOVE.B	D4,D3
-;	EXT.W	D3
-	CMP.b	#$0E,D3		; #14
-	BLT.B	L0063C
-;	MOVE.B	D4,D3
-;	EXT.W	D3
-	CMP.b	#$14,D3		; #20
-	BGE.B	L0063C
-	MOVEQ	#$0E,D4		; #14
-L0063C:
-	MOVE.B	D4,D0
-	EXT.W	D0
-	MOVE.L	(A7)+,D4
-	UNLK	A5
+;	LINK	A5,#-$0000
+	moveq	#0,d0
+	MOVE.B	$0005(A7),D0
+
+	CMP.b	#$6D,D0		; m
+	BLT.B	1$
+
+	CMP.b	#$79,D0		; y
+	BGE.B	3$
+
+	MOVEQ	#$6D,D0		; m weapon type
+	BRA.B	3$
+
+1$	CMP.b	#$61,D0		; a
+	BLT.B	2$
+
+	CMP.b	#$69,D0		; i
+	BGE.B	3$
+
+	MOVEQ	#$61,D0		; a armor type
+	BRA.B	3$
+
+2$	CMP.b	#$0E,D0		; #14
+	BLT.B	3$
+
+	CMP.b	#$14,D0		; #20
+	BGE.B	3$
+
+	MOVEQ	#$0E,D0		; #14
+
+3$
+;	UNLK	A5
 	RTS
 
 _foolish:
@@ -14336,8 +14367,9 @@ _stomach:
 L00650:
 	TST.W	-$60AC(A4)	;_no_command
 	BNE	L00656
-	MOVE.W	#$0005,-(A7)
-	JSR	_rnd		;-$7DD6(A4)
+
+	MOVE.W	#$0005,-(A7)	;20% chance
+	JSR	_rnd
 	ADDQ.W	#2,A7
 	TST.W	D0
 	BNE	L00656
@@ -14384,8 +14416,10 @@ L00654:
 	SUB.W	D5,-$609E(A4)	;_food_left
 	CMPI.W	#150,-$609E(A4)	;_food_left
 	BGE.B	L00655
+
 	CMP.W	#150,D4
 	BLT.B	L00655
+
 	MOVE.W	#$0002,-$609A(A4)	;_hungry_state
 	JSR	_NewRank(PC)
 	PEA	L00659(PC)	;"you are starting to feel weak"
@@ -14395,8 +14429,10 @@ L00654:
 L00655:
 	CMPI.W	#300,-$609E(A4)	;_food_left
 	BGE.B	L00656
+
 	CMP.W	#300,D4
 	BLT.B	L00656
+
 	MOVE.W	#$0001,-$609A(A4)	;_hungry_state
 	JSR	_NewRank(PC)
 	PEA	L0065A(PC)	;"you are starting to get hungry"
@@ -14787,7 +14823,7 @@ L00677:
 	BEQ.B	L00678
 	MOVE.W	$000A(A5),-$0004(A5)
 L00678:
-	MOVE.W	-$60BA(A4),-$0002(A5)
+	MOVE.W	-$60BA(A4),-$0002(A5)	;_ntraps
 	MOVE.W	-$52AC(A4),-$0008(A5)	;_player + 30 (rank)
 	PEA	-$01FA(A5)
 	PEA	-$002E(A5)
@@ -15169,10 +15205,10 @@ L006A4:
 	RTS
 
 L006A5:	dc.b	"Tombstone",0
-L006A6:	dc.b	"Software Pirate",0
+;L006A6:	dc.b	"Software Pirate",0
 L006A7:	dc.b	"%u Au",0
 L006A8:	dc.b	"Killed by %s",0
-L006A9:	dc.b	"a Protection Thug",0
+;L006A9:	dc.b	"a Protection Thug",0
 L006AA:	dc.b	"%d",0
 L006AB:	dc.b	0,0
 
@@ -15434,12 +15470,12 @@ L006D3:
 	AND.W	#ISKNOW,D3
 	BNE.B	L006D4
 	EXT.L	D4
-	DIVS.W	#$0002,D4
+	DIVS.W	#$0002,D4	;worth only by half if you didnt identify it
 L006D4:
 	ORI.W	#ISKNOW,$0028(A2)
 	MOVE.W	$0020(A2),D3
 	LEA	-$66CB(A4),A6	;_ws_know
-	MOVE.B	#$01,$00(A6,D3.W)
+	ST	$00(A6,D3.W)
 	BRA.B	L006D7
 L006D5:
 	MOVE.W	#1000,D4
@@ -16311,12 +16347,12 @@ L007B8:
 	MOVE.L	A2,-(A7)
 	JSR	_typeof		;-$7DEE(A4)
 	ADDQ.W	#4,A7
-	EXT.L	D0
+;	EXT.L	D0
 	BRA.W	L007BE
 L007B9:
 	MOVE.W	$0020(A2),D3
 	LEA	-$66F6(A4),A6	;_s_know
-	MOVE.B	#$01,$00(A6,D3.W)
+	ST	$00(A6,D3.W)
 	MOVE.W	$0020(A2),D3
 	MULS.W	#$0015,D3
 	LEA	-$656A(A4),A6	;_s_guess
@@ -16334,7 +16370,7 @@ L007BA:
 L007BB:
 	MOVE.W	$0020(A2),D3
 	LEA	-$66CB(A4),A6	;_ws_know
-	MOVE.B	#$01,$00(A6,D3.W)
+	ST	$00(A6,D3.W)
 	ORI.W	#ISKNOW,$0028(A2)
 	MOVE.W	$0020(A2),D3
 	MULS.W	#$0015,D3
@@ -16347,7 +16383,7 @@ L007BC:
 L007BD:
 	MOVE.W	$0020(A2),D3
 	LEA	-$66D9(A4),A6	;_r_know
-	MOVE.B	#$01,$00(A6,D3.W)
+	ST	$00(A6,D3.W)
 	ORI.W	#ISKNOW,$0028(A2)
 	MOVE.W	$0020(A2),D3
 	MULS.W	#$0015,D3
@@ -16355,17 +16391,17 @@ L007BD:
 	CLR.B	$00(A6,D3.L)
 	BRA.B	L007BF
 L007BE:
-	SUB.L	#$00000021,D0
+	SUB.w	#$0021,D0
 	BEQ.B	L007BA
-	SUB.L	#$0000000E,D0
+	SUB.w	#$000E,D0
 	BEQ.B	L007BB
-	SUB.L	#$0000000E,D0
+	SUB.w	#$000E,D0
 	BEQ.B	L007BD
-	SUBQ.L	#2,D0
+	SUBQ.w	#2,D0
 	BEQ.W	L007B9
-	SUB.L	#$00000022,D0
+	SUB.w	#$0022,D0
 	BEQ.B	L007BC
-	SUB.L	#$0000000C,D0
+	SUB.w	#$000C,D0
 	BEQ.B	L007BC
 L007BF:
 	TST.B	$002A(A2)
@@ -16750,7 +16786,7 @@ L007F4:
 	PEA	-$0004(A5)
 	MOVE.W	D4,D3
 	MULS.W	#$0042,D3
-	LEA	-$6088(A4),A6
+	LEA	-$6088(A4),A6	;_rooms
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 	JSR	_rnd_pos	;-$7D16(A4)
@@ -16766,7 +16802,7 @@ L007F4:
 	BEQ.B	L007F4
 	MOVE.W	D4,D3
 	MULS.W	#$0042,D3
-	LEA	-$6088(A4),A6
+	LEA	-$6088(A4),A6	;_rooms
 	ADD.L	A6,D3
 	CMP.L	-$52A0(A4),D3	;_player + 42
 	BEQ.B	L007F5
@@ -16915,50 +16951,10 @@ _tr_name:
 	LINK	A5,#-$0000
 	MOVEQ	#$00,D0
 	MOVE.B	$0009(A5),D0
-	BRA.B	L00808
-L00800:
-;	LEA	L0080B(PC),A6	;"a trapdoor"
-L00801b:
-;	MOVE.L	A6,D0
-L00801:
-	UNLK	A5
-	RTS
-
-L00802:
-;	LEA	L0080C(PC),A6	;"a beartrap"
-;	BRA.B	L00801b
-L00803:
-;	LEA	L0080D(PC),A6	;"a sleeping gas trap"
-;	BRA.B	L00801b
-L00804:
-;	LEA	L0080E(PC),A6	;"an arrow trap"
-;	BRA.B	L00801b
-L00805:
-;	LEA	L0080F(PC),A6	;"a teleport trap"
-;	BRA.B	L00801b
-L00806:
-;	LEA	L00810(PC),A6	;"a poison dart trap"
-;	BRA.B	L00801b
-L00807:
-	dc.l	L0080B
-	dc.l	L0080E
-	dc.l	L0080D
-	dc.l	L0080C
-	dc.l	L0080F
-	dc.l	L00810
-
-;	dc.w	L00800-L00809	;"a trapdoor"
-;	dc.w	L00804-L00809	;"an arrow trap"
-;	dc.w	L00803-L00809	;"a sleeping gas trap"
-;	dc.w	L00802-L00809	;"a beartrap"
-;	dc.w	L00805-L00809	;"a teleport trap"
-;	dc.w	L00806-L00809	;"a poison dart trap"
-L00808:
 	CMP.w	#$0006,D0
 	BCC.B	L0080A
 	ASL.w	#2,D0
 	MOVE.L	L00807(PC,D0.W),D0
-;L00809:	JMP	L00809(PC,D0.W)
 	BRA.B	L00801
 
 L0080A:
@@ -16969,7 +16965,17 @@ L0080A:
 	JSR	_msg		;-$7F76(A4)
 	ADDQ.W	#6,A7
 	MOVEQ	#$00,D0
-	BRA.B	L00801
+L00801:
+	UNLK	A5
+	RTS
+
+L00807:
+	dc.l	L0080B
+	dc.l	L0080E
+	dc.l	L0080D
+	dc.l	L0080C
+	dc.l	L0080F
+	dc.l	L00810
 
 L0080B:	dc.b	"a trapdoor",0
 L0080C:	dc.b	"a beartrap",0
@@ -18937,7 +18943,7 @@ L008FE:
 	MOVE.L	A2,-(A7)
 	JSR	_rnd_room	;-$7F3E(A4)
 	MULS.W	#$0042,D0
-	LEA	-$6088(A4),A6
+	LEA	-$6088(A4),A6	;_rooms
 	ADD.L	A6,D0
 	MOVE.L	D0,-(A7)
 	JSR	_rnd_pos	;-$7D16(A4)
@@ -18985,7 +18991,7 @@ _do_rooms:
 	EXT.L	D3
 	DIVS.W	#$0003,D3
 	MOVE.W	D3,-$000C(A5)
-	LEA	-$6088(A4),A6
+	LEA	-$6088(A4),A6	;_rooms
 	MOVE.L	A6,-$0004(A5)
 L00901:
 	MOVEA.L	-$0004(A5),A6
@@ -19007,7 +19013,7 @@ L00902:
 	JSR	_rnd_room	;-$7F3E(A4)
 	MOVE.W	D0,D5
 	MULS.W	#$0042,D0
-	LEA	-$6088(A4),A6
+	LEA	-$6088(A4),A6	;_rooms
 	ADD.L	A6,D0
 	MOVE.L	D0,-$0004(A5)
 	MOVEA.L	-$0004(A5),A6
@@ -19037,7 +19043,7 @@ L00904:
 	CMP.W	-$0006(A5),D4
 	BLT.B	L00902
 	MOVEQ	#$00,D4
-	LEA	-$6088(A4),A6
+	LEA	-$6088(A4),A6	;_rooms
 	MOVE.L	A6,-$0004(A5)
 	BRA.W	L00913
 L00905:
@@ -19176,7 +19182,7 @@ L00909:
 	TST.B	-$66BC(A4)	;_saw_amulet
 	BEQ.B	L0090A
 	MOVE.W	-$60B4(A4),D3	;_level
-	CMP.W	-$60BA(A4),D3
+	CMP.W	-$60BA(A4),D3	;_ntraps
 	BLT.W	L0090D
 L0090A:
 	JSR	_new_item	;-$7EB6(A4)
@@ -20474,37 +20480,40 @@ _roll_em:
 	ADDA.L	#$00000018,A2
 	MOVEA.L	$000C(A5),A3
 	ADDA.L	#$00000018,A3
-	TST.L	$0010(A5)
+
+	TST.L	$0010(A5)	;test for weapon
 	BNE.B	L00988
+
 	MOVE.L	$000C(A2),-$0004(A5)
 	MOVEQ	#$00,D6
 	MOVEQ	#$00,D5
 	BRA.W	L00994
 L00988:
 	MOVEA.L	$0010(A5),A6
-	MOVE.W	$0022(A6),D5
-;	MOVEA.L	$0010(A5),A6
-	MOVE.W	$0024(A6),D6
+	MOVE.W	$0022(A6),D5	;hplus from weapon
+	MOVE.W	$0024(A6),D6	;dplus from weapon
+
 	MOVEA.L	$000C(A5),A6
-	MOVE.B	$000F(A6),D3
-	EXT.W	D3
+	MOVE.B	$000F(A6),D3	;monster ID
+
 	MOVEA.L	$0010(A5),A6
 	MOVE.B	$002A(A6),D2
-	EXT.W	D2
-	CMP.W	D2,D3
+	CMP.B	D2,D3		;do we have a monster slayer?
 	BNE.B	L0098E
-;	MOVEA.L	$0010(A5),A6
+
 	MOVE.W	$0028(A6),D3
-	AND.W	#$0004,D3
+	AND.W	#$0004,D3	;first time? then 100%
 	BEQ.B	L00989
-	MOVE.W	#$0064,-(A7)
-	JSR	_rnd		;-$7DD6(A4)
+
+	MOVE.W	#100,-(A7)	;1% chance the monster slayer works
+	JSR	_rnd
 	ADDQ.W	#2,A7
-	CMP.W	#$0017,D0
+	CMP.W	#23,D0
 	BNE.B	L0098D
 L00989:
 	MOVEA.L	$0010(A5),A6
-	ORI.W	#$0004,$0028(A6)
+	ORI.W	#$0004,$0028(A6)	;mark as used
+
 	TST.B	-$66B2(A4)	;_terse
 	BNE.B	L0098A
 	TST.B	-$66AB(A4)	;_expert
@@ -20514,20 +20523,21 @@ L0098A:
 	MOVE.L	A6,D3
 	BRA.B	L0098C
 L0098B:
-	MOVE.L	-$69C6(A4),D3
+	MOVE.L	-$69C6(A4),D3	;_intense
 L0098C:
 	MOVE.L	D3,-(A7)
 	MOVEA.L	$0010(A5),A6
 	MOVE.W	$0020(A6),D3
-	EXT.L	D3
-	ASL.L	#2,D3
+;	EXT.L	D3
+	ASL.w	#2,D3
 	LEA	-$6F5C(A4),A6	;_w_names
-	MOVE.L	$00(A6,D3.L),-(A7)
-	MOVE.L	-$69C2(A4),-(A7)
+	MOVE.L	$00(A6,D3.w),-(A7)
+	MOVE.L	-$69C2(A4),-(A7)	;_flash
 	JSR	_msg		;-$7F76(A4)
 	LEA	$000C(A7),A7
-	ADD.W	#$0014,D5
-	ADD.W	#$0064,D6
+
+	ADD.W	#20,D5
+	ADD.W	#100,D6
 	BRA.B	L0098E
 L0098D:
 	ADDQ.W	#4,D5
@@ -20568,47 +20578,58 @@ L00991:
 	CMPI.W	#R_ADDHIT,$0020(A6)
 	BNE.B	L00992
 ;	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
+
 	ADD.W	$0026(A6),D5
 L00992:
 	MOVEA.L	$0010(A5),A6
 	MOVE.L	$0016(A6),-$0004(A5)
 	TST.B	$0015(A5)
 	BEQ.B	L00993
+
 ;	MOVEA.L	$0010(A5),A6
 	MOVE.W	$0028(A6),D3
 	AND.W	#$0010,D3
 	BEQ.B	L00993
+
 	TST.L	-$5298(A4)	;_cur_weapon
 	BEQ.B	L00993
+
 ;	MOVEA.L	$0010(A5),A6
 	MOVE.B	$0014(A6),D3
 	EXT.W	D3
+
 	MOVEA.L	-$5298(A4),A6	;_cur_weapon
 	CMP.W	$0020(A6),D3
 	BNE.B	L00993
+
 	MOVEA.L	$0010(A5),A6
 	MOVE.L	$001A(A6),-$0004(A5)
+
 	MOVEA.L	-$5298(A4),A6	;_cur_weapon
 	ADD.W	$0022(A6),D5
-;	MOVEA.L	-$5298(A4),A6	;_cur_weapon
 	ADD.W	$0024(A6),D6
 L00993:
 	MOVEA.L	$0010(A5),A6
-	CMPI.W	#$002F,$000A(A6)
+	CMPI.W	#$002F,$000A(A6)	;'/'
 	BNE.B	L00994
-	MOVEA.L	$0010(A5),A6
+
+;	MOVEA.L	$0010(A5),A6
 	CMPI.W	#$0001,$0020(A6)
 	BNE.B	L00994
-	MOVEA.L	$0010(A5),A6
+
+;	MOVEA.L	$0010(A5),A6
 	SUBQ.W	#1,$0026(A6)
 	CMPI.W	#$0000,$0026(A6)
 	BGE.B	L00994
-	MOVEA.L	$0010(A5),A6
+
+;	MOVEA.L	$0010(A5),A6
 	MOVE.L	-$69AE(A4),$0016(A6)
 	MOVE.L	$0016(A6),-$0004(A5)
-	MOVEA.L	$0010(A5),A6
+
+;	MOVEA.L	$0010(A5),A6
 	CLR.W	$0024(A6)
 	CLR.W	$0022(A6)
+
 ;	MOVEA.L	$0010(A5),A6
 	CLR.W	$0026(A6)
 L00994:
@@ -20622,25 +20643,31 @@ L00995:
 	LEA	-$52B2(A4),A6	;_player + 24 (strength)
 	CMPA.L	A6,A3
 	BNE.B	L00998
+
 	TST.L	-$5294(A4)	;_cur_armor
 	BEQ.B	L00996
+
 	MOVEA.L	-$5294(A4),A6	;_cur_armor
 	MOVE.W	$0026(A6),-$000A(A5)
 L00996:
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L00997
+
 	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	CMP.W	#R_PROTECT,$0020(A6)	;test for R_PROTECT
 	BNE.B	L00997
+
 ;	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	MOVE.W	$0026(A6),D3
 	SUB.W	D3,-$000A(A5)
 L00997:
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BEQ.B	L00998
+
 	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	CMP.W	#R_PROTECT,$0020(A6)	;test for R_PROTECT
 	BNE.B	L00998
+
 ;	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	MOVE.W	$0026(A6),D3
 	SUB.W	D3,-$000A(A5)
@@ -20656,6 +20683,7 @@ L00998:
 	MOVE.L	D0,-$0004(A5)
 ;	TST.L	D0
 	BEQ.W	L0099E
+
 	ADDQ.L	#1,-$0004(A5)
 	MOVE.L	-$0004(A5),-(A7)
 	JSR	_atoi(PC)
@@ -20664,6 +20692,7 @@ L00998:
 	MOVE.W	(A2),-(A7)
 	JSR	_str_plus(PC)
 	ADDQ.W	#2,A7
+
 	ADD.W	D5,D0
 	MOVE.W	D0,-(A7)
 	MOVE.W	-$000A(A5),-(A7)
@@ -20672,6 +20701,7 @@ L00998:
 	ADDQ.W	#6,A7
 	TST.W	D0
 	BEQ.B	L0099D
+
 	MOVE.W	-$0008(A5),-(A7)
 	MOVE.W	-$0006(A5),-(A7)
 	JSR	_roll		;-$7DCE(A4)
@@ -20687,8 +20717,10 @@ L00998:
 	MOVEA.L	$000C(A5),A1
 	CMPA.L	A6,A1
 	BNE.B	L0099A
-	CMPI.W	#$0001,-$60BA(A4)
+
+	CMPI.W	#$0001,-$60BA(A4)	;_ntraps
 	BNE.B	L00999
+
 	MOVE.W	D7,D3
 	ADDQ.W	#1,D3
 	MOVE.W	D3,D7
@@ -20710,7 +20742,7 @@ L0099C:
 	SUB.W	D3,$000A(A3)
 	MOVEQ	#$01,D4
 L0099D:
-	MOVE.W	#$002F,-(A7)
+	MOVE.W	#$002F,-(A7)	;'/'
 	MOVE.L	-$0004(A5),-(A7)
 	JSR	_index		;-$7BE6(A4)
 	ADDQ.W	#6,A7
@@ -20720,8 +20752,8 @@ L0099D:
 	ADDQ.L	#1,-$0004(A5)
 	BRA.W	L00998
 L0099E:
-	MOVEQ	#$00,D0
-	MOVE.B	D4,D0
+;	MOVEQ	#$00,D0
+	MOVE.L	D4,D0
 	MOVEM.L	(A7)+,D4-D7/A2/A3
 	UNLK	A5
 	RTS
@@ -21769,7 +21801,7 @@ L00A2C:
 	MOVE.W	D0,D4
 	MOVE.W	D4,D3
 	MULS.W	#$0042,D3
-	LEA	-$6088(A4),A6
+	LEA	-$6088(A4),A6	;_rooms
 	MOVEA.L	D3,A2
 	ADDA.L	A6,A2
 	CMPA.L	-$52A0(A4),A2	;_player + 42
@@ -23206,18 +23238,19 @@ L00AD0:
 L00AD1:
 	MOVE.L	D3,-(A7)
 	MOVE.W	D5,D3
-	EXT.L	D3
-	ASL.L	#2,D3
+;	EXT.L	D3
+	ASL.w	#2,D3
 	LEA	-$6F5C(A4),A6	;_w_names
-	MOVE.L	$00(A6,D3.L),-(A7)
+	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L00AFF(PC)	;"%s%s"
 	JSR	_nmadd(PC)
 	LEA	$000C(A7),A7
 	MOVE.W	D4,D3
 	AND.W	#$0040,D3
 	BEQ.B	L00AD2
-	TST.B	$002A(A2)
+	TST.B	$002A(A2)	; test for monster slayer weapon
 	BEQ.B	L00AD2
+
 	MOVE.W	$0028(A2),D3
 	AND.W	#$0040,D3
 	BEQ.B	L00AD2
@@ -23240,17 +23273,17 @@ L00AD3:
 	AND.W	#$0002,D3
 	BEQ.B	L00AD5
 	MOVE.W	D5,D3
-	EXT.L	D3
-	ASL.L	#2,D3
+;	EXT.L	D3
+	ASL.w	#2,D3
 	LEA	-$6F30(A4),A6		;_a_names
-	MOVE.L	$00(A6,D3.L),-(A7)
+	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	#$0061,-(A7)
 	CLR.W	-(A7)
 	MOVE.W	D5,D3
-	EXT.L	D3
-	ASL.L	#1,D3
+;	EXT.L	D3
+	ASL.w	#1,D3
 	LEA	-$6F00(A4),A6
-	MOVE.W	$00(A6,D3.L),D2
+	MOVE.W	$00(A6,D3.w),D2
 	SUB.W	$0026(A2),D2
 	MOVE.W	D2,-(A7)
 	JSR	_num(PC)
@@ -23263,7 +23296,7 @@ L00AD3:
 	AND.W	#$0040,D3
 	BEQ.B	L00AD4
 	MOVE.W	$0026(A2),D3
-	SUB.W	#$000B,D3
+	SUB.W	#11,D3
 	NEG.W	D3
 	MOVE.W	D3,-(A7)
 	PEA	L00B04(PC)	;"[armor class %d]"
@@ -23348,15 +23381,15 @@ L00ADD:
 	AND.W	#$0002,D3
 	BEQ.B	L00ADE
 	MOVE.W	D5,D3
-	EXT.L	D3
-	ASL.L	#2,D3
+;	EXT.L	D3
+	ASL.w	#2,D3
 	LEA	-$521C(A4),A6	;_ws_type
-	MOVE.L	$00(A6,D3.L),-(A7)
+	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	D5,D3
-	EXT.L	D3
-	ASL.L	#2,D3
+;	EXT.L	D3
+	ASL.w	#2,D3
 	LEA	-$51E4(A4),A6	;_ws_made
-	MOVE.L	$00(A6,D3.L),-(A7)
+	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L00B08(PC)	;"%s %s"
 	PEA	-$0050(A5)
 	JSR	_sprintf	;-$7BBE(A4)
@@ -23364,10 +23397,10 @@ L00ADD:
 	BRA.B	L00ADF
 L00ADE:
 	MOVE.W	D5,D3
-	EXT.L	D3
-	ASL.L	#2,D3
+;	EXT.L	D3
+	ASL.w	#2,D3
 	LEA	-$521C(A4),A6	;_ws_type
-	MOVE.L	$00(A6,D3.L),-(A7)
+	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	-$0050(A5)
 	JSR	_strcpy		;-$7B5E(A4)
 	ADDQ.W	#8,A7
@@ -23396,15 +23429,15 @@ L00AE1:
 	TST.B	$00(A6,D5.W)
 	BEQ.B	L00AE4
 	MOVE.W	D5,D3
-	EXT.L	D3
-	ASL.L	#2,D3
+;	EXT.L	D3
+	ASL.w	#2,D3
 	LEA	-$5254(A4),A6	;_r_stones
-	MOVE.L	$00(A6,D3.L),-(A7)
+	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	D5,D3
-	EXT.L	D3
-	ASL.L	#3,D3
+;	EXT.L	D3
+	ASL.w	#3,D3
 	LEA	-$6E08(A4),A6
-	MOVE.L	$00(A6,D3.L),-(A7)
+	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	D4,D3
 	AND.W	#$0008,D3
 	BEQ.B	L00AE2
@@ -24513,7 +24546,7 @@ _xfer_proom:
 	TST.L	(A6)
 	BEQ.B	L00B67
 	MOVEA.L	$0008(A5),A6
-	LEA	-$6088(A4),A1
+	LEA	-$6088(A4),A1	;_rooms
 	MOVEA.L	(A6),A0
 	CMPA.L	A1,A0
 	BCS.B	L00B66
@@ -24524,7 +24557,7 @@ _xfer_proom:
 	BCC.B	L00B66
 	MOVEA.L	$0008(A5),A6
 	MOVE.L	(A6),D0
-	LEA	-$6088(A4),A6
+	LEA	-$6088(A4),A6	;_rooms
 	SUB.L	A6,D0
 	MOVEQ	#$42,D1
 	JSR	_divu		;-$7B8E(A4)
@@ -24586,7 +24619,7 @@ L00B6D:
 	MOVE.W	-$0002(A5),D3
 	AND.W	#$0FFF,D3
 	MULS.W	#$0042,D3
-	LEA	-$6088(A4),A1
+	LEA	-$6088(A4),A1	;_rooms
 	ADD.L	A1,D3
 	MOVE.L	D3,(A6)
 	BRA.B	L00B6F
@@ -24744,27 +24777,27 @@ L00B80:
 L00B81:
 	MOVE.W	-$0002(A5),D3
 	AND.W	#$0FFF,D3
-	MULS.W	#$0042,D3
-	LEA	-$6080(A4),A6
+	MULS.W	#66,D3
+	LEA	-$6080(A4),A6	;_rooms + 8
 	ADD.L	A6,D3
 	MOVE.L	D3,$0012(A2)
 	BRA.B	L00B84
 L00B82:
 	MOVE.W	-$0002(A5),D3
 	AND.W	#$0FFF,D3
-	MULS.W	#$0042,D3
+	MULS.W	#66,D3
 	LEA	-$5E2E(A4),A6
 	ADD.L	A6,D3
 	MOVE.L	D3,$0012(A2)
 	BRA.B	L00B84
 L00B83:
-	SUB.L	#$00001000,D0
+	SUB.w	#$1000,D0
 	BEQ.B	L00B80
-	SUB.L	#$00001000,D0
+	SUB.w	#$1000,D0
 	BEQ.B	L00B81
-	SUB.L	#$00001000,D0
+	SUB.w	#$1000,D0
 	BEQ.B	L00B82
-	SUB.L	#$00001000,D0
+	SUB.w	#$1000,D0
 	BEQ.B	L00B7F
 L00B84:
 	MOVE.W	#$0001,-(A7)
@@ -24798,7 +24831,7 @@ L00B85:
 	MOVEQ	#$32,D1
 	JSR	_divu		;-$7B8E(A4)
 	MOVE.L	D0,-$0006(A5)
-	CMP.L	#$00000000,D0
+;	CMP.L	#$00000000,D0
 	BLT.B	L00B86
 	CMPI.L	#$00000053,-$0006(A5)
 	BGE.B	L00B86
@@ -24808,9 +24841,9 @@ L00B85:
 	BRA.B	L00B88
 L00B86:
 	MOVE.L	$0012(A2),D0
-	LEA	-$6088(A4),A6
+	LEA	-$6088(A4),A6	;_rooms
 	SUB.L	A6,D0
-	MOVEQ	#$42,D1
+	MOVEQ	#66,D1
 	JSR	_divu		;-$7B8E(A4)
 	MOVE.L	D0,-$0006(A5)
 	CMP.L	#$00000000,D0
@@ -24825,10 +24858,10 @@ L00B87:
 	MOVE.L	$0012(A2),D0
 	LEA	-$5E36(A4),A6	;_passages
 	SUB.L	A6,D0
-	MOVEQ	#$42,D1
+	MOVEQ	#66,D1
 	JSR	_divu		;-$7B8E(A4)
 	MOVE.L	D0,-$0006(A5)
-	CMP.L	#$00000000,D0
+;	CMP.L	#$00000000,D0
 	BLT.B	L00B88
 	CMPI.L	#$0000000D,-$0006(A5)
 	BGE.B	L00B88
@@ -25893,8 +25926,9 @@ L00C02:
 	RTS
 
 _strcmp:
-	MOVE.W	#$7FFF,D0
+	MOVEq	#-1,D0
 	BRA.B	L00C03
+
 _strncmp:
 	MOVE.W	$000C(A7),D0
 L00C03:
@@ -29281,7 +29315,7 @@ _oldpos:
 _delta:
 	dc.l	$00000000
 
-_rooms:	ds.b	594
+_rooms:	ds.b	9*66	;room struct is 66 bytes, 9 rooms per level
 _passages:
 	dc.l	$00000000
 	dc.l	$00000000
