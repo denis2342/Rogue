@@ -11830,6 +11830,8 @@ _db_print:
 	TST.B	-$66AC(A4)	;_db_enabled
 	BEQ.B	1$
 
+	MOVE.L	$0024(A5),-(A7)
+	MOVE.L	$0020(A5),-(A7)
 	MOVE.L	$001C(A5),-(A7)
 	MOVE.L	$0018(A5),-(A7)
 	MOVE.L	$0014(A5),-(A7)
@@ -11837,7 +11839,7 @@ _db_print:
 	MOVE.L	$000C(A5),-(A7)
 	MOVE.L	$0008(A5),-(A7)
 	JSR	_printf
-	LEA	$0018(A7),A7
+	LEA	$0020(A7),A7
 
 1$	UNLK	A5
 	RTS
