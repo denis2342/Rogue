@@ -27965,32 +27965,36 @@ L00CB7:
 	RTS
 
 _strcat:
-	MOVE.W	#$7FFF,D0
+	MOVEq	#-1,D0
 	BRA.B	L00CB8
 _strncat:
 	MOVE.W	$000C(A7),D0
 L00CB8:
 	MOVEA.L	$0004(A7),A0
-L00CB9:
-	TST.B	(A0)+
-	BNE.B	L00CB9
+
+1$	TST.B	(A0)+
+	BNE.B	1$
+
 	SUBQ.W	#1,A0
 	MOVEA.L	$0008(A7),A1
 	SUBQ.W	#1,D0
-L00CBA:
-	MOVE.B	(A1)+,(A0)+
-	DBEQ	D0,L00CBA
+
+2$	MOVE.B	(A1)+,(A0)+
+	DBEQ	D0,2$
+
 	CLR.B	-(A0)
 	MOVE.L	$0004(A7),D0
 	RTS
 
 _strcpy:
 	MOVEA.L	$0004(A7),A0
-	MOVE.L	A0,D0
 	MOVEA.L	$0008(A7),A1
-L00CBB:
-	MOVE.B	(A1)+,(A0)+
-	BNE.B	L00CBB
+	moveq	#-1,d0
+
+1$	MOVE.B	(A1)+,(A0)+
+	DBEQ	d0,1$
+
+	MOVE.L	$0004(A7),D0
 	RTS
 
 _strlen:
