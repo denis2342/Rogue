@@ -8692,6 +8692,17 @@ L003F4:
 	ADDQ.W	#6,A7
 	BRA.W	L00409
 
+; CTRL-A
+
+_show_map_check:
+	TST.B	-$66AE(A4)	;_wizard
+	BEQ.W	L00409
+
+	CLR.B	-$66F9(A4)	;_after
+
+	bsr	_show_map
+	BRA.W	L00409
+
 ; CTRL-C bugfix
 
 _add_passages:
@@ -8950,7 +8961,9 @@ L00407:
 	BRA.W	L00409
 
 L00408:
-	SUBQ.w	#3,D0	; CTRL-C add passages (wizard only)
+	SUBQ.w	#1,D0	; CTRL-A show map (wizard only)
+	BEQ.W	_show_map_check
+	SUBQ.w	#2,D0	; CTRL-C add passages (wizard only)
 	BEQ.W	_add_passages
 	SUBQ.w	#1,D0	; CTRL-D level up (if you can! ;)
 	BEQ.W	L003FE
@@ -17083,48 +17096,56 @@ L007FA:
 ; *  Print out the map for the wizard
 ; */
 
-;_show_map:
-;	LINK	A5,#-$0000
-;	MOVEM.L	D4-D6,-(A7)
-;	MOVEQ	#$01,D4
-;	BRA.B	L007FF
-;L007FB:
-;	MOVEQ	#$00,D5
-;L007FC:
-;	MOVE.W	D5,d0
-;	MOVE.W	D4,d1
-;	JSR	_INDEXquick
-;	MOVEA.L	-$5198(A4),A6	;__flags
-;	MOVEQ	#$00,D3
-;	MOVE.B	$00(A6,D0.W),D3
-;	MOVE.W	D3,D6
-;	AND.W	#$0010,D6
-;	TST.W	D6
-;	BNE.B	L007FD
-;	JSR	_standout
-;L007FD:
-;	MOVE.W	D5,d0
-;	MOVE.W	D4,d1
-;	JSR	_INDEXquick
-;	MOVEA.L	-$519C(A4),A6	;__level
-;	MOVE.B	$00(A6,D0.W),D2
-;	MOVE.W	D5,d1
-;	MOVE.W	D4,d0
-;	JSR	_mvaddchquick
-;	TST.W	D6
-;	BNE.B	L007FE
-;	JSR	_standend
-;L007FE:
-;	ADDQ.W	#1,D5
-;	CMP.W	#$003C,D5
-;	BLT.B	L007FC
-;	ADDQ.W	#1,D4
-;L007FF:
-;	CMP.W	-$60BC(A4),D4	;_maxrow
-;	BLT.B	L007FB
-;	MOVEM.L	(A7)+,D4-D6
-;	UNLK	A5
-;	RTS
+_show_map:
+	LINK	A5,#-$0000
+	MOVEM.L	D4-D6,-(A7)
+
+	MOVEQ	#$01,D4
+	BRA.B	L007FF
+L007FB:
+	MOVEQ	#$00,D5
+L007FC:
+	MOVE.W	D5,d0
+	MOVE.W	D4,d1
+	JSR	_INDEXquick
+
+	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEQ	#$00,D3
+	MOVE.B	$00(A6,D0.W),D3
+	MOVE.W	D3,D6
+	AND.W	#$0010,D6
+	TST.W	D6
+	BNE.B	L007FD
+
+	JSR	_standout
+L007FD:
+	MOVE.W	D5,d0
+	MOVE.W	D4,d1
+	JSR	_INDEXquick
+	MOVEA.L	-$519C(A4),A6	;__level
+	MOVE.B	$00(A6,D0.W),D2
+
+	MOVE.W	D5,d1
+	MOVE.W	D4,d0
+	JSR	_mvaddchquick
+
+	TST.W	D6
+	BNE.B	L007FE
+
+	JSR	_standend
+L007FE:
+	ADDQ.W	#1,D5
+	CMP.W	#$003C,D5
+	BLT.B	L007FC
+
+	ADDQ.W	#1,D4
+L007FF:
+	CMP.W	-$60BC(A4),D4	;_maxrow
+	BLT.B	L007FB
+
+	MOVEM.L	(A7)+,D4-D6
+	UNLK	A5
+	RTS
 
 ;/*
 ; * get_num:
