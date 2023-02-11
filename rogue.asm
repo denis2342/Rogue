@@ -27354,31 +27354,29 @@ L00C7F:
 	BRA.W	L00C79
 
 _newstream:
-	LINK	A5,#-$0000
+;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
-	LEA	-$578A(A4),A6
+	LEA	-$578A(A4),A6	;_Cbuffs
 	MOVEA.L	A6,A2
-L00C80:
-	TST.B	$000C(A2)
-	BEQ.B	L00C83
+
+1$	TST.B	$000C(A2)
+	BEQ.B	3$
 	ADDA.L	#$00000016,A2
-	LEA	-$55D2(A4),A6
+	LEA	-$55D2(A4),A6	;_cls_
 	CMPA.L	A6,A2
-	BCS.B	L00C82
+	BCS.B	1$
 	MOVEQ	#$00,D0
-L00C81:
+2$
 	MOVEA.L	(A7)+,A2
-	UNLK	A5
+;	UNLK	A5
 	RTS
 
-L00C82:
-	BRA.B	L00C80
-L00C83:
-	CLR.L	(A2)
-	CLR.L	$0004(A2)
-	CLR.L	$0008(A2)
-	MOVE.L	A2,D0
-	BRA.B	L00C81
+3$	MOVE.L	A2,D0
+	CLR.L	(A2)+
+	CLR.L	(A2)+
+	CLR.L	(A2)+
+	BRA.B	2$
+
 _getbuff:
 	LINK	A5,#-$0004
 	MOVE.L	A2,-(A7)
@@ -30232,5 +30230,3 @@ _MathTransBase:	ds.l	1
 	ds.w	1
 
 __Uend:
-
-;	SECTION "",BSS        ;002 000000
