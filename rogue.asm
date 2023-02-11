@@ -10921,12 +10921,13 @@ _clrtoeol:
 
 	MOVEQ	#$00,D3
 	MOVE.B	-$7065(A4),D3	;_c_col
-	MOVEQ	#80,D0
-	SUB.W	D3,D0
 
 	MOVEQ	#$00,D2
 	MOVE.B	-$7066(A4),D2	;_c_row
-	mulu.w	#80,d2
+
+	MOVEQ	#80,D0
+	mulu.w	D0,d2
+	SUB.W	D3,D0
 
 	ADD.L	D3,D2
 	LEA	-$76F6(A4),A0	;_screen_map
