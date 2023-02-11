@@ -10904,13 +10904,11 @@ L004D8:
 	RTS
 
 _cursor:
-	LINK	A5,#-$0002
-	MOVEQ	#$00,D3
-	MOVE.B	-$7063(A4),D3	;_graphics_disabled
-	MOVE.W	D3,-$0002(A5)
-	MOVE.B	$0009(A5),-$7063(A4)	;_graphics_disabled
-	MOVE.W	-$0002(A5),D0
-	UNLK	A5
+;	LINK	A5,#-$0000
+	MOVEQ	#$00,D0
+	MOVE.B	-$7063(A4),D0	;_graphics_disabled
+	MOVE.B	$0005(A7),-$7063(A4)	;_graphics_disabled
+;	UNLK	A5
 	RTS
 
 _clrtoeol:
@@ -11113,14 +11111,12 @@ L004E3:
 
 _addstr:
 	LINK	A5,#-$0002
-	MOVEQ	#$00,D3
-	MOVE.B	-$7063(A4),D3	;_graphics_disabled
-	MOVE.W	D3,-$0002(A5)
-	MOVE.B	#$01,-$7063(A4)	;_graphics_disabled
+	MOVE.B	-$7063(A4),-$0001(A5)	;backup _graphics_disabled
+	ST	-$7063(A4)	;_graphics_disabled
+
 	MOVE.L	$0008(A5),-(A7)
 	JSR	__zapstr(PC)
 	ADDQ.W	#4,A7
-	MOVEQ	#$00,D3
 
 	MOVE.L	$0008(A5),-(A7)
 	JSR	_strlen
