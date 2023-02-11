@@ -3100,7 +3100,7 @@ L00168:
 	MOVEq	#$0014,d0
 	JSR	_movequick
 
-	MOVE.L	-$52B0(A4),-(A7)	;_player + 26 (XP)
+	MOVE.L	-$52B0(A4),-(A7)	;_player + 26 (EXP)
 	PEA	L0016Cb(PC)	;"XP:%d"
 	JSR	_printw
 	ADDQ.W	#8,A7
@@ -3207,7 +3207,7 @@ L00171:
 	ADDQ.W	#2,A7
 	MOVE.B	D4,D0
 	EXT.W	D0
-	EXT.L	D0
+;	EXT.L	D0
 	BRA.W	L00179
 L00172:
 	MOVEA.L	$0008(A5),A6
@@ -3267,13 +3267,13 @@ L00178:
 	MOVE.W	D3,-$0006(A5)
 	BRA.B	L0017A
 L00179:
-	SUBQ.L	#8,D0
+	SUBQ.w	#8,D0
 	BEQ.B	L00174
-	SUBQ.L	#2,D0
+	SUBQ.w	#2,D0
 	BEQ.B	L00178
-	SUBQ.L	#3,D0
+	SUBQ.w	#3,D0
 	BEQ.B	L00178
-	SUB.L	#$0000000E,D0
+	SUB.w	#$000E,D0
 	BEQ.W	L00172
 	BRA.B	L00176
 L0017A:
@@ -7955,21 +7955,21 @@ L00383:
 	JSR	_standend
 	BRA.B	L00385
 L00384:
-	SUB.L	#$00000020,D0
+	SUB.w	#$0020,D0
 	BEQ.W	L00369
-	SUB.L	#$0000000B,D0
+	SUB.w	#$000B,D0
 	BEQ.W	L00369
-	SUBQ.L	#2,D0
+	SUBQ.w	#2,D0
 	BEQ.W	L00369
-	SUB.L	#$0000000F,D0
+	SUB.w	#$000F,D0
 	BEQ.W	L00369
-	SUBQ.L	#2,D0
+	SUBQ.w	#2,D0
 	BEQ.W	L00369
-	SUB.L	#$0000003D,D0
+	SUB.w	#$003D,D0
 	BEQ.W	L00369
-	SUBQ.L	#1,D0
+	SUBQ.w	#1,D0
 	BEQ.W	L00369
-	SUBQ.L	#1,D0
+	SUBQ.w	#1,D0
 	BEQ.W	L00369
 	BRA.W	L0036D
 L00385:
@@ -11531,7 +11531,7 @@ L004FC:
 	BRA.W	L0050F
 L004FD:
 	MOVE.W	D5,D0
-	EXT.L	D0
+;	EXT.L	D0
 	BRA.W	L00507
 L004FE:
 	TST.B	-$7064(A4)	;_map_up
@@ -11606,11 +11606,11 @@ L00505:
 L00506:
 	BRA.B	L00508
 L00507:
-	SUB.L	#$00000068,D0
+	SUB.w	#$0068,D0
 	BEQ.W	L004FE
-	SUBQ.L	#1,D0
+	SUBQ.w	#1,D0
 	BEQ.B	L00505
-	SUB.L	#$0000007F,D0
+	SUB.w	#$007F,D0
 	BEQ.B	L00503
 L00508:
 	BRA.W	L0050F
@@ -11624,7 +11624,7 @@ L00509:
 	MOVEA.L	-$47B2(A4),A6
 	MOVE.B	(A6),D0
 	EXT.W	D0
-	EXT.L	D0
+;	EXT.L	D0
 	BRA.B	L0050C
 L0050A:
 	PEA	L00510(PC)
@@ -11641,9 +11641,9 @@ L0050B:
 	ADDQ.L	#2,-$47B2(A4)
 	BRA.B	L0050D
 L0050C:
-	SUB.L	#$0000002E,D0
+	SUB.w	#$002E,D0
 	BEQ.B	L0050B
-	SUB.L	#$00000045,D0
+	SUB.w	#$0045,D0
 	BEQ.B	L0050A
 L0050D:
 	ADDQ.L	#1,-$47B2(A4)
@@ -15767,6 +15767,7 @@ L006E4:	dc.b	'Mr. Mctesq and the Grand Beeking say, "Congratulations"',0,0
 _killname:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/D5/A2,-(A7)
+
 	MOVE.B	$0009(A5),D4
 	MOVEA.L	-$5258(A4),A2	;_prbuf
 	MOVEQ	#$01,D5
@@ -15818,12 +15819,14 @@ L006ED:
 	BEQ.B	L006E9
 	SUB.w	#$000D,D0	;s starvation
 	BEQ.B	L006E8
-	BRA.B	L006EA
+	BRA.B	L006EA		;check for the monsters
 L006EE:
 	TST.B	$000B(A5)
 	BEQ.B	L006EF
+
 	TST.B	D5
 	BEQ.B	L006EF
+
 	MOVE.L	A2,-(A7)
 	JSR	_vowelstr(PC)
 	ADDQ.W	#4,A7
@@ -18272,37 +18275,37 @@ L0088D:
 	CLR.B	-$0001(A5)
 	BRA.B	L0088F
 L0088E:
-	SUB.L	#$00000042,D0
+	SUB.w	#$0042,D0
 	BEQ.B	L0088B
-	SUBQ.L	#6,D0
+	SUBQ.w	#6,D0
 	BEQ.W	L00885
-	SUBQ.L	#2,D0
+	SUBQ.w	#2,D0
 	BEQ.W	L00886
-	SUBQ.L	#1,D0
+	SUBQ.w	#1,D0
 	BEQ.W	L00887
-	SUBQ.L	#1,D0
+	SUBQ.w	#1,D0
 	BEQ.W	L00888
-	SUBQ.L	#2,D0
+	SUBQ.w	#2,D0
 	BEQ.B	L0088C
-	SUBQ.L	#7,D0
+	SUBQ.w	#7,D0
 	BEQ.B	L0088A
-	SUBQ.L	#4,D0
+	SUBQ.w	#4,D0
 	BEQ.W	L00889
-	SUB.L	#$00000009,D0
+	SUB.w	#$0009,D0
 	BEQ.B	L0088B
-	SUBQ.L	#6,D0
+	SUBQ.w	#6,D0
 	BEQ.W	L00885
-	SUBQ.L	#2,D0
+	SUBQ.w	#2,D0
 	BEQ.W	L00886
-	SUBQ.L	#1,D0
+	SUBQ.w	#1,D0
 	BEQ.W	L00887
-	SUBQ.L	#1,D0
+	SUBQ.w	#1,D0
 	BEQ.W	L00888
-	SUBQ.L	#2,D0
+	SUBQ.w	#2,D0
 	BEQ.B	L0088C
-	SUBQ.L	#7,D0
+	SUBQ.w	#7,D0
 	BEQ.W	L0088A
-	SUBQ.L	#4,D0
+	SUBQ.w	#4,D0
 	BEQ.W	L00889
 	BRA.B	L0088D
 L0088F:
@@ -18819,19 +18822,19 @@ L008C7:
 	ADDQ.W	#8,A7
 	BRA.B	L008C9
 L008C8:
-	SUB.L	#$0000002D,D0
+	SUB.w	#$002D,D0
 	BEQ.W	L008C6
-	SUBQ.L	#1,D0
+	SUBQ.w	#1,D0
 	BEQ.B	L008C7
-	SUB.L	#$0000000E,D0
+	SUB.w	#$000E,D0
 	BEQ.W	L008C6
-	SUBQ.L	#2,D0
+	SUBQ.w	#2,D0
 	BEQ.W	L008C6
-	SUB.L	#$0000003D,D0
+	SUB.w	#$003D,D0
 	BEQ.W	L008C6
-	SUBQ.L	#1,D0
+	SUBQ.w	#1,D0
 	BEQ.W	L008C6
-	SUBQ.L	#1,D0
+	SUBQ.w	#1,D0
 	BEQ.W	L008C6
 L008C9:
 	ADDQ.W	#1,D5
@@ -20377,7 +20380,7 @@ L0095C:
 ;	EXT.W	D3
 	CMP.b	#$57,D3		;'W' wraith
 	BNE.B	L00960
-	TST.L	-$52B0(A4)	;_player + 26 (XP)
+	TST.L	-$52B0(A4)	;_player + 26 (EXP)
 	BNE.B	L0095D
 	MOVE.W	#$0057,-(A7)	;'W' killed by a wraith
 	JSR	_death
@@ -20386,7 +20389,7 @@ L0095D:
 	SUBQ.W	#1,-$52AC(A4)	;_player + 30 (rank)
 ;	TST.W	-$52AC(A4)	;_player + 30 (rank)
 	BNE.B	L0095E
-	CLR.L	-$52B0(A4)	;_player + 26 (XP)
+	CLR.L	-$52B0(A4)	;_player + 26 (EXP)
 	MOVE.W	#$0001,-$52AC(A4)	;_player + 30 (rank)
 	BRA.B	L0095F
 L0095E:
@@ -20397,7 +20400,7 @@ L0095E:
 	MOVEA.L	-$51AC(A4),A6	;_e_levels
 	MOVE.L	$00(A6,D3.w),D2
 	ADDQ.L	#1,D2
-	MOVE.L	D2,-$52B0(A4)	;_player + 26 (XP)
+	MOVE.L	D2,-$52B0(A4)	;_player + 26 (EXP)
 L0095F:
 	MOVE.W	#$000A,-(A7)	;1d10
 	MOVE.W	#$0001,-(A7)
@@ -20605,18 +20608,21 @@ L00973:
 L00974:
 	MOVEA.L	$0008(A5),A6
 	MOVE.B	$000F(A6),D3
-	EXT.W	D3
-	CMP.W	#$0049,D3	;'I'
+;	EXT.W	D3
+	CMP.B	#$49,D3		;'I'
 	BEQ.B	L00976
+
 	MOVEA.L	$0008(A5),A6
 	MOVE.B	$000F(A6),D3
-	EXT.W	D3
-	CMP.W	#$0046,D3	;'F'
+;	EXT.W	D3
+	CMP.B	#$46,D3		;'F'
 	BNE.B	L00975
+
 	MOVE.W	-$60A2(A4),D3	;_fung_hit
 	SUB.W	D3,-$52A8(A4)	;_player + 34 (hp)
 	CMPI.W	#$0000,-$52A8(A4)	;_player + 34 (hp)
 	BGT.B	L00975
+
 	MOVEA.L	$0008(A5),A6
 	MOVE.B	$000F(A6),D3
 ;	EXT.W	D3
@@ -20654,16 +20660,14 @@ L0097F:	dc.b	"she stole %s!",0
 _swing:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/D5,-(A7)
-	MOVEq	#$0014,D0
+	MOVEq	#20,D0
 	JSR	_rnd
-	MOVE.W	D0,D4
-	MOVEQ	#$14,D3
-	SUB.W	$0008(A5),D3
-	MOVE.W	D3,D5
+
+	MOVEQ	#20,D5
+	SUB.W	$0008(A5),D5
 	SUB.W	$000A(A5),D5
-	MOVE.W	D4,D3
-	ADD.W	$000C(A5),D3
-	CMP.W	D5,D3
+	ADD.W	$000C(A5),D0
+	CMP.W	D5,D0
 	BLT.B	1$
 
 	MOVEq	#$0001,D0
@@ -20690,7 +20694,7 @@ L00982:
 ;	EXT.L	D3
 ;	ASL.w	#2,D3
 ;	MOVEA.L	-$51AC(A4),A6	;_e_levels
-	CMP.L	-$52B0(A4),D2	;_player + 26 (XP)
+	CMP.L	-$52B0(A4),D2	;_player + 26 (EXP)
 	BGT.B	L00984
 	ADDQ.W	#1,D4
 L00983:
@@ -21444,7 +21448,7 @@ _raise_level:
 	MOVEA.L	-$51AC(A4),A6	;_e_levels
 	MOVE.L	$00(A6,D3.w),D2
 	ADDQ.L	#1,D2
-	MOVE.L	D2,-$52B0(A4)	;_player + 26 (XP)
+	MOVE.L	D2,-$52B0(A4)	;_player + 26 (EXP)
 	JSR	_check_level(PC)
 
 ;	UNLK	A5
@@ -21686,21 +21690,21 @@ _killed:
 	MOVE.L	A2,-(A7)
 	MOVEA.L	$0008(A5),A6
 	MOVE.L	$001A(A6),D3
-	ADD.L	D3,-$52B0(A4)	;_player + 26 (XP)
+	ADD.L	D3,-$52B0(A4)	;_player + 26 (EXP)
 	MOVEA.L	$0008(A5),A6
 	MOVE.B	$000F(A6),D0
 	EXT.W	D0
 ;	EXT.L	D0
 	BRA.W	L00A07
 
-; venus flytrap
+; killed a venus flytrap
 
 L00A02:
 	ANDI.W	#~C_ISHELD,-$52B4(A4)	;clear C_ISHELD, _player + 22
 	JSR	_f_restor
 	BRA.W	L00A08
 
-; leprechaun
+; killed a leprechaun
 
 L00A03:
 	JSR	_new_item
@@ -21756,12 +21760,14 @@ L00A08:
 	LEA	$000A(A7),A7
 	TST.B	$000D(A5)
 	BEQ.B	L00A0A
+
 	PEA	L00A0B(PC)	;"you have defeated "
 	JSR	_addmsg
 	ADDQ.W	#4,A7
 	MOVE.W	-$52B4(A4),D3	;_player + 22
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L00A09
+
 	MOVE.L	-$69BE(A4),-(A7)	;_it
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -21784,8 +21790,8 @@ L00A0A:
 L00A0B:	dc.b	"you have defeated ",0
 L00A0C:	dc.b	"the %s",0
 
-L00A0D:	dc.b	"K BHISOR LCA NYTWFP GMXVJD",0,0	;lvl_mons[] to generate
-L00A0E:	dc.b	"KEBHISORZ CAQ YTW PUGM VJ ",0,0	;wand_mons[] to polymorph
+L00A0D:	dc.b	"K BHISOR LCA NYTWFP GMXVJD",0	;lvl_mons[] to generate
+L00A0E:	dc.b	"KEBHISORZ CAQ YTW PUGM VJ ",0	;wand_mons[] to polymorph
 
 ;/*
 ; * randmonster:
@@ -21797,7 +21803,7 @@ _randmonster:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/A2,-(A7)
 
-	TST.B	$0009(A5)
+	TST.B	$0009(A5)	;wandering sets one here
 	BEQ.B	L00A0F
 
 	MOVEA.L	-$6992(A4),A2	;_hero_damage + 24
@@ -21813,7 +21819,7 @@ L00A10:
 	JSR	_rnd
 
 	MOVE.W	(A7)+,D4
-	ADD.W	D0,D4
+	ADD.W	D0,D4		;0-4 + 0-5
 	ADD.W	-$60B4(A4),D4	;_level
 	SUBQ.W	#5,D4
 	CMP.W	#$0001,D4
@@ -21827,6 +21833,8 @@ L00A10:
 L00A11:
 	CMP.W	#26,D4
 	BLE.B	L00A12
+
+; dragon has only 20% chance to appear
 
 	MOVEq	#$0005,D0
 	JSR	_rnd
@@ -26200,6 +26208,7 @@ _time:
 	LEA	$0010(A7),A7
 	TST.W	D0
 	BEQ.B	L00C23
+
 	PEA	L00C26(PC)	;"timer is not available"
 	JSR	_printf
 	ADDQ.W	#4,A7
@@ -27594,8 +27603,10 @@ L00CB2:
 	ADDQ.W	#1,-$0002(A5)
 	CMPI.W	#$000A,-$0002(A5)
 	BLT.B	L00CB2
+
 	TST.L	-$55CE(A4)	;__cln
 	BEQ.B	L00CB3
+
 	MOVEA.L	-$55CE(A4),A6	;__cln
 	JSR	(A6)
 L00CB3:
