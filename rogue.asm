@@ -11659,11 +11659,13 @@ _srand:
 
 _credits:
 	LINK	A5,#-$001C
+
 	JSR	_black_out
 	JSR	_wtext
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	-$5144(A4),-(A7)	;_TextWin
 	PEA	L00513(PC)	; "Title.Screen"
+	st	-$47AA(A4)	;turn on _all_clear to reverse red/blue
 	JSR	_show_ilbm
 	LEA	$000A(A7),A7
 ;_SetOffset
@@ -15268,8 +15270,6 @@ _death:
 	PEA	L006A5(PC)	;"Tombstone"
 	JSR	_show_ilbm
 	LEA	$000A(A7),A7
-;	TST.W	-$47AA(A4)	;_all_clear
-;	BEQ.B	L006A1
 	LEA	-$672B(A4),A6	;_whoami
 	MOVE.L	A6,D3
 ;	BRA.B	L006A2
@@ -15290,8 +15290,6 @@ L006A2:
 	MOVE.W	#$0072,-(A7)
 	JSR	_tomb_center(PC)
 	ADDQ.W	#6,A7
-;	TST.W	-$47AA(A4)	;_all_clear
-;	BEQ.B	L006A3
 	MOVE.W	#$0001,-(A7)
 	MOVE.B	D4,D3
 	EXT.W	D3
@@ -15299,11 +15297,6 @@ L006A2:
 	JSR	_killname(PC)
 	ADDQ.W	#4,A7
 	MOVE.L	D0,D3
-;	BRA.B	L006A4
-;L006A3:
-;	LEA	L006A9(PC),A6	;a Protection Thug
-;	MOVE.L	A6,D3
-L006A4:
 	MOVE.L	D3,-(A7)
 	PEA	L006A8(PC)
 	PEA	-$0050(A5)
@@ -24042,7 +24035,21 @@ L00B1B:
 	MOVE.W	D6,-(A7)	;filehandle
 	JSR	_read
 	ADDQ.W	#8,A7
-	MOVE.W	#16000,D5
+
+	tst.b	-$47AA(A4)	;_all_clear
+	beq	1$
+
+	moveq	#16-1,d2	;turn the color for the title.screen
+	lea	-$47A4(A4),a0
+loop$	move.b	(a0),d1
+	move.b	2(a0),(a0)
+	move.b	d1,2(a0)
+	addq.l	#4,a0
+	dbra	d2,loop$
+
+	clr.b	-$47AA(A4)	;_all_clear
+
+1$	MOVE.W	#16000,D5
 	MOVEQ	#$00,D4
 L00B1C:
 	MOVE.W	D5,-(A7)	;length
