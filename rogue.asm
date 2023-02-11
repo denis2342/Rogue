@@ -1874,13 +1874,11 @@ L00105:
 	CMP.W	#$0004,D5
 	BLT.B	L00105
 
-	MOVE.W	-$5154(A4),D3	;_p_row
-	EXT.L	D3
-	MOVE.L	D3,D6
+	MOVE.W	-$5154(A4),D6	;_p_row
 	TST.B	-$7064(A4)	;_map_up
 	BEQ.B	L00106
 
-	ADD.L	#$0000000C,D6
+	ADD.W	#$000C,D6
 L00106:
 
 	MOVEA.L	-$514C(A4),A6	;_StdWin
@@ -12339,7 +12337,7 @@ L00559:
 	ORI.W	#O_ISCURSED,$0028(A2)
 	BRA.B	L0055D
 L0055A:
-	dc.w	L00557-L0055C
+	dc.w	L00557-L0055C	;list of rings
 	dc.w	L00557-L0055C
 	dc.w	L0055D-L0055C
 	dc.w	L0055D-L0055C
@@ -13758,6 +13756,7 @@ L0060D:
 	ADDQ.W	#4,A7
 	TST.L	D0
 	BEQ.B	L0060E
+
 	MOVE.W	-$53D2(A4),-(A7)
 	MOVE.W	-$53D0(A4),-(A7)
 	JSR	_moat
@@ -22302,6 +22301,7 @@ _pick_mons:
 _moat:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/D5/A2,-(A7)
+
 	MOVE.W	$0008(A5),D4
 	MOVE.W	$000A(A5),D5
 	MOVEA.L	-$6CAC(A4),A2	;_mlist
@@ -22310,21 +22310,24 @@ L00A43:
 	MOVE.W	$000A(A2),D3
 	CMP.W	D5,D3
 	BNE.B	L00A45
+
 	MOVE.W	$000C(A2),D3
 	CMP.W	D4,D3
 	BNE.B	L00A45
-	MOVE.L	A2,D0
+
+	MOVE.L	A2,D0		;return found monster
 L00A44:
 	MOVEM.L	(A7)+,D4/D5/A2
 	UNLK	A5
 	RTS
 
 L00A45:
-	MOVEA.L	(A2),A2
+	MOVEA.L	(A2),A2		;get a monster
 L00A46:
 	MOVE.L	A2,D3
 	BNE.B	L00A43
-	MOVEQ	#$00,D0
+
+	MOVEQ	#$00,D0		;no monster found
 	BRA.B	L00A44
 
 L00A47:	dc.b	"> Go Down Stairs",0
@@ -28577,132 +28580,132 @@ _mlist:
 ; 4=treasure, 8=flags, 12=$A, 14=$0, 16=EXP, 18=xd8 HP, 20=AC, 22=$1
 
 _monsters:
-	dc.l	L0075D		; aquator
+	dc.l	L0075D		; aquator, 8-17
 	dc.w	$0000,$0020,$000A,$0000,$0014,$0005,$0002,$0001
 	dc.l	L0075E		;0d0/0d0
 	dc.w	$0000
 
-	dc.l	L0075F		; bat
+	dc.l	L0075F		; bat, 0-9
 	dc.w	$0000,$8000,$000A,$0000,$0001,$0001,$0003,$0001
 	dc.l	L00760		;1d2
 	dc.w	$0000
 
-	dc.l	L00761		; centaur
+	dc.l	L00761		; centaur, 7-16
 	dc.w	$000F,$0000,$000A,$0000,$0019,$0004,$0004,$0001
 	dc.l	L00762		;1d6/1d6
 	dc.w	$0000
 
-	dc.l	L00763		; dragon
+	dc.l	L00763		; dragon, 22-26
 	dc.w	$0064,$0020,$000A,$0000,$1A90,$000A,$FFFF,$0001
 	dc.l	L00764		; 1d8/1d8/3d10
 	dc.w	$0000
 
-	dc.l	L00765		; emu
+	dc.l	L00765		; emu, 0-9
 	dc.w	$0000,$0020,$000A,$0000,$0002,$0001,$0007,$0001
 	dc.l	L00766		; 1d2
 	dc.w	$0000
 
-	dc.l	L00767		; venus flytrap
+	dc.l	L00767		; venus flytrap, 14-23
 	dc.w	$0000,$0020,$000A,$0000,$0050,$0008,$0003,$0001
 	dc.l	L00768		; %%%d0
 	dc.w	$0000
 
-	dc.l	L00769		; griffin
+	dc.l	L00769		; griffin, 17-26
 	dc.w	$0014,$8220,$000A,$0000,$07D0,$000D,$0002,$0001
 	dc.l	L0076A		; 4d3/3d5/4d3
 	dc.w	$0000
 
-	dc.l	L0076B		; hobgoblin
+	dc.l	L0076B		; hobgoblin, 0-9
 	dc.w	$0000,$0020,$000A,$0000,$0003,$0001,$0005,$0001
 	dc.l	L0076C		; 1d8
 	dc.w	$0000
 
-	dc.l	L0076D		; ice monster
+	dc.l	L0076D		; ice monster, 0-9
 	dc.w	$0000,$0020,$000A,$0000,$000F,$0001,$0009,$0001
 	dc.l	L0076E		; 1d2
 	dc.w	$0000
 
-	dc.l	L0076F		; jabberwock
+	dc.l	L0076F		; jabberwock, 21-26
 	dc.w	$0046,$0000,$000A,$0000,$0FA0,$000F,$0006,$0001
 	dc.l	L00770		; 2d12/2d4
 	dc.w	$0000
 
-	dc.l	L00771		; kestral
+	dc.l	L00771		; kestral, 0-9
 	dc.w	$0000,$8020,$000A,$0000,$0001,$0001,$0007,$0001
 	dc.l	L00772		; 1d4
 	dc.w	$0000
 
-	dc.l	L00773		; leprechaun
+	dc.l	L00773		; leprechaun, 6-15
 	dc.w	$0040,$0000,$000A,$0000,$000A,$0003,$0008,$0001
 	dc.l	L00774		; 1d2
 	dc.w	$0000
 
-	dc.l	L00775		; medusa
+	dc.l	L00775		; medusa, 18-26
 	dc.w	$0028,$0020,$000A,$0000,$00C8,$0008,$0002,$0001
 	dc.l	L00776		; 3d4/3d4
 	dc.w	$0000
 
-	dc.l	L00777		; nymph
+	dc.l	L00777		; nymph, 10-19
 	dc.w	$0064,$0000,$000A,$0000,$0025,$0003,$0009,$0001
 	dc.l	L00778		; 0d0
 	dc.w	$0000
 
-	dc.l	L00779		; orc
+	dc.l	L00779		; orc, 3-12
 	dc.w	$000F,$0040,$000A,$0000,$0005,$0001,$0006,$0001
 	dc.l	L0077A		; 1d8
 	dc.w	$0000
 
-	dc.l	L0077B		; phantom
+	dc.l	L0077B		; phantom, 15-24
 	dc.w	$0000,$0010,$000A,$0000,$0078,$0008,$0003,$0001
 	dc.l	L0077C		; 4d4
 	dc.w	$0000
 
-	dc.l	L0077D		; quagga
+	dc.l	L0077D		; quagga, 9-16
 	dc.w	$001E,$0020,$000A,$0000,$0020,$0003,$0002,$0001
 	dc.l	L0077E		; 1d2/1d2/1d4
 	dc.w	$0000
 
-	dc.l	L0077F		; rattlesnake
+	dc.l	L0077F		; rattlesnake, 4-13
 	dc.w	$0000,$0020,$000A,$0000,$0009,$0002,$0003,$0001
 	dc.l	L00780		; 1d6
 	dc.w	$0000
 
-	dc.l	L00781		; slime
+	dc.l	L00781		; slime, 2-11
 	dc.w	$0000,$0020,$000A,$0000,$0001,$0002,$0008,$0001
 	dc.l	L00782		; 1d3
 	dc.w	$0000
 
-	dc.l	L00783		; troll
+	dc.l	L00783		; troll, 12-21
 	dc.w	$0032,$0220,$000A,$0000,$0078,$0006,$0004,$0001
 	dc.l	L00784		; 1d8/1d8/2d6
 	dc.w	$0000
 
-	dc.l	L00785		; ur-vile
+	dc.l	L00785		; ur-vile, 16-25
 	dc.w	$0000,$0020,$000A,$0000,$00BE,$0007,$FFFE,$0001
 	dc.l	L00786		; 1d3/1d3/1d3/4d6
 	dc.w	$0000
 
-	dc.l	L00787		; vampire
+	dc.l	L00787		; vampire, 19-26
 	dc.w	$0014,$0220,$000A,$0000,$015E,$0008,$0001,$0001
 	dc.l	L00788		; 1d10
 	dc.w	$0000
 
-	dc.l	L00789		; wraith
+	dc.l	L00789		; wraith, 13-22
 	dc.w	$0000,$0000,$000A,$0000,$0037,$0005,$0004,$0001
 	dc.l	L0078A		; 1d6
 	dc.w	$0000
 
-	dc.l	L0078B		; xeroc
+	dc.l	L0078B		; xeroc, 19-26
 	dc.w	$001E,$0000,$000A,$0000,$0064,$0007,$0007,$0001
 	dc.l	L0078C		; 3d4
 	dc.w	$0000
 
-	dc.l	L0078D		; yeti
+	dc.l	L0078D		; yeti, 11-20
 	dc.w	$001E,$0000,$000A,$0000,$0032,$0004,$0006,$0001
 	dc.l	L0078E		; 1d6/1d6
 	dc.w	$0000
 
-	dc.l	L0078F		; zombie
+	dc.l	L0078F		; zombie, 5-14
 	dc.w	$0000,$0020,$000A,$0000,$0006,$0002,$0008,$0001
 	dc.l	L00790		; 1d8
 	dc.w	$0000
