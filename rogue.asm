@@ -5295,8 +5295,7 @@ L00254:
 	JSR	_mvaddch(PC)
 	ADDQ.W	#6,A7
 L00255:
-	MOVEA.L	$0008(A5),A6
-	MOVE.L	A6,-(A7)
+	MOVE.L	$0008(A5),-(A7)
 	JSR	_find_dest(PC)
 	ADDQ.W	#4,A7
 
