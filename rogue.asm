@@ -1831,7 +1831,7 @@ _wmap:
 	JSR	_CloseWindowSafely(PC)
 	ADDQ.W	#4,A7
 	CLR.L	-$5144(A4)	;_TextWin
-	MOVE.B	#$01,-$7064(A4)	;_map_up
+	ST	-$7064(A4)	;_map_up
 	MOVE.L	-$5148(A4),-$514C(A4)	;,_StdWin
 	JSR	_intui_sync(PC)
 L00102:
