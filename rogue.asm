@@ -39,16 +39,15 @@ _init_player:
 	ADDQ.W	#2,A7
 	MOVE.W	D0,-$609E(A4)	;_food_left
 
-	CLR.W	-(A7)
-	MOVE.W	#$1036,-(A7)
-	MOVE.L	-$52D2(A4),-(A7)	;__things
-	JSR	_setmem
-	ADDQ.W	#8,A7
-	CLR.W	-(A7)
-	MOVE.W	#$00A6,-(A7)
-	MOVE.L	-$52CE(A4),-(A7)	;__t_alloc
-	JSR	_setmem
-	ADDQ.W	#8,A7
+	CLR.W	d1
+	MOVE.W	#$1036,d0
+	MOVE.L	-$52D2(A4),a0	;__things
+	JSR	_memset
+
+	CLR.W	d1
+	MOVE.W	#$00A6,d0
+	MOVE.L	-$52CE(A4),a0	;__t_alloc
+	JSR	_memset
 
 	JSR	_new_item
 	MOVEA.L	D0,A2
@@ -958,9 +957,7 @@ L0009C:
 	SUBQ.W	#1,D0
 
 	MOVEA.L	-$519C(A4),A6	;__level
-	MOVEQ	#$00,D3
-	MOVE.B	$00(A6,D0.W),D3
-	CMP.W	#$002B,D3	;'+'
+	CMP.B	#$2B,$00(A6,D0.W)	;'+'
 	BNE.B	L0009E
 L0009D:
 	MOVEq	#$0001,D3
@@ -988,7 +985,7 @@ L0009F:
 	ADDQ.W	#1,D0
 
 	MOVEA.L	-$519C(A4),A6	;__level
-	CMP.B	#$2B,$00(A6,D0.W)	;'-'
+	CMP.B	#$2B,$00(A6,D0.W)	;'+'
 	BNE.B	L000A1
 L000A0:
 	MOVEq	#$0001,D3
@@ -1061,9 +1058,7 @@ L000A8:
 ;	JSR	_INDEXquick
 
 	MOVEA.L	-$519C(A4),A6	;__level
-;	MOVEQ	#$00,D3
-	MOVE.B	$00(A6,D0.W),D3
-	CMP.B	#$002B,D3
+	CMP.B	#$002B,$00(A6,D0.W)
 	BNE.B	L000AA
 L000A9:
 	MOVEq	#$0001,D3
@@ -1167,9 +1162,7 @@ L000BA:
 	BRA.W	L000C0
 L000BB:
 	CLR.B	-$66B6(A4)	;_running
-	MOVEQ	#$00,D3
-	MOVE.B	D4,D3
-	CMP.W	#$0025,D3
+	CMP.B	#$25,D4
 	BEQ.B	L000BC
 	MOVE.B	D4,-$66A9(A4)	;_take
 L000BC:
@@ -1222,6 +1215,7 @@ L000BE:
 	MOVE.B	$00(A6,D0.W),D3
 	AND.B	#$20,D3
 	BNE.B	L000BF
+
 	PEA	-$5194(A4)	;_nh
 	JSR	_enter_room
 	ADDQ.W	#4,A7
@@ -3371,17 +3365,15 @@ _new_level:
 
 	MOVE.W	-$60B4(A4),-$60BA(A4)	;_level,_ntraps
 L00183:
-	MOVE.W	#$0020,-(A7)
-	MOVE.W	#1760,-(A7)
-	MOVE.L	-$519C(A4),-(A7)	;__level
-	JSR	_setmem
-	ADDQ.W	#8,A7
+	MOVEq	#$0020,d1
+	MOVE.W	#1760,d0
+	MOVE.L	-$519C(A4),a0	;__level
+	JSR	_memset
 
-	MOVE.W	#$0010,-(A7)	;what you see is what you get
-	MOVE.W	#1760,-(A7)
-	MOVE.L	-$5198(A4),-(A7)	;__flags
-	JSR	_setmem
-	ADDQ.W	#8,A7
+	MOVEq	#$0010,d1	;what you see is what you get
+	MOVE.W	#1760,d0
+	MOVE.L	-$5198(A4),a0	;__flags
+	JSR	_memset
 
 	MOVEA.L	-$6CAC(A4),A2	;_mlist
 	BRA.B	L00185
@@ -10058,14 +10050,15 @@ L0046C:
 	ASL.L	#1,D3
 	MOVEA.L	-$52CE(A4),A6	;__t_alloc
 	ADDQ.W	#1,$00(A6,D3.L)
-	CLR.W	-(A7)
-	MOVE.W	#$0032,-(A7)
+
+	CLR.W	d1
+	MOVE.W	#50,d0
 	MOVE.W	D4,D3
-	MULS.W	#$0032,D3
+	MULS.W	#50,D3
 	ADD.L	-$52D2(A4),D3
-	MOVE.L	D3,-(A7)
-	JSR	_setmem
-	ADDQ.W	#8,A7
+	MOVE.L	D3,a0
+	JSR	_memset
+
 	MOVE.W	D4,D0
 	MULS.W	#50,D0
 	ADD.L	-$52D2(A4),D0
@@ -10866,11 +10859,11 @@ _clear:
 	TST.B	-$7064(A4)	;_map_up
 	BEQ.B	L004D5
 
-	MOVE.W	#$0020,-(A7)
-	MOVE.W	#1680,-(A7)
-	PEA	-$76F6(A4)	;_screen_map
-	JSR	_setmem
-	ADDQ.W	#8,A7
+	MOVEq	#$0020,d1
+	MOVE.W	#1680,d0
+	lea	-$76F6(A4),a0	;_screen_map
+	JSR	_memset
+
 L004D5:
 	moveq	#0,d1
 	moveq	#0,d0
@@ -10939,27 +10932,22 @@ _clrtoeol:
 	TST.B	-$7064(A4)	;_map_up
 	BEQ.B	1$
 
-	MOVE.W	#$0020,-(A7)
+	MOVEq	#$0020,d1
+
 	MOVEQ	#$00,D3
 	MOVE.B	-$7065(A4),D3	;_c_col
-	MOVEQ	#$50,D2
-	SUB.W	D3,D2
-	MOVE.W	D2,-(A7)
-	MOVEQ	#$00,D0
-	MOVE.B	-$7066(A4),D0	;_c_row
+	MOVEQ	#80,D0
+	SUB.W	D3,D0
 
-;	MOVEQ	#80,D1
-;	JSR	_mulu
-	mulu.w	#80,d0
+	MOVEQ	#$00,D2
+	MOVE.B	-$7066(A4),D2	;_c_row
+	mulu.w	#80,d2
 
-;	MOVEQ	#$00,D3
-;	MOVE.B	-$7065(A4),D3	;_c_col
-	ADD.L	D3,D0
-	LEA	-$76F6(A4),A6	;_screen_map
-	ADD.L	A6,D0
-	MOVE.L	D0,-(A7)
-	JSR	_setmem
-	ADDQ.W	#8,A7
+	ADD.L	D3,D2
+	LEA	-$76F6(A4),A0	;_screen_map
+	ADD.L	D2,A0
+	JSR	_memset
+
 1$
 	JSR	__clrtoeol(PC)
 ;	UNLK	A5
@@ -12704,13 +12692,11 @@ L00579:
 	RTS
 
 _clr_sel_chr:
-;	LINK	A5,#-$0000
-	CLR.W	-(A7)
-	MOVE.W	#$0015,-(A7)
-	PEA	-$5460(A4)
-	JSR	_setmem
-	ADDQ.W	#8,A7
-;	UNLK	A5
+	CLR.W	d1
+	MOVEq	#$0015,d0
+	LEA	-$5460(A4),a0
+	JSR	_memset
+
 	RTS
 
 _sel_char:
@@ -14976,11 +14962,11 @@ L00676:
 	ADDQ.W	#2,A7
 	BRA.B	L00673
 L00677:
-	CLR.W	-(A7)
-	MOVE.W	#$01CC,-(A7)
-	PEA	-$01FA(A5)
-	JSR	_setmem
-	ADDQ.W	#8,A7
+	CLR.W	d1
+	MOVE.W	#$01CC,d0
+	LEA	-$01FA(A5),a0
+	JSR	_memset
+
 	PEA	-$01FA(A5)
 	JSR	_get_scores(PC)
 	ADDQ.W	#4,A7
@@ -24087,11 +24073,12 @@ _fade_in:
 	MOVEM.L	D4/D5,-(A7)
 	TST.W	$000C(A5)
 	BEQ.W	L00B24
-	CLR.W	-(A7)
-	MOVE.W	#$0040,-(A7)
-	PEA	-$0040(A5)
-	JSR	_setmem
-	ADDQ.W	#8,A7
+
+	CLR.W	d1
+	MOVEq	#$0040,d0
+	LEA	-$0040(A5),a0
+	JSR	_memset
+
 	MOVEQ	#$00,D4
 L00B1F:
 	MOVEQ	#$00,D5
@@ -25536,11 +25523,12 @@ L00BA0:
 ;	CMP.W	#$0000,D4
 	BLT.B	L00BA8
 	MOVE.W	$000C(A5),D5
-	CLR.W	-(A7)
-	MOVE.W	#$0200,-(A7)
-	PEA	-$0200(A5)
-	JSR	_setmem
-	ADDQ.W	#8,A7
+
+	CLR.W	d1
+	MOVE.W	#$0200,d0
+	LEA	-$0200(A5),a0
+	JSR	_memset
+
 L00BA1:
 	TST.W	D5
 	BEQ.B	L00BA6
@@ -25735,9 +25723,7 @@ L00BFC:
 	UNLK	A5
 	RTS
 
-_setmem:
-	MOVEA.L	$0004(A7),A0
-	MOVEM.W	$0008(A7),D0/D1
+_memset:
 	TST.B	D1
 	BEQ	4$
 	BRA.B	2$
