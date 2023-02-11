@@ -2172,9 +2172,11 @@ L0011C:
 L0011D:
 	TST.L	-$5148(A4)
 	BEQ.B	L0011E
+
 	MOVE.L	-$5148(A4),-(A7)
 	JSR	_ClearMenuStrip
 	ADDQ.W	#4,A7
+
 	MOVE.L	-$5148(A4),-(A7)
 	JSR	_CloseWindow
 	ADDQ.W	#4,A7
@@ -7002,8 +7004,9 @@ L00312:
 
 L00313:
 	MOVE.W	-$52B4(A4),D3	;_player + 22
-	AND.W	#$0001,D3	;ISBLIND
+	AND.W	#$0001,D3	;check player ISBLIND
 	BEQ.B	L00314
+
 	PEA	L0034A(PC)	;"you feel a warm glow around you"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -7012,8 +7015,9 @@ L00314:
 	ST	-$66CB(A4)	;_ws_know
 	MOVEA.L	-$52A0(A4),A6	;_player + 42
 	MOVE.W	$000E(A6),D3
-	AND.W	#$0002,D3
+	AND.W	#$0002,D3	;check for room ISDARK
 	BEQ.B	L00315
+
 	PEA	L0034B(PC)	;"the corridor glows and then fades"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -7025,10 +7029,11 @@ L00315:
 L00316:
 	MOVEA.L	-$52A0(A4),A6	;_player + 42
 	MOVE.W	$000E(A6),D3
-	AND.W	#$0002,D3
+	AND.W	#$0002,D3	;check for room ISDARK
 	BNE.B	L00317
+
 	MOVEA.L	-$52A0(A4),A6	;_player + 42
-	ANDI.W	#$FFFE,$000E(A6)	;clear ISBLIND
+	ANDI.W	#$FFFE,$000E(A6)	;clear room ISDARK
 	PEA	-$52C0(A4)	;_player + 10
 	JSR	_enter_room
 	ADDQ.W	#4,A7
@@ -7040,6 +7045,7 @@ L00317:
 L00318:
 	CMPI.W	#$0002,-$52A8(A4)	;_player + 34 (hp)
 	BGE.B	L00319
+
 	PEA	L0034D(PC)	;"you are too weak to use it"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -7063,6 +7069,7 @@ L0031B:
 	ADDQ.W	#2,A7
 	TST.W	D0
 	BEQ.B	L0031C
+
 	ADD.W	-$608A(A4),D4
 	ADD.W	-$608C(A4),D5
 	BRA.B	L0031B
@@ -7074,11 +7081,13 @@ L0031C:
 	MOVE.L	D0,-$0004(A5)
 ;	TST.L	D0
 	BEQ.W	L0032B
+
 	MOVEA.L	-$0004(A5),A6
 	MOVE.B	$000F(A6),D6
 	MOVE.B	D6,-$0007(A5)
 	CMP.b	#$46,D6		;'F'
 	BNE.B	L0031D
+
 	ANDI.W	#$FF7F,-$52B4(A4)	;clear ISHELD ($80) for _player + 22
 L0031D:
 	CMPI.W	#$0005,-$0006(A5)	;5 = polymorph
@@ -11373,6 +11382,7 @@ L004EE:
 	MOVEA.L	-$47B2(A4),A6
 	CMPA.L	-$47AE(A4),A6
 	BEQ.B	L004F0
+
 	MOVEA.L	-$47AE(A4),A6
 	ADDQ.L	#1,-$47AE(A4)
 	MOVE.B	(A6),D0
@@ -11600,14 +11610,14 @@ L00509:
 ;	EXT.L	D0
 	BRA.B	L0050C
 L0050A:
-	PEA	L00510(PC)
+	PEA	L00510(PC)		;"10s"
 	MOVE.L	-$47B2(A4),-(A7)
 	JSR	_strcpy
 	ADDQ.W	#8,A7
 	ADDQ.L	#2,-$47B2(A4)
 	BRA.B	L0050D
 L0050B:
-	PEA	L00511(PC)
+	PEA	L00511(PC)		;"10."
 	MOVE.L	-$47B2(A4),-(A7)
 	JSR	_strcpy
 	ADDQ.W	#8,A7
@@ -12408,7 +12418,7 @@ L0055D:
 ; wand/staff
 
 L0055E:
-	MOVE.W	#$002F,$000A(A2)	;'/'
+	MOVE.W	#$002F,$000A(A2)	;'/' wand/staff type
 	MOVE.W	#$000E,-(A7)
 	PEA	-$6D98(A4)	;_ws_magic
 	BSR.B	_pick_one
@@ -14608,6 +14618,7 @@ L0065B:
 	SUBQ.W	#1,$0008(A5)
 	TST.W	$0008(A5)
 	BEQ.B	L00660
+
 	ADDQ.L	#4,$000A(A5)
 	MOVEA.L	$000A(A5),A6
 	MOVEA.L	(A6),A2
@@ -14615,6 +14626,7 @@ L0065B:
 ;	EXT.W	D3
 	CMP.b	#$2D,D3		;'-'
 	BEQ.B	L0065C
+
 ;	MOVE.B	(A2),D3
 ;	EXT.W	D3
 	CMP.b	#$2F,D3		;'/'
@@ -14630,9 +14642,10 @@ L0065D:
 	CLR.W	-(A7)
 	CLR.W	-(A7)
 	CLR.W	-(A7)
-	JSR	_score(PC)
+	JSR	_score(PC)	;used with option "-s" to display highscore direct
 	ADDQ.W	#6,A7
-	PEA	L00662(PC)
+
+	PEA	L00662(PC)	;"",0
 	JSR	_fatal(PC)
 	ADDQ.W	#4,A7
 	BRA.B	L0065F
@@ -14900,6 +14913,7 @@ L00672:	dc.b	10,'To play again, just type "Rogue"',10,0,0
 _score:
 	LINK	A5,#-$01FC
 	MOVEM.L	D4/D5,-(A7)
+
 	MOVEQ	#$00,D4
 	MOVEQ	#$00,D5
 	MOVE.W	#$0001,-$01FC(A5)
@@ -14909,11 +14923,14 @@ L00673:
 	PEA	L0067B(PC)	;"Rogue.Score"
 	JSR	_AmigaOpen(PC)
 	ADDQ.W	#6,A7
-	MOVE.W	D0,-$53C0(A4)
+
+	MOVE.W	D0,-$53C0(A4)	;rogue.score filehd
 ;	CMP.W	#$0000,D0
 	BGE.B	L00677
+
 	TST.B	-$66F8(A4)	;_noscore
 	BNE.B	L00674
+
 	TST.W	$0008(A5)
 	BNE.B	L00675
 L00674:
@@ -14933,17 +14950,18 @@ L00675:
 	CLR.W	-$01FC(A5)
 	BRA.B	L00677
 L00676:
-	MOVE.W	#$01CC,-(A7)
+	MOVE.W	#460,-(A7)	;10 entries with 46 bytes each
 	PEA	L0067B(PC)	;"Rogue.Score"
 	JSR	_AmigaCreat(PC)
 	ADDQ.W	#6,A7
+
 	MOVE.W	D0,-(A7)
 	JSR	_AmigaClose(PC)
 	ADDQ.W	#2,A7
 	BRA.B	L00673
 L00677:
 	CLR.W	d1
-	MOVE.W	#$01CC,d0
+	MOVE.W	#460,d0
 	LEA	-$01FA(A5),a0
 	JSR	_memset
 
@@ -14958,17 +14976,19 @@ L00677:
 	PEA	-$002E(A5)
 	JSR	_strcpy
 	ADDQ.W	#8,A7
+
 	MOVE.W	$0008(A5),-$0006(A5)
 	MOVE.B	$000D(A5),D3
 	EXT.W	D3
 	MOVE.W	D3,-$0004(A5)
 	TST.W	$000A(A5)
 	BEQ.B	L00678
+
 	MOVE.W	$000A(A5),-$0004(A5)
 L00678:
 	MOVE.W	-$60BA(A4),-$0002(A5)	;_ntraps
 	MOVE.W	-$52AC(A4),-$0008(A5)	;_player + 30 (rank)
-	PEA	-$01FA(A5)
+	PEA	-$01FA(A5)	;506 (460 + 46)
 	PEA	-$002E(A5)
 	JSR	_add_scores(PC)
 	ADDQ.W	#8,A7
@@ -14977,28 +14997,35 @@ L00679:
 	MOVE.W	-$53C0(A4),-(A7)
 	JSR	_AmigaClose(PC)
 	ADDQ.W	#2,A7
+
 	CMP.W	#$0000,D5
 	BLE.B	L0067A
+
 	TST.W	-$01FC(A5)
 	BEQ.B	L0067A
-	MOVE.W	#$01CC,-(A7)
+
+	MOVE.W	#460,-(A7)
 	PEA	L0067B(PC)	;"Rogue.Score"
 	JSR	_AmigaCreat(PC)
 	ADDQ.W	#6,A7
-	MOVE.W	D0,-$53C0(A4)
+
+	MOVE.W	D0,-$53C0(A4)	;rogue.score filehd
 ;	CMP.W	#$0000,D0
 	BLT.B	L0067A
-	PEA	-$01FA(A5)
+
+	PEA	-$01FA(A5)	;506 (460 + 46)
 	JSR	_put_scores(PC)
 	ADDQ.W	#4,A7
-	MOVE.W	-$53C0(A4),-(A7)
+
+	MOVE.W	-$53C0(A4),-(A7)	;rogue.score filehd
 	JSR	_AmigaClose(PC)
 	ADDQ.W	#2,A7
 L0067A:
-	PEA	-$01FA(A5)
+	PEA	-$01FA(A5)	;506 (460 + 46)
 	MOVE.W	D5,-(A7)
 	JSR	_pr_scores(PC)
 	ADDQ.W	#6,A7
+
 	JSR	_flush_type
 	JSR	_readchar
 	BRA.W	L00674
@@ -15011,20 +15038,23 @@ L0067E:	dc.b	"Don't create it",0
 _get_scores:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/D5,-(A7)
+
 	MOVEQ	#$01,D5
 	MOVEQ	#$00,D4
 L00681:
 	CMP.W	#$0000,D5
 	BLE.B	L00682
-	MOVE.W	#$002E,-(A7)
+
+	MOVE.W	#46,-(A7)		;read 46 bytes
 	MOVE.L	$0008(A5),-(A7)
-	MOVE.W	-$53C0(A4),-(A7)
+	MOVE.W	-$53C0(A4),-(A7)	;rogue.score filehd
 	JSR	_read
 	ADDQ.W	#8,A7
 	MOVE.W	D0,D5
 L00682:
 	CMP.W	#$0000,D5
 	BGT.B	L00683
+
 	MOVEA.L	$0008(A5),A6
 	CLR.W	$0028(A6)
 L00683:
@@ -15044,7 +15074,7 @@ _put_scores:
 L00684:
 	MOVE.W	#46,-(A7)	; 46 bytes per entry
 	MOVE.L	$0008(A5),-(A7)
-	MOVE.W	-$53C0(A4),-(A7)
+	MOVE.W	-$53C0(A4),-(A7)	;rogue.score filehd
 	JSR	_write
 	ADDQ.W	#8,A7
 	CMP.W	#$0000,D0
@@ -15071,10 +15101,12 @@ _pr_scores:
 	MOVE.L	D4,-(A7)
 	JSR	_black_out
 	CLR.L	-(A7)
+
 	MOVE.L	-$5144(A4),-(A7)	;_TextWin
 	PEA	L00690(PC)	;"Hall.of.Fame"
 	JSR	_show_ilbm
 	LEA	$000C(A7),A7
+
 	MOVE.W	#$0001,-(A7)
 	JSR	_cursor(PC)
 	ADDQ.W	#2,A7
@@ -15109,9 +15141,11 @@ L00689:
 
 	TST.W	D0
 	BEQ.B	L0068B
+
 	MOVEA.L	$000A(A5),A6
 	CMPI.W	#$001A,$002C(A6)
 	BGE.B	L0068B
+
 	MOVE.W	#$0001,-(A7)
 	MOVEA.L	$000A(A5),A6
 	MOVE.W	$002A(A6),D3
@@ -15119,16 +15153,19 @@ L00689:
 	MOVE.W	D3,-(A7)
 	JSR	_killname(PC)
 	ADDQ.W	#4,A7
+
 	MOVE.L	D0,-(A7)
 	PEA	L00692(PC)	;" by %s"
 	PEA	-$0050(A5)
 	JSR	_sprintf
 	LEA	$000C(A7),A7
+
 	MOVEA.L	$000A(A5),A6
 	MOVE.W	$002C(A6),-(A7)
 	PEA	L00693(PC)	;" killed on level %d"
 	JSR	_printw
 	ADDQ.W	#6,A7
+
 	PEA	-$0054(A5)
 	PEA	-$0052(A5)
 	JSR	_getrc
@@ -15136,9 +15173,11 @@ L00689:
 	PEA	-$0050(A5)
 	JSR	_strlen
 	ADDQ.W	#4,A7
+
 	ADD.W	-$0054(A5),D0
-	CMP.W	#$0046,D0
+	CMP.W	#$0046,D0	;not longer than 70 chars
 	BGE.B	L0068A
+
 	PEA	-$0050(A5)
 	JSR	_addstr
 	ADDQ.W	#4,A7
@@ -15148,6 +15187,7 @@ L0068B:
 	MOVEA.L	$000A(A5),A6
 	CMPI.W	#$0002,$002A(A6)
 	BNE.B	L0068C
+
 	PEA	L00694(PC)	;" A total winner!"
 	JSR	_addstr
 	ADDQ.W	#4,A7
@@ -15168,8 +15208,8 @@ L0068D:
 	ADDQ.W	#6,A7
 L0068E:
 	ADDQ.W	#1,D4
-	ADDI.L	#$0000002E,$000A(A5)
-	CMP.W	#$000A,D4	; 10 highscore entries
+	ADDI.L	#46,$000A(A5)
+	CMP.W	#10,D4		; 10 highscore entries
 	BLT.W	L00689
 L0068F:
 	MOVE.L	(A7)+,D4
@@ -29639,7 +29679,7 @@ _all_clear:
 	dc.w	0
 __whoami:	ds.l	1
 
-_want:	ds.l	16
+_want:	ds.b	64	;color palette of the images is loaded to here
 
 _sverr:
 	dc.w	0
