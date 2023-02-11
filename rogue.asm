@@ -10986,7 +10986,7 @@ _addch:
 L004DA:
 	CLR.W	-(A7)
 	MOVEQ	#$00,D3
-	MOVE.B	-$7066(A4),D3
+	MOVE.B	-$7066(A4),D3	;_c_row
 	MOVE.W	D3,-(A7)
 	JSR	_move(PC)
 	ADDQ.W	#4,A7
@@ -20125,29 +20125,29 @@ L0094A:	dc.b	"missed",0,0
 _attack:
 	LINK	A5,#-$0004
 	MOVEM.L	D4/D5/A2/A3,-(A7)
+
 	CLR.B	-$66B6(A4)	;_running
 	CLR.W	-$60A0(A4)	;_quiet
 	CLR.W	-$60A4(A4)	;_count
+
 	MOVEA.L	$0008(A5),A6
-	MOVE.B	$000F(A6),D3
-	EXT.W	D3
-	CMP.W	#$0058,D3	; 'X'
-	BNE.B	L0094B
+	CMP.B	#$58,$000F(A6)	;'X' xerox
+	BNE.B	1$
+
 	MOVE.W	-$52B4(A4),D3	;_player + 22
-	AND.W	#$0001,D3	;ISBLIND
-	BNE.B	L0094B
-	MOVEA.L	$0008(A5),A6
-	MOVE.B	#$58,$0010(A6)
-L0094B:
-	MOVEA.L	$0008(A5),A6
-	MOVE.B	$000F(A6),D3
+	AND.W	#C_ISBLIND,D3	;C_ISBLIND
+	BNE.B	1$
+
+	MOVE.B	#$58,$0010(A6)	;'X' xerox
+
+1$	MOVE.B	$000F(A6),D3
 	EXT.W	D3
 	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
 	LEA	-$6CA8(A4),A6	;_monsters
 	MOVEA.L	$00(A6,D3.L),A2
 	MOVE.W	-$52B4(A4),D3	;_player + 22
-	AND.W	#$0001,D3	;ISBLIND
+	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L0094C
 	MOVEA.L	-$69BE(A4),A2	;_it
 L0094C:
@@ -20278,19 +20278,19 @@ L0095A:
 	MOVEA.L	$0008(A5),A6
 	MOVE.B	$000F(A6),D3
 ;	EXT.W	D3
-	CMP.b	#$57,D3		;'W'
+	CMP.b	#$57,D3		;'W' wraith
 	BNE.B	L0095B
-	MOVEQ	#$0F,D3
+	MOVEQ	#$0F,D3		;15% chance
 	BRA.B	L0095C
 L0095B:
-	MOVEQ	#$1E,D3
+	MOVEQ	#$1E,D3		;vampire has %30 chance
 L0095C:
 	CMP.W	D3,D0
 	BGE.W	L00964
 	MOVEA.L	$0008(A5),A6
 	MOVE.B	$000F(A6),D3
 ;	EXT.W	D3
-	CMP.b	#$57,D3		;'W'
+	CMP.b	#$57,D3		;'W' wraith
 	BNE.B	L00960
 	TST.L	-$52B0(A4)	;_player + 26 (XP)
 	BNE.B	L0095D
@@ -20335,6 +20335,7 @@ L00961:
 L00962:
 	CMPI.W	#$0001,-$52A2(A4)	;_player + 40 (max hp)
 	BGE.B	L00963
+
 	MOVEA.L	$0008(A5),A6
 	MOVE.B	$000F(A6),D3
 ;	EXT.W	D3
@@ -20351,9 +20352,9 @@ L00964:
 ; venus flytrap
 
 L00965:
-	ORI.W	#$0080,-$52B4(A4)	;ISHELD,_player + 22
-	ADDQ.W	#1,-$60A2(A4)
-	MOVE.W	-$60A2(A4),-(A7)
+	ORI.W	#C_ISHELD,-$52B4(A4)	;C_ISHELD,_player + 22
+	ADDQ.W	#1,-$60A2(A4)	;_fung_hit
+	MOVE.W	-$60A2(A4),-(A7)	;_fung_hit
 	PEA	L0097D(PC)	;"%dd1"
 	MOVEA.L	$0008(A5),A6
 	MOVE.L	$0024(A6),-(A7)
@@ -20528,7 +20529,7 @@ L00974:
 	EXT.W	D3
 	CMP.W	#$0046,D3	;'F'
 	BNE.B	L00975
-	MOVE.W	-$60A2(A4),D3
+	MOVE.W	-$60A2(A4),D3	;_fung_hit
 	SUB.W	D3,-$52A8(A4)	;_player + 34 (hp)
 	CMPI.W	#$0000,-$52A8(A4)	;_player + 34 (hp)
 	BGT.B	L00975
@@ -20669,9 +20670,9 @@ _roll_em:
 	LINK	A5,#-$000C
 	MOVEM.L	D4-D7/A2/A3,-(A7)
 	MOVEQ	#$00,D4
-	MOVEA.L	$0008(A5),A2
+	MOVEA.L	$0008(A5),A2	;player
 	ADDA.L	#$00000018,A2
-	MOVEA.L	$000C(A5),A3
+	MOVEA.L	$000C(A5),A3	;monster
 	ADDA.L	#$00000018,A3
 
 	TST.L	$0010(A5)	;test for weapon
@@ -20778,7 +20779,7 @@ L00992:
 
 ;	MOVEA.L	$0010(A5),A6
 	MOVE.W	$0028(A6),D3
-	AND.W	#$0010,D3
+	AND.W	#O_ISMISL,D3	;O_ISMISL
 	BEQ.B	L00993
 
 	TST.L	-$5298(A4)	;check _cur_weapon
@@ -20796,15 +20797,15 @@ L00992:
 	MOVE.L	$001A(A6),-$0004(A5)
 
 	MOVEA.L	-$5298(A4),A6	;_cur_weapon
-	ADD.W	$0022(A6),D5
-	ADD.W	$0024(A6),D6
+	ADD.W	$0022(A6),D5	;hplus
+	ADD.W	$0024(A6),D6	;dplus
 L00993:
 	MOVEA.L	$0010(A5),A6
-	CMPI.W	#$002F,$000A(A6)	;'/'
+	CMPI.W	#$002F,$000A(A6)	;'/' wand
 	BNE.B	L00994
 
 ;	MOVEA.L	$0010(A5),A6
-	CMPI.W	#$0001,$0020(A6)
+	CMPI.W	#WS_STRIKING,$0020(A6)
 	BNE.B	L00994
 
 ;	MOVEA.L	$0010(A5),A6
@@ -20825,9 +20826,9 @@ L00993:
 L00994:
 	MOVEA.L	$000C(A5),A6
 	MOVE.W	$0016(A6),D3
-	AND.W	#$0004,D3
+	AND.W	#C_ISRUN,D3	;C_ISRUN
 	BNE.B	L00995
-	ADDQ.W	#4,D5
+	ADDQ.W	#4,D5		;hplus += 4
 L00995:
 	MOVE.W	$0008(A3),-$000A(A5)
 	LEA	-$52B2(A4),A6	;_player + 24 (strength)
@@ -20847,9 +20848,8 @@ L00996:
 	CMP.W	#R_PROTECT,$0020(A6)	;test for R_PROTECT
 	BNE.B	L00997
 
-;	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	MOVE.W	$0026(A6),D3
-	SUB.W	D3,-$000A(A5)	;add extra armor from ring
+	SUB.W	D3,-$000A(A5)	;add extra armor from ring 1
 L00997:
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BEQ.B	L00998
@@ -20858,8 +20858,7 @@ L00997:
 	CMP.W	#R_PROTECT,$0020(A6)	;test for R_PROTECT
 	BNE.B	L00998
 
-;	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
-	MOVE.W	$0026(A6),D3	;add extra armor from ring
+	MOVE.W	$0026(A6),D3	;add extra armor from ring 2
 	SUB.W	D3,-$000A(A5)
 L00998:
 	MOVE.L	-$0004(A5),-(A7)
@@ -20906,7 +20905,7 @@ L00998:
 	LEA	-$52CA(A4),A6
 	MOVEA.L	$000C(A5),A1
 	CMPA.L	A6,A1
-	BNE.B	L0099A
+	BNE.B	L00999
 
 	CMPI.W	#$0001,-$60BA(A4)	;_ntraps
 	BNE.B	L00999
@@ -20920,11 +20919,11 @@ L00999:
 ;	TST.W	-$47AA(A4)	;_all_clear
 ;	BNE.B	L0099A
 ;	MULU.W	#$0006,D7
-L0099A:
+;L0099A:
 	MOVEQ	#$00,D3
 	CMP.W	D7,D3
 	BLE.B	L0099B
-	MOVEQ	#$00,D3
+;	MOVEQ	#$00,D3
 	BRA.B	L0099C
 L0099B:
 	MOVE.W	D7,D3
@@ -21401,6 +21400,7 @@ L009EA:
 	MOVE.W	-$52B4(A4),D3	;_player + 22
 	AND.W	#$0001,D3	;ISBLIND
 	BEQ.B	L009EB
+
 	MOVE.L	-$69BE(A4),-(A7)	;_it
 	JSR	_msg		;-$7F76(A4)
 	ADDQ.W	#4,A7
@@ -21453,6 +21453,7 @@ L009F2:
 	ADDQ.W	#8,A7
 	TST.B	$0011(A5)
 	BEQ.B	L009F3
+
 	CLR.L	-(A7)
 	MOVE.L	A3,-(A7)
 	JSR	_fall		;-$7E06(A4)
@@ -21467,27 +21468,28 @@ L009F4:
 L009F5:
 	MOVE.L	A3,D3
 	BNE.B	L009F2
+
 	MOVE.W	(A2),-(A7)
 	MOVE.W	$0002(A2),-(A7)
 	JSR	_INDEX		;-$7D4E(A4)
 	ADDQ.W	#4,A7
 	MOVEA.L	-$519C(A4),A6	;__level
-	MOVE.B	$00(A6,D0.W),D3
-	CMP.b	#'#',D3
+	CMP.b	#'#',$00(A6,D0.W)
 	BNE.B	L009F6
+
 	JSR	_standout	;-$7FBE(A4)
 L009F6:
 	MOVEA.L	$000C(A5),A6
-	MOVEQ	#$00,D3
-	MOVE.B	$0011(A6),D3
-	CMP.W	#$002E,D3
+	CMP.b	#$2E,$0011(A6)	;'.'
 	BNE.B	L009F7
+
 	MOVE.W	(A2),-(A7)
 	MOVE.W	$0002(A2),-(A7)
 	JSR	_cansee		;-$7F06(A4)
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BNE.B	L009F7
+
 	MOVE.W	#$0020,-(A7)
 	MOVE.W	(A2),-(A7)
 	MOVE.W	$0002(A2),-(A7)
@@ -21496,10 +21498,9 @@ L009F6:
 	BRA.B	L009F8
 L009F7:
 	MOVEA.L	$000C(A5),A6
-	MOVEQ	#$00,D3
-	MOVE.B	$0011(A6),D3
-	CMP.W	#$0022,D3
+	CMP.b	#$22,$0011(A6)	;'"'
 	BEQ.B	L009F8
+
 	MOVEA.L	$000C(A5),A6
 	MOVEQ	#$00,D3
 	MOVE.B	$0011(A6),D3
@@ -21521,7 +21522,7 @@ L009F8:
 
 ;/*
 ; * is_magic:
-; *  Returns true if an object radiates magic
+; *  Returns true if an object radiates magic (the nymph wants to know!)
 ; */
 
 _is_magic:
@@ -21535,12 +21536,13 @@ _is_magic:
 	BRA.B	L00A01
 L009F9:
 	MOVE.W	$0020(A2),D3
-	EXT.L	D3
-	ASL.L	#1,D3
-	LEA	-$6F00(A4),A6
-	MOVE.W	$00(A6,D3.L),D2
+;	EXT.L	D3
+	ASL.w	#1,D3
+	LEA	-$6F00(A4),A6	;_a_class
+	MOVE.W	$00(A6,D3.w),D2
 	CMP.W	$0026(A2),D2
 	BEQ.B	L009FA
+
 	MOVEq	#$0001,D0
 	BRA.B	L009FB
 L009FA:
@@ -21559,19 +21561,19 @@ L009FD:
 	MOVEq	#$0001,D0
 	BRA.B	L009FB
 L00A01:
-	SUB.w	#$0021,D0
+	SUB.w	#$0021,D0	;'!' potions
 	BEQ.B	L009FD
-	SUB.w	#$000B,D0
+	SUB.w	#$000B,D0	;',' amulet of yendor
 	BEQ.B	L009FD
-	SUBQ.w	#3,D0
+	SUBQ.w	#3,D0		;'/' wands/staffs
 	BEQ.B	L009FD
-	SUB.w	#$000E,D0
+	SUB.w	#$000E,D0	;'=' rings
 	BEQ.B	L009FD
-	SUBQ.w	#2,D0
+	SUBQ.w	#2,D0		;'?' scrolls
 	BEQ.B	L009FD
-	SUB.w	#$0022,D0
+	SUB.w	#$0022,D0	;'a' armor type
 	BEQ.B	L009F9
-	SUB.w	#$000C,D0
+	SUB.w	#$000C,D0	;'m' weapon type
 	BEQ.B	L009FC
 	BRA.B	L009FA
 
@@ -21605,12 +21607,18 @@ _killed:
 	EXT.W	D0
 ;	EXT.L	D0
 	BRA.W	L00A07
+
+; venus flytrap
+
 L00A02:
-	ANDI.W	#$FF7F,-$52B4(A4)	;clear ISHELD, _player + 22
-	JSR	_f_restor	;-$7CAE(A4)
+	ANDI.W	#~C_ISHELD,-$52B4(A4)	;clear C_ISHELD, _player + 22
+	JSR	_f_restor
 	BRA.W	L00A08
+
+; leprechaun
+
 L00A03:
-	JSR	_new_item	;-$7EB6(A4)
+	JSR	_new_item
 	MOVEA.L	D0,A2
 	TST.L	D0
 	BNE.B	L00A05
@@ -21667,7 +21675,7 @@ L00A08:
 	JSR	_addmsg		;-$7F6E(A4)
 	ADDQ.W	#4,A7
 	MOVE.W	-$52B4(A4),D3	;_player + 22
-	AND.W	#$0001,D3	;ISBLIND
+	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L00A09
 	MOVE.L	-$69BE(A4),-(A7)	;_it
 	JSR	_msg		;-$7F76(A4)
@@ -21691,8 +21699,8 @@ L00A0A:
 L00A0B:	dc.b	"you have defeated ",0
 L00A0C:	dc.b	"the %s",0
 
-L00A0D:	dc.b	"K BHISOR LCA NYTWFP GMXVJD",0,0	;lvl_mons[]
-L00A0E:	dc.b	"KEBHISORZ CAQ YTW PUGM VJ ",0,0	;wand_mons[]
+L00A0D:	dc.b	"K BHISOR LCA NYTWFP GMXVJD",0,0	;lvl_mons[] to generate
+L00A0E:	dc.b	"KEBHISORZ CAQ YTW PUGM VJ ",0,0	;wand_mons[] to polymorph
 
 ;/*
 ; * randmonster:
@@ -21701,8 +21709,9 @@ L00A0E:	dc.b	"KEBHISORZ CAQ YTW PUGM VJ ",0,0	;wand_mons[]
 ; */
 
 _randmonster:
-	LINK	A5,#-$0002
+	LINK	A5,#-$0000
 	MOVEM.L	D4/A2,-(A7)
+
 	TST.B	$0009(A5)
 	BEQ.B	L00A0F
 
@@ -21715,15 +21724,14 @@ L00A10:
 	JSR	_rnd		;-$7DD6(A4)
 	ADDQ.W	#2,A7
 	MOVE.W	D0,-(A7)
-	MOVE.W	#$0006,-(A7)
+
+	MOVE.W	#6,-(A7)
 	JSR	_rnd		;-$7DD6(A4)
 	ADDQ.W	#2,A7
-	MOVE.W	(A7)+,D3
-	ADD.W	D0,D3
-	MOVE.W	D3,-$0002(A5)
-	MOVE.W	-$60B4(A4),D3	;_level
-	ADD.W	-$0002(A5),D3
-	MOVE.W	D3,D4
+
+	MOVE.W	(A7)+,D4
+	ADD.W	D0,D4
+	ADD.W	-$60B4(A4),D4	;_level
 	SUBQ.W	#5,D4
 	CMP.W	#$0001,D4
 	BGE.B	L00A11
@@ -21731,6 +21739,7 @@ L00A10:
 	MOVE.W	#$0005,-(A7)
 	JSR	_rnd		;-$7DD6(A4)
 	ADDQ.W	#2,A7
+
 	MOVE.W	D0,D4
 	ADDQ.W	#1,D4
 L00A11:
@@ -21746,7 +21755,7 @@ L00A12:
 	SUBQ.W	#1,D4
 	MOVE.B	$00(A2,D4.W),D0
 ;	EXT.W	D0
-	CMP.b	#32,D0
+	CMP.b	#$20,D0		;' '
 	BEQ.B	L00A10
 
 	EXT.W	D0
@@ -21768,6 +21777,7 @@ _new_monster:
 	SUB.W	#26,D4
 ;	CMP.W	#$0000,D4
 	BGE.B	1$
+
 	MOVEQ	#$00,D4
 
 1$	MOVE.L	A2,-(A7)
@@ -21807,7 +21817,7 @@ _new_monster:
 	MOVE.L	$0014(A3),$0024(A2)	;move monsters 1d8 or 3d4
 	MOVE.W	$0008(A3),$0018(A2)	;all monster have $000A here
 	MOVE.W	D4,D3
-	MULU.W	#$000A,D3
+	MULU.W	#10,D3
 	EXT.L	D3
 	MOVE.L	D3,-(A7)
 	MOVE.L	A2,-(A7)
@@ -21830,47 +21840,45 @@ L00A14:
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BEQ.B	L00A16
 	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
-	CMPI.W	#$0006,$0020(A6)	;aggravate monster
+	CMPI.W	#R_AGGR,$0020(A6)	;aggravate monster
 	BNE.B	L00A16
 L00A15:
 	MOVE.L	$000E(A5),-(A7)
 	JSR	_start_run	;-$7F1E(A4)
 	ADDQ.W	#4,A7
 L00A16:
-;	MOVEQ	#$00,D3
 	MOVE.B	$000D(A5),D3
 	CMP.b	#$46,D3		; 'F' flytrap
-	BNE.B	L00A17
+	BNE.B	1$
+
 	LEA	-$6735(A4),A6	;_f_damage
 	MOVE.L	A6,$0024(A2)
-L00A17:
-;	MOVEQ	#$00,D3
-	MOVE.B	$000D(A5),D3
-	CMP.b	#$58,D3		; 'X' xerox
+
+1$	CMP.b	#$58,D3		; 'X' xerox
 	BNE.W	L00A26
+
+	MOVEQ	#$08,D3
 	CMPI.W	#25,-$60B4(A4)	;_level
 	BLE.B	L00A18
-	MOVEQ	#$09,D3
-	BRA.B	L00A19
+
+	ADDQ.w	#$01,D3		;as amulet only from level 25 onwards
 L00A18:
-	MOVEQ	#$08,D3
-L00A19:
 	MOVE.W	D3,-(A7)
 	JSR	_rnd		;-$7DD6(A4)
 	ADDQ.W	#2,A7
 ;	EXT.L	D0
 	BRA.B	L00A24
 L00A1A:
-	MOVE.B	#$2A,$0010(A2)	;'*'
+	MOVE.B	#$2A,$0010(A2)	;'*' gold
 	BRA.B	L00A26
 L00A1B:
-	MOVE.B	#$21,$0010(A2)	;'!'
+	MOVE.B	#$21,$0010(A2)	;'!' potion
 	BRA.B	L00A26
 L00A1C:
-	MOVE.B	#$3F,$0010(A2)	;'?'
+	MOVE.B	#$3F,$0010(A2)	;'?' scroll
 	BRA.B	L00A26
 L00A1D:
-	MOVE.B	#$25,$0010(A2)	;'%'
+	MOVE.B	#$25,$0010(A2)	;'%' exit
 	BRA.B	L00A26
 L00A1E:
 	MOVE.W	#$000A,-(A7)
@@ -21887,13 +21895,13 @@ L00A1F:
 	MOVE.B	D0,$0010(A2)
 	BRA.B	L00A26
 L00A20:
-	MOVE.B	#$3D,$0010(A2)	;'='
+	MOVE.B	#$3D,$0010(A2)	;'=' ring
 	BRA.B	L00A26
 L00A21:
-	MOVE.B	#$2F,$0010(A2)	;'/'
+	MOVE.B	#$2F,$0010(A2)	;'/' wand/staff
 	BRA.B	L00A26
 L00A22:
-	MOVE.B	#$2C,$0010(A2)	;','
+	MOVE.B	#$2C,$0010(A2)	;',' amulet of yendor
 	BRA.B	L00A26
 L00A23:
 	dc.w	L00A1A-L00A25	; * gold
@@ -21919,10 +21927,9 @@ L00A26:
 _f_restor:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
-	LEA	-$6C26(A4),A6
-	MOVEA.L	A6,A2
-	CLR.W	-$60A2(A4)
-	MOVE.L	$0014(A2),-(A7)
+	CLR.W	-$60A2(A4)	;_fung_hit
+	LEA	-$6C26(A4),A2	;venus flytrap struct
+	MOVE.L	$0014(A2),-(A7)	;"%%%d0"
 	PEA	-$6735(A4)	;_f_damage
 	JSR	_strcpy		;-$7B5E(A4)
 	ADDQ.W	#8,A7
@@ -21975,8 +21982,10 @@ L00A2A:
 _wanderer:
 	LINK	A5,#-$0004
 	MOVEM.L	D4/A2/A3,-(A7)
+
 	TST.B	-$66FA(A4)	;_no_more_fears
 	BNE.B	L00A2B
+
 	JSR	_new_item	;-$7EB6(A4)
 	MOVEA.L	D0,A3
 	TST.L	D0
