@@ -23365,6 +23365,7 @@ L00AC6:
 	MOVE.W	D4,D3
 	AND.W	#$0002,D3
 	BEQ.B	L00AC7
+
 	PEA	-$6713(A4)
 	MOVE.W	D4,-(A7)
 	MOVE.L	A2,-(A7)
@@ -28783,45 +28784,35 @@ _hungry_state_texts:
 	dc.l	$00000000
 
 _w_magic:
-	dc.l	L005E8		; mace
-	dc.l	L005E9
-	dc.l	$64000000
+	dc.l	L005E8,L005E9	; mace
+	dc.w	$6400,$0000
 
-	dc.l	L005EA		; broad sword
-	dc.l	L005EB
-	dc.l	$64000000
+	dc.l	L005EA,L005EB	; broad sword
+	dc.w	$6400,$0000
 
-	dc.l	L005EC		; short bow
-	dc.l	L005ED
-	dc.l	$64000000
+	dc.l	L005EC,L005ED	; short bow
+	dc.w	$6400,$0000
 
-	dc.l	L005EE		; arrow (better with bow)
-	dc.l	L005EF
-	dc.l	$02000030	;ISMANY|ISMISL
+	dc.l	L005EE,L005EF	; arrow (better with bow)
+	dc.w	$0200,O_ISMANY|O_ISMISL
 
-	dc.l	L005F0		; dagger
-	dc.l	L005F1
-	dc.l	$64000010	;ISMISL
+	dc.l	L005F0,L005F1	; dagger
+	dc.w	$6400,O_ISMISL
 
-	dc.l	L005F2		; two handed sword
-	dc.l	L005F3
-	dc.l	$64000000
+	dc.l	L005F2,L005F3	; two handed sword
+	dc.w	$6400,$0000
 
-	dc.l	L005F4		; dart
-	dc.l	L005F5
-	dc.l	$64000030	;ISMANY|ISMISL
+	dc.l	L005F4,L005F5	; dart
+	dc.w	$6400,O_ISMANY|O_ISMISL
 
-	dc.l	L005F6		; crossbow
-	dc.l	L005F7
-	dc.l	$64000000
+	dc.l	L005F6,L005F7	; crossbow
+	dc.w	$6400,$0000
 
-	dc.l	L005F8		; crossbow bolts (better with crossbow)
-	dc.l	L005F9
-	dc.l	$07000030	;ISMANY|ISMISL
+	dc.l	L005F8,L005F9	; crossbow bolts (better with crossbow)
+	dc.w	$0700,O_ISMANY|O_ISMISL
 
-	dc.l	L005FA		; flail
-	dc.l	L005FB
-	dc.l	$64000000
+	dc.l	L005FA,L005FB	; flail
+	dc.w	$6400,$0000
 
 _between:	dc.w	$0000
 
