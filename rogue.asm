@@ -3,12 +3,14 @@
 ;Disassembled File  : Rogue
 ;FileSize in Bytes  : 0109976
 
+; vasmm68k_mot -m68010 -Fhunkexe rogue.asm -o rogue -I include -esc -databss -nosym -opt-allbra
+
  include 'exec/exec_lib.i'
  include 'dos/dos_lib.i'
  include 'intuition/intuition_lib.i'
  include 'graphics/graphics_lib.i'
 
- include 'rogueA.i'
+ include 'rogue.i'
 
 	SECTION "",CODE       ;000 084512
 
@@ -40,12 +42,12 @@ _init_player:
 	MOVE.W	D0,-$609E(A4)	;_food_left
 
 	CLR.W	d1
-	MOVE.W	#$1036,d0
+	MOVE.W	#$1036,d0	;4150
 	MOVE.L	-$52D2(A4),a0	;__things
 	JSR	_memset
 
 	CLR.W	d1
-	MOVE.W	#$00A6,d0
+	MOVE.W	#$00A6,d0	;166
 	MOVE.L	-$52CE(A4),a0	;__t_alloc
 	JSR	_memset
 
@@ -1736,7 +1738,7 @@ L000FC:
 	CMP.W	#$0014,D4
 	BGE.B	L000FD
 
-	TST.W	$000C(A5)
+	TST.W	$000C(A5)	;_graphics_disabled inside here
 	BNE.B	L000FD
 
 	MOVEQ	#10,D3
@@ -1791,8 +1793,10 @@ _standend:
 
 _wtext:
 ;	LINK	A5,#-$0000
+
 	TST.B	-$7064(A4)	;_map_up
 	BEQ.B	L00100
+
 	MOVE.L	-$5150(A4),-$77E4(A4)	;_StdScr
 	PEA	-$7802(A4)
 	JSR	_OpenWindow
@@ -1800,6 +1804,7 @@ _wtext:
 	MOVE.L	D0,-$5144(A4)	;_TextWin
 ;	TST.L	D0
 	BNE.B	L000FF
+
 	PEA	L00101(PC)	;"No Alternate Window"
 	JSR	_fatal
 	ADDQ.W	#4,A7
@@ -1815,10 +1820,13 @@ L00101:	dc.b	"No Alternate Window",0
 
 _wmap:
 ;	LINK	A5,#-$0000
+
 	TST.B	-$7064(A4)	;_map_up
 	BNE.B	L00102
+
 	TST.L	-$5144(A4)	;_TextWin
 	BEQ.B	L00102
+
 	MOVE.L	-$5144(A4),-(A7)	;_TextWin
 	JSR	_CloseWindowSafely(PC)
 	ADDQ.W	#4,A7
@@ -1987,6 +1995,7 @@ __clearbot:
 
 __clrtoeol:
 ;	LINK	A5,#-$0000
+
 	MOVE.W	-$5154(A4),D3	;_p_row
 	EXT.L	D3
 	MOVEA.L	D3,A6
@@ -1998,10 +2007,12 @@ __clrtoeol:
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_GfxMove
 	LEA	$000C(A7),A7
+
 	MOVEA.L	-$514C(A4),A6	;_StdWin
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_ClearEOL
 	ADDQ.W	#4,A7
+
 ;	UNLK	A5
 	RTS
 
@@ -2988,10 +2999,12 @@ L0015C:	dc.b	"\x%x",0
 _status:
 	LINK	A5,#-$0004
 	MOVE.L	D4,-(A7)
+
 	PEA	-$0004(A5)
 	PEA	-$0002(A5)
 	JSR	_getrc
 	ADDQ.W	#8,A7
+
 	TST.B	-$66FB(A4)	;_new_stats
 	BNE.B	L0015D
 	MOVE.W	-$54EC(A4),D3
@@ -3096,8 +3109,8 @@ L00167:
 	MOVE.W	D4,-$54E2(A4)	;last printed armor class
 
 L00168:
-	MOVEq	#$0034,d1
-	MOVEq	#$0014,d0
+	MOVEq	#52,d1
+	MOVEq	#20,d0
 	JSR	_movequick
 
 	MOVE.L	-$52B0(A4),-(A7)	;_player + 26 (EXP)
@@ -8761,6 +8774,7 @@ L003F9:
 	JSR	_get_dir(PC)
 	TST.W	D0
 	BEQ.B	L003FB
+
 	MOVE.W	-$52BE(A4),D3	;_player + 12
 	ADD.W	-$608A(A4),D3
 	MOVE.W	D3,-$0006(A5)
@@ -8780,6 +8794,7 @@ L003F9:
 	ADDQ.W	#2,A7
 	CMP.W	#$000E,D0
 	BEQ.B	L003FA
+
 	PEA	L00413(PC)	;"no trap there."
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -10900,10 +10915,11 @@ _cursor:
 
 _clrtoeol:
 ;	LINK	A5,#-$0000
+
 	TST.B	-$7064(A4)	;_map_up
 	BEQ.B	1$
 
-	MOVEq	#$0020,d1
+	MOVEq	#32,d1		;space for memset
 
 	MOVEQ	#$00,D3
 	MOVE.B	-$7065(A4),D3	;_c_col
@@ -11398,16 +11414,21 @@ L004F2:
 	MOVEA.L	$001C(A6),A3
 	CMP.L	#$00002000,D4
 	BNE.B	L004F7
+
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	CMP.w	#$0001,D3
 	BNE.B	L004F6
+
 	TST.B	-$48B8(A4)	;_menu_on
 	BEQ.B	L004F5
+
 	TST.B	-$7064(A4)	;_map_up
 	BEQ.B	L004F5
+
 	CMP.W	#$0000,D7
 	BLT.B	L004F3
+
 	MOVE.W	D6,D3
 	EXT.L	D3
 	AND.L	#$00000080,D3
@@ -11526,6 +11547,7 @@ L00502:
 L00503:
 	TST.B	-$7064(A4)	;_map_up
 	BNE.B	L00504
+
 	CLR.W	-$001E(A5)
 	MOVE.W	-$7060(A4),-(A7)
 	JSR	_sel_char(PC)
@@ -11549,6 +11571,7 @@ L00504:
 L00505:
 	TST.B	-$7064(A4)	;_map_up
 	BEQ.B	L00506
+
 	MOVE.W	D6,D3
 ;	EXT.L	D3
 	AND.L	#$00000003,D3
@@ -20607,7 +20630,7 @@ _swing:
 	JSR	_rnd
 
 	MOVEQ	#20,D3
-	SUB.W	$0004(A7),D3
+	SUB.W	$0004(A7),D3	;creature/player rank
 	SUB.W	$0006(A7),D3
 	ADD.W	$0008(A7),D0
 	CMP.W	D3,D0
@@ -20616,7 +20639,7 @@ _swing:
 	MOVEq	#$0001,D0
 	BRA.B	2$
 
-1$	CLR.W	D0
+1$	CLR.W	D0		;zero means swing did miss
 
 2$	RTS
 
@@ -20909,11 +20932,12 @@ L00998:
 	ADDQ.W	#4,A7
 
 	MOVE.W	D0,-$0008(A5)	;nsides
+
 	MOVE.W	(A2),-(A7)
 	JSR	_str_plus(PC)
 	ADDQ.W	#2,A7
 
-	ADD.W	D5,D0
+	ADD.W	D5,D0			;hplus += str_hit
 	MOVE.W	D0,-(A7)
 	MOVE.W	-$000A(A5),-(A7)
 	MOVE.W	$0006(A2),-(A7)
@@ -20927,7 +20951,7 @@ L00998:
 	JSR	_roll
 	ADDQ.W	#4,A7
 
-	MOVE.W	D0,-$000C(A5)
+	MOVE.W	D0,-$000C(A5)		;get damage from strength
 	MOVE.W	(A2),-(A7)
 	JSR	_add_dam(PC)
 	ADDQ.W	#2,A7
@@ -22114,6 +22138,7 @@ _wake_monster:
 	MOVEA.L	D0,A2
 	TST.L	D0
 	BNE.B	L00A31
+
 	MOVE.L	A2,D0
 L00A30:
 	MOVEM.L	(A7)+,D4/D5/A2/A3
@@ -22467,17 +22492,21 @@ L00A6C:
 	MOVE.W	-$001A(A5),D3
 	ADD.W	-$001C(A5),D3
 	ADD.W	D3,-$0016(A5)
+
 	CLR.W	-$001E(A5)
 L00A6D:
 	MOVEA.L	$0008(A5),A6
 	TST.L	(A6)
 	BEQ.W	L00A70
+
 	MOVE.W	#$0022,-(A7)
 	JSR	_malloc
 	ADDQ.W	#2,A7
+
 	MOVE.L	D0,-$000C(A5)
 	TST.L	-$0004(A5)
 	BEQ.B	L00A6E
+
 	MOVEA.L	-$0004(A5),A6
 	MOVE.L	-$000C(A5),(A6)
 	BRA.B	L00A6F
@@ -22594,14 +22623,17 @@ L00A74:
 
 _InstallMenus:
 ;	LINK	A5,#-$0000
+
 	PEA	-$678A(A4)	;_menu_bar
 	JSR	_BuildMenu(PC)
 	ADDQ.W	#4,A7
 	MOVE.L	D0,-$53A2(A4)
+
 	MOVE.L	-$53A2(A4),-(A7)
 	MOVE.L	-$5148(A4),-(A7)
 	JSR	_SetMenuStrip(PC)
 	ADDQ.W	#8,A7
+
 ;	UNLK	A5
 	RTS
 
@@ -22680,9 +22712,10 @@ L00A82:
 	BEQ.B	L00A81
 	BRA.B	L00A8A
 L00A84:
-	PEA	L00A8C(PC)
+	PEA	L00A8C(PC)	;"",0
 	JSR	_msg
 	ADDQ.W	#4,A7
+
 	MOVE.L	D5,D3
 	ASR.L	#5,D3
 	AND.w	#$003F,D3
@@ -22703,10 +22736,10 @@ L00A85:
 	MOVE.W	D2,D6
 	BRA.B	L00A8A
 L00A87:
-	dc.w	L00A76-L00A89
-	dc.w	L00A7F-L00A89
-	dc.w	L00A84-L00A89
-	dc.w	L00A85-L00A89
+	dc.w	L00A76-L00A89	;Game menu
+	dc.w	L00A7F-L00A89	;Options Menu
+	dc.w	L00A84-L00A89	;Use menu
+	dc.w	L00A85-L00A89	;Command menu
 L00A88:
 	CMP.w	#$0004,D0
 	BCC.B	L00A86
@@ -22725,6 +22758,7 @@ L00A8B:
 	CMP.L	#$0000FFFF,D4
 	BNE.W	L00A75
 	MOVE.W	D6,D0
+
 	MOVEM.L	(A7)+,D4-D6/A2/A3
 	UNLK	A5
 	RTS
@@ -22734,6 +22768,7 @@ L00A8C:	dc.w	$0000
 _want_a_menu:
 	LINK	A5,#-$000A
 	MOVEM.L	D4-D7/A2/A3,-(A7)
+
 	MOVE.L	-$53A2(A4),-$0006(A5)
 	BRA.B	L00A8E
 L00A8D:
@@ -22742,11 +22777,13 @@ L00A8D:
 L00A8E:
 	TST.L	-$0006(A5)
 	BEQ.B	L00A8F
+
 	PEA	L00A9B(PC)	;"Use"
 	MOVEA.L	-$0006(A5),A6
 	MOVE.L	$000E(A6),-(A7)
 	JSR	_strcmp
 	ADDQ.W	#8,A7
+
 	TST.W	D0
 	BNE.B	L00A8D
 L00A8F:
@@ -22884,16 +22921,19 @@ L00A9B:	dc.b	"Use",0
 _use_obj:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	MOVE.L	A2,-(A7)
 	JSR	_typeof
 	ADDQ.W	#4,A7
+
 ;	EXT.L	D0
 	BRA	L00AA9
 L00A9C:
 	JSR	_get_dir(PC)
 	TST.W	D0
 	BEQ.B	L00A9D
+
 	MOVE.L	A2,-(A7)
 	JSR	_do_zap
 	ADDQ.W	#4,A7
@@ -22934,6 +22974,7 @@ L00AA5:
 	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	CMPA.L	A2,A6
 	BEQ.B	L00AA6
+
 	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	CMPA.L	A2,A6
 	BNE.B	L00AA7
@@ -25789,9 +25830,11 @@ L00C0C:
 	MULS.W	#$0006,D3
 	TST.L	$00(A3,D3.L)
 	BEQ.B	L00C0D
+
 	ADDQ.W	#1,D5
 	CMP.W	#$0014,D5
 	BLT.B	L00C0C
+
 	MOVEQ	#$08,D6
 	BRA.W	L00C12
 L00C0D:
@@ -27258,6 +27301,7 @@ __main:
 ;	TST.L	D0
 ;	BNE.B	L00CA1
 	bne	L00CA2		; no need for mathffp.library
+
 	CLR.L	-(A7)
 	PEA	$00038007
 	JSR	_Alert(PC)
@@ -27286,6 +27330,7 @@ L00CA2:
 	MOVEA.L	D0,A3
 	TST.L	$00AC(A3)
 	BEQ.W	L00CAB
+
 	MOVE.L	$00AC(A3),D3
 	ASL.L	#2,D3
 	MOVE.L	D3,D5
