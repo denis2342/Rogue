@@ -1763,9 +1763,8 @@ _SetOffset:
 
 __move:
 	LINK	A5,#-$0000
-	MOVEM.L	D4/D5,-(A7)
+	MOVE.L	D4,-(A7)
 
-	MOVE.W	$000A(A5),D5
 	MOVE.W	$0008(A5),D4
 	BGT.B	L000FC
 
@@ -1774,47 +1773,43 @@ __move:
 L000FC:
 	CMP.W	#$0014,D4
 	BGE.B	L000FD
+
 	TST.W	$000C(A5)
 	BNE.B	L000FD
 
-	MOVEQ	#$0A,D3
+	MOVEQ	#10,D3
 	BRA.B	L000FE
 L000FD:
 	MOVEQ	#$08,D3
 L000FE:
-	MULU.W	D5,D3
-	ADD.W	-$77D0(A4),D3	;_Window2 + 50
+	MULU.W	$000A(A5),D3
+	ADD.W	-$77D0(A4),D3	;_Window2 + 50m,
 	MOVE.W	D3,-$5152(A4)	;_p_col
 
 	MULU.W	#$0009,D4
 	ADD.W	-$77D2(A4),D4	;_Window2 + 48
 	MOVE.W	D4,-$5154(A4)	;_p_row
 
-	MOVEM.L	(A7)+,D4/D5
+	MOVE.L	(A7)+,D4
 	UNLK	A5
 	RTS
 
 _alloc_raster:
 	LINK	A5,#-$0000
-	MOVEM.L	D4/D5,-(A7)
+
 	MOVE.W	$0008(A5),D3
 	ADD.W	#$000F,D3
 	ASR.W	#3,D3
 	AND.W	#$FFFE,D3
-	MOVE.W	D3,D4
-	MULU.W	$000A(A5),D4
-	MOVE.W	D4,D3
+	MULU.W	$000A(A5),D3
 	ADDQ.W	#1,D3
 	EXT.L	D3
 	MOVE.L	D3,-(A7)
 	JSR	_lmalloc2	;-$7B86(A4)
 	ADDQ.W	#4,A7
-;	MOVE.L	D0,D5
-	MOVE.L	D0,D3
-	ADDQ.L	#1,D3
-	AND.L	#$FFFFFFFE,D3
-	MOVE.L	D3,D0
-	MOVEM.L	(A7)+,D4/D5
+
+	ADDQ.L	#1,D0
+	AND.L	#$FFFFFFFE,D0
 	UNLK	A5
 	RTS
 
@@ -2095,70 +2090,61 @@ L00109:
 ;	CMP.W	#$0000,D0
 	BGE.B	L0010B
 	PEA	L00118(PC)	;"No rogue.char file"
-	JSR	_fatal		;-$7DC6(A4)
+	JSR	_fatal
 	ADDQ.W	#4,A7
 L0010B:
 	MOVE.W	#$0002,-(A7)
 	PEA	-$0002(A5)
 	MOVE.W	D5,-(A7)
-	JSR	_read		;-$7BCE(A4)
+	JSR	_read
 	ADDQ.W	#8,A7
 	CMP.W	#$0002,D0
 	BNE.B	L0010E
 	MOVEQ	#$00,D6
 L0010C:
-	MOVE.W	-$0002(A5),D3
-	EXT.L	D3
-	ASL.L	#4,D3
-	MOVE.W	D6,D2
-	EXT.L	D2
-	ASL.L	#2,D2
-	ADD.L	D2,D3
-	LEA	-$5140(A4),A6	;_char_data
-	MOVE.L	D3,-(A7)
-	MOVE.L	A6,-(A7)
 	MOVE.W	#$0009,-(A7)
 	MOVE.W	#$000A,-(A7)
 	JSR	_alloc_raster(PC)
 	ADDQ.W	#4,A7
-	MOVEA.L	(A7)+,A6
-	MOVE.L	(A7)+,D3
-	MOVE.L	D0,$00(A6,D3.L)
-;	TST.L	D0
-	BNE.B	L0010D
-	PEA	L00119(PC)
-	JSR	_fatal		;-$7DC6(A4)
-	ADDQ.W	#4,A7
-L0010D:
-	MOVE.W	#$0012,-(A7)
+
 	MOVE.W	-$0002(A5),D3
 	EXT.L	D3
 	ASL.L	#4,D3
-	MOVE.W	D6,D2
-	EXT.L	D2
+	MOVE.L	D6,D2
 	ASL.L	#2,D2
 	ADD.L	D2,D3
+
 	LEA	-$5140(A4),A6	;_char_data
+	MOVE.L	D0,$00(A6,D3.L)
+	BNE.B	L0010D
+
+	PEA	L00119(PC)
+	JSR	_fatal
+	ADDQ.W	#4,A7
+L0010D:
+	MOVE.W	#$0012,-(A7)
 	MOVE.L	$00(A6,D3.L),-(A7)
 	MOVE.W	D5,-(A7)
-	JSR	_read		;-$7BCE(A4)
+	JSR	_read
 	ADDQ.W	#8,A7
 	ADDQ.W	#1,D6
 	CMP.W	#$0004,D6
 	BLT.B	L0010C
+
 	BRA.W	L0010B
 L0010E:
 	MOVE.W	D5,-(A7)
-	JSR	_close		;-$7B46(A4)
+	JSR	_close
 	ADDQ.W	#2,A7
+
 	PEA	-$7852(A4)
-	JSR	_OpenScreen	;-$7A7E(A4)
+	JSR	_OpenScreen
 	ADDQ.W	#4,A7
 	MOVE.L	D0,-$5150(A4)	;_StdScr
 ;	TST.L	D0
 	BNE.B	L0010F
 	PEA	L0011A(PC)	;"No Screen"
-	JSR	_fatal		;-$7DC6(A4)
+	JSR	_fatal
 	ADDQ.W	#4,A7
 L0010F:
 	PEA	$0009
