@@ -8,6 +8,32 @@
  include 'intuition/intuition_lib.i'
  include 'graphics/graphics_lib.i'
 
+R_PROTECT	equ	0
+R_ADDSTR	equ	1
+R_SUSTSTR	equ	2
+R_SEARCH	equ	3
+R_SEEINVIS	equ	4
+R_NOP		equ	5
+R_AGGR		equ	6
+R_ADDHIT	equ	7
+R_ADDDAM	equ	8
+R_REGEN		equ	9
+R_DIGEST	equ	10
+R_TELEPORT	equ	11
+R_STEALTH	equ	12
+R_SUSTARM	equ	13
+MAXRINGS	equ	14
+
+LEATHER		equ	0
+RING_MAIL	equ	1
+STUDDED_LEATHER	equ	2
+SCALE_MAIL	equ	3
+CHAIN_MAIL	equ	4
+SPLINT_MAIL	equ	5
+BANDED_MAIL	equ	6
+PLATE_MAIL	equ	7
+MAXARMORS	equ	8
+
 	SECTION "",CODE       ;000 084512
 
 __Corg:
@@ -1498,13 +1524,13 @@ L000D9:
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L000DA
 	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
-	CMPI.W	#$0002,$0020(A6)	;ring of sustain strength
+	CMPI.W	#R_SUSTSTR,$0020(A6)	;ring of sustain strength
 	BEQ.B	L000DC
 L000DA:
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BEQ.B	L000DB
 	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
-	CMPI.W	#$0002,$0020(A6)	;ring of sustain strength
+	CMPI.W	#R_SUSTSTR,$0020(A6)	;ring of sustain strength
 	BEQ.B	L000DC
 L000DB:
 	CLR.W	-(A7)
@@ -3005,7 +3031,7 @@ L00164:
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L00165
 	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
-	TST.W	$0020(A6)
+	CMP.W	#R_PROTECT,$0020(A6)
 	BNE.B	L00165
 ;	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	SUB.W	$0026(A6),D4
@@ -3013,7 +3039,7 @@ L00165:
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BEQ.B	L00166
 	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
-	TST.W	$0020(A6)
+	CMP.W	#R_PROTECT,$0020(A6)
 	BNE.B	L00166
 ;	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	SUB.W	$0026(A6),D4
@@ -5773,7 +5799,7 @@ _find_dest:
 	MOVEA.L	$0008(A5),A2
 	MOVE.B	$000F(A2),D3
 	EXT.W	D3
-	SUB.W	#$0041,D3
+	SUB.W	#$0041,D3	;'A'
 	MULS.W	#$001A,D3
 	LEA	-$6CA4(A4),A6
 	MOVE.W	$00(A6,D3.L),D4
@@ -7629,7 +7655,7 @@ L00375:
 L00376:
 	MOVEQ	#$00,D3
 	MOVE.B	D5,D3
-	SUB.W	#$0041,D3	;A
+	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
 	LEA	-$6CA8(A4),A6	;_monsters
 	MOVE.L	$00(A6,D3.L),-(A7)
@@ -9821,27 +9847,27 @@ L00472:
 ;	RTS
 
 _isupper:
-	moveq	#1,d3
+	moveq	#$1,d3
 	bra	chartest
 
 _islower:
-	moveq	#2,d3
+	moveq	#$2,d3
 	bra	chartest
 
 _isalpha:
-	moveq	#3,d3
+	moveq	#$3,d3
 	bra	chartest
 
 _isdigit:
-	moveq	#4,d3
+	moveq	#$4,d3
 	bra	chartest
 
 _isspace:
-	moveq	#16,d3
+	moveq	#$10,d3
 	bra	chartest
 
 _isprint:
-	move.w	#$c7,d3
+	move.w	#$c7,d3		;upper | lower | digit | $40 | $80
 ;	bra	chartest
 
 chartest:
@@ -9852,7 +9878,7 @@ chartest:
 	rts
 2$
 	LEA	-$55CA(A4),A6		;_ctp_
-	MOVE.B	$01(A6,D0.W),D0
+	MOVE.B	$00(A6,D0.W),D0
 	AND.W	d3,D0
 	RTS
 
@@ -10053,13 +10079,13 @@ L00489:
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L0048A
 	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
-	CMPI.W	#$0002,$0020(A6)
+	CMPI.W	#R_SUSTSTR,$0020(A6)
 	BEQ.B	L0048C
 L0048A:
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BEQ.B	L0048B
 	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
-	CMPI.W	#$0002,$0020(A6)
+	CMPI.W	#R_SUSTSTR,$0020(A6)
 	BEQ.B	L0048C
 L0048B:
 	MOVE.W	#$0003,-(A7)
@@ -10284,7 +10310,7 @@ L004A1:
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L004A2
 	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
-	CMPI.W	#$0001,$0020(A6)
+	CMPI.W	#R_ADDSTR,$0020(A6)
 	BNE.B	L004A2
 ;	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	MOVE.W	$0026(A6),D3
@@ -10297,7 +10323,7 @@ L004A2:
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BEQ.B	L004A3
 	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
-	CMPI.W	#$0001,$0020(A6)
+	CMPI.W	#R_ADDSTR,$0020(A6)
 	BNE.B	L004A3
 ;	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	MOVE.W	$0026(A6),D3
@@ -10315,7 +10341,7 @@ L004A4:
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L004A5
 	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
-	CMPI.W	#$0001,$0020(A6)
+	CMPI.W	#R_ADDSTR,$0020(A6)
 	BNE.B	L004A5
 ;	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	MOVE.W	$0026(A6),-(A7)
@@ -10326,7 +10352,7 @@ L004A5:
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BEQ.B	L004A6
 	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
-	CMPI.W	#$0001,$0020(A6)
+	CMPI.W	#R_ADDSTR,$0020(A6)
 	BNE.B	L004A6
 ;	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	MOVE.W	$0026(A6),-(A7)
@@ -11791,13 +11817,9 @@ _drop:
 	ADDQ.W	#4,A7
 	MOVEA.L	-$519C(A4),A6	;__level
 	MOVE.B	$00(A6,D0.W),D4
-	MOVEQ	#$00,D3
-	MOVE.B	D4,D3
-	CMP.W	#$002E,D3
+	CMP.b	#$2E,D4		;'.'
 	BEQ.B	L0052D
-	MOVEQ	#$00,D3
-	MOVE.B	D4,D3
-	CMP.W	#$0023,D3
+	CMP.b	#$23,D4		;'#'
 	BEQ.B	L0052D
 	PEA	L00535(PC)	;"there is something there already"
 	JSR	_msg		;-$7F76(A4)
@@ -11814,16 +11836,12 @@ L0052D:
 	ADDQ.W	#6,A7
 	MOVEA.L	D0,A3
 	TST.L	D0
-	BNE.B	L0052E
-	BRA.B	L0052C
-L0052E:
+	BEQ.B	L0052C
 	MOVE.L	A3,-(A7)
 	JSR	_can_drop(PC)
 	ADDQ.W	#4,A7
 	TST.W	D0
-	BNE.B	L0052F
-	BRA.B	L0052C
-L0052F:
+	BEQ.B	L0052C
 	CMPI.W	#$0002,$001E(A3)
 	BLT.B	L00530
 	TST.W	$002C(A3)
@@ -11858,7 +11876,7 @@ L00533:
 	ADDA.L	#$0000000C,A6
 	LEA	-$52C0(A4),A1	;_player + 10
 	MOVE.L	(A1)+,(A6)+
-	CMPI.W	#$002C,$000A(A3)
+	CMPI.W	#$002C,$000A(A3)	;','
 	BNE.B	L00534
 	CLR.B	-$66BD(A4)	;_amulet
 L00534:
@@ -11887,6 +11905,7 @@ _can_drop:
 	MOVEA.L	$0008(A5),A2
 	MOVE.L	A2,D3
 	BNE.B	L00539
+L00538b:
 	MOVEQ	#$01,D0
 L00538:
 	MOVEM.L	(A7)+,D4/A2
@@ -11901,9 +11920,7 @@ L00539:
 	CMPA.L	-$5190(A4),A2	;_cur_ring_1
 	BEQ.B	L0053A
 	CMPA.L	-$518C(A4),A2	;_cur_ring_2
-	BEQ.B	L0053A
-	MOVEQ	#$01,D0
-	BRA.B	L00538
+	BNE.B	L00538b
 L0053A:
 	MOVE.W	$0028(A2),D3
 	AND.W	#$0001,D3	; check for ISCURSED bit
@@ -11926,32 +11943,29 @@ L0053C:
 	BRA.B	L00542
 L0053D:
 	MOVEQ	#$00,D3
-	MOVE.W	D3,D4
-;	EXT.L	D3
-;	ASL.L	#2,D3
-	LEA	-$5190(A4),A6	;_cur_ring_1
-	MOVEA.L	$00(A6,D3.w),A1
-	CMPA.L	A2,A1
+	LEA	-$5190(A4),A6	;_cur_ring_x
+	CMPA.L	$00(A6,D3.w),A2	;ring slot 0
 	BEQ.B	L0053E
-	MOVEQ	#$01,D3
-	MOVE.W	D3,D4
-;	EXT.L	D3
-	ASL.w	#2,D3
-	LEA	-$5190(A4),A6	;_cur_ring_1
-	MOVEA.L	$00(A6,D3.w),A1
-	CMPA.L	A2,A1
-	BEQ.B	L0053E
-	MOVEQ	#$01,D0
-	BRA.W	L00538
+	MOVEQ	#$04,D3
+	CMPA.L	$00(A6,D3.w),A2	;ring slot 1
+	BNE.B	L00538b
 L0053E:
-	MOVE.W	D4,D3
-;	EXT.L	D3
-	ASL.w	#2,D3
-	LEA	-$5190(A4),A6	;_cur_ring_1
+;	LEA	-$5190(A4),A6	;_cur_ring_x
 	CLR.L	$00(A6,D3.w)
-	MOVE.W	$0020(A2),D0
+	MOVE.W	$0020(A2),D0	;ring id
 ;	EXT.L	D0
-	BRA.B	L00541
+
+	SUBQ.w	#1,D0	; ring of add strength
+	BEQ.B	L0053F
+	SUBQ.w	#3,D0	; ring of see invisible
+	BEQ.B	L00540
+L00542:
+	MOVE.W	#$0001,-(A7)
+	MOVE.L	A2,-(A7)
+	JSR	_pack_name		;-$7EF6(A4)
+	ADDQ.W	#6,A7
+	BRA.W	L00538b
+
 L0053F:
 	MOVE.W	$0026(A2),D3
 	NEG.W	D3
@@ -11965,18 +11979,6 @@ L00540:
 	JSR	_extinguish(PC)
 	ADDQ.W	#4,A7
 	BRA.B	L00542
-L00541:
-	SUBQ.w	#1,D0	; ring of add strength
-	BEQ.B	L0053F
-	SUBQ.w	#3,D0	; ring of see invisible
-	BEQ.B	L00540
-L00542:
-	MOVE.W	#$0001,-(A7)
-	MOVE.L	A2,-(A7)
-	JSR	_pack_name		;-$7EF6(A4)
-	ADDQ.W	#6,A7
-	MOVEQ	#$01,D0
-	BRA.W	L00538
 
 L00543:	dc.b	"you can't.  It appears to be cursed",0
 
@@ -14111,14 +14113,14 @@ L00640:	CMPI.W	#$0003,-$60A0(A4)	;_quiet
 L00641:	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L00642
-	CMPI.W	#$0009,$0020(A6)	; 9 = ring of regeneration
+	CMPI.W	#R_REGEN,$0020(A6)	; 9 = ring of regeneration
 	BNE.B	L00642
 	ADDQ.W	#1,-$52A8(A4)	;_player + 34 (hp)
 
 L00642:	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BEQ.B	L00643
-	CMPI.W	#$0009,$0020(A6)	; 9 = ring of regeneration
+	CMPI.W	#R_REGEN,$0020(A6)	; 9 = ring of regeneration
 	BNE.B	L00643
 	ADDQ.W	#1,-$52A8(A4)	;_player + 34 (hp)
 
@@ -17660,7 +17662,7 @@ L00863:
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L00864
 	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
-	CMPI.W	#$0001,$0020(A6)
+	CMPI.W	#R_ADDSTR,$0020(A6)
 	BNE.B	L00864
 ;	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	MOVE.W	$0026(A6),D3
@@ -17673,7 +17675,7 @@ L00864:
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BEQ.B	L00865
 	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
-	CMPI.W	#$0001,$0020(A6)
+	CMPI.W	#R_ADDSTR,$0020(A6)
 	BNE.B	L00865
 ;	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	MOVE.W	$0026(A6),D3
@@ -17809,25 +17811,25 @@ L00871:
 	MOVE.L	A6,D0
 	BRA.B	L00870
 L00872:
-	SUB.w	#$0041,D0
+	SUB.w	#$0041,D0	;'A'
 	BEQ.B	L0086F
-	SUBQ.w	#4,D0
+	SUBQ.w	#4,D0		;'E'
 	BEQ.B	L0086F
-	SUBQ.w	#4,D0
+	SUBQ.w	#4,D0		;'I'
 	BEQ.B	L0086F
-	SUBQ.w	#6,D0
+	SUBQ.w	#6,D0		;'O'
 	BEQ.B	L0086F
-	SUBQ.w	#6,D0
+	SUBQ.w	#6,D0		;'U'
 	BEQ.B	L0086F
-	SUB.w	#$000C,D0
+	SUB.w	#$000C,D0	;'a'
 	BEQ.B	L0086F
-	SUBQ.w	#4,D0
+	SUBQ.w	#4,D0		;'e'
 	BEQ.B	L0086F
-	SUBQ.w	#4,D0
+	SUBQ.w	#4,D0		;'i'
 	BEQ.B	L0086F
-	SUBQ.w	#6,D0
+	SUBQ.w	#6,D0		;'o'
 	BEQ.B	L0086F
-	SUBQ.w	#6,D0
+	SUBQ.w	#6,D0		;'u'
 	BEQ.B	L0086F
 	BRA.B	L00871
 ;	BRA.B	L00870
@@ -19996,21 +19998,22 @@ L0094E:
 	TST.L	-$5294(A4)	;_cur_armor
 	BEQ.B	L00952
 	MOVEA.L	-$5294(A4),A6	;_cur_armor
-	CMPI.W	#$0009,$0026(A6)
+	CMPI.W	#$0009,$0026(A6)	;dont go lower than 2 (11-9)
 	BGE.B	L00952
-	MOVEA.L	-$5294(A4),A6	;_cur_armor
-	TST.W	$0020(A6)
+;	MOVEA.L	-$5294(A4),A6	;_cur_armor
+	TST.W	$0020(A6)	;check for LEATHER
 	BEQ.B	L00952
+
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L0094F
 	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
-	CMPI.W	#$000D,$0020(A6)
+	CMPI.W	#R_SUSTARM,$0020(A6)
 	BEQ.B	L00950
 L0094F:
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BEQ.B	L00951
 	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
-	CMPI.W	#$000D,$0020(A6)
+	CMPI.W	#R_SUSTARM,$0020(A6)
 	BNE.B	L00951
 L00950:
 	PEA	L00977(PC)	;"the rust vanishes instantly"
@@ -20022,7 +20025,7 @@ L00951:
 	JSR	_msg		;-$7F76(A4)
 	ADDQ.W	#4,A7
 	MOVEA.L	-$5294(A4),A6	;_cur_armor
-	ADDQ.W	#1,$0026(A6)
+	ADDQ.W	#1,$0026(A6)	;lower is better
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	-$5294(A4),-(A7)	;_cur_armor
 	JSR	_pack_name		;-$7EF6(A4)
@@ -20044,13 +20047,13 @@ L00955:
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L00956
 	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
-	CMPI.W	#$0002,$0020(A6)
+	CMPI.W	#R_SUSTSTR,$0020(A6)
 	BEQ.B	L00958
 L00956:
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BEQ.B	L00957
 	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
-	CMPI.W	#$0002,$0020(A6)
+	CMPI.W	#$0002,$0020(A6)	;R_SUSTSTR
 	BEQ.B	L00958
 L00957:
 	MOVE.W	#$FFFF,-(A7)
@@ -20157,61 +20160,35 @@ L00965:
 	LEA	$000A(A7),A7
 	BRA.W	L00973
 L00966:
-	MOVE.W	-$60B2(A4),D3	;_purse
-	EXT.L	D3
-	MOVE.L	D3,D4
-	MOVE.W	-$60B4(A4),D3	;_level
-	MULU.W	#$000A,D3
-	ADD.W	#$0032,D3
-	MOVE.W	D3,-(A7)
-	JSR	_rnd		;-$7DD6(A4)
-	ADDQ.W	#2,A7
-	ADDQ.W	#2,D0
-	SUB.W	D0,-$60B2(A4)	;_purse
+	move.w	-$60B2(A4),D4	;_purse
+
+	bsr	goldcalc
+	sub.w	D0,D4
+
 	MOVE.W	#$0003,-(A7)
 	JSR	_save(PC)
 	ADDQ.W	#2,A7
 	TST.W	D0
 	BNE.B	L00967
-	MOVE.W	-$60B4(A4),D3	;_level
-	MULU.W	#$000A,D3
-	ADD.W	#$0032,D3
-	MOVE.W	D3,-(A7)
-	JSR	_rnd		;-$7DD6(A4)
-	ADDQ.W	#2,A7
-	MOVE.W	D0,-(A7)
-	MOVE.W	-$60B4(A4),D3	;_level
-	MULU.W	#$000A,D3
-	ADD.W	#$0032,D3
-	MOVE.W	D3,-(A7)
-	JSR	_rnd		;-$7DD6(A4)
-	ADDQ.W	#2,A7
-	MOVE.W	(A7)+,D3
-	ADD.W	D0,D3
-	MOVE.W	D3,-(A7)
-	MOVE.W	-$60B4(A4),D3	;_level
-	MULU.W	#$000A,D3
-	ADD.W	#$0032,D3
-	MOVE.W	D3,-(A7)
-	JSR	_rnd		;-$7DD6(A4)
-	ADDQ.W	#2,A7
-	MOVE.W	(A7)+,D3
-	ADD.W	D0,D3
-	MOVE.W	D3,-(A7)
-	MOVE.W	-$60B4(A4),D3	;_level
-	MULU.W	#$000A,D3
-	ADD.W	#$0032,D3
-	MOVE.W	D3,-(A7)
-	JSR	_rnd		;-$7DD6(A4)
-	ADDQ.W	#2,A7
-	MOVE.W	(A7)+,D3
-	ADD.W	D0,D3
-	ADDQ.W	#8,D3
-	SUB.W	D3,-$60B2(A4)	;_purse
+
+	bsr	goldcalc
+	sub.w	D0,D4
+	bsr	goldcalc
+	sub.w	D0,D4
+	bsr	goldcalc
+	sub.w	D0,D4
+	bsr	goldcalc
+	sub.w	D0,D4
+
 L00967:
-	CMPI.W	#$0000,-$60B2(A4)	;_purse
-	BGE.B	L00968
-	CLR.W	-$60B2(A4)	;_purse
+;	tst.W	-$60B2(A4)	;_purse
+;	BGE.B	L00968
+;	CLR.W	-$60B2(A4)	;_purse
+
+	tst.w	D4
+	bge	L00968
+	clr.l	D4
+
 L00968:
 	CLR.L	-(A7)
 	MOVE.L	$0008(A5),-(A7)
@@ -20219,10 +20196,11 @@ L00968:
 	PEA	$000A(A6)
 	JSR	_remove(PC)
 	LEA	$000C(A7),A7
+
 	MOVE.W	-$60B2(A4),D3	;_purse
-	EXT.L	D3
-	CMP.L	D4,D3
+	CMP.w	D3,D4
 	BEQ.B	L00969
+	move.w	D4,-$60B2(A4)
 	PEA	L0097E(PC)	;"your purse feels lighter"
 	JSR	_msg		;-$7F76(A4)
 	ADDQ.W	#4,A7
@@ -20553,7 +20531,7 @@ L0098E:
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L0098F
 	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
-	CMPI.W	#$0008,$0020(A6)
+	CMPI.W	#R_ADDDAM,$0020(A6)
 	BNE.B	L0098F
 ;	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	ADD.W	$0026(A6),D6
@@ -20562,7 +20540,7 @@ L0098F:
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L00990
 	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
-	CMPI.W	#$0007,$0020(A6)
+	CMPI.W	#R_ADDHIT,$0020(A6)
 	BNE.B	L00990
 ;	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	ADD.W	$0026(A6),D5
@@ -20570,7 +20548,7 @@ L00990:
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BEQ.B	L00991
 	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
-	CMPI.W	#$0008,$0020(A6)
+	CMPI.W	#R_ADDDAM,$0020(A6)
 	BNE.B	L00991
 ;	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	ADD.W	$0026(A6),D6
@@ -20579,7 +20557,7 @@ L00991:
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BEQ.B	L00992
 	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
-	CMPI.W	#$0007,$0020(A6)
+	CMPI.W	#R_ADDHIT,$0020(A6)
 	BNE.B	L00992
 ;	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	ADD.W	$0026(A6),D5
@@ -20644,7 +20622,7 @@ L00996:
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L00997
 	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
-	TST.W	$0020(A6)
+	CMP.W	#R_PROTECT,$0020(A6)	;test for R_PROTECT
 	BNE.B	L00997
 ;	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	MOVE.W	$0026(A6),D3
@@ -20653,7 +20631,7 @@ L00997:
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BEQ.B	L00998
 	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
-	TST.W	$0020(A6)
+	CMP.W	#R_PROTECT,$0020(A6)	;test for R_PROTECT
 	BNE.B	L00998
 ;	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	MOVE.W	$0026(A6),D3
@@ -21028,12 +21006,14 @@ _save:
 	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
 	MOVE.W	$0008(A5),D4
-	CMP.W	#$0003,D4
+
+	CMP.W	#$0003,D4	;VS_MAGIC
 	BNE.B	L009DA
+
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L009D9
 	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
-	TST.W	$0020(A6)
+	CMP.W	#R_PROTECT,$0020(A6)	;test for R_PROTECT
 	BNE.B	L009D9
 ;	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	SUB.W	$0026(A6),D4
@@ -21041,7 +21021,7 @@ L009D9:
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BEQ.B	L009DA
 	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
-	TST.W	$0020(A6)
+	CMP.W	#R_PROTECT,$0020(A6)	;test for R_PROTECT
 	BNE.B	L009DA
 ;	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	SUB.W	$0026(A6),D4
@@ -21050,6 +21030,7 @@ L009DA:
 	MOVE.W	D4,-(A7)
 	JSR	_save_throw(PC)
 	ADDQ.W	#6,A7
+
 	MOVE.L	(A7)+,D4
 	UNLK	A5
 	RTS
@@ -21379,7 +21360,6 @@ goldcalc:
 	JSR	_rnd		;-$7DD6(A4)
 	ADDQ.W	#2,A7
 	ADDQ.W	#2,D0
-	ADD.W	D0,$0026(A2)
 	RTS
 
 ;/*
@@ -21415,8 +21395,8 @@ L00A04:
 L00A05:
 	MOVE.W	#$002A,$000A(A2)	;'*'
 
-	clr.w	$0026(A2)
 	bsr	goldcalc
+	move.W	D0,D4
 
 	MOVE.W	#$0003,-(A7)
 	JSR	_save(PC)
@@ -21425,11 +21405,17 @@ L00A05:
 	BEQ.B	L00A06
 
 	bsr	goldcalc
+	ADD.W	D0,D4
 	bsr	goldcalc
+	ADD.W	D0,D4
 	bsr	goldcalc
+	ADD.W	D0,D4
 	bsr	goldcalc
+	ADD.W	D0,D4
 
 L00A06:
+	move.w	D4,$0026(A2)
+
 	MOVE.L	A2,-(A7)
 	MOVEA.L	$0008(A5),A6
 	PEA	$002E(A6)
@@ -21608,7 +21594,7 @@ _new_monster:
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L00A14
 	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
-	CMPI.W	#$0006,$0020(A6)	;aggravate monster
+	CMPI.W	#R_AGGR,$0020(A6)	;aggravate monster
 	BEQ.B	L00A15
 L00A14:
 	TST.L	-$518C(A4)	;_cur_ring_2
@@ -21809,7 +21795,7 @@ L00A2D:
 
 	MOVE.B	$000F(A3),D3
 	EXT.W	D3
-	SUB.W	#$0041,D3
+	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
 	LEA	-$6CA8(A4),A6	;_monsters
 	MOVE.L	$00(A6,D3.L),-(A7)
@@ -21861,16 +21847,17 @@ L00A31:
 	MOVE.W	$0016(A2),D3
 	AND.W	#$0080,D3	;ISHELD
 	BNE.B	L00A34
+
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L00A32
 	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
-	CMPI.W	#$000C,$0020(A6)	; ring of stealth
+	CMPI.W	#R_STEALTH,$0020(A6)	; ring of stealth
 	BEQ.B	L00A34
 L00A32:
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BEQ.B	L00A33
 	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
-	CMPI.W	#$000C,$0020(A6)	; ring of stealth
+	CMPI.W	#R_STEALTH,$0020(A6)	; ring of stealth
 	BEQ.B	L00A34
 L00A33:
 	LEA	-$52C0(A4),A6	;_player + 10
@@ -23228,7 +23215,7 @@ L00AD1:
 	BEQ.B	L00AD2
 	MOVE.B	$002A(A2),D3
 	EXT.W	D3
-	SUB.W	#$0041,D3
+	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
 	LEA	-$6CA8(A4),A6	;_monsters
 	MOVE.L	$00(A6,D3.L),-(A7)
@@ -24723,7 +24710,7 @@ L00B7C:
 L00B7D:
 	MOVE.B	$000F(A2),D3
 	EXT.W	D3
-	SUB.W	#$0041,D3
+	SUB.W	#$0041,D3	;'A'
 	MULS.W	#$001A,D3
 	LEA	-$6C94(A4),A6
 	MOVE.L	$00(A6,D3.L),$0024(A2)
@@ -25816,7 +25803,7 @@ L00BF9:
 L00BFA:
 	MOVE.B	(A2),D3
 	EXT.W	D3
-	ADDQ.W	#1,D3
+;	ADDQ.W	#1,D3
 	LEA	-$55CA(A4),A6		;_ctp_
 	MOVE.B	$00(A6,D3.W),D2
 	EXT.W	D2
@@ -26555,7 +26542,7 @@ L00C37:
 	MOVE.W	D3,D4
 L00C38:
 	MOVE.W	D4,D3
-	ADDQ.W	#1,D3
+;	ADDQ.W	#1,D3
 	LEA	-$55CA(A4),A6		;_ctp_
 	MOVE.B	$00(A6,D3.W),D2
 	EXT.W	D2
@@ -26596,7 +26583,7 @@ L00C3B:
 	MOVE.W	D3,D4
 L00C3C:
 	MOVE.W	D4,D3
-	ADDQ.W	#1,D3
+;	ADDQ.W	#1,D3
 	LEA	-$55CA(A4),A6		;_ctp_
 	MOVE.B	$00(A6,D3.W),D2
 	EXT.W	D2
@@ -27511,7 +27498,7 @@ L00CA2:
 L00CA3:
 	MOVE.B	(A2),D3
 	EXT.W	D3
-	ADDQ.W	#1,D3
+;	ADDQ.W	#1,D3
 	LEA	-$55CA(A4),A6		;_ctp_
 	MOVE.B	$00(A6,D3.W),D2
 	EXT.W	D2
@@ -27531,7 +27518,7 @@ L00CA5:
 ;	TST.W	D3
 	BEQ.B	L00CA6
 	MOVE.W	D4,D3
-	ADDQ.W	#1,D3
+;	ADDQ.W	#1,D3
 	LEA	-$55CA(A4),A6		;_ctp_
 	MOVE.B	$00(A6,D3.W),D2
 	EXT.W	D2
@@ -27564,7 +27551,7 @@ L00CA7:
 L00CA8:
 	MOVE.B	(A2),D3
 	EXT.W	D3
-	ADDQ.W	#1,D3
+;	ADDQ.W	#1,D3
 	LEA	-$55CA(A4),A6		;_ctp_
 	MOVE.B	$00(A6,D3.W),D2
 	EXT.W	D2
@@ -29852,39 +29839,47 @@ _cls_:
 __cln:
 	dc.l	$00000000
 
-_ctp_:	dc.b	$00,$20,$20,$20
+_ctp_:	dc.b	$20,$20,$20,$20
 	dc.b	$20,$20,$20,$20
-	dc.b	$20,$20,$30,$30
-	dc.b	$30,$30,$30,$20
+	dc.b	$20,$30,$30,$30
+	dc.b	$30,$30,$20,$20
+
 	dc.b	$20,$20,$20,$20
 	dc.b	$20,$20,$20,$20
 	dc.b	$20,$20,$20,$20
 	dc.b	$20,$20,$20,$20
-	dc.b	$20,$90,$40,$40
+
+	dc.b	$90,$40,$40,$40 ;space,!,",#
 	dc.b	$40,$40,$40,$40
 	dc.b	$40,$40,$40,$40
 	dc.b	$40,$40,$40,$40
-	dc.b	$40,$0C,$0C,$0C
-	dc.b	$0C,$0C,$0C,$0C
-	dc.b	$0C,$0C,$0C,$40
-	dc.b	$40,$40,$40,$40
-	dc.b	$40,$40,$09,$09
-	dc.b	$09,$09,$09,$09
+
+	dc.b	$0C,$0C,$0C,$0C	;0,1,2,3
+	dc.b	$0C,$0C,$0C,$0C	;4,5,6,7
+	dc.b	$0C,$0C,$40,$40	;8,9,:,;
+	dc.b	$40,$40,$40,$40	;<,=,>,?
+
+	dc.b	$40,$09,$09,$09	;@,A,B,C
+	dc.b	$09,$09,$09,$01	;D,E,F,G
 	dc.b	$01,$01,$01,$01
 	dc.b	$01,$01,$01,$01
+
 	dc.b	$01,$01,$01,$01
 	dc.b	$01,$01,$01,$01
-	dc.b	$01,$01,$01,$01
+	dc.b	$01,$01,$01,$40	;X,Y,Z,[
 	dc.b	$40,$40,$40,$40
-	dc.b	$40,$40,$0A,$0A
-	dc.b	$0A,$0A,$0A,$0A
+
+	dc.b	$40,$0A,$0A,$0A
+	dc.b	$0A,$0A,$0A,$02
 	dc.b	$02,$02,$02,$02
 	dc.b	$02,$02,$02,$02
+
 	dc.b	$02,$02,$02,$02
 	dc.b	$02,$02,$02,$02
-	dc.b	$02,$02,$02,$02
-	dc.b	$40,$40,$40,$40
-	dc.b	$20,$00,$00,$00
+	dc.b	$02,$02,$02,$40
+	dc.b	$40,$40,$40,$20
+
+	dc.b	$00,$00,$00,$00
 
 __Dend:
 
