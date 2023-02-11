@@ -39,7 +39,27 @@ MAXARMORS	equ	8
 ISCURSED	equ	1
 ISKNOW		equ	2
 ISMISL		equ	4
+;ISFOUND		equ	8
 ISMANY		equ	20
+
+; flags for creatures and player:
+
+ISBLIND	equ	$0001	;creature is blind
+WISDOM	equ	$0002	;creature has wisdom
+ISRUN	equ	$0004	;creature is running at the player
+ISFOUND	equ	$0008	;creature has been seen (used for objects)
+ISINVIS	equ	$0010	;creature is invisible
+ISMEAN	equ	$0020	;creature can wake when player enters room
+ISGREED	equ	$0040	;creature runs to protect gold
+ISHELD	equ	$0080	;creature can see invisible creatures
+ISHUH	equ	$0100	;creature is confused
+ISREGEN	equ	$0200	;creature can regenerate
+CANHUH	equ	$0400	;creature can confuse
+CANSEE	equ	$0800	;creature can see invisible creatures
+ISCANC	equ	$1000	;creature has special qualities cancelled
+ISSLOW	equ	$2000	;creature has been slowed
+ISHASTE	equ	$4000	;creature has been hastened
+ISFLY	equ	$8000	;creature can fly
 
 	SECTION "",CODE       ;000 084512
 
@@ -600,48 +620,51 @@ L00088:
 	ADDQ.W	#2,A7
 	TST.W	D0
 	BNE.B	L0008A
-	MOVE.W	#$0016,-(A7)
+
+	MOVE.W	#22,-(A7)
 	JSR	_rnd		;-$7DD6(A4)
 	ADDQ.W	#2,A7
 	MOVE.W	D0,D5
 	LEA	-$0016(A5),A6
 	TST.B	$00(A6,D5.W)
 	BNE.B	L00089
+
 	MOVE.W	D4,D3
-	EXT.L	D3
-	ASL.L	#2,D3
+;	EXT.L	D3
+	ASL.w	#2,D3
 	LEA	-$521C(A4),A6	;_ws_type
-	MOVE.L	-$7A4E(A4),$00(A6,D3.L)
+	MOVE.L	-$7A4E(A4),$00(A6,D3.w)
 	MOVE.W	D5,D3
-	EXT.L	D3
-	ASL.L	#2,D3
+;	EXT.L	D3
+	ASL.w	#2,D3
 	LEA	-$78B2(A4),A6	;_wood
-	MOVEA.L	$00(A6,D3.L),A2
+	MOVEA.L	$00(A6,D3.w),A2
 	LEA	-$0016(A5),A6
-	MOVE.B	#$01,$00(A6,D5.W)
+	ST	$00(A6,D5.W)
 	BRA.B	L0008C
 L00089:
 	BRA.B	L0008B
 L0008A:
-	MOVE.W	#$0021,-(A7)
+	MOVE.W	#33,-(A7)
 	JSR	_rnd		;-$7DD6(A4)
 	ADDQ.W	#2,A7
 	MOVE.W	D0,D5
 	LEA	-$0037(A5),A6
 	TST.B	$00(A6,D5.W)
 	BNE.B	L0008B
+
 	MOVE.W	D4,D3
-	EXT.L	D3
-	ASL.L	#2,D3
+;	EXT.L	D3
+	ASL.w	#2,D3
 	LEA	-$521C(A4),A6	;_ws_type
-	MOVE.L	-$7A4A(A4),$00(A6,D3.L)
+	MOVE.L	-$7A4A(A4),$00(A6,D3.w)
 	MOVE.W	D5,D3
-	EXT.L	D3
-	ASL.L	#2,D3
+;	EXT.L	D3
+	ASL.w	#2,D3
 	LEA	-$7936(A4),A6	;_wood
-	MOVEA.L	$00(A6,D3.L),A2
+	MOVEA.L	$00(A6,D3.w),A2
 	LEA	-$0037(A5),A6
-	MOVE.B	#$01,$00(A6,D5.W)
+	ST	$00(A6,D5.W)
 	BRA.B	L0008C
 L0008B:
 	BRA.W	L00088
@@ -731,7 +754,7 @@ _init_ds:
 ;	BRA.B	L0008F
 
 	moveq	#10,D0		; start with 10 xp
-	move.w	-$6CCC(A4),D3	;_nlevels 23
+	move.w	-$6CCC(A4),D3	;_nlevels 23 (means player ranks)
 	subq	#1,d3
 
 1$	MOVE.L	D0,(A2)+
@@ -751,7 +774,7 @@ _init_ds:
 ;	add.l	d0,d3
 ;	CMPA.L	D3,A2
 ;	BCS.B	L0008E
-;
+
 	CLR.L	(A2)
 	MOVEA.L	(A7)+,A2
 ;	UNLK	A5
@@ -806,11 +829,13 @@ L00092:
 	MOVE.W	-$52B4(A4),D3	;_player + 22
 	AND.W	#$0100,D3	;ISHUH
 	BEQ.B	L00093
+
 	MOVE.W	#$0005,-(A7)
 	JSR	_rnd		;-$7DD6(A4)
 	ADDQ.W	#2,A7
 	TST.W	D0
 	BEQ.B	L00093
+
 	PEA	-$5194(A4)
 	PEA	-$52CA(A4)
 	JSR	_rndmove(PC)
@@ -830,12 +855,14 @@ L00094:
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BNE.W	L0009B
+
 	PEA	-$5194(A4)
 	PEA	-$52C0(A4)	;_player + 10
 	JSR	_diag_ok	;-$7F0E(A4)
 	ADDQ.W	#8,A7
 	TST.W	D0
 	BNE.B	L00095
+
 	CLR.B	-$66F9(A4)	;_after
 	CLR.B	-$66B6(A4)	;_running
 	BRA.W	L00090
@@ -1400,7 +1427,7 @@ _be_trapped:
 	MOVE.B	D4,D3
 	ADD.W	#$000E,D3
 	MOVE.B	D3,$00(A6,D5.W)
-	MOVE.B	#$01,-$66B4(A4)
+	MOVE.B	#$01,-$66B4(A4)	;_was_trapped
 	MOVEQ	#$00,D0
 	MOVE.B	D4,D0
 	BRA.W	L000E0
@@ -1499,7 +1526,7 @@ L000D7:
 	MOVE.W	$0002(A2),-(A7)
 	JSR	_mvaddch(PC)
 	ADDQ.W	#6,A7
-	ADDQ.B	#1,-$66B4(A4)
+	ADDQ.B	#1,-$66B4(A4)	;_was_trapped
 	BRA.W	L000E2
 L000D8:
 	MOVE.W	#$0001,-(A7)
@@ -1667,7 +1694,8 @@ _rndmove:
 	MOVE.W	$000C(A6),D3
 	CMP.W	D5,D3
 	BNE.B	L000F3
-	MOVEA.L	$0008(A5),A6
+
+;	MOVEA.L	$0008(A5),A6
 	MOVE.W	$000A(A6),D3
 	CMP.W	D4,D3
 	BNE.B	L000F3
@@ -1679,12 +1707,16 @@ L000F2:
 L000F3:
 	CMP.W	#$0001,D5
 	BLT.B	L000F9
+
 	CMP.W	-$60BC(A4),D5
 	BGE.B	L000F9
+
 	CMP.W	#$0000,D4
 	BLT.B	L000F9
+
 	CMP.W	#$003C,D4
 	BGE.B	L000F9
+
 	MOVE.L	$000C(A5),-(A7)
 	MOVEA.L	$0008(A5),A6
 	PEA	$000A(A6)
@@ -1692,6 +1724,7 @@ L000F3:
 	ADDQ.W	#8,A7
 	TST.W	D0
 	BEQ.B	L000F9
+
 	MOVE.W	D4,-(A7)
 	MOVE.W	D5,-(A7)
 	JSR	_winat		;-$7D3E(A4)
@@ -1704,11 +1737,13 @@ L000F3:
 	ADDQ.W	#2,A7
 	TST.W	D0
 	BEQ.B	L000F9
+
 	MOVEQ	#$00,D3
 	MOVE.B	D6,D3
 	CMP.W	#$003F,D3
 	BNE.B	L000F8
-	MOVEA.L	-$6CB0(A4),A2
+
+	MOVEA.L	-$6CB0(A4),A2	;_lvl_obj
 	BRA.B	L000F6
 L000F4:
 	MOVE.W	$000E(A2),D3
@@ -1740,10 +1775,10 @@ L000FA:	dc.b	"topaz.font",0,0
 L000FB:	dc.b	"Rogue: The Adventure game",0
 
 _SetOffset:
-	LINK	A5,#-$0000
-	MOVE.W	$0008(A5),-$77D2(A4)
-	MOVE.W	$000A(A5),-$77D0(A4)
-	UNLK	A5
+;	LINK	A5,#-$0000
+	MOVE.W	$0004(A7),-$77D2(A4)
+	MOVE.W	$0006(A7),-$77D0(A4)
+;	UNLK	A5
 	RTS
 
 __move:
@@ -3212,7 +3247,7 @@ L00176:
 	MOVE.W	-$0002(A5),D3
 	CMP.W	$000C(A5),D3
 	BLT.B	L00177
-	JSR	_beep(PC)
+;	JSR	_beep(PC)
 	BRA.B	L0017A
 L00177:
 	ADDQ.W	#1,-$0002(A5)
@@ -3367,7 +3402,7 @@ L00185:
 	JSR	__free_list(PC)
 	ADDQ.W	#4,A7
 	JSR	_f_restor	;-$7CAE(A4)
-	PEA	-$6CB0(A4)
+	PEA	-$6CB0(A4)	;_lvl_obj
 	JSR	__free_list(PC)
 	ADDQ.W	#4,A7
 	JSR	_do_rooms	;-$7D1E(A4)
@@ -3507,7 +3542,7 @@ L0018B:
 	TST.L	D0
 	BEQ.W	L0018E
 	MOVE.L	A2,-(A7)
-	PEA	-$6CB0(A4)
+	PEA	-$6CB0(A4)	;_lvl_obj
 	JSR	__attach	;-$7EBE(A4)
 	ADDQ.W	#8,A7
 	CLR.W	$0024(A2)
@@ -3570,7 +3605,7 @@ L00190:
 	JSR	_new_thing(PC)
 	MOVEA.L	D0,A2
 	MOVE.L	A2,-(A7)
-	PEA	-$6CB0(A4)
+	PEA	-$6CB0(A4)	;_lvl_obj
 	JSR	__attach	;-$7EBE(A4)
 	ADDQ.W	#8,A7
 L00191:
@@ -3689,7 +3724,7 @@ L00198:
 	LEA	-$000C(A5),A1
 	MOVE.L	(A1)+,(A6)+
 	MOVE.L	A2,-(A7)
-	PEA	-$6CB0(A4)
+	PEA	-$6CB0(A4)	;_lvl_obj
 	JSR	__attach	;-$7EBE(A4)
 	ADDQ.W	#8,A7
 	MOVE.W	-$0004(A5),D3
@@ -4479,7 +4514,7 @@ L00210:
 	ADDQ.W	#6,A7
 	MOVEA.L	D0,A3
 	MOVE.L	A3,-(A7)
-	PEA	-$6CB0(A4)
+	PEA	-$6CB0(A4)	;_lvl_obj
 	JSR	__attach	;-$7EBE(A4)
 	ADDQ.W	#8,A7
 	MOVEA.L	A3,A6
@@ -5128,7 +5163,7 @@ L00251:
 	ADDQ.W	#8,A7
 	TST.W	D0
 	BEQ.W	L00258
-	MOVEA.L	-$6CB0(A4),A2
+	MOVEA.L	-$6CB0(A4),A2	;_lvl_obj
 	BRA.W	L00257
 L00252:
 	MOVEA.L	$0008(A5),A6
@@ -5138,7 +5173,7 @@ L00252:
 	CMPA.L	A1,A0
 	BNE.W	L00256
 	MOVE.L	A2,-(A7)
-	PEA	-$6CB0(A4)
+	PEA	-$6CB0(A4)	;_lvl_obj
 	JSR	__detach	;-$7EC6(A4)
 	ADDQ.W	#8,A7
 	MOVE.L	A2,-(A7)
@@ -5563,7 +5598,7 @@ L00271:
 	MOVE.B	-$0009(A5),D3
 	CMP.b	#$3F,D3		;'?' scrolls
 	BNE.B	L00276
-	MOVEA.L	-$6CB0(A4),A2
+	MOVEA.L	-$6CB0(A4),A2	;_lvl_obj
 	BRA.B	L00274
 L00272:
 	MOVE.W	$000E(A2),D3
@@ -5841,7 +5876,7 @@ L0028C:
 
 L0028D:
 	MOVE.L	$002A(A2),D5
-	MOVEA.L	-$6CB0(A4),A3
+	MOVEA.L	-$6CB0(A4),A3	;_lvl_obj
 	BRA.B	L00294
 L0028E:
 	CMPI.W	#$003F,$000A(A3)
@@ -6093,7 +6128,7 @@ L002AD:
 	TST.B	D6
 	BEQ.B	L002AE
 	MOVE.L	A2,-(A7)
-	PEA	-$6CB0(A4)
+	PEA	-$6CB0(A4)	;_lvl_obj
 	JSR	__detach	;-$7EC6(A4)
 	ADDQ.W	#8,A7
 	MOVEQ	#$00,D3
@@ -6136,7 +6171,7 @@ L002B2:
 	AND.W	#$0008,D3
 	BEQ.B	L002B3
 	MOVE.L	A2,-(A7)
-	PEA	-$6CB0(A4)
+	PEA	-$6CB0(A4)	;_lvl_obj
 	JSR	__detach	;-$7EC6(A4)
 	ADDQ.W	#8,A7
 	MOVEQ	#$00,D3
@@ -6167,7 +6202,7 @@ L002B4:
 	TST.B	D6
 	BEQ.B	L002B5
 	MOVE.L	A2,-(A7)
-	PEA	-$6CB0(A4)
+	PEA	-$6CB0(A4)	;_lvl_obj
 	JSR	__detach	;-$7EC6(A4)
 	ADDQ.W	#8,A7
 	MOVEQ	#$00,D3
@@ -6463,7 +6498,7 @@ _pick_up:
 	JSR	_money(PC)
 	ADDQ.W	#2,A7
 	MOVE.L	A2,-(A7)
-	PEA	-$6CB0(A4)
+	PEA	-$6CB0(A4)	;_lvl_obj
 	JSR	__detach	;-$7EC6(A4)
 	ADDQ.W	#8,A7
 	MOVE.L	A2,-(A7)
@@ -8018,7 +8053,7 @@ _com_char:
 	MOVEQ	#$00,D3
 	MOVE.B	-$66BA(A4),D3	;_fastmode
 	MOVEQ	#$00,D2
-	MOVE.B	-$66B9(A4),D2
+	MOVE.B	-$66B9(A4),D2	;_faststate
 	CMP.W	D2,D3
 	SEQ	D4
 	AND.W	#$0001,D4
@@ -8038,10 +8073,10 @@ L003A8:
 	CLR.B	-$48B8(A4)
 	TST.W	D4
 	BEQ.B	L003A9
-	MOVE.B	-$66B9(A4),-$66BA(A4)	;_fastmode
+	MOVE.B	-$66B9(A4),-$66BA(A4)	;_faststate,_fastmode
 	BRA.B	L003AC
 L003A9:
-	TST.B	-$66B9(A4)
+	TST.B	-$66B9(A4)	;_faststate
 	BNE.B	L003AA
 	MOVEq	#$0001,D3
 	BRA.B	L003AB
@@ -8051,7 +8086,7 @@ L003AB:
 	MOVE.B	D3,-$66BA(A4)	;_fastmode
 L003AC:
 	MOVE.W	D5,D0
-	EXT.L	D0
+;	EXT.L	D0
 	BRA.B	L003B2
 L003AD:
 	MOVEQ	#$74,D5
@@ -8071,25 +8106,25 @@ L003B1:
 	MOVE.B	D3,-$66BA(A4)	;_fastmode
 	BRA.B	L003B3
 L003B2:
-	SUBQ.L	#2,D0
+	SUBQ.w	#2,D0
 	BEQ.B	L003AF
-	SUBQ.L	#6,D0
+	SUBQ.w	#6,D0
 	BEQ.B	L003AF
-	SUBQ.L	#2,D0
+	SUBQ.w	#2,D0
 	BEQ.B	L003AF
-	SUBQ.L	#1,D0
+	SUBQ.w	#1,D0
 	BEQ.B	L003AF
-	SUBQ.L	#1,D0
+	SUBQ.w	#1,D0
 	BEQ.B	L003AF
-	SUBQ.L	#2,D0
+	SUBQ.w	#2,D0
 	BEQ.B	L003AF
-	SUBQ.L	#7,D0
+	SUBQ.w	#7,D0
 	BEQ.B	L003AF
-	SUBQ.L	#4,D0
+	SUBQ.w	#4,D0
 	BEQ.B	L003AF
-	SUB.L	#$00000012,D0
+	SUB.w	#$0012,D0
 	BEQ.B	L003AD
-	SUBQ.L	#2,D0
+	SUBQ.w	#2,D0
 	BEQ.B	L003AE
 L003B3:
 	TST.W	-$60B0(A4)	;_mpos
@@ -8117,7 +8152,7 @@ _get_prefix:
 ;	LINK	A5,#-$0000
 	MOVEM.L	D4-D6,-(A7)
 	ST	-$66F9(A4)	;_after
-	MOVE.B	-$66B9(A4),-$66BA(A4)	;_fastmode
+	MOVE.B	-$66B9(A4),-$66BA(A4)	;_faststate,_fastmode
 	MOVE.W	#$0001,-(A7)
 	JSR	_look		;-$7DA6(A4)
 	ADDQ.W	#2,A7
@@ -10193,22 +10228,20 @@ L00490:
 ; potion of night vision
 
 L00491:
-	MOVE.W	-$52B4(A4),D3	;_player + 22
-	AND.W	#$0008,D3	;ISFOUND
-	BEQ.B	L00492
 	MOVE.W	#300,-(A7)
 	JSR	_spread		;-$7D76(A4)
 	ADDQ.W	#2,A7
 	MOVE.W	D0,-(A7)
+
+	MOVE.W	-$52B4(A4),D3	;_player + 22
+	AND.W	#$0008,D3	;ISFOUND
+	BEQ.B	L00492
+
 	PEA	_lose_vision(PC)
 	JSR	_lengthen(PC)
 	ADDQ.W	#6,A7
 	BRA.B	L00493
 L00492:
-	MOVE.W	#300,-(A7)
-	JSR	_spread		;-$7D76(A4)
-	ADDQ.W	#2,A7
-	MOVE.W	D0,-(A7)
 	CLR.W	-(A7)
 	PEA	_lose_vision(PC)
 	JSR	_fuse(PC)
@@ -10230,23 +10263,22 @@ L00493:
 ; potion of discernment
 
 L00494:
-	MOVE.W	-$52B4(A4),D3	;_player + 22
-	AND.W	#$0002,D3
-	BEQ.B	L00495
 	MOVE.W	#100,-(A7)
 	JSR	_spread		;-$7D76(A4)
 	ADDQ.W	#2,A7
 	MOVE.W	D0,-(A7)
+
+	MOVE.W	-$52B4(A4),D3	;_player + 22
+	AND.W	#WISDOM,D3
+	BEQ.B	L00495
+
 	PEA	_foolish(PC)
 	JSR	_lengthen(PC)
 	ADDQ.W	#6,A7
 	BRA.B	L00496
 L00495:
-	ORI.W	#$0002,-$52B4(A4)	;WISDOM, _player + 22
-	MOVE.W	#$0064,-(A7)
-	JSR	_spread		;-$7D76(A4)
-	ADDQ.W	#2,A7
-	MOVE.W	D0,-(A7)
+	ORI.W	#WISDOM,-$52B4(A4)	;WISDOM, _player + 22
+
 	CLR.W	-(A7)
 	PEA	_foolish(PC)
 	JSR	_fuse(PC)
@@ -10356,9 +10388,11 @@ L004A0:
 L004A1:
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L004A2
+
 	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	CMPI.W	#R_ADDSTR,$0020(A6)
 	BNE.B	L004A2
+
 ;	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	MOVE.W	$0026(A6),D3
 	NEG.W	D3
@@ -10369,9 +10403,11 @@ L004A1:
 L004A2:
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BEQ.B	L004A3
+
 	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	CMPI.W	#R_ADDSTR,$0020(A6)
 	BNE.B	L004A3
+
 ;	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	MOVE.W	$0026(A6),D3
 	NEG.W	D3
@@ -10381,15 +10417,18 @@ L004A2:
 	ADDQ.W	#6,A7
 L004A3:
 	MOVE.W	-$52B2(A4),D3	;_player + 24 (strength)
-	CMP.W	-$6CC2(A4),D3	;_max_stats
+	CMP.W	-$6CC2(A4),D3	;_max_stats + 0
 	BCC.B	L004A4
-	MOVE.W	-$6CC2(A4),-$52B2(A4)	;_max_stats,_player + 24 (strength)
+
+	MOVE.W	-$6CC2(A4),-$52B2(A4)	;_max_stats + 0,_player + 24 (strength)
 L004A4:
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L004A5
+
 	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	CMPI.W	#R_ADDSTR,$0020(A6)
 	BNE.B	L004A5
+
 ;	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	MOVE.W	$0026(A6),-(A7)
 	PEA	-$52B2(A4)	;_player + 24 (strength)
@@ -10401,6 +10440,7 @@ L004A5:
 	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	CMPI.W	#R_ADDSTR,$0020(A6)
 	BNE.B	L004A6
+
 ;	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	MOVE.W	$0026(A6),-(A7)
 	PEA	-$52B2(A4)	;_player + 24 (strength)
@@ -11415,7 +11455,7 @@ L00503:
 	MOVE.W	-$7060(A4),-(A7)
 	JSR	_sel_char(PC)
 	ADDQ.W	#2,A7
-	TST.W	D0
+	TST.b	D0
 	BEQ.B	L00504
 	MOVEA.L	-$47B2(A4),A6
 	ADDQ.L	#1,-$47B2(A4)
@@ -11593,10 +11633,10 @@ L00514:
 
 L00515:	dc.b	"No Memory",0
 
-_beep:
+;_beep:
 ;	LINK	A5,#-$0000
 ;	UNLK	A5
-	RTS
+;	RTS
 
 _tick_pause:
 ;	LINK	A5,#-$0000
@@ -11832,7 +11872,7 @@ L00528:
 	MOVE.W	$0008(A5),-(A7)
 	JSR	_sel_char(PC)
 	ADDQ.W	#2,A7
-	TST.W	D0
+	TST.b	D0
 	BEQ.B	L00529
 	MOVE.W	$0008(A5),D3
 	CMP.W	-$7060(A4),D3
@@ -11922,7 +11962,7 @@ L00532:
 	BRA.B	L0052C
 L00533:
 	MOVE.L	A3,-(A7)
-	PEA	-$6CB0(A4)
+	PEA	-$6CB0(A4)	;_lvl_obj
 	JSR	__attach	;-$7EBE(A4)
 	ADDQ.W	#8,A7
 	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
@@ -12316,7 +12356,7 @@ L00566:
 _discovered:
 ;	LINK	A5,#-$0000
 
-	MOVE.W	#$0021,-(A7)	;potions
+	MOVE.W	#$0021,-(A7)	;'!' potions
 	BSR.B	_print_disc
 	ADDQ.W	#2,A7
 	PEA	L00567(PC)	;" ",0
@@ -12324,7 +12364,7 @@ _discovered:
 	JSR	_add_line(PC)
 	ADDQ.W	#8,A7
 
-	MOVE.W	#$003F,-(A7)	;scrolls
+	MOVE.W	#$003F,-(A7)	;'?' scrolls
 	BSR.B	_print_disc
 	ADDQ.W	#2,A7
 	PEA	L00567(PC)	;" ",0
@@ -12332,7 +12372,7 @@ _discovered:
 	JSR	_add_line(PC)
 	ADDQ.W	#8,A7
 
-	MOVE.W	#$003D,-(A7)	;rings
+	MOVE.W	#$003D,-(A7)	;'=' rings
 	BSR.B	_print_disc
 	ADDQ.W	#2,A7
 	PEA	L00567(PC)	;" ",0
@@ -12340,7 +12380,7 @@ _discovered:
 	JSR	_add_line(PC)
 	ADDQ.W	#8,A7
 
-	MOVE.W	#$002F,-(A7)	;sticks
+	MOVE.W	#$002F,-(A7)	;'/' sticks
 	BSR.B	_print_disc
 	ADDQ.W	#2,A7
 	PEA	-$69CC(A4)	;_nullstr
@@ -12364,41 +12404,33 @@ _print_disc:
 	MOVE.B	$0009(A5),D0
 	BRA.B	L0056E
 L0056A:
-	MOVEQ	#$0F,D5
-	LEA	-$66F6(A4),A6	;_s_know
-	MOVEA.L	A6,A2
-	LEA	-$656A(A4),A6	;_s_guess
-	MOVEA.L	A6,A3
+	MOVEQ	#15,D5
+	LEA	-$66F6(A4),A2	;_s_know
+	LEA	-$656A(A4),A3	;_s_guess
 	BRA.B	L0056F
 L0056B:
-	MOVEQ	#$0E,D5
-	LEA	-$66E7(A4),A6	;_p_know
-	MOVEA.L	A6,A2
-	LEA	-$642E(A4),A6	;_p_guess
-	MOVEA.L	A6,A3
+	MOVEQ	#14,D5
+	LEA	-$66E7(A4),A2	;_p_know
+	LEA	-$642E(A4),A3	;_p_guess
 	BRA.B	L0056F
 L0056C:
-	MOVEQ	#$0E,D5
-	LEA	-$66D9(A4),A6	;_r_know
-	MOVEA.L	A6,A2
-	LEA	-$6308(A4),A6	;_r_guess
-	MOVEA.L	A6,A3
+	MOVEQ	#14,D5
+	LEA	-$66D9(A4),A2	;_r_know
+	LEA	-$6308(A4),A3	;_r_guess
 	BRA.B	L0056F
 L0056D:
-	MOVEQ	#$0E,D5
-	LEA	-$66CB(A4),A6	;_ws_know
-	MOVEA.L	A6,A2
-	LEA	-$61E2(A4),A6	;_ws_guess
-	MOVEA.L	A6,A3
+	MOVEQ	#14,D5
+	LEA	-$66CB(A4),A2	;_ws_know
+	LEA	-$61E2(A4),A3	;_ws_guess
 	BRA.B	L0056F
 L0056E:
-	SUB.L	#$00000021,D0
+	SUB.w	#$0021,D0	;'!' potions
 	BEQ.B	L0056B
-	SUB.L	#$0000000E,D0
+	SUB.w	#$000E,D0	;'/' wand/staff
 	BEQ.B	L0056D
-	SUB.L	#$0000000E,D0
+	SUB.w	#$000E,D0	;'=' rings
 	BEQ.B	L0056C
-	SUBQ.L	#2,D0
+	SUBQ.w	#2,D0		;'?' scrolls
 	BEQ.B	L0056A
 L0056F:
 	MOVE.W	D5,-(A7)
@@ -12407,51 +12439,54 @@ L0056F:
 	ADDQ.W	#6,A7
 	MOVE.W	#$0001,-$5492(A4)
 	CLR.W	-$5488(A4)
-	MOVEQ	#$00,D6
-	MOVEQ	#$00,D4
+	MOVEQ	#$00,D6		;discovery counter
+	MOVEQ	#$00,D4		;items indexer
 	BRA.B	L00573
 L00570:
 	MOVE.W	D4,D3
-	EXT.L	D3
-	ASL.L	#1,D3
+;	EXT.L	D3
+	ASL.w	#1,D3
 	LEA	-$547E(A4),A6
-	MOVE.W	$00(A6,D3.L),D2
-	TST.B	$00(A2,D2.W)
+	MOVE.W	$00(A6,D3.w),D2
+	TST.B	$00(A2,D2.W)	;did we knew it?
 	BNE.B	L00571
-	MOVE.W	D4,D3
-	EXT.L	D3
-	ASL.L	#1,D3
-	LEA	-$547E(A4),A6
-	MOVE.W	$00(A6,D3.L),D2
-	MULS.W	#$0015,D2
-	TST.B	$00(A3,D2.L)
+
+;	MOVE.W	D4,D3
+;	EXT.L	D3
+;	ASL.w	#1,D3
+;	LEA	-$547E(A4),A6
+;	MOVE.W	$00(A6,D3.w),D2
+	MULU.W	#21,D2
+	TST.B	$00(A3,D2.L)	;did we guessed it?
 	BEQ.B	L00572
 L00571:
 	MOVEQ	#$00,D3
 	MOVE.B	$0009(A5),D3
 	MOVE.W	D3,-$54A6(A4)
 	MOVE.W	D4,D3
-	EXT.L	D3
-	ASL.L	#1,D3
+;	EXT.L	D3
+	ASL.w	#1,D3
 	LEA	-$547E(A4),A6
-	MOVE.W	$00(A6,D3.L),-$5490(A4)
+	MOVE.W	$00(A6,D3.w),-$5490(A4)
 	MOVE.W	#$0026,-(A7)
 	PEA	-$54B0(A4)
 	JSR	_nameof		;-$7C56(A4)
 	ADDQ.W	#6,A7
 	MOVE.L	D0,-(A7)
-	PEA	L00575(PC)
+	PEA	L00575(PC)	;"%s"
 	PEA	-$69CC(A4)	;_nullstr
 	JSR	_add_line(PC)
 	LEA	$000C(A7),A7
-	ADDQ.W	#1,D6
+	ADDQ.W	#1,D6		;clear discovery counter
 L00572:
-	ADDQ.W	#1,D4
+	ADDQ.W	#1,D4		;increase indexer
 L00573:
-	CMP.W	D5,D4
+	CMP.W	D5,D4		;are we done with the list?
 	BLT.B	L00570
-	TST.W	D6
+
+	TST.W	D6		;did we discover anything?
 	BNE.B	L00574
+
 	MOVEQ	#$00,D3
 	MOVE.B	$0009(A5),D3
 	MOVE.W	D3,-(A7)
@@ -12539,7 +12574,7 @@ _sel_char:
 	MOVE.W	$0004(A7),D3
 	LEA	-$5460(A4),A6
 	MOVE.B	$00(A6,D3.W),D0
-	EXT.W	D0
+;	EXT.W	D0
 ;	UNLK	A5
 	RTS
 
@@ -13306,7 +13341,7 @@ _ring_num:
 	MOVE.W	$0028(A2),D3
 	AND.W	#$0002,D3
 	BNE.B	L005DE
-	LEA	L005E5(PC),A6
+	LEA	L005E5(PC),A6	;"",0
 	MOVE.L	A6,D0
 L005DD:
 	MOVEA.L	(A7)+,A2
@@ -13337,15 +13372,15 @@ L005E0:
 	MOVE.L	A6,D0
 	BRA.B	L005DD
 L005E1:
-	dc.w	L005DF-L005E3
-	dc.w	L005DF-L005E3
-	dc.w	L005E0-L005E3
-	dc.w	L005E0-L005E3
-	dc.w	L005E0-L005E3
-	dc.w	L005E0-L005E3
-	dc.w	L005E0-L005E3
-	dc.w	L005DF-L005E3
-	dc.w	L005DF-L005E3
+	dc.w	L005DF-L005E3	; "protection"
+	dc.w	L005DF-L005E3	; "add strength"
+	dc.w	L005E0-L005E3	; "sustain strength"
+	dc.w	L005E0-L005E3	; "searching"
+	dc.w	L005E0-L005E3	; "see invisible"
+	dc.w	L005E0-L005E3	; "adornment"
+	dc.w	L005E0-L005E3	; "aggravate monster"
+	dc.w	L005DF-L005E3	; "dexterity"
+	dc.w	L005DF-L005E3	; "increase damage"
 L005E2:
 	CMP.w	#$0009,D0
 	BCC.B	L005E0
@@ -13489,10 +13524,11 @@ _do_motion:
 	LEA	-$52C0(A4),A1	;_player + 10
 	MOVE.L	(A1)+,(A6)+
 L00604:
-	MOVEQ	#$00,D3
-	MOVE.B	D6,D3
-	CMP.W	#$0022,D3	;'"'
+;	MOVEQ	#$00,D3
+;	MOVE.B	D6,D3
+	CMP.b	#$0022,D6	;'"'
 	BEQ.B	L00605
+
 	PEA	-$52C0(A4)	;_player + 10
 	MOVEA.L	$0008(A5),A6
 	PEA	$000C(A6)
@@ -13500,6 +13536,7 @@ L00604:
 	ADDQ.W	#8,A7
 	TST.W	D0
 	BNE.B	L00605
+
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	$000C(A6),-(A7)
 ;	MOVEA.L	$0008(A5),A6
@@ -13508,6 +13545,7 @@ L00604:
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BEQ.B	L00605
+
 	MOVEQ	#$00,D3
 	MOVE.B	D6,D3
 	MOVE.W	D3,-(A7)
@@ -13534,8 +13572,10 @@ L00605:
 	ADDQ.W	#2,A7
 	TST.W	D0
 	BEQ.B	L0060A
-	CMP.W	#$002B,D7
+
+	CMP.W	#$002B,D7	;'+'
 	BEQ.B	L0060A
+
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	$000C(A6),-(A7)
 ;	MOVEA.L	$0008(A5),A6
@@ -13544,6 +13584,7 @@ L00605:
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BEQ.B	L00606
+
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	$000C(A6),-(A7)
 ;	MOVEA.L	$0008(A5),A6
@@ -13583,7 +13624,7 @@ _fall:
 	MOVE.L	$0008(A5),-(A7)
 	JSR	_fallpos(PC)
 	ADDQ.W	#8,A7
-	EXT.L	D0
+;	EXT.L	D0
 	BRA.W	L00611
 L0060B:
 	MOVE.W	-$53D2(A4),-(A7)
@@ -13651,7 +13692,7 @@ L0060D:
 	MOVE.B	$000B(A1),$0011(A6)
 L0060E:
 	MOVE.L	$0008(A5),-(A7)
-	PEA	-$6CB0(A4)
+	PEA	-$6CB0(A4)	;_lvl_obj
 	JSR	__attach	;-$7EBE(A4)
 	ADDQ.W	#8,A7
 L0060F:
@@ -13663,13 +13704,14 @@ L00610:
 	CLR.B	$000D(A5)
 	BRA.B	L00612
 L00611:
-	SUBQ.L	#1,D0
+	SUBQ.w	#1,D0
 	BEQ.W	L0060B
-	SUBQ.L	#1,D0
+	SUBQ.w	#1,D0
 	BEQ.B	L00610
 L00612:
 	TST.B	$000D(A5)
 	BEQ.B	L00613
+
 	PEA	L00615(PC)	;" as it hits the ground"
 	JSR	_noterse	;-$7F4E(A4)
 	ADDQ.W	#4,A7
@@ -14064,9 +14106,7 @@ _typeof:
 	RTS
 
 _typech:
-;	LINK	A5,#-$0000
-	moveq	#0,d0
-	MOVE.B	$0005(A7),D0
+	MOVE.W	$0004(A7),D0
 
 	CMP.b	#$6D,D0		; m
 	BLT.B	1$
@@ -14094,9 +14134,7 @@ _typech:
 
 	MOVEQ	#$0E,D0		; #14
 
-3$
-;	UNLK	A5
-	RTS
+3$	RTS
 
 _foolish:
 ;	LINK	A5,#-$0000
@@ -17491,10 +17529,10 @@ L0084A:
 	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
 	JSR	_mvaddch(PC)
 	ADDQ.W	#6,A7
-	TST.B	-$66B4(A4)
+	TST.B	-$66B4(A4)	;_was_trapped
 	BEQ.B	L0084B
-	JSR	_beep(PC)
-	CLR.B	-$66B4(A4)
+;	JSR	_beep(PC)
+	CLR.B	-$66B4(A4)	;_was_trapped
 L0084B:
 	CLR.B	-$48B7(A4)
 	MOVEM.L	(A7)+,D4-D7/A2/A3
@@ -17511,7 +17549,7 @@ _find_obj:
 	MOVEM.L	D4/D5/A2,-(A7)
 	MOVE.W	$0008(A5),D4
 	MOVE.W	$000A(A5),D5
-	MOVEA.L	-$6CB0(A4),A2
+	MOVEA.L	-$6CB0(A4),A2	;_lvl_obj
 	BRA.B	L0084F
 L0084C:
 	MOVE.W	$000E(A2),D3
@@ -18898,7 +18936,7 @@ _check_wisdom:
 	MOVEM.L	A2/A3,-(A7)
 	MOVEA.L	$0008(A5),A2
 	MOVE.W	-$52B4(A4),D3	;_player + 22
-	AND.W	#$0002,D3	;WISDOM
+	AND.W	#WISDOM,D3	;WISDOM
 	BNE.B	L008F8
 	MOVEQ	#$00,D0
 L008F7:
@@ -19238,7 +19276,7 @@ L0090C:
 	MOVEA.L	-$001A(A5),A6
 	MOVE.W	#$002A,$000A(A6)
 	MOVE.L	-$001A(A5),-(A7)
-	PEA	-$6CB0(A4)
+	PEA	-$6CB0(A4)	;_lvl_obj
 	JSR	__attach	;-$7EBE(A4)
 	ADDQ.W	#8,A7
 	MOVEA.L	-$0004(A5),A6
@@ -22423,7 +22461,7 @@ L00A80:
 	MOVEQ	#$0B,D2
 	ASR.L	D2,D3
 	AND.L	#$0000001F,D3
-	MOVE.B	D3,-$66B9(A4)
+	MOVE.B	D3,-$66B9(A4)	;_faststate
 	BRA.B	L00A83
 L00A81:
 	MOVE.L	D5,D3
@@ -22725,7 +22763,7 @@ _fix_menu:
 	JSR	_ClearMenuStrip		;-$7AA6(A4)
 	ADDQ.W	#4,A7
 	MOVEQ	#$00,D3
-	MOVE.B	-$66B9(A4),D3
+	MOVE.B	-$66B9(A4),D3	;_faststate
 	MOVE.W	D3,-(A7)
 	CLR.W	-(A7)
 	MOVE.W	#$0001,-(A7)
@@ -24186,7 +24224,7 @@ _xfer_all:
 	JSR	_xfer_proom(PC)
 	ADDQ.W	#8,A7
 	CLR.L	-(A7)
-	PEA	-$6CB0(A4)
+	PEA	-$6CB0(A4)	;_lvl_obj
 	JSR	_xfer_pthing(PC)
 	ADDQ.W	#8,A7
 	CLR.L	-(A7)
@@ -28810,34 +28848,15 @@ _your_na:
 _kild_by:
 	dc.l	L0075B		; Copy Protection Mafia
 _max_stats:
-	dc.l	$00100000
-	dc.l	$00000001
-	dc.l	$000A000C
+	dc.w	$0010,$0000	;start with 16 as max strength
+	dc.w	$0000,$0001
+	dc.w	$000A,$000C
 	dc.l	L0075C		; 1d4
 	dc.w	$000C
 _lvl_obj:
 	dc.l	$00000000
 _mlist:
 	dc.l	$00000000
-
-; flags for creatures and player:
-
-; $0001 = ISBLIND	creature is blind
-; $0002 = WISDOM	creature has wisdom
-; $0004 = ISRUN		creature is running at the player
-; $0008 = ISFOUND	creature has been seen (used for objects)
-; $0010 = ISINVIS	creature is invisible
-; $0020 = ISMEAN	creature can wake when player enters room
-; $0040 = ISGREED	creature runs to protect gold
-; $0080 = ISHELD	creature can see invisible creatures
-; $0100 = ISHUH		creature is confused
-; $0200 = ISREGEN	creature can regenerate
-; $0400 = CANHUH	creature can confuse
-; $0800 = CANSEE	creature can see invisible creatures
-; $1000 = ISCANC	creature has special qualities cancelled
-; $2000 = ISSLOW	creature has been slowed
-; $4000 = ISHASTE	creature has been hastened
-; $8000 = ISFLY		creature can fly
 
 ; 4=treasure, 8=flags, 12=$A, 14=$0, 16=EXP, 18=xd8 HP, 20=AC, 22=$1
 
@@ -29260,13 +29279,15 @@ _take:
 _runch:
 	dc.w	$0000
 
-_s_names:	ds.b	316
-_s_guess:	ds.b	316
+_s_names:	ds.b	15*21
+		dc.b	0
 
-_p_guess:	ds.b	294
-_r_guess:	ds.b	294
+_s_guess:	ds.b	15*21
+		dc.b	0
 
-_ws_guess:	ds.b	294
+_p_guess:	ds.b	14*21
+_r_guess:	ds.b	14*21
+_ws_guess:	ds.b	14*21
 
 _maxrow:
 	dc.w	$0000
