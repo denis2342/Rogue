@@ -1144,10 +1144,10 @@ L000B9:
 	TST.W	D0
 	BNE.B	L000BA
 
-	MOVE.W	-$5194(A4),-(A7)	;_nh
-	MOVE.W	-$5192(A4),-(A7)	;_nh +2
-	JSR	_moat
-	ADDQ.W	#4,A7
+	MOVE.W	-$5194(A4),d1	;_nh
+	MOVE.W	-$5192(A4),d0	;_nh +2
+	JSR	_moatquick
+
 	TST.L	D0
 	BEQ.B	L000BB
 L000BA:
@@ -3449,10 +3449,11 @@ L00188:
 	MOVE.B	$00(A6,D6.W),D3
 	AND.B	#$0010,D3	;F_REAL
 	BEQ.B	L00188
-	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
-	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
-	JSR	_moat
-	ADDQ.W	#4,A7
+
+	MOVE.W	-$52C0(A4),d1	;_player + 10
+	MOVE.W	-$52BE(A4),d0	;_player + 12
+	JSR	_moatquick
+
 	TST.L	D0
 	BNE.B	L00188
 	CLR.W	-$60B0(A4)	;_mpos
@@ -3776,10 +3777,10 @@ L0019D:
 	CMP.W	#$0023,D2
 	BNE.B	L0019F
 L0019E:
-	MOVE.W	-$000C(A5),-(A7)
-	MOVE.W	-$000A(A5),-(A7)
-	JSR	_moat
-	ADDQ.W	#4,A7
+	MOVE.W	-$000C(A5),d1
+	MOVE.W	-$000A(A5),d0
+	JSR	_moatquick
+
 	TST.L	D0
 	BEQ.B	L001A0
 L0019F:
@@ -3922,10 +3923,11 @@ L001B0:
 	BLE.B	L001B1
 	CMP.W	-$60BC(A4),D4	;_maxrow
 	BGE.B	L001B1
-	MOVE.W	D5,-(A7)
-	MOVE.W	D4,-(A7)
-	JSR	_moat
-	ADDQ.W	#4,A7
+
+	MOVE.W	D5,d1
+	MOVE.W	D4,d0
+	JSR	_moatquick
+
 	MOVEA.L	D0,A3
 	TST.L	D0
 	BEQ.B	L001B1
@@ -4048,10 +4050,10 @@ L001BE:
 	MOVEA.L	-$5198(A4),A6	;__flags
 	ANDI.B	#$EF,$00(A6,D7.W)
 L001BF:
-	MOVE.W	D5,-(A7)
-	MOVE.W	D4,-(A7)
-	JSR	_moat
-	ADDQ.W	#4,A7
+	MOVE.W	D5,d1
+	MOVE.W	D4,d0
+	JSR	_moatquick
+
 	MOVEA.L	D0,A3
 	TST.L	D0
 	BEQ.B	L001C0
@@ -4522,14 +4524,21 @@ L0020B:
 
 	TST.L	-$5298(A4)	;_cur_weapon
 	BEQ.B	L0020C
+
 	MOVEA.L	-$5298(A4),A6	;_cur_weapon
 	CMPI.W	#$006D,$000A(A6)	;m weapon type
 	BNE.B	L0020C
+
+	; double enchant currently wielded weapon
+
 	JSR	_s_enchant(PC)
 	JSR	_s_enchant(PC)
 L0020C:
 	TST.L	-$5294(A4)	;_cur_armor
 	BEQ.B	L0020D
+
+	; increase armor class by two points
+
 	MOVEA.L	-$5294(A4),A6	;_cur_armor
 	SUBQ.W	#2,$0026(A6)
 	MOVE.W	#$0001,-(A7)
@@ -4570,10 +4579,11 @@ L00210:
 	MOVE.B	$00(A6,D5.W),D3
 	AND.W	#$0010,D3
 	BEQ.B	L00210
-	MOVE.W	-$0004(A5),-(A7)
-	MOVE.W	-$0002(A5),-(A7)
-	JSR	_moat
-	ADDQ.W	#4,A7
+
+	MOVE.W	-$0004(A5),d1
+	MOVE.W	-$0002(A5),d0
+	JSR	_moatquick
+
 	TST.L	D0
 	BNE.B	L00210
 	MOVE.W	#$0001,-(A7)
@@ -4768,10 +4778,11 @@ L00227:
 	ADDQ.W	#4,A7
 	CMP.W	#$0053,D0	;'S'
 	BNE.B	L00228
-	MOVE.W	D5,-(A7)
-	MOVE.W	D4,-(A7)
-	JSR	_moat
-	ADDQ.W	#4,A7
+
+	MOVE.W	D5,d1
+	MOVE.W	D4,d0
+	JSR	_moatquick
+
 	MOVE.L	D0,-$0004(A5)
 ;	TST.L	D0
 	BEQ.B	L00228
@@ -4906,9 +4917,11 @@ L00234:
 	MOVE.W	$0016(A2),D3
 	AND.W	#$0080,D3	;ISHELD
 	BNE.W	L0023A
+
 	MOVE.W	$0016(A2),D3
 	AND.W	#$0004,D3	;ISRUN
 	BEQ.W	L0023A
+
 	MOVE.W	$000A(A2),-(A7)
 	MOVE.W	$000C(A2),-(A7)
 	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
@@ -4919,11 +4932,13 @@ L00234:
 	MOVE.W	$0016(A2),D3
 	AND.W	#$2000,D3	;ISSLOW
 	BNE.B	L00235
+
 ;	MOVE.B	$000F(A2),D3
 ;	EXT.W	D3
 ;	CMP.W	#$0053,D3	;'S' slime?
 	cmp.b	#$53,$000F(A2),
 	BNE.B	L00236
+
 	CMP.W	#$0003,D4
 	BLE.B	L00236
 L00235:
@@ -4937,6 +4952,7 @@ L00237:
 	MOVE.W	$0016(A2),D3
 	AND.W	#$4000,D3	;ISHASTE
 	BEQ.B	L00238
+
 	MOVE.L	A2,-(A7)
 	BSR.B	_do_chase
 	ADDQ.W	#4,A7
@@ -4951,8 +4967,10 @@ L00238:
 	MOVE.W	$0016(A2),D3
 	AND.W	#$8000,D3
 	BEQ.B	L00239
+
 	CMP.W	#$0003,D4
 	BLE.B	L00239
+
 	MOVE.L	A2,-(A7)
 	BSR.B	_do_chase
 	ADDQ.W	#4,A7
@@ -5491,10 +5509,11 @@ _start_run:
 	LINK	A5,#-$0000
 	MOVEM.L	A2/A3,-(A7)
 	MOVEA.L	$0008(A5),A2
-	MOVE.W	(A2),-(A7)
-	MOVE.W	$0002(A2),-(A7)
-	JSR	_moat
-	ADDQ.W	#4,A7
+
+	MOVE.W	(A2),d1
+	MOVE.W	$0002(A2),d0
+	JSR	_moatquick
+
 	MOVEA.L	D0,A3
 	MOVE.L	A3,D3
 	BEQ.B	1$
@@ -7035,10 +7054,10 @@ L0031B:
 	ADD.W	-$608C(A4),D5
 	BRA.B	L0031B
 L0031C:
-	MOVE.W	D5,-(A7)
-	MOVE.W	D4,-(A7)
-	JSR	_moat
-	ADDQ.W	#4,A7
+	MOVE.W	D5,d1
+	MOVE.W	D4,d0
+	JSR	_moatquick
+
 	MOVE.L	D0,-$0004(A5)
 ;	TST.L	D0
 	BEQ.W	L0032B
@@ -7229,10 +7248,11 @@ L0032D:
 	PEA	-$0038(A5)
 	JSR	_do_motion(PC)
 	ADDQ.W	#8,A7
-	MOVE.W	-$002C(A5),-(A7)
-	MOVE.W	-$002A(A5),-(A7)
-	JSR	_moat
-	ADDQ.W	#4,A7
+
+	MOVE.W	-$002C(A5),d1
+	MOVE.W	-$002A(A5),d0
+	JSR	_moatquick
+
 	MOVE.L	D0,-$0004(A5)
 ;	TST.L	D0
 	BEQ.B	L0032E
@@ -7264,10 +7284,11 @@ L00330:
 	ADD.W	D3,-$608A(A4)
 	MOVE.W	-$52C0(A4),D3	;_player + 10
 	ADD.W	D3,-$608C(A4)
-	MOVE.W	-$608C(A4),-(A7)
-	MOVE.W	-$608A(A4),-(A7)
-	JSR	_moat
-	ADDQ.W	#4,A7
+
+	MOVE.W	-$608C(A4),d1
+	MOVE.W	-$608A(A4),d0
+	JSR	_moatquick
+
 	MOVE.L	D0,-$0004(A5)
 ;	TST.L	D0
 	BEQ.B	L00333
@@ -7319,10 +7340,10 @@ L00335:
 	ADD.W	-$608C(A4),D5
 	BRA.B	L00335
 L00336:
-	MOVE.W	D5,-(A7)
-	MOVE.W	D4,-(A7)
-	JSR	_moat
-	ADDQ.W	#4,A7
+	MOVE.W	D5,d1
+	MOVE.W	D4,d0
+	JSR	_moatquick
+
 	MOVE.L	D0,-$0004(A5)
 ;	TST.L	D0
 	BEQ.B	L0033D
@@ -7705,10 +7726,11 @@ L0036C:
 L0036D:
 	TST.B	D6
 	BNE.W	L00378
-	MOVE.W	-$0008(A5),-(A7)
-	MOVE.W	-$0006(A5),-(A7)
-	JSR	_moat
-	ADDQ.W	#4,A7
+
+	MOVE.W	-$0008(A5),d1
+	MOVE.W	-$0006(A5),d0
+	JSR	_moatquick
+
 	MOVEA.L	D0,A2
 	TST.L	D0
 	BEQ.W	L00378
@@ -7878,11 +7900,10 @@ L0037C:
 	BRA.B	L0037E
 L0037D:
 	MOVEA.L	$0008(A5),A6
-	MOVE.W	(A6),-(A7)
-	MOVEA.L	$0008(A5),A6
-	MOVE.W	$0002(A6),-(A7)
-	JSR	_moat
-	ADDQ.W	#4,A7
+	MOVE.W	(A6)+,d1
+	MOVE.W	(A6),d0
+	JSR	_moatquick
+
 	MOVEA.L	D0,A6
 	MOVE.B	$000F(A6),D3
 ;	EXT.W	D3
@@ -12010,9 +12031,11 @@ L00532:
 	MOVE.L	A3,-(A7)
 	JSR	_unpack
 	ADDQ.W	#6,A7
+
 	MOVEA.L	D0,A3
 	TST.L	D0
 	BNE.B	L00533
+
 	JSR	_stuck(PC)
 	BRA.B	L0052C
 L00533:
@@ -13551,6 +13574,7 @@ L005FD:
 	MOVE.L	A2,-(A7)
 	JSR	_unpack
 	ADDQ.W	#6,A7
+
 	MOVEA.L	D0,A2
 	TST.L	D0
 	BNE.B	L00600
@@ -13563,10 +13587,11 @@ L00600:
 	MOVE.L	A2,-(A7)
 	BSR.B	_do_motion
 	ADDQ.W	#8,A7
-	MOVE.W	$000C(A2),-(A7)
-	MOVE.W	$000E(A2),-(A7)
-	JSR	_moat
-	ADDQ.W	#4,A7
+
+	MOVE.W	$000C(A2),d1
+	MOVE.W	$000E(A2),d0
+	JSR	_moatquick
+
 	TST.L	D0
 	BEQ.B	L00601
 
@@ -13750,17 +13775,14 @@ L0060D:
 	JSR	_mvaddchquick
 
 	JSR	_standend
-	MOVE.W	-$53D2(A4),-(A7)
-	MOVE.W	-$53D0(A4),-(A7)
-	JSR	_moat
-	ADDQ.W	#4,A7
+
+	MOVE.W	-$53D2(A4),d1
+	MOVE.W	-$53D0(A4),d0
+	JSR	_moatquick
+
 	TST.L	D0
 	BEQ.B	L0060E
 
-	MOVE.W	-$53D2(A4),-(A7)
-	MOVE.W	-$53D0(A4),-(A7)
-	JSR	_moat
-	ADDQ.W	#4,A7
 	MOVEA.L	D0,A6
 	MOVEA.L	$0008(A5),A1
 	MOVE.B	$000B(A1),$0011(A6)
@@ -13871,10 +13893,11 @@ _hit_monster:
 	MOVEM.L	D4/D5/A2,-(A7)
 	MOVE.W	$0008(A5),D4
 	MOVE.W	$000A(A5),D5
-	MOVE.W	D5,-(A7)
-	MOVE.W	D4,-(A7)
-	JSR	_moat
-	ADDQ.W	#4,A7
+
+	MOVE.W	D5,d1
+	MOVE.W	D4,d0
+	JSR	_moatquick
+
 	TST.L	D0
 	BEQ.B	L00619
 	MOVEA.L	D0,A2
@@ -17413,10 +17436,10 @@ L0082B:
 	CMP.B	D2,D3
 	BNE.W	L00846
 L0082C:
-	MOVE.W	D4,-(A7)
-	MOVE.W	D5,-(A7)
-	JSR	_moat
-	ADDQ.W	#4,A7
+	MOVE.W	D4,d1
+	MOVE.W	D5,d0
+	JSR	_moatquick
+
 	MOVEA.L	D0,A3
 	TST.L	D0
 	BEQ.B	L00832
@@ -18597,13 +18620,15 @@ L008BE:
 _winat:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
-	MOVE.W	$000A(A5),-(A7)
-	MOVE.W	$0008(A5),-(A7)
-	JSR	_moat
-	ADDQ.W	#4,A7
-	MOVEA.L	D0,A2
+
+	MOVE.W	$000A(A5),d1
+	MOVE.W	$0008(A5),d0
+	JSR	_moatquick
+
 	TST.L	D0
 	BEQ.B	L008C0
+
+	MOVEA.L	D0,A2
 	MOVEQ	#$00,D0
 	MOVE.B	$0010(A2),D0
 L008BF:
@@ -19740,10 +19765,10 @@ L0091E:
 	MOVE.W	(A3),D5
 	BRA.B	L00923
 L0091F:
-	MOVE.W	D5,-(A7)
-	MOVE.W	D4,-(A7)
-	JSR	_moat
-	ADDQ.W	#4,A7
+	MOVE.W	D5,d1
+	MOVE.W	D4,d0
+	JSR	_moatquick
+
 	MOVE.L	D0,D6
 ;	TST.L	D6
 	BEQ.B	L00920
@@ -19875,10 +19900,11 @@ L0092E:
 
 	TST.W	D0
 	BEQ.B	L0092F
-	MOVE.W	D5,-(A7)
-	MOVE.W	D4,-(A7)
-	JSR	_moat
-	ADDQ.W	#4,A7
+
+	MOVE.W	D5,d1
+	MOVE.W	D4,d0
+	JSR	_moatquick
+
 	MOVEA.L	D0,A6
 	MOVE.B	#$22,$0011(A6)
 L0092F:
@@ -19934,10 +19960,11 @@ _fight:
 
 	MOVEA.L	$0008(A5),A2
 	MOVEA.L	$000E(A5),A3
-	MOVE.W	(A2),-(A7)
-	MOVE.W	$0002(A2),-(A7)
-	JSR	_moat
-	ADDQ.W	#4,A7
+
+	MOVE.W	(A2),d1
+	MOVE.W	$0002(A2),d0
+	JSR	_moatquick
+
 	MOVE.L	D0,D4
 ;	TST.L	D0
 	BNE.B	L00935
@@ -21222,7 +21249,7 @@ _save_throw:
 	MOVE.L	D4,-(A7)
 
 	MOVE.W	$0008(A5),D3
-	ADD.W	#$000E,D3
+	ADD.W	#14,D3
 	MOVEA.L	$000A(A5),A6
 	MOVE.W	$001E(A6),D2
 	EXT.L	D2
@@ -21230,10 +21257,11 @@ _save_throw:
 	MOVE.W	D3,D4
 	SUB.W	D2,D4
 
-	MOVE.W	#$0014,-(A7)	;1d20
-	MOVE.W	#$0001,-(A7)
+	MOVE.W	#20,-(A7)	;1d20
+	MOVE.W	#1,-(A7)
 	JSR	_roll
 	ADDQ.W	#4,A7
+
 	CMP.W	D4,D0
 	BLT.B	L009D7
 
@@ -21853,8 +21881,10 @@ _new_monster:
 	MOVE.W	$0006(A3),$0016(A2)
 	MOVE.B	#$01,$000E(A2)
 	CLR.L	$002E(A2)
+
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L00A14
+
 	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	CMPI.W	#R_AGGR,$0020(A6)	;aggravate monster
 	BEQ.B	L00A15
@@ -22076,10 +22106,11 @@ L00A2F:	dc.b	"started a wandering %s",0,0
 _wake_monster:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/D5/A2/A3,-(A7)
-	MOVE.W	$000A(A5),-(A7)
-	MOVE.W	$0008(A5),-(A7)
-	JSR	_moat(PC)
-	ADDQ.W	#4,A7
+
+	MOVE.W	$000A(A5),d1
+	MOVE.W	$0008(A5),d0
+	JSR	_moatquick
+
 	MOVEA.L	D0,A2
 	TST.L	D0
 	BNE.B	L00A31
@@ -22298,27 +22329,23 @@ _pick_mons:
 ;	EXT.W	D0
 	BRA.B	3$
 
-_moat:
-	LINK	A5,#-$0000
-	MOVEM.L	D4/D5/A2,-(A7)
+_moatquick:
+	MOVE.L	A2,-(A7)
 
-	MOVE.W	$0008(A5),D4
-	MOVE.W	$000A(A5),D5
 	MOVEA.L	-$6CAC(A4),A2	;_mlist
 	BRA.B	L00A46
 L00A43:
-	MOVE.W	$000A(A2),D3
-	CMP.W	D5,D3
+	MOVE.W	$000A(A2),D3	;moster x pos
+	CMP.W	D1,D3
 	BNE.B	L00A45
 
-	MOVE.W	$000C(A2),D3
-	CMP.W	D4,D3
+	MOVE.W	$000C(A2),D3	;monster y pos
+	CMP.W	D0,D3
 	BNE.B	L00A45
 
 	MOVE.L	A2,D0		;return found monster
 L00A44:
-	MOVEM.L	(A7)+,D4/D5/A2
-	UNLK	A5
+	MOVE.L	(A7)+,A2
 	RTS
 
 L00A45:
