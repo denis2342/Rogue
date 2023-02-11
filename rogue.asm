@@ -8484,8 +8484,8 @@ L003D2:
 ;	UNLK	A5
 	RTS
 
-L003D3:	dc.b	"%-4d",0
-L003D4:	dc.b	"    ",0
+L003D3:	dc.b	"%2d",0
+L003D4:	dc.b	"  ",0,0
 
 _execcom:
 	LINK	A5,#-$0008
