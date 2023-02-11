@@ -897,9 +897,7 @@ L00098:
 	MOVE.W	-$52B4(A4),D3	;_player + 22
 	AND.W	#$0080,D3	;ISHELD
 	BEQ.B	L00099
-	MOVEQ	#$00,D3
-	MOVE.B	D4,D3
-	CMP.W	#$0046,D3
+	CMP.B	#$46,D4		;'F'
 	BEQ.B	L00099
 	PEA	L000C6(PC)	;"you are being held"
 	JSR	_msg
