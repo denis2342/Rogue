@@ -15059,7 +15059,7 @@ _get_scores:
 	MOVEM.L	D4/D5,-(A7)
 
 	MOVEQ	#$01,D5
-	MOVEQ	#$00,D4
+	MOVEQ	#10-1,D4	;read ten entries, -1 for dbra
 L00681:
 	CMP.W	#$0000,D5
 	BLE.B	L00682
@@ -15077,10 +15077,9 @@ L00682:
 	MOVEA.L	$0008(A5),A6
 	CLR.W	$0028(A6)
 L00683:
-	ADDQ.W	#1,D4
-	ADDI.L	#$0000002E,$0008(A5)
-	CMP.W	#$000A,D4	; 10 highscore entries
-	BLT.B	L00681
+	ADDI.L	#46,$0008(A5)
+	DBRA	D4,L00681	; 10 highscore entries
+
 	MOVEM.L	(A7)+,D4/D5
 	UNLK	A5
 	RTS
@@ -15088,32 +15087,26 @@ L00683:
 _put_scores:
 	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
-	MOVEQ	#$00,D4
-	BRA.B	L00687
-L00684:
+
+	MOVEQ	#10-1,D4	;save ten entries, -1 for dbra
+loop$	MOVEA.L	$0008(A5),A6
+	TST.W	$0028(A6)	;the gold score
+	BEQ.B	L00685
+
 	MOVE.W	#46,-(A7)	; 46 bytes per entry
 	MOVE.L	$0008(A5),-(A7)
 	MOVE.W	-$53C0(A4),-(A7)	;rogue.score filehd
 	JSR	_write
 	ADDQ.W	#8,A7
 	CMP.W	#$0000,D0
-	BGT.B	L00686
-L00685:
-	MOVE.L	(A7)+,D4
+	BLE.B	L00685
+
+	ADDI.L	#46,$0008(A5)	; next entry
+	DBRA	D4,loop$	; 10 highscore entries
+
+L00685:	MOVE.L	(A7)+,D4
 	UNLK	A5
 	RTS
-
-L00686:
-	ADDQ.W	#1,D4
-	ADDI.L	#$0000002E,$0008(A5)	; next entry
-L00687:
-	CMP.W	#$000A,D4	; 10 highscore entries
-	BGE.B	L00688
-	MOVEA.L	$0008(A5),A6
-	TST.W	$0028(A6)	;the gold score
-	BNE.B	L00684
-L00688:
-	BRA.B	L00685
 
 _pr_scores:
 	LINK	A5,#-$0054
