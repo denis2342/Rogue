@@ -7124,9 +7124,8 @@ L0031E:
 
 	MOVEq	#26,D0
 	JSR	_rnd
-	ADD.W	#$0041,D0	;'A'
-	MOVEQ	#$00,D6
-	MOVE.B	D0,D6
+	moveq	#$41,D6	;'A'
+	ADD.B	D0,D6
 	MOVE.W	D6,-(A7)
 	MOVE.L	-$0004(A5),-(A7)
 	JSR	_new_monster
