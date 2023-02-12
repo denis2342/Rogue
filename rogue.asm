@@ -8289,6 +8289,9 @@ L003B8:
 	CLR.W	-$60A4(A4)	;_count
 	TST.B	-$66B6(A4)	;_running
 	BEQ.B	L003B9
+
+	JSR	_one_tick	;slow down the fast mode
+
 	MOVE.B	-$66A8(A4),D3	;_runch
 	EXT.W	D3
 	MOVE.W	D3,D4
