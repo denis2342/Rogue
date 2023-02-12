@@ -8132,6 +8132,7 @@ L0039F:
 	LEA	-$5190(A4),A6	;_cur_ring_1
 	TST.L	$00(A6,D3.w)
 	BEQ.B	L003A4
+
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
@@ -13180,7 +13181,7 @@ _ring_on:
 	TST.L	D0
 	BEQ.W	L005B3
 L005A6:
-	CMPI.W	#$003D,$000A(A2)
+	CMPI.W	#$003D,$000A(A2)	;'=' ring type
 	BEQ.B	L005A7
 	PEA	L005B5(PC)	;"you can't put that on your finger"
 	JSR	_msg
@@ -13188,7 +13189,7 @@ L005A6:
 	BRA.W	L005B3
 L005A7:
 	MOVE.L	A2,-(A7)
-	JSR	_check_wisdom
+	JSR	_check_wisdom	;do we really want wear that ring?
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BEQ.B	L005A9
@@ -15541,31 +15542,31 @@ L006BD:
 	move	#0,d4
 	BRA.B	L006C7
 L006C6:
-	dc.w	20
-	dc.w	25
-	dc.w	20
-	dc.w	30
-	dc.w	75
-	dc.w	80
-	dc.w	90
-	dc.w	150
+	dc.w	20	;leather armor
+	dc.w	25	;ring mail
+	dc.w	20	;studded leather armor
+	dc.w	30	;scale mail
+	dc.w	75	;chain mail
+	dc.w	80	;splint mail
+	dc.w	90	;banded mail
+	dc.w	150	;plate mail
 L006C7:
 	CMP.w	#$0008,D0
 	BCC.B	L006C9
 	ASL.w	#1,D0
 	MOVE.W	L006C6(PC,D0.W),D4
 L006C9:
-	MOVEQ	#$09,D3
-	SUB.W	$0026(A2),D3
-	MULU.W	#100,D3
+	MOVEQ	#$09,D3		;load armor class value from weapon
+	SUB.W	$0026(A2),D3	;one point in armor class is worth 100 gold
+	MULU.W	#100,D3		;so a plate mail with AC of 8 is worth 600 gold
 	ADD.W	D3,D4
-	MOVE.W	$0020(A2),D3
+	MOVE.W	$0020(A2),D3	;which armor did we have?
 ;	EXT.L	D3
 	ASL.w	#1,D3
 	LEA	-$6F00(A4),A6	;_a_class
-	MOVE.W	$00(A6,D3.w),D2
+	MOVE.W	$00(A6,D3.w),D2	;load the base AC value
 	SUB.W	$0026(A2),D2
-	MULU.W	#10,D2
+	MULU.W	#10,D2		; 10 extra gold for every AC point we made it better
 	ADD.W	D2,D4
 	ORI.W	#O_ISKNOW,$0028(A2)
 	BRA.W	L006D7
