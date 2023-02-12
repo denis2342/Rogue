@@ -665,12 +665,12 @@ _init_ds:
 	ADDQ.W	#2,A7
 	MOVE.L	D0,-$5198(A4)	;__flags
 
-	MOVE.W	#$06E0,-(A7)
+	MOVE.W	#$06E0,-(A7)	;1760
 	JSR	_newmem
 	ADDQ.W	#2,A7
 	MOVE.L	D0,-$519C(A4)	;__level
 
-	MOVE.W	#$1036,-(A7)
+	MOVE.W	#$1036,-(A7)	;4150
 	JSR	_newmem
 	ADDQ.W	#2,A7
 	MOVE.L	D0,-$52D2(A4)	;__things
@@ -7062,6 +7062,7 @@ L0031B:
 	MOVE.W	D4,-(A7)
 	JSR	_winat
 	ADDQ.W	#4,A7
+
 	MOVE.W	D0,-(A7)
 	JSR	_step_ok
 	ADDQ.W	#2,A7
@@ -7088,8 +7089,9 @@ L0031C:
 
 	ANDI.W	#$FF7F,-$52B4(A4)	;clear ISHELD ($80) for _player + 22
 L0031D:
-	CMPI.W	#$0005,-$0006(A5)	;5 = polymorph
+	CMPI.W	#WS_POLYMORPH,-$0006(A5)	;5 = polymorph
 	BNE.W	L00322
+
 	MOVEA.L	-$0004(A5),A6
 	MOVE.L	$002E(A6),-$000C(A5)
 	MOVE.L	-$0004(A5),-(A7)
@@ -7157,11 +7159,12 @@ L00321:
 	OR.B	D3,-$66C6(A4)
 	BRA.W	L0032A
 L00322:
-	CMPI.W	#$000D,-$0006(A5)
+	CMPI.W	#WS_CANCEL,-$0006(A5)	;is it a cancellation wand/staff?
 	BNE.B	L00323
+
 	MOVEA.L	-$0004(A5),A6
-	ORI.W	#$1000,$0016(A6)	;ISCANC
-	ANDI.W	#$FBEF,$0016(A6)	;clear ISINVIS+CANHUH
+	ORI.W	#$1000,$0016(A6)	;C_ISCANC
+	ANDI.W	#$FBEF,$0016(A6)	;clear C_ISINVIS|C_CANHUH
 	MOVE.B	$000F(A6),$0010(A6)
 	BRA.W	L0032A
 L00323:
@@ -7170,6 +7173,7 @@ L00323:
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BEQ.B	L00324
+
 	MOVEA.L	-$0004(A5),A6
 
 	MOVE.B	$0011(A6),D2
@@ -7178,8 +7182,9 @@ L00323:
 	JSR	_mvaddchquick
 
 L00324:
-	CMPI.W	#$000B,-$0006(A5)
+	CMPI.W	#WS_TELAWAY,-$0006(A5)	;is it a teleport away wand/staff?
 	BNE.B	L00326
+
 	MOVEA.L	-$0004(A5),A6
 	MOVE.B	#$22,$0011(A6)
 	PEA	$000A(A6)
@@ -7190,6 +7195,7 @@ L00324:
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BEQ.B	L00325
+
 	MOVEA.L	-$0004(A5),A6
 
 	MOVE.B	$0010(A6),D2
@@ -7214,7 +7220,8 @@ L00327:
 ;	CMP.W	#$0046,D3	;'F'
 	cmp.b	#$46,$000F(A6)
 	BNE.B	L00328
-	ANDI.W	#$FF7F,-$52B4(A4)	;clear ISHELD ($80) for _player + 22
+
+	ANDI.W	#$FF7F,-$52B4(A4)	;clear C_ISHELD ($80) for _player + 22
 L00328:
 	MOVEA.L	-$0004(A5),A6
 	MOVE.W	$000C(A6),D3
@@ -8138,9 +8145,9 @@ L003A0:
 	JSR	_search(PC)
 	BRA.B	L003A4
 L003A1:
-	MOVEq	#$0032,D0
+	MOVEq	#50,D0
 	JSR	_rnd
-	CMP.W	#$0011,D0
+	CMP.W	#17,D0
 	BNE.B	L003A2
 	JSR	_teleport
 L003A2:
@@ -8154,6 +8161,7 @@ L003A4:
 	ADDQ.W	#1,D5
 	CMP.W	#$0001,D5
 	BLE.B	L0039F
+
 	BRA.W	L0039B
 L003A5:
 	JSR	_do_daemons(PC)
@@ -8209,25 +8217,25 @@ L003AF:
 	SEQ	-$66BA(A4)	;_fastmode
 	BRA.B	L003B3
 L003B2:
-	SUBQ.w	#2,D0
+	SUBQ.w	#2,D0	;B
 	BEQ.B	L003AF
-	SUBQ.w	#6,D0
+	SUBQ.w	#6,D0	;H
 	BEQ.B	L003AF
-	SUBQ.w	#2,D0
+	SUBQ.w	#2,D0	;J
 	BEQ.B	L003AF
-	SUBQ.w	#1,D0
+	SUBQ.w	#1,D0	;K
 	BEQ.B	L003AF
-	SUBQ.w	#1,D0
+	SUBQ.w	#1,D0	;L
 	BEQ.B	L003AF
-	SUBQ.w	#2,D0
+	SUBQ.w	#2,D0	;N
 	BEQ.B	L003AF
-	SUBQ.w	#7,D0
+	SUBQ.w	#7,D0	;U
 	BEQ.B	L003AF
-	SUBQ.w	#4,D0
+	SUBQ.w	#4,D0	;Y
 	BEQ.B	L003AF
-	SUB.w	#$0012,D0
+	SUB.w	#$0012,D0	;k
 	BEQ.B	L003AD
-	SUBQ.w	#2,D0
+	SUBQ.w	#2,D0		;m
 	BEQ.B	L003AE
 L003B3:
 	TST.W	-$60B0(A4)	;_mpos
@@ -8254,6 +8262,7 @@ L003B6:
 _get_prefix:
 ;	LINK	A5,#-$0000
 	MOVEM.L	D4-D6,-(A7)
+
 	ST	-$66F9(A4)	;_after
 	MOVE.B	-$66B9(A4),-$66BA(A4)	;_faststate,_fastmode
 	MOVE.W	#$0001,-(A7)
@@ -8261,6 +8270,7 @@ _get_prefix:
 	ADDQ.W	#2,A7
 	TST.B	-$66B6(A4)	;_running
 	BNE.B	L003B7
+
 	CLR.B	-$66BB(A4)	;_door_stop
 L003B7:
 	ST	-$54C3(A4)	;_is_pickup
@@ -8268,6 +8278,7 @@ L003B7:
 	SUBQ.W	#1,-$60A4(A4)	;_count
 ;	CMPI.W	#$0000,-$60A4(A4)	;_count
 	BLE.B	L003B8
+
 	MOVE.B	-$54C2(A4),-$54C3(A4)	;_is_pickup
 	MOVEQ	#$00,D3
 	MOVE.B	-$54C4(A4),D3
@@ -8375,6 +8386,7 @@ L003C6:
 L003C7:
 	TST.W	-$60A4(A4)	;_count
 	BEQ.B	L003C8
+
 	CLR.B	-$66BA(A4)	;_fastmode
 L003C8:
 	MOVE.W	D4,D0
@@ -8437,23 +8449,23 @@ L003CD:
 	SUBQ.w	#2,D0		;'n'
 	BEQ.W	L003C9
 	SUBQ.w	#3,D0		;'q'
-	BEQ.B	L003CB
+	BEQ.B	L003CE
 	SUBQ.w	#1,D0		;'r'
-	BEQ.B	L003CB
+	BEQ.B	L003CE
 	SUBQ.w	#1,D0		;'s'
-	BEQ.B	L003CB
+	BEQ.B	L003CE
 	SUBQ.w	#1,D0		;'t'
-	BEQ.B	L003CB
+	BEQ.B	L003CE
 	SUBQ.w	#1,D0		;'u'
 	BEQ.W	L003C9
 	SUBQ.w	#4,D0		;'y'
 	BEQ.W	L003C9
 	SUBQ.w	#1,D0		;'z'
-	BEQ.B	L003CB
-	BRA.B	L003CC
+	BNE.B	L003CC
 L003CE:
 	TST.W	-$60A4(A4)	;_count
 	BNE.B	L003CF
+
 	TST.W	-$54C6(A4)
 	BEQ.B	L003D0
 L003CF:
@@ -11784,6 +11796,7 @@ L00517:
 L00518:
 	CMP.L	-$0004(A5),D4
 	BEQ.B	L00517
+
 	MOVE.L	(A7)+,D4
 	UNLK	A5
 	RTS
@@ -15151,8 +15164,8 @@ L00689:
 	TST.W	D0
 	BEQ.B	L0068B
 
-	MOVEA.L	$000A(A5),A6
-	CMPI.W	#$001A,$002C(A6)
+	MOVEA.L	$000A(A5),A6	;who got us killed?
+	CMPI.W	#26,$002C(A6)
 	BGE.B	L0068B
 
 	MOVE.W	#$0001,-(A7)
@@ -15205,6 +15218,7 @@ L0068C:
 	MOVEA.L	$000A(A5),A6
 	CMPI.W	#26,$002C(A6)	; level 26
 	BLT.B	L0068D
+
 	PEA	L00695(PC)	;" Honored by the Guild"
 	JSR	_addstr
 	ADDQ.W	#4,A7
@@ -16253,6 +16267,7 @@ L007A0:
 _con_frnt:
 	LINK	A5,#-$000E
 	MOVEM.L	D4-D7,-(A7)
+
 	MOVEQ	#$00,D6
 	MOVEQ	#$00,D7
 	CLR.W	-$000A(A5)
@@ -16263,6 +16278,7 @@ _con_frnt:
 	MOVE.W	D4,D3
 	EXT.L	D3
 	ASL.L	#1,D3
+
 	MOVEA.L	-$53B0(A4),A6
 	MOVE.W	$00(A6,D3.L),-$53BC(A4)
 
@@ -16314,6 +16330,7 @@ L007A1:
 	ADDQ.W	#4,A7
 	CMP.W	#$0000,D0
 	BLE.B	L007A2
+
 	MOVE.W	-$000A(A5),D3
 	ADDQ.W	#1,-$000A(A5)
 	EXT.L	D3
@@ -16329,6 +16346,7 @@ L007A2:
 	ADDQ.W	#4,A7
 	CMP.W	#$0000,D0
 	BLE.B	L007A3
+
 	MOVE.W	-$000A(A5),D3
 	ADDQ.W	#1,-$000A(A5)
 	EXT.L	D3
@@ -16344,6 +16362,7 @@ L007A3:
 	ADDQ.W	#4,A7
 	CMP.W	#$0000,D0
 	BLE.B	L007A4
+
 	MOVE.W	-$000A(A5),D3
 	ADDQ.W	#1,-$000A(A5)
 	EXT.L	D3
@@ -16403,6 +16422,7 @@ L007AC:
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BEQ.B	L007AD
+
 	MOVE.W	-$000E(A5),-(A7)
 	MOVE.W	-$000C(A5),-(A7)
 	BSR.B	_splat
@@ -16469,9 +16489,11 @@ L007B1:
 
 _inrange:
 	LINK	A5,#-$0000
+
 	MOVE.W	$0008(A5),D3
 	CMP.W	-$53B8(A4),D3
 	BLT.B	L007B2
+
 	MOVE.W	-$60BC(A4),D3	;_maxrow
 	ADDQ.W	#1,D3
 	EXT.L	D3
@@ -16480,14 +16502,17 @@ _inrange:
 	MOVE.W	$0008(A5),D2
 	CMP.W	D3,D2
 	BGE.B	L007B2
+
 	MOVE.W	$000A(A5),D3
 	CMP.W	-$53B6(A4),D3
 	BLT.B	L007B2
+
 	MOVE.W	-$53B6(A4),D3
 	ADD.W	#$0014,D3
 	MOVE.W	$000A(A5),D2
 	CMP.W	D3,D2
 	BGE.B	L007B2
+
 	MOVEq	#$0001,D0
 	BRA.B	L007B3
 L007B2:
@@ -16617,14 +16642,17 @@ L007BE:
 L007BF:
 	TST.B	$002A(A2)
 	BEQ.B	L007C0
+
 	ORI.W	#$0040,$0028(A2)	;O_SLAYED ???
 L007C0:
 	TST.W	$000C(A5)
 	BEQ.B	L007C1
+
 	MOVE.W	#$007E,-(A7)
 	MOVE.L	A2,-(A7)
 	JSR	_nameof
 	ADDQ.W	#6,A7
+
 	MOVE.L	D0,-(A7)
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -16661,6 +16689,7 @@ L007C6:
 L007C7:
 	TST.B	-$66F7(A4)	;_again
 	BNE.B	L007C8
+
 	PEA	L007EE(PC)	;"type of item: "
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -21779,9 +21808,9 @@ L00A06:
 	ADDQ.W	#8,A7
 	BRA.B	L00A08
 L00A07:
-	SUB.w	#$0046,D0	;'F'
+	SUB.w	#$0046,D0	;'F' Venus Flytrap
 	BEQ.W	L00A02
-	SUBQ.w	#6,D0		;'L'
+	SUBQ.w	#6,D0		;'L' Leprechaun
 	BEQ.W	L00A03
 L00A08:
 	MOVE.W	#$0001,-(A7)
