@@ -7244,14 +7244,14 @@ L0032A:
 	MOVEA.L	-$0004(A5),A6
 	LEA	-$52C0(A4),A1	;_player + 10
 	MOVE.L	A1,$0012(A6)
-	ORI.W	#$0004,$0016(A6)	;ISRUN
+	ORI.W	#$0004,$0016(A6)	;C_ISRUN
 L0032B:
 	BRA.W	L00345
 
 ; magic missile
 
 L0032C:
-	MOVE.B	#$01,-$66C5(A4)
+	ST	-$66C5(A4)		;set _ws_know + 6
 	MOVE.W	#$000A,-$0018(A5)
 	MOVE.W	#$0077,-$002E(A5)
 	LEA	L0034E(PC),A6		;"1d8"
