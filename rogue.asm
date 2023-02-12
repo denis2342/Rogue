@@ -11772,16 +11772,10 @@ L00515:	dc.b	"No Memory",0
 ;	RTS
 
 _tick_pause:
-;	LINK	A5,#-$0000
-	MOVE.L	D4,-(A7)
-	MOVEQ	#$00,D4
-L00516:
 	BSR.B	_one_tick
-	ADDQ.W	#1,D4
-	CMP.W	#$0003,D4
-	BLT.B	L00516
-	MOVE.L	(A7)+,D4
-;	UNLK	A5
+	BSR.B	_one_tick
+	BSR.B	_one_tick
+	BSR.B	_one_tick
 	RTS
 
 _one_tick:
