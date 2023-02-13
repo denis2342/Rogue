@@ -18227,8 +18227,10 @@ L0087B:	dc.b	"That's already in use",0
 _get_dir:
 ;	LINK	A5,#-$0002
 	MOVEM.L	D4/A2,-(A7)
+
 	TST.B	-$66F7(A4)	;_again
 	BEQ.B	L0087D
+
 	MOVEQ	#$01,D0
 L0087C:
 	MOVEM.L	(A7)+,D4/A2
@@ -18244,6 +18246,7 @@ L0087E:
 	MOVE.W	D0,D4
 	CMP.W	#$001B,D0	;escape
 	BNE.B	L0087F
+
 	PEA	L00883(PC)
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -18256,12 +18259,14 @@ L0087F:
 	ADDQ.W	#6,A7
 	TST.W	D0
 	BEQ.B	L0087E
+
 	PEA	L00884(PC)
 	JSR	_msg
 	ADDQ.W	#4,A7
 	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISHUH,D3	;C_ISHUH
 	BEQ.B	L00881
+
 	MOVEq	#$0005,D0
 	JSR	_rnd
 	TST.W	D0
@@ -18277,6 +18282,7 @@ L00880:
 	MOVE.W	D0,-$608C(A4)
 	TST.W	-$608A(A4)
 	BNE.B	L00881
+
 	TST.W	-$608C(A4)
 	BEQ.B	L00880
 L00881:
@@ -18289,6 +18295,7 @@ L00884:	dc.b	$00
 
 _find_dir:
 	LINK	A5,#-$0002
+
 	MOVE.B	#$01,-$0001(A5)
 	MOVEQ	#$00,D0
 	MOVE.B	$0009(A5),D0
@@ -18345,37 +18352,37 @@ L0088D:
 	CLR.B	-$0001(A5)
 	BRA.B	L0088F
 L0088E:
-	SUB.w	#$0042,D0
+	SUB.w	#$0042,D0	;'B'
 	BEQ.B	L0088B
-	SUBQ.w	#6,D0
+	SUBQ.w	#6,D0		;'H'
 	BEQ.W	L00885
-	SUBQ.w	#2,D0
+	SUBQ.w	#2,D0		;'J'
 	BEQ.W	L00886
-	SUBQ.w	#1,D0
+	SUBQ.w	#1,D0		;'K'
 	BEQ.W	L00887
-	SUBQ.w	#1,D0
+	SUBQ.w	#1,D0		;'L'
 	BEQ.W	L00888
-	SUBQ.w	#2,D0
+	SUBQ.w	#2,D0		;'N'
 	BEQ.B	L0088C
-	SUBQ.w	#7,D0
+	SUBQ.w	#7,D0		;'U'
 	BEQ.B	L0088A
-	SUBQ.w	#4,D0
+	SUBQ.w	#4,D0		;'Y'
 	BEQ.W	L00889
-	SUB.w	#$0009,D0
+	SUB.w	#$0009,D0	;'b'
 	BEQ.B	L0088B
-	SUBQ.w	#6,D0
+	SUBQ.w	#6,D0		;'h'
 	BEQ.W	L00885
-	SUBQ.w	#2,D0
+	SUBQ.w	#2,D0		;'j'
 	BEQ.W	L00886
-	SUBQ.w	#1,D0
+	SUBQ.w	#1,D0		;'k'
 	BEQ.W	L00887
-	SUBQ.w	#1,D0
+	SUBQ.w	#1,D0		;'l'
 	BEQ.W	L00888
-	SUBQ.w	#2,D0
+	SUBQ.w	#2,D0		;'n'
 	BEQ.B	L0088C
-	SUBQ.w	#7,D0
+	SUBQ.w	#7,D0		;'u'
 	BEQ.W	L0088A
-	SUBQ.w	#4,D0
+	SUBQ.w	#4,D0		;'y'
 	BEQ.W	L00889
 	BRA.B	L0088D
 L0088F:
