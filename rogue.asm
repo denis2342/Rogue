@@ -19971,7 +19971,7 @@ _leave_room:
 	JSR	_INDEXquick
 
 	MOVEA.L	-$5198(A4),A6	;__flags
-	MOVEQ	#$00,D3
+;	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	AND.W	#$000F,D3
 	MULU.W	#66,D3
