@@ -18980,6 +18980,7 @@ L008D7:	dc.b	"I see no way up",0,0
 _call:
 	LINK	A5,#-$0008
 	MOVEM.L	A2/A3,-(A7)
+
 	CLR.L	-$0008(A5)
 	MOVE.W	#$FFFF,-(A7)
 	PEA	L008E8(PC)	;"call"
@@ -19011,6 +19012,7 @@ L008DA:
 ;	EXT.W	D2
 ;	TST.W	D2
 	BNE.B	L008DB
+
 	MOVE.W	$0020(A2),D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
@@ -19030,6 +19032,7 @@ L008DC:
 ;	EXT.W	D2
 ;	TST.W	D2
 	BNE.B	L008DD
+
 	MOVE.W	$0020(A2),D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
@@ -19049,6 +19052,7 @@ L008DE:
 ;	EXT.W	D2
 ;	TST.W	D2
 	BNE.B	L008DF
+
 	MOVE.W	$0020(A2),D3
 	MULU.W	#21,D3
 	LEA	-$66A6(A4),A6	;_s_names
@@ -19068,6 +19072,7 @@ L008E0:
 ;	EXT.W	D2
 ;	TST.W	D2
 	BNE.B	L008E1
+
 	MOVE.W	$0020(A2),D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
@@ -19081,19 +19086,20 @@ L008E2:
 	ADDQ.W	#4,A7
 	BRA.W	L008D8
 L008E3:
-	SUB.w	#$0021,D0
+	SUB.w	#$0021,D0	;'!' potions
 	BEQ.W	L008DC
-	SUB.w	#$000E,D0
+	SUB.w	#$000E,D0	;'/' wands/staffs
 	BEQ.B	L008E0
-	SUB.w	#$000E,D0
+	SUB.w	#$000E,D0	;'=' rings
 	BEQ.W	L008DA
-	SUBQ.w	#2,D0
+	SUBQ.w	#2,D0		;'?' scrolls
 	BEQ.W	L008DE
 	BRA.B	L008E2
 L008E4:
 	MOVE.W	$0020(A2),D3
 	TST.B	$00(A3,D3.W)
 	BEQ.B	L008E5
+
 	PEA	L008EA(PC)	;"that has already been identified"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -19101,6 +19107,7 @@ L008E4:
 L008E5:
 	TST.L	-$0008(A5)
 	BNE.B	L008E6
+
 	MOVE.W	$0020(A2),D3
 	MULU.W	#21,D3
 	ADD.L	-$0004(A5),D3
@@ -19120,11 +19127,13 @@ L008E6:
 	MOVEA.L	-$5258(A4),A6	;_prbuf
 	TST.B	(A6)
 	BEQ.B	L008E7
+
 	MOVEA.L	-$5258(A4),A6	;_prbuf
 	MOVE.B	(A6),D3
 ;	EXT.W	D3
-	CMP.b	#$1B,D3
+	CMP.b	#$1B,D3		;escape
 	BEQ.B	L008E7
+
 	MOVE.L	-$5258(A4),-(A7)	;_prbuf
 	MOVE.W	$0020(A2),D3
 	MULU.W	#21,D3
@@ -19204,10 +19213,12 @@ L008F2:	dc.b	$00
 _is_dark:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	MOVE.W	$000E(A2),D3
 	AND.W	#$0006,D3
 	BEQ.B	L008F4
+
 	MOVEQ	#$01,D0
 L008F3:
 	MOVEA.L	(A7)+,A2
@@ -19218,6 +19229,7 @@ L008F4:
 	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISFOUND,D3	;C_ISFOUND
 	BEQ.B	L008F5
+
 	MOVEQ	#$00,D0
 	BRA.B	L008F6
 L008F5:
