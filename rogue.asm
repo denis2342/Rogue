@@ -16637,12 +16637,57 @@ L007C1:
 	MOVE.L	A2,-(A7)
 	JSR	_pack_name
 	ADDQ.W	#6,A7
+
+	MOVE.W	$000A(A2),d6
+
+	; for rings and wands/staff we want to check if there
+	; are more items who need an update
+
+	CMP.B	#'/',d6		; wand/staff
+	beq	1$
+
+	CMP.B	#'=',d6		; ring
+	bne	L007B4
+
+1$	bsr	_pack_update
+
 	BRA.W	L007B4
 
 L007C2:	dc.b	"You don't have anything in your pack to identify",0
 L007C3:	dc.b	"identify",0
 L007C4:	dc.b	"You must identify something",0
 L007C5:	dc.b	" ",0
+
+_pack_update:
+	move.l	a3,-(a7)
+	MOVE.L	-$529C(A4),a3	;_player + 46 (pack)
+
+;	MOVE.W	$000A(A2),d6	;item type we want to update
+	move.w	$20(A2),d5	;subtype
+
+	bra	2$
+
+1$	cmp.l	A2,A3		;don't update twice!
+	beq	3$
+
+	cmp.w	$000A(A3),d6		;item type from list same as item type we want to update?
+	bne	3$
+
+	cmp.w	$20(a3),d5	;is it even the same subtype?
+	bne	3$
+
+	MOVE.W	#$0001,-(A7)
+	MOVE.L	A3,-(A7)
+	JSR	_pack_name	;update name of item
+	ADDQ.W	#6,A7
+
+3$	move.l	(a3),a3		;get next pointer in pack
+
+2$	move.l	a3,d7		;something there?
+	bne	1$
+
+	move.l	(a7)+,a3
+	rts
 
 ;/*
 ; * create_obj:
