@@ -913,11 +913,9 @@ L00099:
 	CLR.B	-$66B6(A4)	;_running
 	BRA.W	L00090
 L0009A:
-	MOVEQ	#$00,D3
-	MOVE.B	D4,D3
-	MOVE.W	D3,-(A7)
+	MOVE.W	D4,D0
 	JSR	_typech
-	ADDQ.W	#2,A7
+
 ;	EXT.L	D0
 	BRA.W	L000C1
 L0009B:
@@ -8823,11 +8821,9 @@ L003F9:
 	JSR	_INDEXquick
 
 	MOVEA.L	-$519C(A4),A6	;__level
-	MOVEQ	#$00,D3
-	MOVE.B	$00(A6,D0.W),D3
-	MOVE.W	D3,-(A7)
+	MOVE.B	$00(A6,D0.W),D0
 	JSR	_typech
-	ADDQ.W	#2,A7
+
 	CMP.W	#$000E,D0
 	BEQ.B	L003FA
 
@@ -14238,17 +14234,10 @@ L00639:
 	BRA.B	L00634
 
 _typeof:
-;	LINK	A5,#-$0000
 	MOVEA.L	$0004(A7),A6
-	MOVE.W	$000A(A6),-(A7)
-	BSR.B	_typech
-	ADDQ.W	#2,A7
-;	UNLK	A5
-	RTS
+	MOVE.W	$000A(A6),D0
 
 _typech:
-	MOVE.W	$0004(A7),D0
-
 	CMP.b	#$6D,D0		; m
 	BLT.B	1$
 
@@ -19962,11 +19951,8 @@ L0092A:
 	JSR	_mvinch(PC)
 	ADDQ.W	#4,A7
 	MOVE.B	D0,D7
-	MOVEQ	#$00,D3
-	MOVE.B	D0,D3
-	MOVE.W	D3,-(A7)
 	JSR	_typech
-	ADDQ.W	#2,A7
+
 ;	EXT.L	D0
 	BRA.B	L00930
 L0092C:
