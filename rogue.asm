@@ -786,7 +786,7 @@ L00091:
 	ADDQ.W	#4,A7
 	BRA.B	L00090
 L00092:
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#$0100,D3	;ISHUH
 	BEQ.B	L00093
 
@@ -894,7 +894,7 @@ L00097:
 	ORI.B	#$10,$00(A6,D0.W)
 	BRA.B	L00099
 L00098:
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#$0080,D3	;ISHELD
 	BEQ.B	L00099
 	CMP.B	#$46,D4		;'F'
@@ -930,7 +930,7 @@ L0009B:
 	AND.W	#$0004,D3	;ISMAZE?
 	BNE.W	L000B1
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#$0001,D3	;ISBLIND
 	BNE.W	L000B1
 
@@ -1268,7 +1268,7 @@ _door_open:
 	AND.W	#$0002,D3
 	BNE.W	L000CD
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#$0001,D3	;ISBLIND
 	BNE.W	L000CD
 
@@ -1304,7 +1304,7 @@ L000C9:
 	TST.W	D0
 	BNE.B	L000CA
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#$0001,D3	;ISBLIND
 	BNE.B	L000CA
 
@@ -1383,7 +1383,7 @@ L000D0:
 	JSR	_spread
 	ADDQ.W	#2,A7
 	ADD.W	D0,-$60AC(A4)	;_no_command
-	ANDI.W	#~C_ISRUN,-$52B4(A4)	;clear C_ISRUN, _player + 22
+	ANDI.W	#~C_ISRUN,-$52B4(A4)	;clear C_ISRUN, _player + 22 (flags)
 
 	LEA	L000E6(PC),a0	;"strange white "
 	JSR	_noterse
@@ -3365,7 +3365,7 @@ _new_level:
 	LINK	A5,#-$0004
 	MOVEM.L	D4-D6/A2/A3,-(A7)
 	JSR	_NewRank(PC)
-	ANDI.W	#~C_ISHELD,-$52B4(A4)	;clear C_ISHELD ($80) _player + 22
+	ANDI.W	#~C_ISHELD,-$52B4(A4)	;clear C_ISHELD ($80) _player + 22 (flags)
 	CLR.B	-$66FA(A4)	;_no_more_fears
 	MOVE.W	-$60B4(A4),D3	;_level
 	CMP.W	-$60BA(A4),D3	;_ntraps
@@ -3888,7 +3888,7 @@ L001AA:
 ; monster confusion scroll
 
 L001AB:
-	ORI.W	#$0400,-$52B4(A4)	;set CANHUH,_player + 22
+	ORI.W	#$0400,-$52B4(A4)	;set CANHUH,_player + 22 (flags)
 	PEA	L001EB(PC)	;"your hands begin to glow red"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -3970,7 +3970,7 @@ L001B5:
 	JSR	_rnd
 	ADDQ.W	#4,D0
 	ADD.W	D0,-$60AC(A4)	;_no_command
-	ANDI.W	#$FFFB,-$52B4(A4)	;clear ISRUN, _player + 22
+	ANDI.W	#$FFFB,-$52B4(A4)	;clear ISRUN, _player + 22 (flags)
 	PEA	L001EE(PC)	;"you fall asleep"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -5464,7 +5464,7 @@ _see_monst:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
 	MOVEA.L	$0008(A5),A2
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#$0001,D3	;ISBLIND
 	BEQ.B	L00266
 	MOVEQ	#$00,D0
@@ -5477,7 +5477,7 @@ L00266:
 	MOVE.W	$0016(A2),D3
 	AND.W	#$0010,D3	;ISINVIS
 	BEQ.B	L00267
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#$0800,D3	;CANSEE
 	BNE.B	L00267
 	MOVEQ	#$00,D0
@@ -5874,7 +5874,7 @@ _cansee:
 	MOVE.W	$000A(A5),D5
 
 	MOVEq	#C_ISBLIND,D3	;C_ISBLIND
-	AND.W	-$52B4(A4),D3	;_player + 22
+	AND.W	-$52B4(A4),D3	;_player + 22 (flags)
 	BEQ.B	L00287
 
 L00289:
@@ -7005,7 +7005,7 @@ L00312:
 ; light
 
 L00313:
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#$0001,D3	;check player ISBLIND
 	BEQ.B	L00314
 
@@ -7091,7 +7091,7 @@ L0031C:
 	CMP.b	#$46,D6		;'F'
 	BNE.B	L0031D
 
-	ANDI.W	#$FF7F,-$52B4(A4)	;clear ISHELD ($80) for _player + 22
+	ANDI.W	#$FF7F,-$52B4(A4)	;clear ISHELD ($80) for _player + 22 (flags)
 L0031D:
 	CMPI.W	#WS_POLYMORPH,-$0006(A5)	;5 = polymorph
 	BNE.W	L00322
@@ -7224,7 +7224,7 @@ L00327:
 	cmp.b	#$46,$000F(A6)
 	BNE.B	L00328
 
-	ANDI.W	#$FF7F,-$52B4(A4)	;clear C_ISHELD ($80) for _player + 22
+	ANDI.W	#$FF7F,-$52B4(A4)	;clear C_ISHELD ($80) for _player + 22 (flags)
 L00328:
 	MOVEA.L	-$0004(A5),A6
 	MOVE.W	$000C(A6),D3
@@ -8095,7 +8095,7 @@ L00398:
 	BNE.B	L00399
 	CLR.B	-$66AE(A4)	;_wizard
 L00399:
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISHASTE,D3	;C_ISHASTE
 	BEQ.B	L0039A
 
@@ -8407,7 +8407,7 @@ L003C9:
 	BNE.B	L003CE
 
 	moveq	#$0001,D3	;ISBLIND
-	AND.W	-$52B4(A4),D3	;_player + 22
+	AND.W	-$52B4(A4),D3	;_player + 22 (flags)
 	BNE.B	L003CA
 	ST	-$66BB(A4)	;_door_stop
 	ST	-$66B8(A4)	;_firstmove
@@ -10373,7 +10373,7 @@ L00491:
 	ADDQ.W	#2,A7
 	MOVE.W	D0,-(A7)
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISFOUND,D3	;C_ISFOUND
 	BEQ.B	L00492
 
@@ -10391,7 +10391,7 @@ L00493:
 	PEA	L004B6(PC)	;"Your vision is clouded for a moment.  Now it seems very bright in here."
 	JSR	_msg
 	ADDQ.W	#4,A7
-	ORI.W	#C_ISFOUND,-$52B4(A4)	;_player + 22
+	ORI.W	#C_ISFOUND,-$52B4(A4)	;_player + 22 (flags)
 	PEA	-$52C0(A4)	;_player + 10
 	JSR	_leave_room
 	ADDQ.W	#4,A7
@@ -10408,7 +10408,7 @@ L00494:
 	ADDQ.W	#2,A7
 	MOVE.W	D0,-(A7)
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_WISDOM,D3
 	BEQ.B	L00495
 
@@ -10417,7 +10417,7 @@ L00494:
 	ADDQ.W	#6,A7
 	BRA.B	L00496
 L00495:
-	ORI.W	#C_WISDOM,-$52B4(A4)	;WISDOM, _player + 22
+	ORI.W	#C_WISDOM,-$52B4(A4)	;WISDOM, _player + 22 (flags)
 
 	CLR.W	-(A7)
 	PEA	_foolish(PC)
@@ -10437,7 +10437,7 @@ L00497:
 	JSR	_spread
 	ADDQ.W	#2,A7
 	MOVE.W	D0,-$60AC(A4)	;_no_command
-	ANDI.W	#~C_ISRUN,-$52B4(A4)	;clear C_ISRUN, _player + 22
+	ANDI.W	#~C_ISRUN,-$52B4(A4)	;clear C_ISRUN, _player + 22 (flags)
 	PEA	L004B8(PC)	;"you can't move"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -10446,7 +10446,7 @@ L00497:
 ; potion of see invisible
 
 L00498:
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_CANSEE,D3	;C_CANSEE
 	BNE.B	L00499
 	MOVE.W	#300,-(A7)
@@ -10699,7 +10699,7 @@ _invis_on:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
 
-	ORI.W	#C_CANSEE,-$52B4(A4)	;_player + 22
+	ORI.W	#C_CANSEE,-$52B4(A4)	;_player + 22 (flags)
 
 	MOVEA.L	-$6CAC(A4),A2	;_mlist
 	BRA.B	3$
@@ -10834,7 +10834,7 @@ _p_confuse:
 	ADD.W	D0,D3		;add spread
 	MOVE.W	D3,-(A7)	;put it back on stack for function
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISHUH,D3	;C_ISHUH
 	BEQ.B	1$
 
@@ -10848,17 +10848,17 @@ _p_confuse:
 	JSR	_fuse(PC)
 	ADDQ.W	#8,A7
 
-2$	ORI.W	#C_ISHUH,-$52B4(A4)	;C_ISHUH,_player + 22
+2$	ORI.W	#C_ISHUH,-$52B4(A4)	;C_ISHUH,_player + 22 (flags)
 ;	UNLK	A5
 	RTS
 
 _p_blind:
 ;	LINK	A5,#-$0000
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3
 	BNE.B	L004D4
 
-	ORI.W	#C_ISBLIND,-$52B4(A4)	;_player + 22
+	ORI.W	#C_ISBLIND,-$52B4(A4)	;_player + 22 (flags)
 
 	MOVE.W	#300,-(A7)
 	JSR	_spread
@@ -14088,6 +14088,7 @@ L00629:
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BNE.B	L00627
+
 	MOVE.L	A2,-(A7)
 	JSR	_check_wisdom
 	ADDQ.W	#4,A7
@@ -14129,6 +14130,7 @@ L0062D:	dc.b	"you are now wielding %s (%c)",0,0
 _fallpos:
 	LINK	A5,#-$0004
 	MOVEM.L	D4-D7/A2,-(A7)
+
 	MOVEA.L	$000C(A5),A2
 	MOVEQ	#$00,D6
 	MOVEA.L	$0008(A5),A6
@@ -14143,6 +14145,7 @@ L0062E:
 L0062F:
 	CMP.W	-$52BE(A4),D4	;_player + 12
 	BNE.B	L00630
+
 	CMP.W	-$52C0(A4),D5	;_player + 10
 	BEQ.W	L00635
 L00630:
@@ -14161,9 +14164,10 @@ L00630:
 	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	MOVE.W	D3,D7
-	CMP.W	#$002E,D3
+	CMP.W	#$002E,D3	;'.'
 	BEQ.B	L00631
-	CMP.W	#$0023,D7
+
+	CMP.W	#$0023,D7	;'#'
 	BNE.B	L00633
 L00631:
 	ADDQ.W	#1,D6
@@ -14171,6 +14175,7 @@ L00631:
 	JSR	_rnd
 	TST.W	D0
 	BNE.B	L00632
+
 	MOVE.W	D4,$0002(A2)
 	MOVE.W	D5,(A2)
 L00632:
@@ -14181,6 +14186,7 @@ L00633:
 	ADDQ.W	#2,A7
 	TST.W	D0
 	BEQ.B	L00635
+
 	MOVE.W	D5,-(A7)
 	MOVE.W	D4,-(A7)
 	JSR	_find_obj
@@ -14188,19 +14194,23 @@ L00633:
 	MOVE.L	D0,-$0004(A5)
 ;	TST.L	D0
 	BEQ.B	L00635
+
 	MOVEA.L	-$0004(A5),A6
 	MOVEA.L	$0008(A5),A1
 	MOVE.W	$000A(A6),D3
 	CMP.W	$000A(A1),D3
 	BNE.B	L00635
+
 ;	MOVEA.L	-$0004(A5),A6
 	TST.W	$002C(A6)
 	BEQ.B	L00635
+
 ;	MOVEA.L	-$0004(A5),A6
 ;	MOVEA.L	$0008(A5),A1
 	MOVE.W	$002C(A6),D3
 	CMP.W	$002C(A1),D3
 	BNE.B	L00635
+
 ;	MOVEA.L	-$0004(A5),A6
 ;	MOVEA.L	$0008(A5),A1
 	MOVE.W	$001E(A1),D3
@@ -14219,6 +14229,7 @@ L00636:
 	ADDQ.W	#1,D3
 	CMP.W	D3,D5
 	BLE.W	L0062F
+
 	ADDQ.W	#1,D4
 L00637:
 	MOVEA.L	$0008(A5),A6
@@ -14226,8 +14237,10 @@ L00637:
 	ADDQ.W	#1,D3
 	CMP.W	D3,D4
 	BLE.W	L0062E
+
 	TST.W	D6
 	BEQ.B	L00638
+
 	MOVEq	#$0001,D0
 	BRA.B	L00639
 L00638:
@@ -14270,7 +14283,7 @@ _typech:
 
 _foolish:
 ;	LINK	A5,#-$0000
-	ANDI.W	#$FFFD,-$52B4(A4)	;WISDOM,_player + 22
+	ANDI.W	#$FFFD,-$52B4(A4)	;WISDOM,_player + 22 (flags)
 	PEA	L0063D(PC)	;"You see your destiny, but the knowledge vaporizes"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -14281,7 +14294,7 @@ L0063D:	dc.b	"You see your destiny, but the knowledge vaporizes",0
 
 _lose_vision:
 ;	LINK	A5,#-$0000
-	ANDI.W	#~C_ISFOUND,-$52B4(A4)	;clear C_ISFOUND,_player + 22
+	ANDI.W	#~C_ISFOUND,-$52B4(A4)	;clear C_ISFOUND,_player + 22 (flags)
 	PEA	-$52C0(A4)	;_player + 10
 	JSR	_leave_room
 	ADDQ.W	#4,A7
@@ -14418,7 +14431,7 @@ L00647:
 
 _unconfuse:
 ;	LINK	A5,#-$0000
-	ANDI.W	#~C_ISHUH,-$52B4(A4)	;clear ISHUH,_player + 22
+	ANDI.W	#~C_ISHUH,-$52B4(A4)	;clear ISHUH,_player + 22 (flags)
 	PEA	L00648(PC)	;"you feel less confused now"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -14464,7 +14477,7 @@ _unsee:
 3$	MOVE.L	A2,D3
 	BNE.B	1$
 
-	ANDI.W	#~C_CANSEE,-$52B4(A4)	;clear CANSEE, _player + 22
+	ANDI.W	#~C_CANSEE,-$52B4(A4)	;clear CANSEE, _player + 22 (flags)
 
 	MOVEA.L	(A7)+,A2
 ;	UNLK	A5
@@ -14477,14 +14490,14 @@ _unsee:
 
 _sight:
 ;	LINK	A5,#-$0000
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L0064D
 
 	PEA	_sight(PC)
 	JSR	_extinguish(PC)
 	ADDQ.W	#4,A7
-	ANDI.W	#~C_ISBLIND,-$52B4(A4)	;clear C_ISBLIND, _player + 22
+	ANDI.W	#~C_ISBLIND,-$52B4(A4)	;clear C_ISBLIND, _player + 22 (flags)
 	MOVEA.L	-$52A0(A4),A6	;_player + 42 (proom)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3
@@ -14510,7 +14523,7 @@ L0064E:	dc.b	"the veil of darkness lifts",0,0
 
 _nohaste:
 ;	LINK	A5,#-$0000
-	ANDI.W	#~C_ISHASTE,-$52B4(A4)	;clear C_ISHASTE,_player + 22
+	ANDI.W	#~C_ISHASTE,-$52B4(A4)	;clear C_ISHASTE,_player + 22 (flags)
 	PEA	L0064F(PC)
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -14548,7 +14561,7 @@ L00650:
 	JSR	_rnd
 	ADDQ.W	#4,D0
 	ADD.W	D0,-$60AC(A4)	;_no_command
-	ANDI.W	#$FFFB,-$52B4(A4)	;clear ISRUN, _player + 22
+	ANDI.W	#$FFFB,-$52B4(A4)	;clear ISRUN, _player + 22 (flags)
 	CLR.B	-$66B6(A4)	;_running
 	CLR.W	-$60A4(A4)	;_count
 	MOVE.W	#$0003,-$609A(A4)	;_hungry_state
@@ -17098,11 +17111,11 @@ L007F6:
 	MOVE.W	-$52BE(A4),d0	;_player + 12
 	JSR	_mvaddchquick
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#$0080,D3	;ISHELD
 	BEQ.B	L007F7
 
-	ANDI.W	#~C_ISHELD,-$52B4(A4)	;clear C_ISHELD,_player + 22
+	ANDI.W	#~C_ISHELD,-$52B4(A4)	;clear C_ISHELD,_player + 22 (flags)
 	JSR	_f_restor
 L007F7:
 	CLR.W	-$60AE(A4)	;_no_move
@@ -17113,7 +17126,7 @@ L007F7:
 	TST.B	-$66AE(A4)	;_wizard
 	BNE.B	L007FA
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISHUH,D3	;C_ISHUH
 	BEQ.B	L007F8
 
@@ -17135,7 +17148,7 @@ L007F8:
 	JSR	_fuse(PC)
 	ADDQ.W	#8,A7
 L007F9:
-	ORI.W	#C_ISHUH,-$52B4(A4)	;ISHUH,_player + 22
+	ORI.W	#C_ISHUH,-$52B4(A4)	;ISHUH,_player + 22 (flags)
 L007FA:
 	MOVE.W	D4,D0
 
@@ -17320,7 +17333,7 @@ _look:
 	TST.W	D0
 	BNE.W	L00823
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#$0001,D3	;ISBLIND
 	BNE.W	L00822
 
@@ -17489,7 +17502,7 @@ L00826:
 	BLE.W	L00846
 	CMP.W	#$003C,D4
 	BGE.W	L00846
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#$0001,D3	;ISBLIND
 	BNE.B	L00828
 	CMP.W	-$52BE(A4),D5	;_player + 12
@@ -17597,7 +17610,7 @@ L0082F:
 	TST.W	D0
 	BNE.B	L00831
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#$0001,D3	;ISBLIND
 	BNE.B	L00831
 L00830:
@@ -18041,7 +18054,7 @@ _add_str:
 
 _add_haste:
 	LINK	A5,#-$0000
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISHASTE,D3	; check C_ISHASTE bit
 	BEQ.B	L0086A
 
@@ -18049,13 +18062,13 @@ _add_haste:
 	JSR	_rnd
 	ADD.W	D0,-$60AC(A4)	;_no_command
 
-	ANDI.W	#~C_ISRUN,-$52B4(A4)	;clear C_ISRUN, _player + 22
+	ANDI.W	#~C_ISRUN,-$52B4(A4)	;clear C_ISRUN, _player + 22 (flags)
 
 	PEA	_nohaste(PC)
 	JSR	_extinguish(PC)
 	ADDQ.W	#4,A7
 
-	ANDI.W	#~C_ISHASTE,-$52B4(A4)	;clear C_ISHASTE,_player + 22
+	ANDI.W	#~C_ISHASTE,-$52B4(A4)	;clear C_ISHASTE,_player + 22 (flags)
 
 	PEA	L0086C(PC)	;"you faint from exhaustion"
 	JSR	_msg
@@ -18067,7 +18080,7 @@ L00869:
 	RTS
 
 L0086A:
-	ORI.W	#C_ISHASTE,-$52B4(A4)	;C_ISHASTE,_player + 22
+	ORI.W	#C_ISHASTE,-$52B4(A4)	;C_ISHASTE,_player + 22 (flags)
 	TST.B	$0009(A5)
 	BEQ.B	L0086B
 
@@ -18246,7 +18259,7 @@ L0087F:
 	PEA	L00884(PC)
 	JSR	_msg
 	ADDQ.W	#4,A7
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#$0100,D3	;ISHUH
 	BEQ.B	L00881
 	MOVEq	#$0005,D0
@@ -18777,7 +18790,7 @@ L008C0:
 _search:
 ;	LINK	A5,#-$0000
 	MOVEM.L	D4-D7/A2,-(A7)
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#$0001,D3	;ISBLIND
 	BEQ.B	L008C2
 L008C1:
@@ -19218,7 +19231,7 @@ L008F3:
 	RTS
 
 L008F4:
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#$0008,D3	;ISFOUND
 	BEQ.B	L008F5
 	MOVEQ	#$00,D0
@@ -19234,7 +19247,7 @@ _check_wisdom:
 	LINK	A5,#-$0002
 	MOVEM.L	A2/A3,-(A7)
 	MOVEA.L	$0008(A5),A2
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_WISDOM,D3	;WISDOM
 	BNE.B	L008F8
 	MOVEQ	#$00,D0
@@ -19871,7 +19884,7 @@ L0091D:
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BNE.W	L00925
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#$0001,D3	;ISBLIND
 	BNE.W	L00925
 	MOVE.W	$000E(A3),D3
@@ -19971,7 +19984,7 @@ _leave_room:
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BEQ.B	L00926
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#$0001,D3	;ISBLIND
 	BNE.B	L00926
 	MOVEQ	#$20,D3
@@ -20108,7 +20121,7 @@ L00935:
 	CMP.B	#$58,D3		;'X' xeroc
 	BEQ.B	L00937
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#$0001,D3	;ISBLIND
 	BNE.B	L00937
 
@@ -20130,7 +20143,7 @@ L00937:
 	MULU.W	#26,D3
 	LEA	-$6CA8(A4),A6	;_monsters
 	MOVE.L	$00(A6,D3.L),D5
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#$0001,D3	;ISBLIND
 	BEQ.B	L00938
 
@@ -20189,14 +20202,14 @@ L0093B:
 	ADDQ.W	#4,A7
 	CLR.L	-$5298(A4)	;_cur_weapon
 L0093C:
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#$0400,D3	;CANHUH
 	BEQ.B	L0093D
 
 	MOVE.B	#$01,-$0001(A5)
 	MOVEA.L	D4,A6
 	ORI.W	#$0100,$0016(A6)	;ISHUH
-	ANDI.W	#$FBFF,-$52B4(A4)	;_player + 22
+	ANDI.W	#$FBFF,-$52B4(A4)	;_player + 22 (flags)
 	PEA	L00947(PC)	;"your hands stop glowing red"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -20214,7 +20227,7 @@ L0093E:
 	TST.B	-$0001(A5)
 	BEQ.B	L0093F
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#$0001,D3	;ISBLIND
 	BNE.B	L0093F
 	MOVE.L	D5,-(A7)
@@ -20285,7 +20298,7 @@ _attack:
 	CMP.B	#$58,$000F(A6)	;'X' xerox
 	BNE.B	1$
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BNE.B	1$
 
@@ -20297,7 +20310,7 @@ _attack:
 	MULU.W	#26,D3
 	LEA	-$6CA8(A4),A6	;_monsters
 	MOVEA.L	$00(A6,D3.L),A2
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L0094C
 	MOVEA.L	-$69BE(A4),A2	;_it
@@ -20504,7 +20517,7 @@ L00964:
 ; venus flytrap
 
 L00965:
-	ORI.W	#C_ISHELD,-$52B4(A4)	;C_ISHELD,_player + 22
+	ORI.W	#C_ISHELD,-$52B4(A4)	;C_ISHELD,_player + 22 (flags)
 	ADDQ.W	#1,-$60A2(A4)	;_fung_hit
 	MOVE.W	-$60A2(A4),-(A7)	;_fung_hit
 	PEA	L0097D(PC)	;"%dd1"
@@ -21136,7 +21149,7 @@ _prname:
 	ADDQ.W	#8,A7
 	BRA.B	L009A2
 L009A0:
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#$0001,D3	;ISBLIND
 	BEQ.B	L009A1
 	MOVE.L	-$69BE(A4),-(A7)	;_it
@@ -21569,7 +21582,7 @@ L009E9:
 	JSR	_addmsg
 	ADDQ.W	#8,A7
 L009EA:
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#$0001,D3	;ISBLIND
 	BEQ.B	L009EB
 
@@ -21781,7 +21794,7 @@ _killed:
 ; killed a venus flytrap
 
 L00A02:
-	ANDI.W	#~C_ISHELD,-$52B4(A4)	;clear C_ISHELD, _player + 22
+	ANDI.W	#~C_ISHELD,-$52B4(A4)	;clear C_ISHELD, _player + 22 (flags)
 	JSR	_f_restor
 	BRA.W	L00A08
 
@@ -21845,7 +21858,7 @@ L00A08:
 	PEA	L00A0B(PC)	;"you have defeated "
 	JSR	_addmsg
 	ADDQ.W	#4,A7
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L00A09
 
@@ -22279,7 +22292,7 @@ L00A34:
 	CMP.B	#$4D,D4		;'M' medusa
 	BNE.W	L00A39
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;we are blind, so we can't see the medusas gaze
 	BNE.W	L00A39
 
@@ -22334,7 +22347,7 @@ L00A36:
 	ADD.W	D0,D3
 	MOVE.W	D3,-(A7)
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISHUH,D3	;C_ISHUH
 	BEQ.B	1$
 
@@ -22348,7 +22361,7 @@ L00A36:
 	JSR	_fuse(PC)
 	ADDQ.W	#8,A7
 2$
-	ORI.W	#C_ISHUH,-$52B4(A4)	;set C_ISHUH,_player + 22
+	ORI.W	#C_ISHUH,-$52B4(A4)	;set C_ISHUH,_player + 22 (flags)
 	PEA	L00A3C(PC)	;"the medusa's gaze has confused you"
 	JSR	_msg
 	ADDQ.W	#4,A7
