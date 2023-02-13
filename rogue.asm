@@ -54,7 +54,7 @@ _init_player:
 	JSR	_new_item
 	MOVEA.L	D0,A2
 	MOVE.W	#$006D,$000A(A2)	;m weapon type
-	CLR.W	$0020(A2)
+	CLR.W	$0020(A2)		;zero is mace
 	CLR.W	-(A7)		;create a mace
 	MOVE.L	A2,-(A7)
 	JSR	_init_weapon
@@ -77,7 +77,7 @@ _init_player:
 	JSR	_new_item
 	MOVEA.L	D0,A2
 	MOVE.W	#$006D,$000A(A2)	;m weapon type
-	MOVE.W	#$0002,$0020(A2)
+	MOVE.W	#$0002,$0020(A2)	;2 is short bow
 	MOVE.W	#$0002,-(A7)	;short bow
 	MOVE.L	A2,-(A7)
 	JSR	_init_weapon
@@ -6092,16 +6092,19 @@ L002A0:
 _pack_name:
 	LINK	A5,#-$0000
 	MOVEM.L	A2/A3,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	TST.L	$0010(A2)
 	BEQ.B	L002A1
+
 	MOVE.L	$0010(A2),-(A7)
 	JSR	_free
 	ADDQ.W	#4,A7
 L002A1:
 	CLR.L	$0010(A2)
-	TST.W	$000C(A5)
+	TST.W	$000C(A5)	;zero here means we just delete the entry
 	BEQ.B	L002A2
+
 	MOVE.W	#$FFFF,-(A7)
 	MOVE.L	A2,-(A7)
 	JSR	_nameof
@@ -6810,7 +6813,7 @@ _pack_char:
 	MOVEM.L	D4/A2/A3,-(A7)
 	MOVEA.L	$0008(A5),A2
 	MOVEQ	#$61,D4
-	MOVEA.L	-$529C(A4),A3	;_player + 46
+	MOVEA.L	-$529C(A4),A3	;_player + 46 (pack)
 	BRA.B	L002FE
 L002FB:
 	CMPA.L	A2,A3
@@ -6824,11 +6827,12 @@ L002FC:
 
 L002FD:
 	ADDQ.B	#1,D4
-	MOVEA.L	(A3),A3
+	MOVEA.L	(A3),A3		;get next pointer in pack
 L002FE:
-	MOVE.L	A3,D3
+	MOVE.L	A3,D3		;got an item?
 	BNE.B	L002FB
-	MOVEQ	#$3F,D0
+
+	MOVEQ	#$3F,D0		;return '?' if empty
 	BRA.B	L002FC
 
 ;/*
@@ -8556,7 +8560,7 @@ L003DB:
 
 L003DC:
 	CLR.B	-$66F9(A4)	;_after
-	PEA	L0040F(PC)
+	PEA	L0040F(PC)	;"",0
 	CLR.W	-(A7)
 	MOVE.L	-$529C(A4),-(A7)	;_player + 46
 	JSR	_inventory(PC)
@@ -16510,12 +16514,14 @@ L007B3:
 _whatis:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
-	MOVEA.L	$0008(A5),A2
+
+	MOVEA.L	$0008(A5),A2	;item to identify
 	MOVE.L	A2,D3
 	BNE.B	L007B5
 
 	TST.L	-$529C(A4)	;_player + 46
 	BNE.B	L007B5
+
 	PEA	L007C2(PC)	;"You don't have anything in your pack to identify"
 	JSR	_msg
 	ADDQ.W	#4,A7
