@@ -29,7 +29,7 @@ _init_player:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
 	LEA	-$52B2(A4),A6	;_player + 24 (strength)
-	LEA	-$6CC2(A4),A1	;_max_stats
+	LEA	-$6CC2(A4),A1	;_max_stats + 0 (max strength)
 	MOVE.L	(A1)+,(A6)+
 	MOVE.L	(A1)+,(A6)+
 	MOVE.L	(A1)+,(A6)+
@@ -921,7 +921,7 @@ L0009A:
 L0009B:
 	TST.B	-$66B6(A4)	;_running
 	BEQ.W	L000B1
-	MOVEA.L	-$52A0(A4),A6	;_player + 42
+	MOVEA.L	-$52A0(A4),A6	;_player + 42 (proom)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3	;ISGONE?
 	BEQ.W	L000B1
@@ -3030,19 +3030,19 @@ L0015E:
 	CMP.W	-$52B2(A4),D3	;_player + 24 (strength)
 	BNE.B	L0015F
 	MOVE.W	-$54E6(A4),D3
-	CMP.W	-$6CC2(A4),D3	;_max_stats
+	CMP.W	-$6CC2(A4),D3	;_max_stats + 0 (max strength)
 	BEQ.B	L00160
 L0015F:
 	MOVEq	#$000F,d1
 	MOVEq	#$0014,d0
 	JSR	_movequick
-	MOVE.W	-$6CC2(A4),-(A7)	;_max_stats
+	MOVE.W	-$6CC2(A4),-(A7)	;_max_stats + 0 (max strength)
 	MOVE.W	-$52B2(A4),-(A7)	;_player + 24 (strength)
 	PEA	L0016A(PC)	;"Str:%.3d(%.3d)"
 	JSR	_printw
 	ADDQ.W	#8,A7
 	MOVE.W	-$52B2(A4),-$54E8(A4)	;_player + 24 (strength)
-	MOVE.W	-$6CC2(A4),-$54E6(A4)	;_max_stats,
+	MOVE.W	-$6CC2(A4),-$54E6(A4)	;_max_stats + 0 (max strength),
 L00160:
 	TST.B	-$66FB(A4)	;_new_stats
 	BNE.B	L00161
@@ -3480,7 +3480,7 @@ L00188:
 	LEA	-$6090(A4),A6
 	LEA	-$52C0(A4),A1	;_player + 10
 	MOVE.L	(A1)+,(A6)+
-	MOVE.L	-$52A0(A4),-$48C0(A4)	;_player + 42,_oldrp
+	MOVE.L	-$52A0(A4),-$48C0(A4)	;_player + 42 (proom),_oldrp
 	JSR	_InitGadgets
 	MOVEM.L	(A7)+,D4-D6/A2/A3
 	UNLK	A5
@@ -4188,10 +4188,10 @@ L001C9:
 ; teleportation scroll
 
 L001CA:
-	MOVE.L	-$52A0(A4),-$0006(A5)	;_player + 42
+	MOVE.L	-$52A0(A4),-$0006(A5)	;_player + 42 (proom)
 	JSR	_teleport
 	MOVEA.L	-$0006(A5),A6
-	CMPA.L	-$52A0(A4),A6	;_player + 42
+	CMPA.L	-$52A0(A4),A6	;_player + 42 (proom)
 	BEQ	L001E6
 	MOVE.B	#$01,-$66EE(A4)
 	BRA.W	L001E6
@@ -4502,7 +4502,7 @@ L00206:
 ; pack glows yellow, identifies everything in the pack
 
 L00207:
-	MOVEA.L	-$529C(A4),A3	;_player + 46
+	MOVEA.L	-$529C(A4),A3	;_player + 46 (pack)
 	BRA.B	L00209
 L00208:
 	CLR.L	-(A7)
@@ -4568,7 +4568,7 @@ L0020E:
 	PEA	L0021B(PC)	;"There is a fluttering behind you and suddenly your pack feels lighter."
 	JSR	_msg
 	ADDQ.W	#4,A7
-	MOVEA.L	-$529C(A4),A3	;_player + 46
+	MOVEA.L	-$529C(A4),A3	;_player + 46 (pack)
 	BRA.W	L00212
 L0020F:
 	MOVE.L	(A3),D4
@@ -5018,7 +5018,7 @@ _do_chase:
 	LEA	-$52C0(A4),A1	;_player + 10
 	MOVE.L	A1,$0012(A6)
 L0023C:
-	MOVE.L	-$52A0(A4),D5	;_player + 42
+	MOVE.L	-$52A0(A4),D5	;_player + 42 (proom)
 	MOVEA.L	$0008(A5),A6
 	LEA	-$52C0(A4),A1	;_player + 10
 	MOVEA.L	$0012(A6),A0
@@ -5493,7 +5493,7 @@ L00267:
 	CMP.W	#$0003,D0
 	BLT.B	L00269
 	MOVEA.L	$002A(A2),A6
-	CMPA.L	-$52A0(A4),A6	;_player + 42
+	CMPA.L	-$52A0(A4),A6	;_player + 42 (proom)
 	BNE.B	L00268
 	MOVE.L	$002A(A2),-(A7)
 	JSR	_is_dark
@@ -5905,7 +5905,7 @@ L00288:
 	PEA	-$0004(A5)
 	JSR	_roomin(PC)
 	ADDQ.W	#4,A7
-	CMP.L	-$52A0(A4),D0	;_player + 42
+	CMP.L	-$52A0(A4),D0	;_player + 42 (proom)
 	BNE.B	L00289
 
 	MOVE.L	D0,-(A7)
@@ -5933,7 +5933,7 @@ _find_dest:
 	BLE.B	L0028B		;does the monster carry?
 
 	MOVEA.L	$002A(A2),A6
-	CMPA.L	-$52A0(A4),A6	;_player + 42
+	CMPA.L	-$52A0(A4),A6	;_player + 42 (proom)
 	BEQ.B	L0028B
 
 	MOVE.L	A2,-(A7)
@@ -6071,7 +6071,7 @@ L0029E:
 	SUBQ.W	#1,-$60AA(A4)	;_inpack
 L0029F:
 	MOVE.L	$0008(A5),-(A7)
-	PEA	-$529C(A4)	;_player + 46
+	PEA	-$529C(A4)	;_player + 46 (pack)
 	JSR	__detach
 	ADDQ.W	#8,A7
 	CLR.L	-(A7)
@@ -6134,7 +6134,7 @@ _pack_obj:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/A2,-(A7)
 
-	MOVEA.L	-$529C(A4),A2	;_player + 46
+	MOVEA.L	-$529C(A4),A2	;_player + 46 (pack)
 	MOVEQ	#$61,D4	;'a'
 	BRA.B	L002A6
 
@@ -6192,7 +6192,7 @@ L002A8:
 L002A9:
 	MOVEQ	#$00,D6
 L002AA:
-	MOVEA.L	-$52A0(A4),A6	;_player + 42
+	MOVEA.L	-$52A0(A4),A6	;_player + 42 (proom)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3
 
@@ -6206,7 +6206,7 @@ L002AC:
 	TST.W	$002C(A2)
 	BEQ.B	L002B1
 
-	MOVEA.L	-$529C(A4),A3	;_player + 46
+	MOVEA.L	-$529C(A4),A3	;_player + 46 (pack)
 	BRA.B	L002B0
 L002AD:
 	MOVE.W	$002C(A3),D3
@@ -6309,7 +6309,7 @@ L002B4:
 	MOVE.B	D7,$00(A6,D0.W)
 L002B5:
 	MOVEQ	#$00,D5
-	MOVEA.L	-$529C(A4),A3	;_player + 46
+	MOVEA.L	-$529C(A4),A3	;_player + 46 (pack)
 	BRA.B	L002B7
 L002B6:
 	MOVE.L	A2,-(A7)
@@ -6332,7 +6332,7 @@ L002B7:
 L002B8:
 	MOVE.L	A3,D3
 	BNE.B	L002BC
-	MOVEA.L	-$529C(A4),A3	;_player + 46
+	MOVEA.L	-$529C(A4),A3	;_player + 46 (pack)
 	BRA.B	L002BA
 L002B9:
 	CMPI.W	#$003A,$000A(A3)	;':' food
@@ -6373,10 +6373,10 @@ L002BE:
 	MOVE.L	A3,D3
 	BNE.B	L002C1
 
-	TST.L	-$529C(A4)	;_player + 46
+	TST.L	-$529C(A4)	;_player + 46 (pack)
 	BNE.B	L002BF
 
-	MOVE.L	A2,-$529C(A4)	;_player + 46
+	MOVE.L	A2,-$529C(A4)	;_player + 46 (pack)
 	BRA.B	L002C6
 L002BF:
 	MOVEA.L	D4,A6
@@ -6413,7 +6413,7 @@ L002C3:
 	MOVE.L	A2,(A6)
 	BRA.B	L002C5
 L002C4:
-	MOVE.L	A2,-$529C(A4)	;_player + 46
+	MOVE.L	A2,-$529C(A4)	;_player + 46 (pack)
 L002C5:
 	MOVE.L	A3,(A2)
 	MOVE.L	A2,$0004(A3)
@@ -6621,7 +6621,7 @@ _pick_up:
 	JSR	_discard
 	ADDQ.W	#4,A7
 
-	MOVEA.L	-$52A0(A4),A6	;_player + 42
+	MOVEA.L	-$52A0(A4),A6	;_player + 42 (proom)
 	CLR.W	$000C(A6)
 	BRA.B	L002DD
 
@@ -6670,7 +6670,7 @@ L002E2:
 	MOVE.W	#$0001,-$0004(A5)
 L002E3:
 	MOVE.B	-$66F7(A4),-$0002(A5)	;_again
-	TST.L	-$529C(A4)	;_player + 46
+	TST.L	-$529C(A4)	;_player + 46 (pack)
 	BNE.B	L002E4
 
 	PEA	L002F4(PC)	;"you aren't carrying anything"
@@ -6722,7 +6722,7 @@ L002E9:
 	BNE.B	L002EC
 	MOVE.L	$0008(A5),-(A7)
 	MOVE.W	$000C(A5),-(A7)
-	MOVE.L	-$529C(A4),-(A7)	;_player + 46
+	MOVE.L	-$529C(A4),-(A7)	;_player + 46 (pack)
 	JSR	_inventory(PC)
 	LEA	$000A(A7),A7
 	MOVE.B	D0,D4
@@ -6840,15 +6840,17 @@ L002FE:
 _money:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/D5,-(A7)
+
 	MOVE.W	$0008(A5),D4
-	MOVEA.L	-$52A0(A4),A6	;_player + 42
+	MOVEA.L	-$52A0(A4),A6	;_player + 42 (room)
 	MOVE.W	$000E(A6),D3
-	AND.W	#$0002,D3
+	AND.W	#$0002,D3	;ISGONE
 	BEQ.B	L002FF
-	MOVEQ	#$23,D3
+
+	MOVEQ	#$23,D3		;'#' passage
 	BRA.B	L00300
 L002FF:
-	MOVEQ	#$2E,D3
+	MOVEQ	#$2E,D3		;'.' floor
 L00300:
 	MOVE.B	D3,D5
 	ADD.W	D4,-$60B2(A4)	;_purse
@@ -6862,8 +6864,10 @@ L00300:
 
 	MOVEA.L	-$519C(A4),A6	;__level
 	MOVE.B	D5,$00(A6,D0.W)
-	CMP.W	#$0000,D4
+
+	CMP.W	#$0000,D4	;no gold?
 	BLE.B	L00301
+
 	MOVE.W	D4,-(A7)
 	PEA	L00302(PC)	;"you found %d gold pieces"
 	JSR	_msg
@@ -7012,7 +7016,7 @@ L00313:
 	BRA.B	L00316
 L00314:
 	ST	-$66CB(A4)	;_ws_know
-	MOVEA.L	-$52A0(A4),A6	;_player + 42
+	MOVEA.L	-$52A0(A4),A6	;_player + 42 (proom)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3	;check for room ISDARK
 	BEQ.B	L00315
@@ -7026,12 +7030,12 @@ L00315:
 	JSR	_msg
 	ADDQ.W	#4,A7
 L00316:
-	MOVEA.L	-$52A0(A4),A6	;_player + 42
+	MOVEA.L	-$52A0(A4),A6	;_player + 42 (proom)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3	;check for room ISDARK
 	BNE.B	L00317
 
-	MOVEA.L	-$52A0(A4),A6	;_player + 42
+	MOVEA.L	-$52A0(A4),A6	;_player + 42 (proom)
 	ANDI.W	#$FFFE,$000E(A6)	;clear room ISDARK
 	PEA	-$52C0(A4)	;_player + 10
 	JSR	_enter_room
@@ -7519,7 +7523,7 @@ _drain:
 L00356:
 	SUBA.L	A2,A2
 L00357:
-	MOVEA.L	-$52A0(A4),A6	;_player + 42
+	MOVEA.L	-$52A0(A4),A6	;_player + 42 (proom)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3
 	MOVE.B	D3,D5
@@ -7530,7 +7534,7 @@ L00357:
 L00358:
 	MOVEA.L	-$0004(A5),A6
 	MOVEA.L	$002A(A6),A1
-	CMPA.L	-$52A0(A4),A1	;_player + 42
+	CMPA.L	-$52A0(A4),A1	;_player + 42 (proom)
 	BEQ.B	L00359
 	MOVEA.L	-$0004(A5),A6
 	MOVEA.L	$002A(A6),A1
@@ -7562,7 +7566,7 @@ L00358:
 	MULU.W	#$0042,D3
 	LEA	-$5E36(A4),A6	;_passages
 	ADD.L	A6,D3
-	CMP.L	-$52A0(A4),D3	;_player + 42
+	CMP.L	-$52A0(A4),D3	;_player + 42 (proom)
 	BNE.B	L0035A
 L00359:
 	MOVEA.L	A3,A6
@@ -8559,7 +8563,7 @@ L003DC:
 	CLR.B	-$66F9(A4)	;_after
 	PEA	L0040F(PC)	;"",0
 	CLR.W	-(A7)
-	MOVE.L	-$529C(A4),-(A7)	;_player + 46
+	MOVE.L	-$529C(A4),-(A7)	;_player + 46 (pack)
 	JSR	_inventory(PC)
 	LEA	$000A(A7),A7
 	BRA.W	L00409
@@ -8937,7 +8941,7 @@ L00404:
 	MULU.W	#5,D3
 	MOVE.W	D3,-$52A2(A4)	;_player + 40 (max hp)
 	MOVE.W	D3,-$52A8(A4)	;_player + 34 (hp)
-	MOVE.W	#$0010,-$6CC2(A4)	;_max_stats
+	MOVE.W	#$0010,-$6CC2(A4)	;_max_stats + 0 (max strength)
 	MOVE.W	#$0010,-$52B2(A4)	;_player + 24 (strength)
 	JSR	_raise_level
 L00405:
@@ -8949,7 +8953,7 @@ L00406:
 	MOVE.W	#15,-$52AC(A4)	;_player + 30 (rank)
 	MOVE.W	#200,-$52A2(A4)	;_player + 40 (max hp)
 	MOVE.W	#200,-$52A8(A4)	;_player + 34 (hp)
-	MOVE.W	#25,-$6CC2(A4)	;_max_stats+0
+	MOVE.W	#25,-$6CC2(A4)	;_max_stats + 0 (max strength)
 	MOVE.W	#25,-$52B2(A4)	;_player + 24 (strength)
 
 	JSR	_raise_level
@@ -10555,10 +10559,10 @@ L004A2:
 	ADDQ.W	#6,A7
 L004A3:
 	MOVE.W	-$52B2(A4),D3	;_player + 24 (strength)
-	CMP.W	-$6CC2(A4),D3	;_max_stats + 0
+	CMP.W	-$6CC2(A4),D3	;_max_stats + 0 (max strength)
 	BCC.B	L004A4
 
-	MOVE.W	-$6CC2(A4),-$52B2(A4)	;_max_stats + 0,_player + 24 (strength)
+	MOVE.W	-$6CC2(A4),-$52B2(A4)	;_max_stats + 0 (max strength),_player + 24 (strength)
 L004A4:
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L004A5
@@ -14482,7 +14486,7 @@ _sight:
 	JSR	_extinguish(PC)
 	ADDQ.W	#4,A7
 	ANDI.W	#~C_ISBLIND,-$52B4(A4)	;clear C_ISBLIND, _player + 22
-	MOVEA.L	-$52A0(A4),A6	;_player + 42
+	MOVEA.L	-$52A0(A4),A6	;_player + 42 (proom)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3
 	BNE.B	L0064C
@@ -15475,7 +15479,7 @@ _total_winner:
 	ADDQ.W	#8,A7
 	MOVE.W	-$60B2(A4),D6	;_purse
 	MOVEQ	#$61,D5
-	MOVEA.L	-$529C(A4),A2	;_player + 46
+	MOVEA.L	-$529C(A4),A2	;_player + 46 (pack)
 	BRA.W	L006D9
 L006AC:
 	MOVE.L	A2,-(A7)
@@ -16507,7 +16511,7 @@ _whatis:
 	MOVE.L	A2,D3
 	BNE.B	L007B6
 
-	TST.L	-$529C(A4)	;_player + 46
+	TST.L	-$529C(A4)	;_player + 46 (pack)
 	BNE.B	L007B5
 
 	PEA	L007C2(PC)	;"You don't have anything in your pack to identify"
@@ -17069,7 +17073,7 @@ L007F4:
 	MULU.W	#66,D3
 	LEA	-$6088(A4),A6	;_rooms
 	ADD.L	A6,D3
-	CMP.L	-$52A0(A4),D3	;_player + 42
+	CMP.L	-$52A0(A4),D3	;_player + 42 (proom)
 	BEQ.B	L007F5
 
 	PEA	-$52C0(A4)	;_player + 10
@@ -17297,7 +17301,7 @@ _look:
 	MOVEM.L	D4-D7/A2/A3,-(A7)
 	CLR.W	-$000A(A5)
 	ST	-$48B7(A4)		;_looking
-	MOVE.L	-$52A0(A4),-$0004(A5)	;_player + 42
+	MOVE.L	-$52A0(A4),-$0004(A5)	;_player + 42 (proom)
 
 	JSR	_INDEXplayer
 
@@ -17997,10 +18001,10 @@ L00864:
 	ADDQ.W	#6,A7
 L00865:
 	MOVE.W	-$0002(A5),D3
-	CMP.W	-$6CC2(A4),D3	;_max_stats
+	CMP.W	-$6CC2(A4),D3	;_max_stats + 0 (max strength)
 	BLS.B	L00862
 
-	MOVE.W	-$0002(A5),-$6CC2(A4)	;_max_stats
+	MOVE.W	-$0002(A5),-$6CC2(A4)	;_max_stats + 0 (max strength)
 	BRA.B	L00862
 
 ;/*
@@ -19844,7 +19848,7 @@ _enter_room:
 	MOVE.L	A2,-(A7)
 	JSR	_roomin
 	ADDQ.W	#4,A7
-	MOVE.L	D0,-$52A0(A4)	;_player + 42
+	MOVE.L	D0,-$52A0(A4)	;_player + 42 (proom)
 	MOVEA.L	D0,A3
 	TST.B	-$66AD(A4)	;_bailout
 	BNE.B	L0091C
@@ -19949,7 +19953,7 @@ _leave_room:
 	LINK	A5,#-$0000
 	MOVEM.L	D4-D7/A2/A3,-(A7)
 	MOVEA.L	$0008(A5),A2
-	MOVEA.L	-$52A0(A4),A3	;_player + 42
+	MOVEA.L	-$52A0(A4),A3	;_player + 42 (proom)
 
 	MOVE.W	(A2),d0
 	MOVE.W	$0002(A2),d1
@@ -19962,7 +19966,7 @@ _leave_room:
 	MULU.W	#$0042,D3
 	LEA	-$5E36(A4),A6	;_passages
 	ADD.L	A6,D3
-	MOVE.L	D3,-$52A0(A4)	;_player + 42
+	MOVE.L	D3,-$52A0(A4)	;_player + 42 (proom)
 	MOVE.L	A3,-(A7)
 	JSR	_is_dark
 	ADDQ.W	#4,A7
@@ -20568,7 +20572,7 @@ L0096A:
 	MOVE.L	A6,-$0004(A5)
 	MOVEQ	#$00,D4
 	MOVEQ	#$00,D5
-	MOVEA.L	-$529C(A4),A3	;_player + 46
+	MOVEA.L	-$529C(A4),A3	;_player + 46 (pack)
 	BRA.B	L0096D
 L0096B:
 	CMPA.L	-$5294(A4),A3	;_cur_armor
@@ -22169,14 +22173,14 @@ L00A2C:
 	LEA	-$6088(A4),A6	;_rooms
 	MOVEA.L	D3,A2
 	ADDA.L	A6,A2
-	CMPA.L	-$52A0(A4),A2	;_player + 42
+	CMPA.L	-$52A0(A4),A2	;_player + 42 (proom)
 	BEQ.B	L00A2D
 	PEA	-$0004(A5)
 	MOVE.L	A2,-(A7)
 	JSR	_rnd_pos
 	ADDQ.W	#8,A7
 L00A2D:
-	CMPA.L	-$52A0(A4),A2	;_player + 42
+	CMPA.L	-$52A0(A4),A2	;_player + 42 (proom)
 	BEQ.B	L00A2C
 	MOVE.W	-$0004(A5),-(A7)
 	MOVE.W	-$0002(A5),-(A7)
@@ -22292,7 +22296,7 @@ L00A34:
 	AND.W	#C_ISRUN,D3	;shes coming at us
 	BEQ.W	L00A39
 
-	MOVEA.L	-$52A0(A4),A3	;_player + 42
+	MOVEA.L	-$52A0(A4),A3	;_player + 42 (proom)
 	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
 	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
 	MOVE.W	$000A(A5),-(A7)
@@ -22359,11 +22363,11 @@ L00A39:
 	BNE.B	L00A3B
 
 	ORI.W	#C_ISRUN,$0016(A2)	;C_ISRUN
-	MOVEA.L	-$52A0(A4),A6	;_player + 42
+	MOVEA.L	-$52A0(A4),A6	;_player + 42 (proom)
 	TST.W	$000C(A6)
 	BEQ.B	L00A3A
 
-	MOVE.L	-$52A0(A4),D3	;_player + 42
+	MOVE.L	-$52A0(A4),D3	;_player + 42 (proom)
 	ADDQ.L	#8,D3
 	MOVE.L	D3,$0012(A2)
 	BRA.B	L00A3B
@@ -22919,7 +22923,7 @@ L00A93:
 	MOVEQ	#$00,D6
 	MOVE.W	D6,D7
 	MOVE.W	D6,-$0002(A5)
-	MOVE.L	-$529C(A4),-$000A(A5)	;_player + 46
+	MOVE.L	-$529C(A4),-$000A(A5)	;_player + 46 (pack)
 	BRA.W	L00A98
 L00A94:
 	MOVE.W	-$0002(A5),D3
@@ -24477,7 +24481,7 @@ L00B3A:
 	PEA	L00B43(PC)
 	JSR	_msg
 	ADDQ.W	#8,A7
-	MOVEA.L	-$529C(A4),A2	;_player + 46
+	MOVEA.L	-$529C(A4),A2	;_player + 46 (pack)
 	BRA.B	L00B3C
 L00B3B:
 	CLR.L	$0010(A2)
@@ -28743,17 +28747,19 @@ _he_man:
 	dc.l	L00759		; 20971520 Ultimate Rogue
 
 _nlevels:
-	dc.w	$0017		: 23
+	dc.w	$0017		; 23 user level
 _your_na:
 	dc.l	L0075A		; Software Pirate
 _kild_by:
 	dc.l	L0075B		; Copy Protection Mafia
 _max_stats:
-	dc.w	$0010,$0000	;start with 16 as max strength
-	dc.w	$0000,$0001
-	dc.w	$000A,$000C
-	dc.l	L0075C		; 1d4
-	dc.w	$000C
+	dc.w	$0010		;24 start with 16 as strength
+	dc.l	$0000		;26 experience points
+	dc.w	$0001		;30 rank starts with 1
+	dc.w	$000A		;32 base AC for swing calculation, seems not to change at all
+	dc.w	$000C		;34 start with 12 hp
+	dc.l	L0075C		;36 1d4
+	dc.w	$000C		;40 max hp
 _lvl_obj:
 	dc.l	$00000000
 _mlist:
