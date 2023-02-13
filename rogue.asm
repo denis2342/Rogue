@@ -11323,7 +11323,7 @@ _setup:
 	CLR.L	-(A7)
 	PEA	-$0030(A5)
 	PEA	-$1
-	PEA	L004E6(PC)		;console.device
+	PEA	L004E6(PC)		;"console.device"
 	JSR	_OpenDevice
 
 	LEA	$0010(A7),A7
@@ -11332,23 +11332,23 @@ _setup:
 
 	JSR	_BuildFuncTable
 
-	PEA	L004E7(PC)		;F1
-	MOVE.W	#$0001,-(A7)
+	PEA	L004E7(PC)		;"ea"
+	MOVE.W	#$0001,-(A7)		;F1
 	JSR	_NewFuncString
 	ADDQ.W	#6,A7
 
-	PEA	L004E8(PC)		;F2
-	MOVE.W	#$0002,-(A7)
+	PEA	L004E8(PC)		;"TW"
+	MOVE.W	#$0002,-(A7)		;F2
 	JSR	_NewFuncString
 	ADDQ.W	#6,A7
 
-	PEA	L004E9(PC)		;F3
-	MOVE.W	#$0003,-(A7)
+	PEA	L004E9(PC)		;"10s"
+	MOVE.W	#$0003,-(A7)		;F3
 	JSR	_NewFuncString
 	ADDQ.W	#6,A7
 
-	PEA	L004EA(PC)		;F4
-	MOVE.W	#$0004,-(A7)
+	PEA	L004EA(PC)		"10."
+	MOVE.W	#$0004,-(A7)		;F4
 	JSR	_NewFuncString
 	ADDQ.W	#6,A7
 
@@ -11376,14 +11376,17 @@ L004EB:
 	MOVE.L	D0,-$0004(A5)
 ;	TST.L	D0
 	BEQ.B	L004ED
+
 	MOVEA.L	-$0004(A5),A6
 	CMPI.L	#$00002000,$0014(A6)
 	BNE.B	L004EC
+
 	MOVEA.L	-$0004(A5),A6
 	MOVEQ	#$00,D3
 	MOVE.W	$0018(A6),D3
 	CMP.L	#$00000001,D3
 	BNE.B	L004EC
+
 	MOVEA.L	-$0004(A5),A6
 	MOVE.W	#$0002,$0018(A6)
 L004EC:
