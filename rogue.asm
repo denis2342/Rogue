@@ -16506,7 +16506,7 @@ _whatis:
 
 	MOVEA.L	$0008(A5),A2	;item to identify
 	MOVE.L	A2,D3
-	BNE.B	L007B5
+	BNE.B	L007B6
 
 	TST.L	-$529C(A4)	;_player + 46
 	BNE.B	L007B5
