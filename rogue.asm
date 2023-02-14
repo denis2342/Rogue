@@ -36,7 +36,7 @@ _init_player:
 	MOVE.L	(A1)+,(A6)+
 	MOVE.W	(A1)+,(A6)+
 
-	MOVE.W	#$0514,-(A7)	; we get 1300 food +-5%
+	MOVE.W	#$0514,-(A7)	; we get 1300 food +-10%
 	JSR	_spread
 	ADDQ.W	#2,A7
 	MOVE.W	D0,-$609E(A4)	;_food_left
@@ -12880,13 +12880,16 @@ _end_add:
 _nothing:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/A2/A3,-(A7)
+
 	MOVE.B	$0009(A5),D4
 	PEA	L0058D(PC)	;"Haven't discovered anything"
 	MOVE.L	-$5258(A4),-(A7)	;_prbuf
 	JSR	_sprintf
 	ADDQ.W	#8,A7
+
 	TST.B	-$66B2(A4)	;_terse
 	BEQ.B	L00586
+
 	PEA	L0058E(PC)	;"Nothing"
 	MOVE.L	-$5258(A4),-(A7)	;_prbuf
 	JSR	_sprintf
@@ -12926,9 +12929,11 @@ L0058C:
 	MOVE.L	A3,-(A7)
 	PEA	L00593(PC)	;" about any %ss"
 	MOVE.L	A2,-(A7)
+
 	JSR	_sprintf
 	LEA	$000C(A7),A7
 	MOVE.L	-$5258(A4),D0	;_prbuf
+
 	MOVEM.L	(A7)+,D4/A2/A3
 	UNLK	A5
 	RTS
@@ -12999,6 +13004,11 @@ L00599:
 	BCS.B	L00597
 	MOVEQ	#$00,D0
 	BRA.B	L00598
+
+;/*
+; * start_daemon:
+; *  Start a daemon, takes a function.
+; */
 
 _daemon:
 	LINK	A5,#-$0000
@@ -15277,20 +15287,21 @@ L00696:	dc.b	" quit on level %d",0
 _add_scores:
 	LINK	A5,#-$0002
 	MOVEM.L	A2/A3,-(A7)
+
 	MOVE.W	#$000B,-$0002(A5)
 	MOVEA.L	$000C(A5),A2
-	ADDA.L	#$0000019E,A2
+	ADDA.L	#414,A2		;414 = 460 - 46
 	BRA.B	L0069C
 L00697:
 	MOVEA.L	$0008(A5),A6
-	MOVE.W	$0028(A6),D3
+	MOVE.W	$0028(A6),D3	;gold score
 	CMP.W	$0028(A2),D3
 	BLS.B	L0069D
 
 	MOVEA.L	A2,A3
 	SUBQ.W	#1,-$0002(A5)
 	MOVEA.L	$000C(A5),A6
-	ADDA.L	#$0000019E,A6
+	ADDA.L	#414,A6
 	CMPA.L	A6,A3
 	BCC.B	L00699
 
@@ -15298,7 +15309,7 @@ L00697:
 	BEQ.B	L00699
 
 	MOVEA.L	A2,A6
-	ADDA.L	#$0000002E,A6
+	ADDA.L	#46,A6
 	MOVEA.L	A2,A1
 	MOVEQ	#$0A,D3
 L00698:
@@ -15306,7 +15317,7 @@ L00698:
 	DBF	D3,L00698
 	MOVE.W	(A1)+,(A6)+
 L00699:
-	SUBA.L	#$0000002E,A2
+	SUBA.L	#46,A2
 L0069C:
 	CMPA.L	$000C(A5),A2
 	BCC.B	L00697
@@ -15483,42 +15494,53 @@ _tomb_center:
 _total_winner:
 ;	LINK	A5,#-$0000
 	MOVEM.L	D4-D6/A2,-(A7)
+
 	JSR	_clear
-	PEA	L006DA(PC)
+
+	PEA	L006DA(PC)	;"     Congratulations, you have made it to the light of day!"
 	JSR	_addstr
 	ADDQ.W	#4,A7
-	PEA	L006DB(PC)
+
+	PEA	L006DB(PC)	;"You have joined the elite ranks of those who have escaped the"
 	CLR.W	-(A7)
 	MOVE.W	#$0001,-(A7)
 	JSR	_mvaddstr
 	ADDQ.W	#8,A7
-	PEA	L006DC(PC)
+
+	PEA	L006DC(PC)	;"Dungeons of Doom alive.  You journey home and sell all your loot at"
 	CLR.W	-(A7)
 	MOVE.W	#$0002,-(A7)
 	JSR	_mvaddstr
 	ADDQ.W	#8,A7
-	PEA	L006DD(PC)
+
+	PEA	L006DD(PC)	;"a great profit and are admitted to the fighters guild."
 	CLR.W	-(A7)
 	MOVE.W	#$0003,-(A7)
 	JSR	_mvaddstr
 	ADDQ.W	#8,A7
-	PEA	L006DE(PC)
+
+	PEA	L006DE(PC)	;"--Press space to see your booty--"
 	CLR.W	-(A7)
 	MOVE.W	#$0014,-(A7)
 	JSR	_mvaddstr
 	ADDQ.W	#8,A7
+
 	MOVE.W	#$0020,-(A7)
 	JSR	_wait_for
 	ADDQ.W	#2,A7
+
 	JSR	_clear
+
 	PEA	$0001
 	JSR	_cursor(PC)
 	ADDQ.W	#4,A7
-	PEA	L006DF(PC)
+
+	PEA	L006DF(PC)	;"   Worth  Item"
 	CLR.W	-(A7)
 	CLR.W	-(A7)
 	JSR	_mvaddstr
 	ADDQ.W	#8,A7
+
 	MOVE.W	-$60B2(A4),D6	;_purse
 	MOVEQ	#$61,D5
 	MOVEA.L	-$529C(A4),A2	;_player + 46 (pack)
@@ -15661,15 +15683,19 @@ L006CE:
 	MOVE.W	$00(A6,D3.w),D4		;worth of the ring in gold
 	CMPI.W	#R_ADDSTR,$0020(A2)
 	BEQ.B	L006CF
+
 	CMPI.W	#R_ADDDAM,$0020(A2)
 	BEQ.B	L006CF
+
 	CMPI.W	#R_PROTECT,$0020(A2)
 	BEQ.B	L006CF
+
 	CMPI.W	#R_ADDHIT,$0020(A2)
 	BNE.B	L006D1
 L006CF:
 	CMPI.W	#$0000,$0026(A2)
 	BLE.B	L006D0
+
 	MOVE.W	$0026(A2),D3
 	MULU.W	#100,D3		; + 100 for every bonus value
 	ADD.W	D3,D4
@@ -15704,6 +15730,7 @@ L006D3:
 	MOVE.W	$0028(A2),D3
 	AND.W	#O_ISKNOW,D3
 	BNE.B	L006D4
+
 	EXT.L	D4
 	DIVS.W	#$0002,D4	;only worth half if we didnt knew it
 L006D4:
@@ -15746,12 +15773,14 @@ L006D8:
 	MOVE.L	A2,-(A7)
 	JSR	_nameof
 	ADDQ.W	#6,A7
+
 	MOVE.L	D0,-(A7)
 	MOVE.W	D4,-(A7)
 	MOVEQ	#$00,D3
 	MOVE.B	D5,D3
 	MOVE.W	D3,-(A7)
-	PEA	L006E0(PC)
+
+	PEA	L006E0(PC)	;"%c) %5d  %s"
 	JSR	_printw
 	LEA	$000C(A7),A7
 	ADD.W	D4,-$60B2(A4)	;_purse
@@ -15767,30 +15796,38 @@ L006D9:
 	JSR	_movequick
 
 	MOVE.W	D6,-(A7)
-	PEA	L006E1(PC)
+	PEA	L006E1(PC)	;"   %5u  Gold Pieces          "
 	JSR	_printw
 	ADDQ.W	#6,A7
-	PEA	L006E2(PC)
+
+	PEA	L006E2(PC)	;"--Press any key to see Hall of Fame--"
 	CLR.W	-(A7)
 	MOVE.W	#$0015,-(A7)
 	JSR	_mvaddstr
 	ADDQ.W	#8,A7
+
 	JSR	_readchar
+
 	MOVE.W	#$0002,-(A7)
 	MOVE.W	-$60B2(A4),-(A7)	;_purse
 	JSR	_score(PC)
 	ADDQ.W	#4,A7
+
 	JSR	_black_out
 	JSR	_wtext
+
 	CLR.L	-(A7)
 	MOVE.L	-$5144(A4),-(A7)	;_TextWin
 	PEA	L006E3(PC)	;"Total.Winner"
 	JSR	_show_ilbm
 	LEA	$000C(A7),A7
+
 	JSR	_readchar
-	PEA	L006E4(PC)
+
+	PEA	L006E4(PC)	;'Mr. Mctesq and the Grand Beeking say, "Congratulations"'
 	JSR	_fatal
 	ADDQ.W	#4,A7
+
 	MOVEM.L	(A7)+,D4-D6/A2
 ;	UNLK	A5
 	RTS
@@ -18421,7 +18458,7 @@ L00893:
 
 ;/*
 ; * spread:
-; *  Give a spread around a given number (+/- 5%)
+; *  Give a spread around a given number (+/- 10%)
 ; */
 
 _spread:
@@ -23447,8 +23484,9 @@ L00ABA:
 	BRA.B	L00AB9
 
 ;/*
-; * nameit:
-; *  Give the proper name to a potions, sticks, scrolls, rings...
+; * inv_name:
+; *  Return the name of something as it would appear in an
+; *  inventory.
 ; */
 
 _nameof:
@@ -23464,6 +23502,9 @@ _nameof:
 	ADDQ.W	#4,A7
 ;	EXT.L	D0
 	BRA.W	L00AEA
+
+; scroll
+
 L00ABB:
 	PEA	L00AF2(PC)	;"scroll"
 	MOVE.W	D4,-(A7)
@@ -23523,6 +23564,9 @@ L00ABF:
 	ADDQ.W	#8,A7
 L00AC0:
 	BRA.W	L00AEB
+
+; potions
+
 L00AC1:
 	MOVEQ	#$00,D6
 	PEA	L00AF6(PC)	;"potion"
@@ -23596,6 +23640,9 @@ L00AC4:
 	LEA	$000A(A7),A7
 L00AC5:
 	BRA.W	L00AEB
+
+; food
+
 L00AC6:
 	CMP.W	#$0001,D5
 	BNE.B	L00AC7
@@ -23615,7 +23662,7 @@ L00AC7:
 	AND.W	#$0010,D3
 	BEQ.B	L00ACA
 
-	CMPI.W	#$0001,$001E(A2)
+	CMPI.W	#$0001,$001E(A2)	;one or more food?
 	BNE.B	L00AC8
 
 	PEA	L00AFA(PC)	;"Some food"
@@ -23635,13 +23682,17 @@ L00ACA:
 	ADDQ.W	#4,A7
 L00ACB:
 	BRA.W	L00AEB
+
+; weapon type
+
 L00ACC:
 	MOVE.W	D4,D3
-	AND.W	#$0010,D3
+	AND.W	#$0010,D3	;O_ISMISL ?
 	BEQ.B	L00ACE
 
 	CMPI.W	#$0001,$001E(A2)
 	BLE.B	L00ACD
+
 	MOVE.W	$001E(A2),-(A7)
 	PEA	L00AFD(PC)	;"%d"
 	JSR	_nmadd
@@ -23661,7 +23712,7 @@ L00ACD:
 	ADDQ.W	#8,A7
 L00ACE:
 	MOVE.W	D4,D3
-	AND.W	#$0008,D3
+	AND.W	#$0008,D3	;O_SCAREUSED ?
 	BEQ.B	L00ACF
 
 	MOVE.W	$0028(A2),D3
@@ -23677,11 +23728,11 @@ L00ACE:
 	JSR	_nmadd
 	ADDQ.W	#4,A7
 L00ACF:
-	CMPI.W	#$0001,$001E(A2)
+	CMPI.W	#$0001,$001E(A2)	;how many do we have?
 	BLE.B	L00AD0
 
 	MOVE.W	D4,D3
-	AND.W	#$0010,D3
+	AND.W	#$0010,D3	;O_ISMISL ?
 	BEQ.B	L00AD0
 
 	LEA	L00B00(PC),A6
@@ -23701,13 +23752,13 @@ L00AD1:
 	JSR	_nmadd
 	LEA	$000C(A7),A7
 	MOVE.W	D4,D3
-	AND.W	#$0040,D3
+	AND.W	#$0040,D3	;O_SLAYED
 	BEQ.B	L00AD2
 
 	TST.B	$002A(A2)	; test for monster slayer weapon
 	BEQ.B	L00AD2
 
-	MOVE.W	$0028(A2),D3
+	MOVE.W	$0028(A2),D3	;monster slayer already used?
 	AND.W	#O_SLAYED,D3
 	BEQ.B	L00AD2
 
@@ -23722,6 +23773,9 @@ L00AD1:
 	ADDQ.W	#8,A7
 L00AD2:
 	BRA.W	L00AEB
+
+; armor type
+
 L00AD3:
 	MOVE.W	D4,D3
 	AND.W	#$0008,D3
@@ -23774,11 +23828,17 @@ L00AD5:
 	ADDQ.W	#4,A7
 L00AD6:
 	BRA.W	L00AEB
+
+; amulet of yendor
+
 L00AD7:
 	PEA	L00B05(PC)	;"The Amulet of Yendor"
 	JSR	_nmadd
 	ADDQ.W	#4,A7
 	BRA.W	L00AEB
+
+; wand/staff
+
 L00AD8:
 	MOVE.W	D4,D3
 	AND.W	#$0004,D3
@@ -23830,7 +23890,7 @@ L00AD9:
 	ASL.w	#2,D3
 	LEA	-$521C(A4),A6	;_ws_type
 	MOVE.L	$00(A6,D3.w),-(A7)
-	PEA	L00B07(PC)
+	PEA	L00B07(PC)	;"%s called %s(%s)"
 	PEA	-$0050(A5)
 	JSR	_sprintf
 	LEA	$0014(A7),A7
@@ -23887,6 +23947,9 @@ L00ADF:
 	ADDQ.W	#4,A7
 L00AE0:
 	BRA.W	L00AEB
+
+; ring
+
 L00AE1:
 	MOVE.W	D4,D3
 	AND.W	#$0004,D3
@@ -28957,21 +29020,21 @@ _nullstr:
 _typeahead:
 	dc.l	_nullstr
 _intense:
-	dc.l	L00791
+	dc.l	L00791		;" of intense white light"
 _flash:
-	dc.l	L00792
+	dc.l	L00792		;"your %s gives off a flash%s"
 _it:
-	dc.l	L00793
+	dc.l	L00793		;"it"
 _you:
-	dc.l	L00794
+	dc.l	L00794		;"you"
 _no_mem:
-	dc.l	L00795
+	dc.l	L00795		;"Not enough Memory"
 _smsg:
-	dc.l	L00796
+	dc.l	L00796		;"  *** Stack Overflow ***",$d,10,"$"
 _no_damage:
-	dc.l	L00797
+	dc.l	L00797		;"0d0"
 _hero_damage:
-	dc.l	L00798		; 1d4
+	dc.l	L00798		;"1d4"
 	dc.l	$FFFF0000
 	dc.l	$00000001
 	dc.l	$00010000
