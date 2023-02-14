@@ -15117,10 +15117,8 @@ L00681:
 	JSR	_read
 	ADDQ.W	#8,A7
 	MOVE.W	D0,D5
-L00682:
-	CMP.W	#$0000,D5
 	BGT.B	L00683
-
+L00682:
 	MOVEA.L	$0008(A5),A6
 	CLR.W	$0028(A6)	;clear gold entry on fail
 L00683:
