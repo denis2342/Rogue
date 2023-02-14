@@ -6203,7 +6203,7 @@ L002AB:
 	MOVEQ	#$2E,D3		;'.' FLOOR
 L002AC:
 	MOVE.B	D3,D7
-	TST.W	$002C(A2)
+	TST.W	$002C(A2)	;is it in a group?
 	BEQ.B	L002B1
 
 	MOVEA.L	-$529C(A4),A3	;_player + 46 (pack)
@@ -6239,10 +6239,11 @@ L002AE:
 	MOVEA.L	A3,A2
 	BRA.W	L002C6
 L002AF:
-	MOVEA.L	(A3),A3
+	MOVEA.L	(A3),A3		;get next item from player pack
 L002B0:
-	MOVE.L	A3,D3
+	MOVE.L	A3,D3		;and repeat the check if there is one
 	BNE.B	L002AD
+
 L002B1:
 	CMPI.W	#22,-$60AA(A4)	;_inpack, max items in inventory
 	BLT.B	L002B2
@@ -6252,13 +6253,13 @@ L002B1:
 	ADDQ.W	#4,A7
 	BRA.W	L002A7
 L002B2:
-	CMPI.W	#$003F,$000A(A2)	;'?'
+	CMPI.W	#$003F,$000A(A2)	;'?' scroll
 	BNE.B	L002B4
 
 	CMPI.W	#S_SCAREM,$0020(A2)	;scroll of scare monster
 	BNE.B	L002B4
 
-	MOVE.W	$0028(A2),D3
+	MOVE.W	$0028(A2),D3		;load object flags
 	AND.W	#O_SCAREUSED,D3	;unused?
 	BEQ.B	L002B3
 
@@ -6289,7 +6290,7 @@ L002B2:
 L002B3:
 	ORI.W	#O_SCAREUSED,$0028(A2)	;set scare bit used
 L002B4:
-	ADDQ.W	#1,-$60AA(A4)	;_inpack
+	ADDQ.W	#1,-$60AA(A4)	;_inpack++
 	TST.B	D6
 	BEQ.B	L002B5
 
@@ -6317,6 +6318,7 @@ L002B6:
 	ADDQ.W	#4,A7
 
 	MOVE.W	D0,-(A7)
+
 	MOVE.L	A3,-(A7)
 	JSR	_typeof
 	ADDQ.W	#4,A7
@@ -6325,30 +6327,32 @@ L002B6:
 	CMP.W	D0,D3
 	BEQ.B	L002B8
 
-	MOVEA.L	(A3),A3
+	MOVEA.L	(A3),A3		;if not load the next item in pack
 L002B7:
-	MOVE.L	A3,D3
+	MOVE.L	A3,D3		;and if there is one repeat the check
 	BNE.B	L002B6
 L002B8:
-	MOVE.L	A3,D3
+	MOVE.L	A3,D3		;did we find something?
 	BNE.B	L002BC
+
 	MOVEA.L	-$529C(A4),A3	;_player + 46 (pack)
 	BRA.B	L002BA
 L002B9:
 	CMPI.W	#$003A,$000A(A3)	;':' food
 	BNE.B	L002BE
-	MOVE.L	A3,D4
-	MOVEA.L	(A3),A3
+	MOVE.L	A3,D4		;if we had food rembember the pointer to it
+	MOVEA.L	(A3),A3		;and get the next item in pack
 L002BA:
 	MOVE.L	A3,D3
 	BNE.B	L002B9
-	BRA.B	L002BE
+	BRA.B	L002BE		;we maybe have the last match in D4
 L002BC:
 	MOVE.L	A3,-(A7)
 	JSR	_typeof
 	ADDQ.W	#4,A7
 
 	MOVE.W	D0,-(A7)
+
 	MOVE.L	A2,-(A7)
 	JSR	_typeof
 	ADDQ.W	#4,A7
@@ -6364,13 +6368,13 @@ L002BC:
 	MOVEQ	#$01,D5
 	BRA.B	L002BE
 L002BD:
-	MOVE.L	A3,D4
+	MOVE.L	A3,D4		;found a match, remember it
 	MOVEA.L	(A3),A3
 	MOVE.L	A3,D3
 	BEQ.B	L002BE
 	BRA.B	L002BC
 L002BE:
-	MOVE.L	A3,D3
+	MOVE.L	A3,D3		;is there another item in the pack?
 	BNE.B	L002C1
 
 	TST.L	-$529C(A4)	;_player + 46 (pack)
