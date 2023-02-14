@@ -15144,7 +15144,7 @@ loop$	MOVEA.L	$0008(A5),A6
 	BEQ.B	L00685
 
 	MOVE.W	#46,-(A7)	; 46 bytes per entry
-	MOVE.L	$0008(A5),-(A7)
+	MOVE.L	A6,-(A7)
 	MOVE.W	-$53C0(A4),-(A7)	;rogue.score filehd
 	JSR	_write
 	ADDQ.W	#8,A7
