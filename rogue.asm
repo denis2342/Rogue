@@ -6323,8 +6323,7 @@ L002B6:
 	JSR	_typeof
 	ADDQ.W	#4,A7
 
-	MOVE.W	(A7)+,D3
-	CMP.W	D0,D3
+	CMP.W	(A7)+,D0	;both items of the same type?
 	BEQ.B	L002B8
 
 	MOVEA.L	(A3),A3		;if not load the next item in pack
@@ -6357,8 +6356,7 @@ L002BC:
 	JSR	_typeof
 	ADDQ.W	#4,A7
 
-	MOVE.W	(A7)+,D3
-	CMP.W	D0,D3
+	CMP.W	(A7)+,D0
 	BNE.B	L002BE
 
 	MOVE.W	$0020(A3),D3
