@@ -14326,22 +14326,26 @@ L0063E:	dc.b	"The light from your lamp seems dimmer now.",0,0
 _doctor:
 ;	LINK	A5,#-$0000
 	MOVEM.L	D4/D5,-(A7)
+
 	MOVE.W	-$52AC(A4),D4	;_player + 30 (rank)
 	MOVE.W	-$52A8(A4),D5	;_player + 34 (hp)
 	ADDQ.W	#1,-$60A0(A4)	;_quiet
 	CMP.W	#$0008,D4
 	BGE.B	L00640
+
 	MOVE.W	D4,D3
 	ASL.W	#1,D3
 	ADD.W	-$60A0(A4),D3	;_quiet
 	CMP.W	#$0014,D3
 	BLE.B	L0063F
+
 	ADDQ.W	#1,-$52A8(A4)	;_player + 34 (hp)
 L0063F:
 	BRA.B	L00641
 
 L00640:	CMPI.W	#$0003,-$60A0(A4)	;_quiet
 	BLT.B	L00641
+
 	MOVE.W	D4,D3
 	SUBQ.W	#7,D3
 	MOVE.W	D3,D0
@@ -14352,22 +14356,28 @@ L00640:	CMPI.W	#$0003,-$60A0(A4)	;_quiet
 L00641:	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L00642
+
 	CMPI.W	#R_REGEN,$0020(A6)	; 9 = ring of regeneration
 	BNE.B	L00642
+
 	ADDQ.W	#1,-$52A8(A4)	;_player + 34 (hp)
 
 L00642:	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BEQ.B	L00643
+
 	CMPI.W	#R_REGEN,$0020(A6)	; 9 = ring of regeneration
 	BNE.B	L00643
+
 	ADDQ.W	#1,-$52A8(A4)	;_player + 34 (hp)
 
 L00643:	CMP.W	-$52A8(A4),D5	;_player + 34 (hp)
 	BEQ.B	L00645
+
 	MOVE.W	-$52A8(A4),D3	;_player + 34 (hp)
 	CMP.W	-$52A2(A4),D3	;_player + 40 (max hp)
 	BLE.B	L00644
+
 	MOVE.W	-$52A2(A4),-$52A8(A4)	;_player + 40 (max hp),_player + 34 (hp)
 L00644:
 	CLR.W	-$60A0(A4)	;_quiet
@@ -14548,9 +14558,11 @@ _stomach:
 	MOVEM.L	D4/D5,-(A7)
 	MOVE.W	-$609E(A4),D3	;_food_left
 	BGT.B	L00653
+
 	SUBQ.W	#1,-$609E(A4)	;_food_left
 	CMP.W	#$FCAE,D3	;-352
 	BGE.B	L00650
+
 	MOVE.W	#$0073,-(A7)	;'s' starvation
 	JSR	_death
 	ADDQ.W	#2,A7
@@ -14600,6 +14612,7 @@ L00653:
 	ADDQ.W	#1,D5
 	TST.B	-$66B2(A4)	;_terse
 	BEQ.B	L00654
+
 	MULU.W	#$0002,D5
 L00654:
 	SUB.W	D5,-$609E(A4)	;_food_left
@@ -14869,6 +14882,7 @@ _quit:
 	LEA	$000C(A7),A7
 	TST.W	D0
 	BEQ.B	1$
+
 	CLR.W	-(A7)
 	MOVE.W	#$0001,-(A7)
 	MOVE.W	-$60B2(A4),-(A7)	;_purse
@@ -15067,6 +15081,11 @@ L0067C:	dc.b	"The Hall of Fame file does not exist.",0
 L0067D:	dc.b	"Create it",0
 L0067E:	dc.b	"Don't create it",0
 
+;/*
+; * read_score
+; *  Read in the score file
+; */
+
 _get_scores:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/D5,-(A7)
@@ -15088,7 +15107,7 @@ L00682:
 	BGT.B	L00683
 
 	MOVEA.L	$0008(A5),A6
-	CLR.W	$0028(A6)
+	CLR.W	$0028(A6)	;clear gold entry on fail
 L00683:
 	ADDI.L	#46,$0008(A5)
 	DBRA	D4,L00681	; 10 highscore entries
@@ -15096,6 +15115,11 @@ L00683:
 	MOVEM.L	(A7)+,D4/D5
 	UNLK	A5
 	RTS
+
+;/*
+; * write_score
+; *  Read in the score file
+; */
 
 _put_scores:
 	LINK	A5,#-$0000
