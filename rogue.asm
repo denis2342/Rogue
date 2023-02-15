@@ -36,9 +36,8 @@ _init_player:
 	MOVE.L	(A1)+,(A6)+
 	MOVE.W	(A1)+,(A6)+
 
-	MOVE.W	#$0514,-(A7)	; we get 1300 food +-10%
+	MOVE.W	#$0514,D0	; we get 1300 food +-10%
 	JSR	_spread
-	ADDQ.W	#2,A7
 	MOVE.W	D0,-$609E(A4)	;_food_left
 
 	CLR.W	d1
@@ -1370,18 +1369,18 @@ L000CE:
 	ADDQ.W	#4,A7
 	BRA.W	L000E2
 L000CF:
-	MOVE.W	#$0003,-(A7)
+	MOVEq	#$0003,D0
 	JSR	_spread
-	ADDQ.W	#2,A7
+
 	ADD.W	D0,-$60AE(A4)	;_no_move
 	PEA	L000E4(PC)	;"you are caught in a bear trap"
 	JSR	_msg
 	ADDQ.W	#4,A7
 	BRA.W	L000E2
 L000D0:
-	MOVE.W	#$0005,-(A7)
+	MOVEq	#$0005,D0
 	JSR	_spread
-	ADDQ.W	#2,A7
+
 	ADD.W	D0,-$60AC(A4)	;_no_command
 	ANDI.W	#~C_ISRUN,-$52B4(A4)	;clear C_ISRUN, _player + 22 (flags)
 
@@ -3963,9 +3962,10 @@ L001B4:
 
 L001B5:
 	ST	-$66F3(A4)	;_s_know + 3 "sleep"
-	MOVE.W	#$0005,-(A7)
+
+	MOVEq	#$0005,D0
 	JSR	_spread
-	ADDQ.W	#2,A7
+
 	MOVE.W	D0,D0
 	JSR	_rnd
 	ADDQ.W	#4,D0
@@ -7907,9 +7907,10 @@ L0037A:
 	ADDQ.W	#8,A7
 	CMPI.W	#$0014,-$60AC(A4)	;_no_command
 	BGE.B	L0037B
-	MOVE.W	#$0007,-(A7)
+
+	MOVEq	#$0007,D0
 	JSR	_spread
-	ADDQ.W	#2,A7
+
 	ADD.W	D0,-$60AC(A4)	;_no_command
 L0037B:
 	BRA.B	L0037E
@@ -10377,9 +10378,9 @@ L00490:
 ; potion of night vision
 
 L00491:
-	MOVE.W	#300,-(A7)
+	MOVE.W	#300,D0
 	JSR	_spread
-	ADDQ.W	#2,A7
+
 	MOVE.W	D0,-(A7)
 
 	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
@@ -10412,9 +10413,9 @@ L00493:
 ; potion of discernment
 
 L00494:
-	MOVE.W	#100,-(A7)
+	MOVEq	#100,D0
 	JSR	_spread
-	ADDQ.W	#2,A7
+
 	MOVE.W	D0,-(A7)
 
 	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
@@ -10442,9 +10443,10 @@ L00496:
 
 L00497:
 	ST	-$66E6(A4)	;_p_know + 1 (potion of paralysis)
-	MOVE.W	#$0002,-(A7)
+
+	MOVEq	#$0002,D0
 	JSR	_spread
-	ADDQ.W	#2,A7
+
 	MOVE.W	D0,-$60AC(A4)	;_no_command
 	ANDI.W	#~C_ISRUN,-$52B4(A4)	;clear C_ISRUN, _player + 22 (flags)
 	PEA	L004B8(PC)	;"you can't move"
@@ -10458,9 +10460,10 @@ L00498:
 	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_CANSEE,D3	;C_CANSEE
 	BNE.B	L00499
-	MOVE.W	#300,-(A7)
+
+	MOVE.W	#300,D0
 	JSR	_spread
-	ADDQ.W	#2,A7
+
 	MOVE.W	D0,-(A7)
 	CLR.W	-(A7)
 	PEA	_unsee(PC)
@@ -10835,9 +10838,9 @@ _p_confuse:
 	MOVEq	#$0008,D0
 	JSR	_rnd
 	MOVE.W	D0,-(A7)	;save rnd to stack
-	MOVE.W	#20,-(A7)
+
+	MOVEq	#20,D0
 	JSR	_spread
-	ADDQ.W	#2,A7
 
 	MOVE.W	(A7)+,D3	;get rnd back from stack
 	ADD.W	D0,D3		;add spread
@@ -10869,9 +10872,9 @@ _p_blind:
 
 	ORI.W	#C_ISBLIND,-$52B4(A4)	;_player + 22 (flags)
 
-	MOVE.W	#300,-(A7)
+	MOVE.W	#300,D0
 	JSR	_spread
-	ADDQ.W	#2,A7
+
 	MOVE.W	D0,-(A7)
 	CLR.W	-(A7)
 	PEA	_sight(PC)
@@ -14444,9 +14447,10 @@ _rollwand:
 	PEA	_rollwand(PC)
 	JSR	_extinguish(PC)
 	ADDQ.W	#4,A7
-	MOVE.W	#100,-(A7)
+
+	MOVEq	#100,D0
 	JSR	_spread
-	ADDQ.W	#2,A7
+
 	MOVE.W	D0,-(A7)
 	CLR.W	-(A7)
 	PEA	_swander(PC)
@@ -14740,9 +14744,10 @@ L00661:
 	PEA	_doctor(PC)
 	JSR	_daemon(PC)
 	ADDQ.W	#6,A7
-	MOVE.W	#100,-(A7)
+
+	MOVEq	#100,D0
 	JSR	_spread
-	ADDQ.W	#2,A7
+
 	MOVE.W	D0,-(A7)
 	CLR.W	-(A7)
 	PEA	_swander(PC)
@@ -17964,9 +17969,8 @@ L00854:
 	ADDQ.W	#2,D0
 	ADD.W	D0,-$60AC(A4)	;_no_command
 L00855:
-	MOVE.W	#1300,-(A7)
-	JSR	_spread(PC)
-	ADDQ.W	#2,A7
+	MOVE.W	#1300,D0
+	JSR	_spread
 
 	MOVE.W	D0,-(A7)
 
@@ -18468,9 +18472,9 @@ L00892:
 ; */
 
 _spread:
-	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
-	MOVE.W	$0008(A5),D4
+
+	MOVE.W	D0,D4
 	MOVE.W	D4,D0
 	EXT.L	D0
 	DIVU.W	#$0005,D0
@@ -18480,8 +18484,8 @@ _spread:
 	DIVU.W	#$000A,D3
 	SUB.W	D3,D4
 	ADD.W	D4,D0
+
 	MOVE.L	(A7)+,D4
-	UNLK	A5
 	RTS
 
 ;/*
@@ -22406,9 +22410,8 @@ L00A36:
 	JSR	_rnd
 	MOVE.W	D0,-(A7)
 
-	MOVE.W	#$0014,-(A7)
+	MOVEq	#$0014,D0
 	JSR	_spread
-	ADDQ.W	#2,A7
 
 	MOVE.W	(A7)+,D3
 	ADD.W	D0,D3
