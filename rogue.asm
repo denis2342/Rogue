@@ -20916,22 +20916,18 @@ _swing:
 _check_level:
 ;	LINK	A5,#-$0000
 	MOVEM.L	D4-D6,-(A7)
+
 	MOVEQ	#$00,D4
+	MOVEA.L	-$51AC(A4),A6	;_e_levels
+	MOVE.L	-$52B0(A4),D3
 	BRA.B	L00983
 L00982:
-;	MOVE.W	D4,D3
-;	EXT.L	D3
-;	ASL.w	#2,D3
-;	MOVEA.L	-$51AC(A4),A6	;_e_levels
-	CMP.L	-$52B0(A4),D2	;_player + 26 (EXP)
+	CMP.L	D3,D2	;_player + 26 (EXP)
 	BGT.B	L00984
+
 	ADDQ.W	#1,D4
 L00983:
-	MOVE.W	D4,D3
-;	EXT.L	D3
-	ASL.w	#2,D3
-	MOVEA.L	-$51AC(A4),A6	;_e_levels
-	MOVE.L	$00(A6,D3.w),D2
+	MOVE.L	(A6)+,D2
 	BNE.B	L00982
 L00984:
 	ADDQ.W	#1,D4
