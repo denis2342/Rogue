@@ -6327,19 +6327,19 @@ L002B4:
 L002B5:
 	MOVEQ	#$00,D5
 	MOVEA.L	-$529C(A4),A3	;_player + 46 (pack)
-	BRA.B	L002B7
-L002B6:
+
 	MOVE.L	A2,-(A7)
 	JSR	_typeof
 	ADDQ.W	#4,A7
+	move.b	D0,D7		;keep the type of the item we are looking for in D7
 
-	MOVE.W	D0,-(A7)
-
+	BRA.B	L002B7
+L002B6:
 	MOVE.L	A3,-(A7)
 	JSR	_typeof
 	ADDQ.W	#4,A7
 
-	CMP.W	(A7)+,D0	;both items of the same type?
+	CMP.B	D7,D0		;both items of the same type?
 	BEQ.B	L002B8
 
 	MOVEA.L	(A3),A3		;if not load the next item in pack
@@ -6363,17 +6363,17 @@ L002BA:
 	BNE.B	L002B9
 	BRA.B	L002BE		;we maybe have the last match in D4
 L002BC:
-	MOVE.L	A3,-(A7)
-	JSR	_typeof
-	ADDQ.W	#4,A7
-
-	MOVE.W	D0,-(A7)
-
 	MOVE.L	A2,-(A7)
 	JSR	_typeof
 	ADDQ.W	#4,A7
 
-	CMP.W	(A7)+,D0
+	MOVE.B	D0,D7
+L002BCb:
+	MOVE.L	A3,-(A7)
+	JSR	_typeof
+	ADDQ.W	#4,A7
+
+	CMP.B	D7,D0
 	BNE.B	L002BE
 
 	MOVE.W	$0020(A3),D3
@@ -6387,7 +6387,7 @@ L002BD:
 	MOVEA.L	(A3),A3
 	MOVE.L	A3,D3
 	BEQ.B	L002BE
-	BRA.B	L002BC
+	BRA.B	L002BCb
 L002BE:
 	MOVE.L	A3,D3		;is there another item in the pack?
 	BNE.B	L002C1
