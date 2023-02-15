@@ -5526,9 +5526,9 @@ _start_run:
 	MOVE.W	$0002(A2),d0
 	JSR	_moatquick
 
-	MOVEA.L	D0,A3
-	MOVE.L	A3,D3
+	TST.L	D0
 	BEQ.B	1$
+	MOVEA.L	D0,A3
 
 	ORI.W	#C_ISRUN,$0016(A3)	;set C_ISRUN
 	ANDI.W	#~C_ISHELD,$0016(A3)	;clear C_ISHELD
