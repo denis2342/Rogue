@@ -14304,7 +14304,7 @@ _typech:
 	BGE.B	3$
 
 	MOVEQ	#$6D,D0		; m weapon type
-	BRA.B	3$
+	rts
 
 1$	CMP.b	#$61,D0		; a
 	BLT.B	2$
@@ -14313,7 +14313,7 @@ _typech:
 	BGE.B	3$
 
 	MOVEQ	#$61,D0		; a armor type
-	BRA.B	3$
+	rts
 
 2$	CMP.b	#$0E,D0		; #14
 	BLT.B	3$
