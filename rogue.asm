@@ -3969,7 +3969,9 @@ L001B5:
 	MOVE.W	D0,D0
 	JSR	_rnd
 	ADDQ.W	#4,D0
+
 	ADD.W	D0,-$60AC(A4)	;_no_command
+
 	ANDI.W	#~C_ISRUN,-$52B4(A4)	;clear C_ISRUN, _player + 22 (flags)
 	PEA	L001EE(PC)	;"you fall asleep"
 	JSR	_msg
@@ -6339,6 +6341,7 @@ L002B8:
 L002B9:
 	CMPI.W	#$003A,$000A(A3)	;':' food
 	BNE.B	L002BE
+
 	MOVE.L	A3,D4		;if we had food rembember the pointer to it
 	MOVEA.L	(A3),A3		;and get the next item in pack
 L002BA:
@@ -6436,7 +6439,7 @@ L002C9:
 	MOVE.L	A3,D3
 	BNE.B	L002C7
 
-	CMPI.W	#$002C,$000A(A2)	;','
+	CMPI.W	#$002C,$000A(A2)	;',' amulet of yendor
 	BNE.B	L002CA
 
 	ST	-$66BD(A4)	;_amulet
@@ -14310,8 +14313,8 @@ _typech:
 
 _foolish:
 ;	LINK	A5,#-$0000
-	ANDI.W	#$FFFD,-$52B4(A4)	;WISDOM,_player + 22 (flags)
-	PEA	L0063D(PC)	;"You see your destiny, but the knowledge vaporizes"
+	ANDI.W	#~C_WISDOM,-$52B4(A4)	;clear C_WISDOM,_player + 22 (flags)
+	PEA	L0063D(PC)		;"You see your destiny, but the knowledge vaporizes"
 	JSR	_msg
 	ADDQ.W	#4,A7
 ;	UNLK	A5
@@ -28881,7 +28884,7 @@ _monsters:
 	dc.l	L0075E		;0d0/0d0
 	dc.w	$0000
 
-	dc.l	L0075F		; bat, 0-9
+	dc.l	L0075F		; bat, 0-8
 	dc.w	$0000,$8000,$000A,$0000,$0001,$0001,$0003,$0001
 	dc.l	L00760		;1d2
 	dc.w	$0000
@@ -28896,7 +28899,7 @@ _monsters:
 	dc.l	L00764		; 1d8/1d8/3d10
 	dc.w	$0000
 
-	dc.l	L00765		; emu, 0-9
+	dc.l	L00765		; emu, 0-8
 	dc.w	$0000,$0020,$000A,$0000,$0002,$0001,$0007,$0001
 	dc.l	L00766		; 1d2
 	dc.w	$0000
@@ -28916,7 +28919,7 @@ _monsters:
 	dc.l	L0076C		; 1d8
 	dc.w	$0000
 
-	dc.l	L0076D		; ice monster, 0-9
+	dc.l	L0076D		; ice monster, 0-10
 	dc.w	$0000,$0020,$000A,$0000,$000F,$0001,$0009,$0001
 	dc.l	L0076E		; 1d2
 	dc.w	$0000
@@ -28926,7 +28929,7 @@ _monsters:
 	dc.l	L00770		; 2d12/2d4
 	dc.w	$0000
 
-	dc.l	L00771		; kestral, 0-9
+	dc.l	L00771		; kestral, 0-8
 	dc.w	$0000,$8020,$000A,$0000,$0001,$0001,$0007,$0001
 	dc.l	L00772		; 1d4
 	dc.w	$0000
