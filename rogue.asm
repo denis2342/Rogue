@@ -16272,9 +16272,7 @@ L0079F:
 	JSR	_INDEXquick
 
 	MOVEA.L	-$519C(A4),A6	;__level
-	MOVEQ	#$00,D3
-	MOVE.B	$00(A6,D0.W),D3
-	CMP.W	#$0023,D3
+	CMP.B	#$23,$00(A6,D0.W)
 	BEQ.W	L0079C
 
 	MOVE.W	-$0192(A5),D3
@@ -16340,9 +16338,7 @@ _add_frnt:
 	JSR	_INDEXquick
 
 	MOVEA.L	-$519C(A4),A6	;__level
-;	MOVEQ	#$00,D3
-	MOVE.B	$00(A6,D0.W),D3
-	CMP.B	#$20,D3
+	CMP.B	#$20,$00(A6,D0.W)
 	BNE.B	L007A0
 
 ;	MOVE.W	$000A(A5),d0
