@@ -6373,10 +6373,10 @@ L002BCb:
 	JSR	_typeof
 	ADDQ.W	#4,A7
 
-	CMP.B	D7,D0
+	CMP.B	D7,D0		;compare the types
 	BNE.B	L002BE
 
-	MOVE.W	$0020(A3),D3
+	MOVE.W	$0020(A3),D3	;compare the subtypes
 	CMP.W	$0020(A2),D3
 	BNE.B	L002BD
 
