@@ -20843,14 +20843,11 @@ L00973:
 L00974:
 	MOVEA.L	$0008(A5),A6
 	MOVE.B	$000F(A6),D3
-;	EXT.W	D3
-	CMP.B	#$49,D3		;'I'
+
+	CMP.B	#$49,D3		;'I' ice monster
 	BEQ.B	L00976
 
-	MOVEA.L	$0008(A5),A6
-	MOVE.B	$000F(A6),D3
-;	EXT.W	D3
-	CMP.B	#$46,D3		;'F'
+	CMP.B	#$46,D3		;'F' venus flytrap
 	BNE.B	L00975
 
 	MOVE.W	-$60A2(A4),D3	;_fung_hit
