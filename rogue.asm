@@ -14309,7 +14309,8 @@ _typech:
 
 	MOVEQ	#$0E,D0		; #14
 
-3$	RTS
+3$	ext.w	d0
+	RTS
 
 _foolish:
 ;	LINK	A5,#-$0000
