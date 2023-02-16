@@ -27757,7 +27757,7 @@ L00CA7:
 	EXT.L	D3
 	ASL.L	#2,D3
 	MOVE.L	D3,-(A7)
-	JSR	_AllocMem(PC)
+	JSR	_AllocMem
 	ADDQ.W	#8,A7
 	MOVE.L	D0,-$52DE(A4)
 	MOVEQ	#$00,D4
@@ -27795,13 +27795,13 @@ L00CAA:
 	ASL.L	#2,D3
 	MOVEA.L	-$52DE(A4),A6
 	CLR.L	$00(A6,D3.L)
-	JSR	_Input(PC)
+	JSR	_Input
 	MOVE.L	D0,-$4758(A4)		;__devtab
 	MOVE.W	#$8000,-$4754(A4)
 	JSR	_Output(PC)
 	MOVE.L	D0,-$4752(A4)
 	MOVE.W	#$8001,-$474E(A4)
-	JSR	_Output(PC)
+	JSR	_Output
 	MOVE.L	D0,-$474C(A4)
 	MOVE.W	#$8001,-$4748(A4)
 	MOVE.W	#$0001,-$46DE(A4)	;_Enable_Abort
@@ -27810,15 +27810,15 @@ L00CAA:
 	JSR	_main
 	ADDQ.W	#6,A7
 	CLR.W	-(A7)
-	JSR	__exit(PC)
+	JSR	__exit
 	ADDQ.W	#2,A7
 	BRA.W	L00CAE
 L00CAB:
 	PEA	$005C(A3)
-	JSR	_WaitPort(PC)
+	JSR	_WaitPort
 	ADDQ.W	#4,A7
 	PEA	$005C(A3)
-	JSR	_GetMsg(PC)
+	JSR	_GetMsg
 	ADDQ.W	#4,A7
 	MOVE.L	D0,-$52D6(A4)
 	MOVEA.L	-$52D6(A4),A6
@@ -27827,7 +27827,7 @@ L00CAB:
 	MOVEA.L	-$52D6(A4),A6
 	MOVEA.L	$0024(A6),A1
 	MOVE.L	(A1),-(A7)
-	JSR	_CurrentDir(PC)
+	JSR	_CurrentDir
 	ADDQ.W	#4,A7
 L00CAC:
 	MOVEA.L	-$52D6(A4),A6
@@ -27837,7 +27837,7 @@ L00CAC:
 	PEA	$03ED
 	MOVEA.L	-$52D6(A4),A6
 	MOVE.L	$0020(A6),-(A7)
-	JSR	_Open(PC)
+	JSR	_Open
 	ADDQ.W	#8,A7
 	MOVE.L	D0,-$4758(A4)		;__devtab
 ;	TST.L	D0
@@ -27906,7 +27906,7 @@ L00CB5:
 	EXT.L	D3
 	MOVE.L	D3,-(A7)
 	MOVE.L	-$52DA(A4),-(A7)
-	JSR	_FreeMem(PC)
+	JSR	_FreeMem
 	ADDQ.W	#8,A7
 
 	MOVE.W	-$52E2(A4),D3
@@ -27921,13 +27921,13 @@ L00CB5:
 	MOVE.W	$0008(A5),D3
 	EXT.L	D3
 	MOVE.L	D3,-(A7)
-	JSR	_Exit(PC)
+	JSR	_Exit
 	ADDQ.W	#4,A7
 	BRA.B	L00CB7
 L00CB6:
-	JSR	_Forbid(PC)
+	JSR	_Forbid
 	MOVE.L	-$52D6(A4),-(A7)
-	JSR	_ReplyMsg(PC)
+	JSR	_ReplyMsg
 	ADDQ.W	#4,A7
 	MOVE.L	$0008(A5),D0
 	MOVEA.L	-$4760(A4),A7		;__savsp
@@ -28041,7 +28041,7 @@ L00CC3:
 	BNE.B	L00CC4
 
 	MOVE.L	(A2),-(A7)
-	JSR	_Close(PC)
+	JSR	_Close
 	ADDQ.W	#4,A7
 L00CC4:
 	CLR.L	(A2)
