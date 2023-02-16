@@ -1823,7 +1823,7 @@ _wmap:
 	BEQ.B	L00102
 
 	MOVE.L	-$5144(A4),-(A7)	;_TextWin
-	JSR	_CloseWindowSafely(PC)
+	JSR	_CloseWindow
 	ADDQ.W	#4,A7
 	CLR.L	-$5144(A4)	;_TextWin
 	ST	-$7064(A4)	;_map_up
@@ -2358,14 +2358,6 @@ _OnVerify:
 	JSR	_ModifyIDCMP
 	ADDQ.W	#8,A7
 L00128:
-	UNLK	A5
-	RTS
-
-_CloseWindowSafely:
-	LINK	A5,#-$0008
-	MOVE.L	$0008(A5),-(A7)
-	JSR	_CloseWindow
-	ADDQ.W	#4,A7
 	UNLK	A5
 	RTS
 
