@@ -24376,8 +24376,6 @@ L00B1E:
 ;	UNLK	A5
 	RTS
 
-blackcolor:	dc.b	0,0,0,0
-
 _setRGB4colors:
 	MOVE.W	D0,D6
 	ASL.w	#2,D6
