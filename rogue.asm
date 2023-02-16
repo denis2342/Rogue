@@ -16810,10 +16810,12 @@ _pack_update:
 
 _create_obj:
 	LINK	A5,#-$0008
+
 	JSR	_new_item
 	MOVE.L	D0,-$0004(A5)
 ;	TST.L	D0
 	BNE.B	L007C7
+
 	PEA	L007ED(PC)	;"can't create anything now"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -16943,6 +16945,7 @@ L007D6:
 	MOVEA.L	-$0004(A5),A6
 	CMPI.W	#$006D,$000A(A6)	; 'm' weapon type
 	BEQ.B	L007D7
+
 	MOVEA.L	-$0004(A5),A6
 	CMPI.W	#$0061,$000A(A6)	; 'a' armor type
 	BNE.W	L007DF
@@ -17112,6 +17115,7 @@ L007EA:
 	MOVEA.L	-$0004(A5),A6
 	CMPI.W	#$002F,$000A(A6)	; '/'
 	BNE.B	L007EB
+
 	MOVE.L	-$0004(A5),-(A7)
 	JSR	_fix_stick(PC)
 	ADDQ.W	#4,A7
@@ -17120,9 +17124,11 @@ L007EB:
 	MOVEA.L	-$0004(A5),A6
 	CMPI.W	#$002A,$000A(A6)	; '*'
 	BNE.B	L007EC
+
 	PEA	L007F3(PC)	;"how much?"
 	JSR	_msg
 	ADDQ.W	#4,A7
+
 	MOVEA.L	-$0004(A5),A6
 	PEA	$0026(A6)
 	JSR	_get_num(PC)
