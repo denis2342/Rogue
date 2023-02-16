@@ -24324,7 +24324,7 @@ loop$	move.b	(a0),d1
 	MOVEA.L	$0004(A3),A3	;get the bitmap
 	addq.l	#8,A3
 
-loop$	MOVE.W	D5,-(A7)	;length
+loop2$	MOVE.W	D5,-(A7)	;length
 	move.l	(a3)+,-(a7)	;get the planes
 
 	; we load the data directly into the bitmap planes
@@ -24333,7 +24333,7 @@ loop$	MOVE.W	D5,-(A7)	;length
 	JSR	_read
 	ADDQ.W	#8,A7
 
-	DBRA	D4,loop$
+	DBRA	D4,loop2$
 
 	MOVE.W	D6,-(A7)	;filehandle
 	JSR	_close
