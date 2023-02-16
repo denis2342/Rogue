@@ -14800,7 +14800,7 @@ L00664:	dc.b	".  Welcome to the Dungeons of Doom",0
 
 _endit:
 	LINK	A5,#-$0000
-	PEA	L00665(PC)	;"Ok, if you want to exit that badly, I'll"
+	PEA	L00665(PC)	;"Ok, if you want to exit that badly, I'll have to allow it"
 	JSR	_fatal(PC)
 	ADDQ.W	#4,A7
 	UNLK	A5
@@ -24341,6 +24341,7 @@ L00B1C:
 	MOVE.W	D6,-(A7)	;filehandle
 	JSR	_close
 	ADDQ.W	#2,A7
+
 	MOVE.W	$0010(A5),-(A7)
 	PEA	-$47A4(A4)	;_want
 	BSR	_fade_in
