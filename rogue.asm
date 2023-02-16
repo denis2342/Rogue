@@ -24316,17 +24316,16 @@ loop$	move.b	(a0),d1
 
 	clr.b	-$47AA(A4)	;_all_clear
 
-1$	MOVE.W	#16000,D5
-	MOVEQ	#$00,D4
-L00B1C:
-	MOVE.W	D5,-(A7)	;length
-	MOVE.W	D4,D3
-;	EXT.L	D3
-	ASL.w	#2,D3
-	MOVEA.L	$000C(A5),A1	;screen
-	MOVEA.L	$0032(A1),A0	;get the rastport
-	MOVEA.L	$0004(A0),A6	;get the bitmap
-	MOVE.L	$08(A6,D3.w),-(A7)
+1$	MOVE.W	#16000,D5	;load 16kb at once
+	MOVEQ	#4-1,D4
+
+	MOVEA.L	$000C(A5),A3	;screen
+	MOVEA.L	$0032(A3),A3	;get the rastport
+	MOVEA.L	$0004(A3),A3	;get the bitmap
+	addq.l	#8,A3
+
+loop$	MOVE.W	D5,-(A7)	;length
+	move.l	(a3)+,-(a7)	;get the planes
 
 	; we load the data directly into the bitmap planes
 
@@ -24334,9 +24333,7 @@ L00B1C:
 	JSR	_read
 	ADDQ.W	#8,A7
 
-	ADDQ.W	#1,D4
-	CMP.W	#$0004,D4
-	BLT.B	L00B1C
+	DBRA	D4,loop$
 
 	MOVE.W	D6,-(A7)	;filehandle
 	JSR	_close
