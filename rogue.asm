@@ -1793,7 +1793,7 @@ _wtext:
 	BEQ.B	L00100
 
 	MOVE.L	-$5150(A4),-$77E4(A4)	;_StdScr
-	PEA	-$7802(A4)
+	PEA	-$7802(A4)		;_Window2
 	JSR	_OpenWindow
 	ADDQ.W	#4,A7
 	MOVE.L	D0,-$5144(A4)	;_TextWin
@@ -2120,7 +2120,7 @@ L0010F:
 	JSR	_InitBitMap
 	LEA	$0010(A7),A7
 	MOVE.L	-$5150(A4),-$7814(A4)	;_StdScr
-	PEA	-$7832(A4)
+	PEA	-$7832(A4)		;_Window1
 	JSR	_OpenWindow
 	ADDQ.W	#4,A7
 	MOVE.L	D0,-$5148(A4)
@@ -11781,7 +11781,7 @@ _newmem:
 	TST.L	D0
 	BNE.B	L00514
 
-	PEA	L00515(PC)
+	PEA	L00515(PC)	;"No Memory"
 	JSR	_fatal
 	ADDQ.W	#4,A7
 L00514:
@@ -15153,7 +15153,7 @@ L00683:
 
 ;/*
 ; * write_score
-; *  Read in the score file
+; *  Write out the score file
 ; */
 
 _put_scores:
@@ -15184,8 +15184,8 @@ _pr_scores:
 	LINK	A5,#-$0054
 	MOVE.L	D4,-(A7)
 	JSR	_black_out
-	CLR.L	-(A7)
 
+	CLR.L	-(A7)
 	MOVE.L	-$5144(A4),-(A7)	;_TextWin
 	PEA	L00690(PC)	;"Hall.of.Fame"
 	JSR	_show_ilbm
@@ -24283,13 +24283,13 @@ _show_ilbm:
 	LINK	A5,#-$0000
 	MOVEM.L	D4-D6,-(A7)
 	CLR.W	-(A7)
-	MOVE.L	$0008(A5),-(A7)
+	MOVE.L	$0008(A5),-(A7)	;filename
 	JSR	_AmigaOpen(PC)
 	ADDQ.W	#6,A7
 	MOVE.W	D0,D6		;filehandle
 	BGE.B	L00B1B
 
-	MOVE.L	$0008(A5),-(A7)
+	MOVE.L	$0008(A5),-(A7)	;filename
 	PEA	L00B1D(PC)	;"Couldn't open %s"
 	JSR	_db_print
 	ADDQ.W	#8,A7
@@ -24326,7 +24326,7 @@ L00B1C:
 	MOVE.W	D4,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	MOVEA.L	$000C(A5),A1
+	MOVEA.L	$000C(A5),A1	;screen
 	MOVEA.L	$0032(A1),A0
 	MOVEA.L	$0004(A0),A6
 	MOVE.L	$08(A6,D3.w),-(A7)
@@ -28565,32 +28565,37 @@ _NewScreen:
 	dc.l	L000FB
 	dc.l	$00000000
 	dc.l	$00000000
+
 _Window1:
-	dc.l	$0000000C
-	dc.l	$028000BC
-	dc.l	$00010000
-	dc.l	$25580000
-	dc.l	$1A000000
-	dc.l	$00000000
-	dc.l	$00000000
-	dc.l	$00000000
-	dc.l	$00000000
-	dc.l	$00000280
-	dc.l	$00BC0280
-	dc.l	$00BC000F
+	dc.w	0,12		;LeftEdge, TopEdge
+	dc.w	640,188		;Width, Height
+	dc.b	$00,$01		;DetailPen, BlockPen
+	dc.l	$00002558	;IDCMPFlags
+	dc.l	$00001A00	;Flags
+	dc.l	$00000000	;*FirstGadget
+	dc.l	$00000000	;*CheckMark
+	dc.l	$00000000	;*Title
+	dc.l	$00000000	;*Screen
+	dc.l	$00000000	;*Bitmap
+	dc.w	640,188		;MinWidth, MinHeight
+	dc.w	640,188		;MaxWidth, MaxHeight
+	dc.w	$000F		;Type
+
 _Window2:
-	dc.l	$00000000
-	dc.l	$028000C8
-	dc.l	$00010000
-	dc.l	$25580000
-	dc.l	$1A000000
-	dc.l	$00000000
-	dc.l	$00000000
-	dc.l	$00000000
-	dc.l	$00000000
-	dc.l	$00000280
-	dc.l	$00C80280
-	dc.l	$00C8000F
+	dc.w	0,0		;LeftEdge, TopEdge
+	dc.w	640,200		;Width, Height
+	dc.b	$00,$01		;DetailPen, BlockPen
+	dc.l	$00002558	;IDCMPFlags
+	dc.l	$00001A00	;Flags
+	dc.l	$00000000	;*FirstGadget
+	dc.l	$00000000	;*CheckMark
+	dc.l	$00000000	;*Title
+	dc.l	$00000000	;*Screen
+	dc.l	$00000000	;*Bitmap
+	dc.w	640,200		;MinWidth, MinHeight
+	dc.w	640,200		;MaxWidth, MaxHeight
+	dc.w	$000F		;Type
+
 	dc.l	$00000000
 _addch_text:
 	dc.l	$01000100
