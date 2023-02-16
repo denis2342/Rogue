@@ -14395,19 +14395,19 @@ L00640:	CMPI.W	#$0003,-$60A0(A4)	;_quiet
 	ADDQ.W	#1,D0
 	ADD.W	D0,-$52A8(A4)	;_player + 34 (hp)
 
-L00641:	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
-	TST.L	-$5190(A4)	;_cur_ring_1
+L00641:	MOVE.L	-$5190(A4),D3	;_cur_ring_1
 	BEQ.B	L00642
 
+	MOVEA.L	D3,A6
 	CMPI.W	#R_REGEN,$0020(A6)	; 9 = ring of regeneration
 	BNE.B	L00642
 
 	ADDQ.W	#1,-$52A8(A4)	;_player + 34 (hp)
 
-L00642:	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
-	TST.L	-$518C(A4)	;_cur_ring_2
+L00642:	MOVE.L	-$518C(A4),D3	;_cur_ring_2
 	BEQ.B	L00643
 
+	MOVEA.L	D3,A6
 	CMPI.W	#R_REGEN,$0020(A6)	; 9 = ring of regeneration
 	BNE.B	L00643
 
