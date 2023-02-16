@@ -1170,13 +1170,10 @@ L000BC:
 
 	MOVEA.L	-$519C(A4),A6	;__level
 
-	MOVEQ	#$00,D3
-	MOVE.B	$00(A6,D0.W),D3
-	MOVE.W	D3,-(A7)
-	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
-	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+	MOVE.B	$00(A6,D0.W),D2
+	MOVE.W	-$52C0(A4),d1	;_player + 10
+	MOVE.W	-$52BE(A4),d0	;_player + 12
+	JSR	_mvaddchquick
 
 	MOVE.W	D5,D3
 	AND.W	#$0040,D3
@@ -1460,11 +1457,12 @@ L000D6:
 	BRA.W	L000E2
 L000D7:
 	JSR	_teleport
-	MOVE.W	#$0012,-(A7)
-	MOVE.W	(A2),-(A7)
-	MOVE.W	$0002(A2),-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+
+	MOVEq	#$0012,d2
+	MOVE.W	(A2),d1
+	MOVE.W	$0002(A2),d0
+	JSR	_mvaddchquick
+
 	ADDQ.B	#1,-$66B4(A4)	;_was_trapped
 	BRA.W	L000E2
 L000D8:
@@ -3294,11 +3292,10 @@ _backspace:
 
 	CLR.W	-$0004(A5)
 L0017C:
-	MOVE.W	#$0020,-(A7)
-	MOVE.W	-$0004(A5),-(A7)
-	MOVE.W	-$0002(A5),-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+	MOVEq	#$0020,d2
+	MOVE.W	-$0004(A5),d1
+	MOVE.W	-$0002(A5),d0
+	JSR	_mvaddchquick
 
 	MOVE.W	-$0004(A5),d1
 	MOVE.W	-$0002(A5),d0
@@ -3458,11 +3455,12 @@ L00188:
 	PEA	-$52C0(A4)	;_player + 10
 	JSR	_enter_room
 	ADDQ.W	#4,A7
-	MOVE.W	#$0040,-(A7)
-	MOVE.W	-$52C0(A4),-(A7)	;hero.y
-	MOVE.W	-$52BE(A4),-(A7)	;hero.x
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+
+	MOVEq	#$0040,d2
+	MOVE.W	-$52C0(A4),d1	;hero.y
+	MOVE.W	-$52BE(A4),d0	;hero.x
+	JSR	_mvaddchquick
+
 	LEA	-$6090(A4),A6
 	LEA	-$52C0(A4),A1	;_player + 10
 	MOVE.L	(A1)+,(A6)+
@@ -4098,17 +4096,15 @@ L001C3:
 	BEQ.B	L001C4
 	JSR	_standout
 L001C4:
-	MOVEQ	#$00,D3
 	MOVE.B	D6,D3
-	CMP.W	#$0020,D3	;' '
+	CMP.B	#$20,D3		;' '
 	BEQ.B	L001C5
-	MOVEQ	#$00,D3
-	MOVE.B	D6,D3
-	MOVE.W	D3,-(A7)
-	MOVE.W	D5,-(A7)
-	MOVE.W	D4,-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+
+	MOVE.W	D6,d2
+	MOVE.W	D5,d1
+	MOVE.W	D4,d0
+	JSR	_mvaddchquick
+
 L001C5:
 	JSR	_standend
 	ADDQ.W	#1,D5
@@ -4598,13 +4594,12 @@ L00210:
 	TST.W	D0
 	BEQ.B	L00211
 	MOVEA.L	-$519C(A4),A6	;__level
-	MOVEQ	#$00,D3
-	MOVE.B	$00(A6,D5.W),D3
-	MOVE.W	D3,-(A7)
-	MOVE.W	-$0004(A5),-(A7)
-	MOVE.W	-$0002(A5),-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+
+	MOVE.B	$00(A6,D5.W),D2
+	MOVE.W	-$0004(A5),d1
+	MOVE.W	-$0002(A5),d0
+	JSR	_mvaddchquick
+
 L00211:
 	MOVEA.L	D4,A3
 L00212:
@@ -4724,11 +4719,12 @@ L00223:
 
 	MOVEA.L	-$519C(A4),A6	;__level
 	MOVE.B	$00(A6,D0.W),$0011(A2)
-	MOVE.W	#$0053,-(A7)	;'S'
-	MOVE.W	-$54E0(A4),-(A7)
-	MOVE.W	-$54DE(A4),-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+
+	MOVEq	#$53,d2		;'S'
+	MOVE.W	-$54E0(A4),d1
+	MOVE.W	-$54DE(A4),d0
+	JSR	_mvaddchquick
+
 L00224:
 	PEA	-$54E0(A4)
 	JSR	_start_run
@@ -5266,13 +5262,11 @@ L00254:
 	TST.W	D0
 	BEQ.B	L00255
 
-	MOVEQ	#$00,D3
-	MOVE.B	-$0009(A5),D3
-	MOVE.W	D3,-(A7)
-	MOVE.W	$000C(A2),-(A7)
-	MOVE.W	$000E(A2),-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+	MOVE.B	-$0009(A5),D2
+	MOVE.W	$000C(A2),d1
+	MOVE.W	$000E(A2),d0
+	JSR	_mvaddchquick
+
 L00255:
 	MOVE.L	$0008(A5),-(A7)
 	JSR	_find_dest(PC)
@@ -5315,12 +5309,12 @@ L00258:
 	CMP.B	#$2E,$00(A6,D0.W)	;'.'
 	BNE.B	L0025A
 
-	MOVE.W	#$002E,-(A7)	;'.'
 	MOVEA.L	$0008(A5),A6
-	MOVE.W	$000A(A6),-(A7)
-	MOVE.W	$000C(A6),-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+	MOVEq	#$2E,d2		;'.'
+	MOVE.W	$000A(A6),d1
+	MOVE.W	$000C(A6),d0
+	JSR	_mvaddchquick
+
 	BRA.B	L0025C
 L0025A:
 	MOVEA.L	$0008(A5),A6
@@ -5334,22 +5328,21 @@ L0025A:
 	TST.W	D0
 	BNE.B	L0025B
 
-	MOVE.W	#$0020,-(A7)
 	MOVEA.L	$0008(A5),A6
-	MOVE.W	$000A(A6),-(A7)
-	MOVE.W	$000C(A6),-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+	MOVEq	#$20,d2
+	MOVE.W	$000A(A6),d1
+	MOVE.W	$000C(A6),d0
+	JSR	_mvaddchquick
+
 	BRA.B	L0025C
 L0025B:
 	MOVEA.L	$0008(A5),A6
-	MOVEQ	#$00,D3
-	MOVE.B	$0011(A6),D3
-	MOVE.W	D3,-(A7)
-	MOVE.W	$000A(A6),-(A7)
-	MOVE.W	$000C(A6),-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+
+	MOVE.B	$0011(A6),D2
+	MOVE.W	$000A(A6),d1
+	MOVE.W	$000C(A6),d0
+	JSR	_mvaddchquick
+
 L0025C:
 	MOVEA.L	$0008(A5),A6
 	MOVEA.L	$002A(A6),A3
@@ -5401,13 +5394,12 @@ L0025F:
 
 	MOVEA.L	$0008(A5),A6
 	MOVE.B	D0,$0011(A6)
-	MOVEQ	#$00,D3
-	MOVE.B	$0010(A6),D3
-	MOVE.W	D3,-(A7)
-	MOVE.W	-$48BC(A4),-(A7)
-	MOVE.W	-$48BA(A4),-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+
+	MOVE.B	$0010(A6),D2
+	MOVE.W	-$48BC(A4),d1
+	MOVE.W	-$48BA(A4),d0
+	JSR	_mvaddchquick
+
 	BRA.B	L00261
 L00260:
 	MOVEA.L	$0008(A5),A6
@@ -6194,13 +6186,10 @@ L002AD:
 	JSR	__detach
 	ADDQ.W	#8,A7
 
-	MOVEQ	#$00,D3
-	MOVE.B	D7,D3
-	MOVE.W	D3,-(A7)
-	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
-	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+	MOVE.B	D7,D2
+	MOVE.W	-$52C0(A4),d1	;_player + 10
+	MOVE.W	-$52BE(A4),d0	;_player + 12
+	JSR	_mvaddchquick
 
 	JSR	_INDEXplayer
 
@@ -6241,13 +6230,10 @@ L002B2:
 	JSR	__detach
 	ADDQ.W	#8,A7
 
-	MOVEQ	#$00,D3
-	MOVE.B	D7,D3
-	MOVE.W	D3,-(A7)
-	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
-	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+	MOVE.B	D7,D2
+	MOVE.W	-$52C0(A4),d1	;_player + 10
+	MOVE.W	-$52BE(A4),d0	;_player + 12
+	JSR	_mvaddchquick
 
 	JSR	_INDEXplayer
 
@@ -6275,13 +6261,10 @@ L002B4:
 	JSR	__detach
 	ADDQ.W	#8,A7
 
-	MOVEQ	#$00,D3
-	MOVE.B	D7,D3
-	MOVE.W	D3,-(A7)
-	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
-	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+	MOVE.B	D7,D2
+	MOVE.W	-$52C0(A4),d1	;_player + 10
+	MOVE.W	-$52BE(A4),d0	;_player + 12
+	JSR	_mvaddchquick
 
 	JSR	_INDEXplayer
 
@@ -6832,13 +6815,11 @@ L002FF:
 L00300:
 	MOVE.B	D3,D5
 	ADD.W	D4,-$60B2(A4)	;_purse
-	MOVEQ	#$00,D3
-	MOVE.B	D5,D3
-	MOVE.W	D3,-(A7)
-	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
-	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+
+	MOVE.B	D5,D2
+	MOVE.W	-$52C0(A4),d1	;_player + 10
+	MOVE.W	-$52BE(A4),d0	;_player + 12
+	JSR	_mvaddchquick
 
 	JSR	_INDEXplayer
 
@@ -7083,13 +7064,12 @@ L0031D:
 	JSR	_INDEXquick
 
 	MOVEA.L	-$519C(A4),A6	;__level
-	MOVEQ	#$00,D3
-	MOVE.B	$00(A6,D0.W),D3
-	MOVE.W	D3,-(A7)
-	MOVE.W	D5,-(A7)
-	MOVE.W	D4,-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+
+	MOVE.B	$00(A6,D0.W),D2
+	MOVE.W	D5,d1
+	MOVE.W	D4,d0
+	JSR	_mvaddchquick
+
 L0031E:
 	MOVEA.L	-$0004(A5),A6
 	MOVE.B	$0011(A6),D7
@@ -7111,13 +7091,12 @@ L0031E:
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BEQ.B	L0031F
-	MOVEQ	#$00,D3
-	MOVE.B	D6,D3
-	MOVE.W	D3,-(A7)
-	MOVE.W	D5,-(A7)
-	MOVE.W	D4,-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+
+	MOVE.B	D6,D2
+	MOVE.W	D5,d1
+	MOVE.W	D4,d0
+	JSR	_mvaddchquick
+
 L0031F:
 	MOVEA.L	-$0004(A5),A6
 	MOVE.B	D7,$0011(A6)
@@ -7151,13 +7130,12 @@ L00323:
 	TST.W	D0
 	BEQ.B	L00324
 	MOVEA.L	-$0004(A5),A6
-	MOVEQ	#$00,D3
-	MOVE.B	$0011(A6),D3
-	MOVE.W	D3,-(A7)
-	MOVE.W	D5,-(A7)
-	MOVE.W	D4,-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+
+	MOVE.B	$0011(A6),D2
+	MOVE.W	D5,d1
+	MOVE.W	D4,d0
+	JSR	_mvaddchquick
+
 L00324:
 	CMPI.W	#$000B,-$0006(A5)
 	BNE.B	L00326
@@ -7172,13 +7150,12 @@ L00324:
 	TST.W	D0
 	BEQ.B	L00325
 	MOVEA.L	-$0004(A5),A6
-	MOVEQ	#$00,D3
-	MOVE.B	$0010(A6),D3
-	MOVE.W	D3,-(A7)
-	MOVE.W	$000A(A6),-(A7)
-	MOVE.W	$000C(A6),-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+
+	MOVE.B	$0010(A6),D2
+	MOVE.W	$000A(A6),d1
+	MOVE.W	$000C(A6),d0
+	JSR	_mvaddchquick
+
 L00325:
 	BRA.B	L00327
 L00326:
@@ -7936,13 +7913,12 @@ L00382:
 	ADDQ.W	#2,A7
 L00383:
 	JSR	_tick_pause
-	MOVEQ	#$00,D3
-	MOVE.B	D4,D3
-	MOVE.W	D3,-(A7)
-	MOVE.W	-$0008(A5),-(A7)
-	MOVE.W	-$0006(A5),-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+
+	MOVE.B	D4,D2
+	MOVE.W	-$0008(A5),d1
+	MOVE.W	-$0006(A5),d0
+	JSR	_mvaddchquick
+
 	JSR	_standend
 	BRA.B	L00385
 L00384:
@@ -7983,19 +7959,20 @@ L00388:
 	MOVE.W	-$0004(A5),D3
 	MULS.W	#$0006,D3
 	LEA	-$004C(A5),A6
-	MOVEQ	#$00,D2
+
 	MOVE.B	$00(A6,D3.L),D2
-	MOVE.W	D2,-(A7)
+
 	MOVE.W	-$0004(A5),D3
 	MULS.W	#$0006,D3
 	LEA	-$0050(A5),A6
-	MOVE.W	$00(A6,D3.L),-(A7)
+	MOVE.W	$00(A6,D3.L),d1
+
 	MOVE.W	-$0004(A5),D3
 	MULS.W	#$0006,D3
 	LEA	-$004E(A5),A6
-	MOVE.W	$00(A6,D3.L),-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+	MOVE.W	$00(A6,D3.L),d0
+	JSR	_mvaddchquick
+
 L00389:
 	ADDQ.W	#1,-$0004(A5)
 L0038A:
@@ -9730,11 +9707,11 @@ L00453:
 	CMP.W	#$0023,D3
 	BNE.B	L00455
 L00454:
-	MOVE.W	D3,-(A7)
-	MOVE.W	D5,-(A7)
-	MOVE.W	D4,-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+	MOVE.W	D3,d2
+	MOVE.W	D5,d1
+	MOVE.W	D4,d0
+	JSR	_mvaddchquick
+
 L00455:
 	ADDQ.W	#1,D5
 	CMP.W	#$003C,D5
@@ -10672,13 +10649,10 @@ _invis_on:
 	TST.W	D0
 	BEQ.B	2$
 
-	MOVEQ	#$00,D3
-	MOVE.B	$0010(A2),D3
-	MOVE.W	D3,-(A7)
-	MOVE.W	$000A(A2),-(A7)
-	MOVE.W	$000C(A2),-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+	MOVE.B	$0010(A2),D2
+	MOVE.W	$000A(A2),d1
+	MOVE.W	$000C(A2),d0
+	JSR	_mvaddchquick
 
 2$	MOVEA.L	(A2),A2		;get next monster in list
 
@@ -10882,11 +10856,11 @@ L004D7:
 	BEQ.B	L004D8
 
 	CLR.B	$00(A6,D3.w)
-	MOVE.W	D6,-(A7)
-	MOVE.W	D5,-(A7)
-	MOVE.W	D4,-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+	MOVE.W	D6,d2
+	MOVE.W	D5,d1
+	MOVE.W	D4,d0
+	JSR	_mvaddchquick
+
 L004D8:
 	ADDQ.W	#1,D5
 	CMP.W	#60,D5
@@ -10949,19 +10923,13 @@ _mvaddstr:
 	UNLK	A5
 	RTS
 
-_mvaddch:
-	LINK	A5,#-$0000
+_mvaddchquick:
+	MOVE.W	D2,-(A7)
 
-	MOVE.W	$000A(A5),d1
-	MOVE.W	$0008(A5),d0
 	JSR	_movequick
 
-	MOVE.B	$000D(A5),D3
-	EXT.W	D3
-	MOVE.W	D3,-(A7)
 	BSR.B	_addch
 	ADDQ.W	#2,A7
-	UNLK	A5
 	RTS
 
 _mvinch:
@@ -13664,15 +13632,12 @@ L00604:
 	TST.W	D0
 	BEQ.B	L00605
 
-	MOVEQ	#$00,D3
-	MOVE.B	D6,D3
-	MOVE.W	D3,-(A7)
+	MOVE.B	D6,D2
 	MOVEA.L	$0008(A5),A6
-	MOVE.W	$000C(A6),-(A7)
-;	MOVEA.L	$0008(A5),A6
-	MOVE.W	$000E(A6),-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+	MOVE.W	$000C(A6),d1
+	MOVE.W	$000E(A6),d0
+	JSR	_mvaddchquick
+
 L00605:
 	MOVEA.L	$0008(A5),A6
 	ADD.W	D4,$000E(A6)
@@ -13710,11 +13675,10 @@ L00605:
 	MOVE.B	$00(A6,D0.W),D6
 
 	MOVEA.L	$0008(A5),A6
-	MOVE.W	$000A(A6),-(A7)
-	MOVE.W	$000C(A6),-(A7)
-	MOVE.W	$000E(A6),-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+	MOVE.W	$000A(A6),d2
+	MOVE.W	$000C(A6),d1
+	MOVE.W	$000E(A6),d0
+	JSR	_mvaddchquick
 
 	JSR	_tick_pause
 	BRA.B	L00609
@@ -13787,11 +13751,11 @@ L0060C:
 	JSR	_standout
 L0060D:
 	MOVEA.L	$0008(A5),A6
-	MOVE.W	$000A(A6),-(A7)
-	MOVE.W	-$53D2(A4),-(A7)
-	MOVE.W	-$53D0(A4),-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+	MOVE.W	$000A(A6),d2
+	MOVE.W	-$53D2(A4),d1
+	MOVE.W	-$53D0(A4),d0
+	JSR	_mvaddchquick
+
 	JSR	_standend
 	MOVE.W	-$53D2(A4),-(A7)
 	MOVE.W	-$53D0(A4),-(A7)
@@ -14426,13 +14390,10 @@ _unsee:
 	cmp.b	#$22,$0011(A2)
 	BEQ.B	2$
 
-	MOVEQ	#$00,D3
-	MOVE.B	$0011(A2),D3
-	MOVE.W	D3,-(A7)
-	MOVE.W	$000A(A2),-(A7)
-	MOVE.W	$000C(A2),-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+	MOVE.B	$0011(A2),D2
+	MOVE.W	$000A(A2),d1
+	MOVE.W	$000C(A2),d0
+	JSR	_mvaddchquick
 
 2$	MOVEA.L	(A2),A2
 
@@ -16951,13 +16912,12 @@ _teleport:
 	JSR	_INDEXplayer
 
 	MOVEA.L	-$519C(A4),A6	;__level
-	MOVEQ	#$00,D3
-	MOVE.B	$00(A6,D0.W),D3
-	MOVE.W	D3,-(A7)
-	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
-	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+
+	MOVE.B	$00(A6,D0.W),D2
+	MOVE.W	-$52C0(A4),d1	;_player + 10
+	MOVE.W	-$52BE(A4),d0	;_player + 12
+	JSR	_mvaddchquick
+
 L007F4:
 	JSR	_rnd_room
 	MOVE.W	D0,D4
@@ -17004,11 +16964,11 @@ L007F5:
 	JSR	_look
 	ADDQ.W	#2,A7
 L007F6:
-	MOVE.W	#$0040,-(A7)
-	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
-	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+	MOVEq	#$0040,d2
+	MOVE.W	-$52C0(A4),d1	;_player + 10
+	MOVE.W	-$52BE(A4),d0	;_player + 12
+	JSR	_mvaddchquick
+
 	MOVE.W	-$52B4(A4),D3	;_player + 22
 	AND.W	#$0080,D3	;ISHELD
 	BEQ.B	L007F7
@@ -17083,13 +17043,10 @@ L007FA:
 ;	MOVE.W	D4,d1
 ;	JSR	_INDEXquick
 ;	MOVEA.L	-$519C(A4),A6	;__level
-;	MOVEQ	#$00,D3
-;	MOVE.B	$00(A6,D0.W),D3
-;	MOVE.W	D3,-(A7)
-;	MOVE.W	D5,-(A7)
-;	MOVE.W	D4,-(A7)
-;	JSR	_mvaddch(PC)
-;	ADDQ.W	#6,A7
+;	MOVE.B	$00(A6,D0.W),D2
+;	MOVE.W	D5,d1
+;	MOVE.W	D4,d0
+;	JSR	_mvaddchquick
 ;	TST.W	D6
 ;	BNE.B	L007FE
 ;	JSR	_standend
@@ -17376,11 +17333,11 @@ L00823:
 	SUB.W	-$52C0(A4),D3	;_player + 10
 	MOVE.W	D3,-$0018(A5)
 L00824:
-	MOVE.W	#$0040,-(A7)
-	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
-	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+	MOVEq	#$0040,d2
+	MOVE.W	-$52C0(A4),d1	;_player + 10
+	MOVE.W	-$52BE(A4),d0	;_player + 12
+	JSR	_mvaddchquick
+
 	MOVE.W	-$0012(A5),D5
 	BRA.W	L00849
 L00825:
@@ -17675,11 +17632,10 @@ L00849:
 
 	CLR.B	-$66B6(A4)	;_running
 L0084A:
-	MOVE.W	#$0040,-(A7)
-	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
-	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+	MOVEq	#$0040,d2
+	MOVE.W	-$52C0(A4),d1	;_player + 10
+	MOVE.W	-$52BE(A4),d0	;_player + 12
+	JSR	_mvaddchquick
 
 	TST.B	-$66B4(A4)	;_was_trapped
 	BEQ.B	L0084B
@@ -21570,11 +21526,11 @@ L009F6:
 	TST.W	D0
 	BNE.B	L009F7
 
-	MOVE.W	#$0020,-(A7)
-	MOVE.W	(A2),-(A7)
-	MOVE.W	$0002(A2),-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+	MOVEq	#$0020,d2
+	MOVE.W	(A2),d1
+	MOVE.W	$0002(A2),d0
+	JSR	_mvaddchquick
+
 	BRA.B	L009F8
 L009F7:
 	MOVEA.L	$000C(A5),A6
@@ -21582,13 +21538,12 @@ L009F7:
 	BEQ.B	L009F8
 
 	MOVEA.L	$000C(A5),A6
-	MOVEQ	#$00,D3
-	MOVE.B	$0011(A6),D3
-	MOVE.W	D3,-(A7)
-	MOVE.W	(A2),-(A7)
-	MOVE.W	$0002(A2),-(A7)
-	JSR	_mvaddch(PC)
-	ADDQ.W	#6,A7
+
+	MOVE.B	$0011(A6),D2
+	MOVE.W	(A2),d1
+	MOVE.W	$0002(A2),d0
+	JSR	_mvaddchquick
+
 L009F8:
 	JSR	_standend
 	MOVE.L	$000C(A5),-(A7)
