@@ -24361,9 +24361,9 @@ _black_out:
 ;	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
 
-	MOVEQ	#$00,D4
-L00B1E:
-	CLR.L	d1	;r
+	MOVEQ	#16-1,D4
+
+1$	CLR.L	d1	;r
 	CLR.L	d2	;g
 	CLR.L	d3	;b
 	MOVE.W	D4,D0
@@ -24372,9 +24372,7 @@ L00B1E:
 	MOVEA.L	-$5184(A4),A6	;_GfxBase
 	JSR	_LVOSetRGB4(A6)
 
-	ADDQ.W	#1,D4
-	CMP.W	#16,D4
-	BLT.B	L00B1E
+	DBRA	D4,1$
 
 	MOVE.L	(A7)+,D4
 ;	UNLK	A5
