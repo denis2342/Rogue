@@ -2103,7 +2103,7 @@ L0010E:
 	JSR	_close
 	ADDQ.W	#2,A7
 
-	PEA	-$7852(A4)
+	PEA	-$7852(A4)	;_NewScreen
 	JSR	_OpenScreen
 	ADDQ.W	#4,A7
 	MOVE.L	D0,-$5150(A4)	;_StdScr
@@ -24332,12 +24332,16 @@ L00B1C:
 ;	EXT.L	D3
 	ASL.w	#2,D3
 	MOVEA.L	$000C(A5),A1	;screen
-	MOVEA.L	$0032(A1),A0
-	MOVEA.L	$0004(A0),A6
+	MOVEA.L	$0032(A1),A0	;get the rastport
+	MOVEA.L	$0004(A0),A6	;get the bitmap
 	MOVE.L	$08(A6,D3.w),-(A7)
+
+	; we load the data directly into the bitmap planes
+
 	MOVE.W	D6,-(A7)	;filehandle
 	JSR	_read
 	ADDQ.W	#8,A7
+
 	ADDQ.W	#1,D4
 	CMP.W	#$0004,D4
 	BLT.B	L00B1C
@@ -28559,15 +28563,18 @@ _metal:
 _MyFont:
 	dc.l	L000FA
 	dc.l	$00080001
+
 _NewScreen:
-	dc.l	$00000000
-	dc.l	$028000C8
-	dc.l	$00040001
-	dc.l	$8000000F
-	dc.l	_MyFont
-	dc.l	L000FB
-	dc.l	$00000000
-	dc.l	$00000000
+	dc.w	$0000,$0000	;LeftEdge, TopEdge
+	dc.w	640,200		;Width, Height
+	dc.w	$0004		;Depth
+	dc.w	$0001		;DetailPen, BlockPen
+	dc.w	$8000		;ViewModes
+	dc.w	$000F		;Type
+	dc.l	_MyFont		;*Font
+	dc.l	L000FB		;*DefaultTitle
+	dc.l	$00000000	;*Gadgets
+	dc.l	$00000000	;*CustomBitMap
 
 _Window1:
 	dc.w	0,12		;LeftEdge, TopEdge
