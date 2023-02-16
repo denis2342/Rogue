@@ -2206,16 +2206,19 @@ L00121:
 
 _ScreenTitle:
 	LINK	A5,#-$0000
+
 	MOVE.W	#$004A,-(A7)
 	MOVE.L	$0008(A5),-(A7)
 	PEA	-$5542(A4)
 	JSR	_strncpy
 	LEA	$000A(A7),A7
+
 	PEA	-$5542(A4)
 	PEA	-$1
 	MOVE.L	-$5148(A4),-(A7)
 	JSR	_SetWindowTitles
 	LEA	$000C(A7),A7
+
 	UNLK	A5
 	RTS
 
@@ -13060,8 +13063,10 @@ _do_daemons:
 L0059A:
 	TST.W	(A2)
 	BEQ.B	L0059C
+
 	CMPI.W	#$FFFB,$0004(A2)
 	BEQ.B	L0059B
+
 	SUBQ.W	#1,$0004(A2)
 	CMPI.W	#$0000,$0004(A2)
 	BGT.B	L0059C
@@ -13076,12 +13081,14 @@ L0059B:
 	ADDQ.W	#2,A7
 	CMPI.W	#$FFFB,$0004(A2)
 	BEQ.B	L0059C
+
 	CLR.W	(A2)
 L0059C:
 	ADDQ.L	#6,A2
 	LEA	-$53D2(A4),A6
 	CMPA.L	A6,A2
 	BCS.B	L0059A
+
 	MOVEA.L	(A7)+,A2
 ;	UNLK	A5
 	RTS
@@ -13159,6 +13166,7 @@ _extinguish:
 _cvt_f_i:
 	LINK	A5,#-$0000
 	MOVEM.L	A2/A3,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	LEA	-$700E(A4),A6
 	MOVEA.L	A6,A3
@@ -13167,6 +13175,7 @@ L005A1:
 	MOVEA.L	(A3),A6
 	CMPA.L	A2,A6
 	BNE.B	L005A3
+
 	MOVE.L	A3,D0
 	LEA	-$700E(A4),A6
 	SUB.L	A6,D0
@@ -13181,6 +13190,7 @@ L005A3:
 L005A4:
 	TST.L	(A3)
 	BNE.B	L005A1
+
 	PEA	L005A5(PC)	;"A new kind of fuse was experienced."
 	JSR	_db_print
 	ADDQ.W	#4,A7
@@ -14751,6 +14761,7 @@ L00661:
 	JSR	_init_stones
 	JSR	_init_materials
 	JSR	_new_level
+
 	CLR.W	-(A7)
 	PEA	_doctor(PC)
 	JSR	_daemon(PC)
@@ -14764,10 +14775,12 @@ L00661:
 	PEA	_swander(PC)
 	JSR	_fuse(PC)
 	ADDQ.W	#8,A7
+
 	CLR.W	-(A7)
 	PEA	_stomach(PC)
 	JSR	_daemon(PC)
 	ADDQ.W	#6,A7
+
 	CLR.W	-(A7)
 	PEA	_runners(PC)
 	JSR	_daemon(PC)
@@ -25975,6 +25988,7 @@ begin:
 	LEA	-$5546(A4),A2	;__Uorg
 	CMPA.L	A1,A2
 	BNE.B	L00C00
+
 	MOVE.W	#((__Uend-__Uorg-2)/4),D1
 	BMI.B	L00C00
 	MOVEQ	#$00,D2
@@ -25985,6 +25999,7 @@ L00C00:
 	MOVE.L	A7,-$4760(A4)		;__savsp
 	MOVEA.L	$0004,A6
 	MOVE.L	A6,-$475C(A4)		;_SysBase
+
 	MOVEM.L	D0/A0,-(A7)
 	JSR	__main(PC)
 	ADDQ.W	#8,A7
@@ -26301,16 +26316,20 @@ _mulu:
 _sprintf:
 	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
+
 	MOVE.L	$0008(A5),-$532A(A4)
+
 	PEA	$0010(A5)
 	MOVE.L	$000C(A5),-(A7)
 	PEA	L00C1C(PC)
 	JSR	_format(PC)
 	LEA	$000C(A7),A7
+
 	MOVE.W	D0,D4
 	MOVEA.L	-$532A(A4),A6
 	CLR.B	(A6)
 	MOVE.W	D4,D0
+
 	MOVE.L	(A7)+,D4
 	UNLK	A5
 	RTS
@@ -26337,6 +26356,7 @@ _gmtime:
 _localtime:
 	LINK	A5,#-$0000
 	MOVEM.L	D4-D6,-(A7)
+
 	MOVEA.L	$0008(A5),A6
 	MOVE.L	(A6),D4
 	MOVE.L	D4,D0
@@ -26368,10 +26388,10 @@ _localtime:
 	JSR	_mods
 	MOVE.W	D0,-$531A(A4)
 	MOVE.L	D4,D0
-	MOVE.L	#$000005B5,D1
+	MOVE.L	#$000005B5,D1	;4 years in days + one day for leap year
 	JSR	_divu
 	ASL.L	#2,D0
-	ADD.L	#$0000004E,D0
+	ADD.L	#$0000004E,D0	;78
 	MOVE.W	D0,-$531C(A4)
 	MOVE.L	D4,D0
 	MOVE.L	#$000005B5,D1
@@ -26388,6 +26408,7 @@ L00C1D:
 L00C1E:
 	CMP.L	D5,D4
 	BLT.B	L00C1F
+
 	SUB.L	D5,D4
 	ADDQ.W	#1,-$531C(A4)
 	BRA.B	L00C1D
@@ -26405,13 +26426,16 @@ L00C20:
 	MOVE.L	D2,D5
 	CMP.W	#$0001,D6
 	BNE.B	L00C21
+
 	MOVE.W	-$531C(A4),D3
 	AND.W	#$0003,D3
 	BNE.B	L00C21
+
 	ADDQ.L	#1,D5
 L00C21:
 	CMP.L	D5,D4
 	BLT.B	L00C22
+
 	SUB.L	D5,D4
 	ADDQ.W	#1,D6
 	CMP.W	#$000C,D6
@@ -26421,6 +26445,7 @@ L00C22:
 	MOVE.W	D4,-$5320(A4)
 	LEA	-$5326(A4),A6
 	MOVE.L	A6,D0
+
 	MOVEM.L	(A7)+,D4-D6
 	UNLK	A5
 	RTS
@@ -26428,17 +26453,20 @@ L00C22:
 _time:
 	LINK	A5,#-$002C
 	CLR.L	-(A7)
+
 	PEA	-$002C(A5)
 	PEA	$0001
 	PEA	L00C25(PC)	;"timer.device"
 	JSR	_OpenDevice
 	LEA	$0010(A7),A7
+
 	TST.W	D0
 	BEQ.B	L00C23
 
 	PEA	L00C26(PC)	;"timer is not available"
 	JSR	_printf
 	ADDQ.W	#4,A7
+
 	MOVE.W	#$0001,-(A7)
 	JSR	_exit
 	ADDQ.W	#2,A7
@@ -26447,25 +26475,32 @@ L00C23:
 	CLR.L	-(A7)
 	JSR	_CreatePort(PC)
 	ADDQ.W	#8,A7
+
 	MOVE.L	D0,-$001E(A5)
 	MOVE.W	#$000A,-$0010(A5)
+
 	PEA	-$002C(A5)
 	JSR	_DoIO(PC)
 	ADDQ.W	#4,A7
+
 	MOVE.L	-$0008(A5),D0
-	ADD.L	#$0007A120,D0
-	MOVE.L	#$000F4240,D1
+	ADD.L	#$0007A120,D0	;500000
+	MOVE.L	#$000F4240,D1	;1000000
 	JSR	_divu
 	ADD.L	-$000C(A5),D0
 	MOVE.L	D0,-$0004(A5)
+
 	PEA	-$002C(A5)
 	JSR	_CloseDevice(PC)
 	ADDQ.W	#4,A7
+
 	MOVE.L	-$001E(A5),-(A7)
 	JSR	_DeletePort(PC)
 	ADDQ.W	#4,A7
+
 	TST.L	$0008(A5)
 	BEQ.B	L00C24
+
 	MOVEA.L	$0008(A5),A6
 	MOVE.L	-$0004(A5),(A6)
 L00C24:
@@ -26479,6 +26514,7 @@ L00C26:	dc.b	"timer is not available",10,0,0
 _printf:
 	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
+
 	LEA	-$530E(A4),A6
 	MOVE.L	A6,-$5312(A4)
 	PEA	$000C(A5)
@@ -26489,6 +26525,7 @@ _printf:
 	MOVE.W	D0,D4
 	CMPI.W	#$0001,-$5764(A4)
 	BNE.B	L00C27
+
 	LEA	-$530E(A4),A6
 	MOVE.L	-$5312(A4),D3
 	SUB.L	A6,D3
@@ -26617,6 +26654,7 @@ L00C32:
 _format:
 	LINK	A5,#-$00DE
 	MOVEM.L	D4/A2/A3,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	MOVEA.L	$000C(A5),A3
 	CLR.W	-$0006(A5)
@@ -26629,8 +26667,10 @@ L00C33:
 	MOVE.W	D3,D4
 ;	TST.W	D3
 	BEQ.W	L00C5E
+
 	CMP.W	#$0025,D4
 	BNE.W	L00C5B
+
 	CLR.B	-$00D0(A5)
 	MOVE.W	#1,-$0008(A5)
 	MOVE.W	#32,-$000A(A5)
@@ -26642,6 +26682,7 @@ L00C33:
 	MOVE.W	D3,D4
 	CMP.W	#$002D,D3
 	BNE.B	L00C34
+
 	CLR.W	-$0008(A5)
 	MOVEA.L	A3,A6
 	ADDQ.L	#1,A3
@@ -26649,8 +26690,9 @@ L00C33:
 	EXT.W	D3
 	MOVE.W	D3,D4
 L00C34:
-	CMP.W	#$0030,D4
+	CMP.W	#$0030,D4	;'0'
 	BNE.B	L00C35
+
 	MOVE.W	#$0030,-$000A(A5)
 	MOVEA.L	A3,A6
 	ADDQ.L	#1,A3
@@ -26658,8 +26700,9 @@ L00C34:
 	EXT.W	D3
 	MOVE.W	D3,D4
 L00C35:
-	CMP.W	#$002A,D4
+	CMP.W	#$002A,D4	;'*'
 	BNE.B	L00C36
+
 	MOVEA.L	-$0004(A5),A6
 	ADDQ.L	#2,-$0004(A5)
 	MOVE.W	(A6),-$000E(A5)
@@ -26691,6 +26734,7 @@ L00C38:
 L00C39:
 	CMP.W	#$002E,D4	;'.'
 	BNE.B	L00C3D
+
 	MOVEA.L	A3,A6
 	ADDQ.L	#1,A3
 	MOVE.B	(A6),D3
@@ -26698,6 +26742,7 @@ L00C39:
 	MOVE.W	D3,D4
 	CMP.W	#$002A,D3	;'*'
 	BNE.B	L00C3A
+
 	MOVEA.L	-$0004(A5),A6
 	ADDQ.L	#2,-$0004(A5)
 	MOVE.W	(A6),-$000C(A5)
@@ -26728,8 +26773,9 @@ L00C3C:
 	BNE.B	L00C3B
 L00C3D:
 	MOVE.W	#$0002,-$0010(A5)
-	CMP.W	#$006C,D4		;'l'
+	CMP.W	#$006C,D4		;'l' long
 	BNE.B	L00C3E
+
 	MOVEA.L	A3,A6
 	ADDQ.L	#1,A3
 	MOVE.B	(A6),D3
@@ -26738,7 +26784,7 @@ L00C3D:
 	MOVE.W	#$0004,-$0010(A5)
 	BRA.B	L00C3F
 L00C3E:
-	CMP.W	#$0068,D4	;'h'
+	CMP.W	#$0068,D4	;'h' hex
 	BNE.B	L00C3F
 
 	MOVEA.L	A3,A6
@@ -26792,17 +26838,17 @@ L00C47:
 	MOVE.B	D4,(A6)
 	BRA.B	L00C49
 L00C48:
-	SUB.w	#$0063,D0	;'c'
+	SUB.w	#$0063,D0	;'c' char
 	BEQ.B	L00C46
-	SUBQ.w	#1,D0		;'d'
+	SUBQ.w	#1,D0		;'d' decimal
 	BEQ.B	L00C43
-	SUB.w	#$000B,D0	;'p'
+	SUB.w	#$000B,D0	;'p' pointer
 	BEQ.W	L00C40
-	SUBQ.w	#4,D0		;'u'
+	SUBQ.w	#4,D0		;'u' unsigned word
 	BEQ.B	L00C45
-	SUBQ.w	#2,D0		;'w'
+	SUBQ.w	#2,D0		;'w' word
 	BEQ.W	L00C41
-	SUBQ.w	#3,D0		;'z'
+	SUBQ.w	#3,D0		;'z' long?
 	BEQ.W	L00C42
 	BRA.B	L00C47
 L00C49:
@@ -27061,10 +27107,12 @@ L00C6F:
 _putc:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
+
 	MOVEA.L	$000A(A5),A2
 	MOVEA.L	(A2),A6
 	CMPA.L	$0004(A2),A6
 	BCS.B	L00C71
+
 	MOVE.W	$0008(A5),D3
 	AND.W	#$00FF,D3
 	MOVE.W	D3,-(A7)
@@ -27786,6 +27834,7 @@ L00CAC:
 	MOVEA.L	-$52D6(A4),A6
 	TST.L	$0020(A6)
 	BEQ.B	L00CAD
+
 	PEA	$03ED
 	MOVEA.L	-$52D6(A4),A6
 	MOVE.L	$0020(A6),-(A7)
@@ -27794,6 +27843,7 @@ L00CAC:
 	MOVE.L	D0,-$4758(A4)		;__devtab
 ;	TST.L	D0
 	BEQ.B	L00CAD
+
 	MOVE.L	D0,D3
 	MOVE.L	D3,-$474C(A4)
 	MOVE.L	D3,-$4752(A4)
