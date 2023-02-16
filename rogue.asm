@@ -25984,17 +25984,16 @@ begin:
 ;	lea	__Dorg+$7FFE,a4
 	lea	_MathTransBase+$46d4,a4
 
-1$	LEA	-$5546(A4),A1	;__Uorg
+	LEA	-$5546(A4),A1	;__Uorg
 	LEA	-$5546(A4),A2	;__Uorg
 	CMPA.L	A1,A2
 	BNE.B	L00C00
 
 	MOVE.W	#((__Uend-__Uorg-2)/4),D1
 	BMI.B	L00C00
-	MOVEQ	#$00,D2
-L00BFF:
-	MOVE.L	D2,(A1)+
-	DBF	D1,L00BFF
+1$
+	CLR.L	(A1)+
+	DBF	D1,1$
 L00C00:
 	MOVE.L	A7,-$4760(A4)		;__savsp
 	MOVEA.L	$0004,A6
