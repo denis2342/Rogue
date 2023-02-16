@@ -3249,7 +3249,7 @@ L00176:
 	MOVE.W	-$0002(A5),D3
 	CMP.W	$000C(A5),D3
 	BLT.B	L00177
-;	JSR	_beep(PC)
+	JSR	_beep(PC)
 	BRA.B	L0017A
 L00177:
 	ADDQ.W	#1,-$0002(A5)
@@ -11792,10 +11792,15 @@ L00514:
 
 L00515:	dc.b	"No Memory",0
 
-;_beep:
+_beep:
 ;	LINK	A5,#-$0000
+
+	move.l	-$5150(A4),a0	;_StdScr
+	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	jsr	_LVODisplayBeep(A6)
+
 ;	UNLK	A5
-;	RTS
+	RTS
 
 _tick_pause:
 	BSR.B	_one_tick
@@ -17870,7 +17875,7 @@ L0084A:
 	TST.B	-$66B4(A4)	;_was_trapped
 	BEQ.B	L0084B
 
-;	JSR	_beep(PC)
+	JSR	_beep(PC)
 	CLR.B	-$66B4(A4)	;_was_trapped
 L0084B:
 	CLR.B	-$48B7(A4)	;_looking
