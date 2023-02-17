@@ -2264,8 +2264,6 @@ __zapstr:
 	MOVEA.L	-$514C(A4),A6	;_StdWin
 	MOVEA.L	$0032(A6),A1
 	MOVE.B	$0018(A1),D4
-	MOVEA.L	-$514C(A4),A6	;_StdWin
-	MOVEA.L	$0032(A6),A1
 	MOVE.B	#$01,$0018(A1)
 	MOVE.L	$0008(A5),-$77C2(A4)	;_addch_text + 12
 
