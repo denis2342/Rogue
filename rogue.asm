@@ -6714,10 +6714,10 @@ L002E8:
 	PEA	L002F6(PC)	;"%s? (* for list): "
 	JSR	_msg
 	ADDQ.W	#8,A7
-	MOVE.B	#$01,-$66B0(A4)
+	MOVE.B	#$01,-$66B0(A4)	;_want_click
 	JSR	_readchar
 	MOVE.B	D0,D4
-	CLR.B	-$66B0(A4)
+	CLR.B	-$66B0(A4)	;_want_click
 L002E9:
 	CLR.W	-$60B0(A4)	;_mpos
 	CLR.B	-$0002(A5)
@@ -11572,7 +11572,7 @@ L004FF:
 L00500:
 	BRA.B	L00502
 L00501:
-	TST.B	-$66B0(A4)
+	TST.B	-$66B0(A4)	;_want_click
 	BEQ.B	L00502
 	MOVE.W	D7,-(A7)
 	JSR	_sel_line(PC)
@@ -11813,9 +11813,11 @@ L00518:
 
 _NewRank:
 	LINK	A5,#-$0078
+
 	CLR.B	-$0078(A5)
 	CMPI.W	#$0001,-$52AC(A4)	;_player + 30 (rank)
 	BLE.B	L00519
+
 	MOVE.W	-$52AC(A4),D3	;_player + 30 (rank)
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
@@ -11829,8 +11831,10 @@ _NewRank:
 L00519:
 	CMPI.W	#$0001,-$60B4(A4)	;_level
 	BNE.B	L0051B
+
 	CMPI.W	#$0002,-$52AC(A4)	;_player + 30 (rank)
 	BGE.B	L0051B
+
 	TST.W	-$609A(A4)	;_hungry_state
 	BNE.B	L0051B
 L0051A:
@@ -11933,6 +11937,7 @@ _ask_him:
 	ADD.L	#$00000050,D5
 	CMP.L	D5,D4
 	BGE.B	L00523
+
 	MOVE.L	D5,D4
 	MOVE.L	D4,D0
 	ADD.L	#$00000028,D0
@@ -11967,6 +11972,7 @@ L00523:
 
 _warning:
 	LINK	A5,#-$0000
+
 	PEA	L00527(PC)	;"Don't use it"
 	PEA	L00526(PC)	;"Use it anyway"
 	MOVE.L	$0008(A5),-(A7)
@@ -11974,6 +11980,7 @@ _warning:
 	LEA	$000C(A7),A7
 	TST.W	D0
 	BNE.B	L00524
+
 	MOVEq	#$0001,D0
 	BRA.B	L00525
 L00524:
@@ -11998,6 +12005,7 @@ _scrlen:
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_TextLength
 	LEA	$000C(A7),A7
+
 	UNLK	A5
 	RTS
 
@@ -12066,8 +12074,10 @@ _drop:
 	MOVE.B	$00(A6,D0.W),D4
 	CMP.b	#$2E,D4		;'.'
 	BEQ.B	L0052D
+
 	CMP.b	#$23,D4		;'#'
 	BEQ.B	L0052D
+
 	PEA	L00535(PC)	;"there is something there already"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -12084,13 +12094,16 @@ L0052D:
 	MOVEA.L	D0,A3
 	TST.L	D0
 	BEQ.B	L0052C
+
 	MOVE.L	A3,-(A7)
 	JSR	_can_drop(PC)
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BEQ.B	L0052C
+
 	CMPI.W	#$0002,$001E(A3)
 	BLT.B	L00530
+
 	TST.W	$002C(A3)
 	BNE.B	L00531
 L00530:
@@ -12126,6 +12139,7 @@ L00533:
 	MOVE.L	(A1)+,(A6)+
 	CMPI.W	#$002C,$000A(A3)	;','
 	BNE.B	L00534
+
 	CLR.B	-$66BD(A4)	;_amulet
 L00534:
 	MOVE.W	#$001E,-(A7)
@@ -12775,7 +12789,7 @@ L0057B:
 	JSR	_addstr
 	ADDQ.W	#4,A7
 L0057C:
-	MOVE.B	#$01,-$66B0(A4)
+	MOVE.B	#$01,-$66B0(A4)	;_want_click
 L0057D:
 	JSR	_readchar
 	MOVE.W	D0,D4
@@ -12791,7 +12805,7 @@ L0057D:
 	TST.W	D0
 	BEQ.B	L0057D
 L0057E:
-	CLR.B	-$66B0(A4)
+	CLR.B	-$66B0(A4)	;_want_click
 	MOVE.B	#$01,-$54BA(A4)
 	CLR.W	-$54BC(A4)
 	JSR	_clear
