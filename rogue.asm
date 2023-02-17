@@ -15060,6 +15060,8 @@ L00677:
 	JSR	_get_scores(PC)
 	ADDQ.W	#4,A7
 
+	move.b	#-1,-$46d8(A4)	;normal is negativ, score color flag
+
 	tst.b	-$66F8(A4)	;_noscore
 	bne	L00679
 
@@ -15218,7 +15220,13 @@ L00689:
 	ADDQ.W	#7,D0
 	JSR	_movequick
 
-	MOVEA.L	$000A(A5),A6
+	move.b	#1,-$77CE(A4)	;set the default color in IntuiText
+
+	cmp.b	-$46d8(A4),d4	;_all_clear + 1
+	bne	1$
+	move.b	#2,-$77CE(A4)	;changes the color in IntuiText
+
+1$	MOVEA.L	$000A(A5),A6
 	MOVE.W	$0026(A6),D3
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
@@ -15350,9 +15358,9 @@ L00697:
 	ADDA.L	#46,A6
 	MOVEA.L	A2,A1
 	MOVEQ	#$0A,D3
-L00698:
-	MOVE.L	(A1)+,(A6)+
-	DBF	D3,L00698
+
+1$	MOVE.L	(A1)+,(A6)+	;move highscore one entry down
+	DBF	D3,1$
 	MOVE.W	(A1)+,(A6)+
 L00699:
 	SUBA.L	#46,A2
@@ -15365,18 +15373,21 @@ L0069D:
 
 	MOVEQ	#$00,D0
 L0069E:
+	move.b	d0,-$46d8(A4)	;_all_clear + 1
+	subq.b	#1,-$46d8(A4)
+
 	MOVEM.L	(A7)+,A2/A3
 	UNLK	A5
 	RTS
 
 L0069F:
-	MOVEA.L	A3,A6
 	MOVEA.L	$0008(A5),A1
 	MOVEQ	#$0A,D3
-L006A0:
-	MOVE.L	(A1)+,(A6)+
-	DBF	D3,L006A0
-	MOVE.W	(A1)+,(A6)+
+
+1$	MOVE.L	(A1)+,(A3)+	;put the new highscore in place
+	DBF	D3,1$
+	MOVE.W	(A1)+,(A3)+
+
 	MOVE.W	-$0002(A5),D0
 	BRA.B	L0069E
 
