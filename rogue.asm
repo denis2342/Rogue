@@ -12005,12 +12005,15 @@ _scrlen:
 
 _choose_row:
 	LINK	A5,#-$0000
+
 	CMPI.W	#$FFFF,-$7060(A4)
 	BEQ.B	L00528
+
 	MOVE.W	-$7060(A4),D3
 	CMP.W	$0008(A5),D3
 	BEQ.B	L00528
-	MOVE.W	-$7060(A4),-(A7)
+
+	MOVE.W	D3,-(A7)
 	JSR	_invert_row(PC)
 	ADDQ.W	#2,A7
 	MOVE.W	#$FFFF,-$7060(A4)
@@ -12020,10 +12023,12 @@ L00528:
 	ADDQ.W	#2,A7
 	TST.b	D0
 	BEQ.B	L00529
+
 	MOVE.W	$0008(A5),D3
 	CMP.W	-$7060(A4),D3
 	BEQ.B	L00529
-	MOVE.W	$0008(A5),-(A7)
+
+	MOVE.W	D3,-(A7)
 	JSR	_invert_row(PC)
 	ADDQ.W	#2,A7
 	MOVE.W	$0008(A5),-$7060(A4)
