@@ -412,9 +412,8 @@ L0007A:
 
 	bsr	_getsyl		;returns in A3!
 
-;	MOVE.L	A3,-(A7)
-;	JSR	_strlen
-;	ADDQ.W	#4,A7
+;	MOVE.L	A3,A0
+;	JSR	_strlenquick
 ;	EXT.L	D0
 
 ; syllable is always 3 chars long, until you change the function!
@@ -2646,9 +2645,9 @@ _more:
 	MOVEM.L	D4/D5,-(A7)
 	MOVE.W	#$0001,-$0056(A5)
 	CLR.W	-$0058(A5)
-	MOVE.L	$0008(A5),-(A7)
-	JSR	_strlen
-	ADDQ.W	#4,A7
+	MOVE.L	$0008(A5),A0
+	JSR	_strlenquick
+
 	MOVE.W	D0,D5
 	PEA	-$0004(A5)
 	PEA	-$0002(A5)
@@ -2781,9 +2780,8 @@ _doadd:
 	JSR	_sprintf
 	LEA	$001C(A7),A7
 
-	MOVE.L	-$51A4(A4),-(A7)	;_msgbuf
-	JSR	_strlen
-	ADDQ.W	#4,A7
+	MOVE.L	-$51A4(A4),A0	;_msgbuf
+	JSR	_strlenquick
 
 	MOVE.W	D0,-$77BA(A4)		;_addch_text + $14
 
@@ -2802,9 +2800,9 @@ L00149:
 	MOVE.W	$0008(A5),-(A7)
 	JSR	_scrl(PC)
 	LEA	$000A(A7),A7
-	MOVE.L	A2,-(A7)
-	JSR	_strlen
-	ADDQ.W	#4,A7
+	MOVE.L	A2,A0
+	JSR	_strlenquick
+
 	MOVE.W	D0,-$0002(A5)
 	MOVE.W	D0,-$77BA(A4)
 	CMPI.W	#$0050,-$0002(A5)
@@ -2839,9 +2837,9 @@ L0014C:
 	CMP.L	A6,D4
 	BCC.B	L0014D
 
-	MOVE.L	A2,-(A7)
-	JSR	_strlen
-	ADDQ.W	#4,A7
+	MOVE.L	A2,A0
+	JSR	_strlenquick
+
 	CMP.W	#$0050,D0
 	BLT.B	L0014D
 
@@ -2877,9 +2875,9 @@ L0014F:
 	MOVE.w	$0008(A5),d0
 	JSR	_movequick
 
-	MOVE.L	$000E(A5),-(A7)
-	JSR	_strlen
-	ADDQ.W	#4,A7
+	MOVE.L	$000E(A5),A0
+	JSR	_strlenquick
+
 	CMP.W	#$0050,D0
 	BGE.B	L00150
 	JSR	_clrtoeol
@@ -2904,9 +2902,9 @@ L00151:
 	MOVE.L	-$0004(A5),-(A7)
 	JSR	_printw
 	ADDQ.W	#8,A7
-	MOVE.L	$000A(A5),-(A7)
-	JSR	_strlen
-	ADDQ.W	#4,A7
+	MOVE.L	$000A(A5),A0
+	JSR	_strlenquick
+
 	CMP.W	#$004F,D0
 	BGE.B	L00152
 	JSR	_clrtoeol
@@ -6113,9 +6111,9 @@ L002A1:
 	ADDQ.W	#6,A7
 	MOVEA.L	D0,A3
 	MOVE.L	A3,-(A7)
-	MOVE.L	A3,-(A7)
-	JSR	_strlen
-	ADDQ.W	#4,A7
+	MOVE.L	A3,A0
+	JSR	_strlenquick
+
 	ADDQ.W	#1,D0
 	MOVE.W	D0,-(A7)
 	JSR	_newmem
@@ -11164,9 +11162,8 @@ _addstr:
 	JSR	__zapstr(PC)
 	ADDQ.W	#4,A7
 
-	MOVE.L	$0008(A5),-(A7)
-	JSR	_strlen
-	ADDQ.W	#4,A7
+	MOVE.L	$0008(A5),A0
+	JSR	_strlenquick
 
 	MOVE.B	-$7065(A4),D1	;_c_col
 	ADD.B	D0,D1
@@ -11218,9 +11215,9 @@ _error:
 _center:
 	LINK	A5,#-$0000
 	MOVE.L	$000A(A5),-(A7)
-	MOVE.L	$000A(A5),-(A7)
-	JSR	_strlen
-	ADDQ.W	#4,A7
+	MOVE.L	$000A(A5),A0
+	JSR	_strlenquick
+
 	MOVEQ	#$50,D3
 	SUB.W	D0,D3
 	EXT.L	D3
@@ -11990,9 +11987,10 @@ L00527:	dc.b	"Don't use it",0,0
 
 _scrlen:
 	LINK	A5,#-$0000
-	MOVE.L	$0008(A5),-(A7)
-	JSR	_strlen
-	ADDQ.W	#4,A7
+
+	MOVE.L	$0008(A5),A0
+	JSR	_strlenquick
+
 	EXT.L	D0
 	MOVE.L	D0,-(A7)
 	MOVE.L	$0008(A5),-(A7)
@@ -12909,9 +12907,9 @@ _nothing:
 	JSR	_sprintf
 	ADDQ.W	#8,A7
 L00586:
-	MOVE.L	-$5258(A4),-(A7)	;_prbuf
-	JSR	_strlen
-	ADDQ.W	#4,A7
+	MOVE.L	-$5258(A4),A0	;_prbuf
+	JSR	_strlenquick
+
 	EXT.L	D0
 	MOVEA.L	D0,A2
 	ADDA.L	-$5258(A4),A2	;_prbuf
@@ -14049,9 +14047,8 @@ _num:
 3$	PEA	L00621(PC)	;"+"
 
 4$	PEA	L00622(PC)	;",%s%d"
-	PEA	-$53CA(A4)
-	JSR	_strlen
-	ADDQ.W	#4,A7
+	LEA	-$53CA(A4),A0
+	JSR	_strlenquick
 
 	LEA	-$53CA(A4),A6
 	ADD.W	D0,A6
@@ -15272,9 +15269,8 @@ L00689:
 	PEA	-$0052(A5)
 	JSR	_getrc
 	ADDQ.W	#8,A7
-	PEA	-$0050(A5)
-	JSR	_strlen
-	ADDQ.W	#4,A7
+	LEA	-$0050(A5),A0
+	JSR	_strlenquick
 
 	ADD.W	-$0054(A5),D0
 	CMP.W	#$0046,D0	;not longer than 70 chars
@@ -22576,9 +22572,9 @@ _pick_mons:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
 
-	MOVE.L	-$6996(A4),-(A7)	;lvl_mons[]
-	JSR	_strlen
-	ADDQ.W	#4,A7
+	MOVE.L	-$6996(A4),A0	;lvl_mons[]
+	JSR	_strlenquick
+
 	EXT.L	D0
 	MOVEA.L	D0,A2
 	ADDA.L	-$6996(A4),A2
@@ -23135,9 +23131,9 @@ L00A97:
 	MOVEA.L	-$000A(A5),A6
 	MOVE.L	$0010(A6),-(A7)
 	MOVEA.L	-$000A(A5),A6
-	MOVE.L	$0010(A6),-(A7)
-	JSR	_strlen
-	ADDQ.W	#4,A7
+	MOVE.L	$0010(A6),A0
+	JSR	_strlenquick
+
 	ADDQ.W	#1,D0
 
 	MOVE.W	D0,-(A7)
@@ -24480,9 +24476,9 @@ _save_game:
 	JSR	_mvaddstr
 	ADDQ.W	#8,A7
 	JSR	_clrtoeol
-	MOVE.L	-$5258(A4),-(A7)	;_prbuf
-	JSR	_strlen
-	ADDQ.W	#4,A7
+	MOVE.L	-$5258(A4),A0	;_prbuf
+	JSR	_strlenquick
+
 	MOVEQ	#$50,D3
 	SUB.W	D0,D3
 	MOVE.W	D3,-(A7)
@@ -24594,9 +24590,9 @@ _restore_game:
 	JSR	_mvaddstr
 	ADDQ.W	#8,A7
 	JSR	_clrtoeol
-	MOVE.L	-$5258(A4),-(A7)	;_prbuf
-	JSR	_strlen
-	ADDQ.W	#4,A7
+	MOVE.L	-$5258(A4),A0	;_prbuf
+	JSR	_strlenquick
+
 	MOVEQ	#$50,D3
 	SUB.W	D0,D3
 	MOVE.W	D3,-(A7)
@@ -24839,9 +24835,9 @@ L00B49:
 	MOVE.W	D4,D3
 	MULU.W	#21,D3
 	ADD.L	$0008(A5),D3
-	MOVE.L	D3,-(A7)
-	JSR	_strlen
-	ADDQ.W	#4,A7
+	MOVE.L	D3,A0
+	JSR	_strlenquick
+
 	MOVE.W	D0,-$0002(A5)
 	MOVE.W	#$0002,-(A7)
 	PEA	-$0002(A5)
@@ -25560,9 +25556,8 @@ _NewFuncString:
 _CopyFuncString:
 	LINK	A5,#-$0000
 
-	MOVE.L	$000E(A5),-(A7)
-	JSR	_strlen
-	ADDQ.W	#4,A7
+	MOVE.L	$000E(A5),A0
+	JSR	_strlenquick
 
 	MOVEA.L	$000A(A5),A6
 	MOVE.B	D0,(A6)
@@ -26833,9 +26828,9 @@ L00C45:
 	MOVEA.L	-$0004(A5),A6
 	ADDQ.L	#4,-$0004(A5)
 	MOVE.L	(A6),-$0016(A5)
-	MOVE.L	-$0016(A5),-(A7)
-	JSR	_strlen
-	ADDQ.W	#4,A7
+	MOVE.L	-$0016(A5),A0
+	JSR	_strlenquick
+
 	MOVE.W	D0,-$0010(A5)
 	BRA.B	L00C4A
 L00C46:
@@ -27791,9 +27786,9 @@ L00CA9:
 	ASL.L	#2,D3
 	MOVEA.L	-$52DE(A4),A6
 	MOVE.L	A2,$00(A6,D3.L)
-	MOVE.L	A2,-(A7)
-	JSR	_strlen
-	ADDQ.W	#4,A7
+	MOVE.L	A2,A0
+	JSR	_strlenquick
+
 	ADDQ.W	#1,D0
 	EXT.L	D0
 	ADDA.L	D0,A2
@@ -27981,8 +27976,7 @@ _strcpy:
 	MOVE.L	$0004(A7),D0
 	RTS
 
-_strlen:
-	MOVEA.L	$0004(A7),A0
+_strlenquick:
 	moveq	#-1,d0
 
 1$	tst.b	(a0)+
