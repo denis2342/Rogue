@@ -795,7 +795,7 @@ L00092:
 	BEQ.B	L00093
 
 	PEA	-$5194(A4)	;_nh
-	PEA	-$52CA(A4)
+	PEA	-$52CA(A4)	;_player + 0
 	JSR	_rndmove(PC)
 	ADDQ.W	#8,A7
 	BRA.B	L00094
@@ -1699,6 +1699,7 @@ L000F6:
 L000F7:
 	MOVE.L	A2,D3
 	BEQ.B	L000F8
+
 	CMPI.W	#$0006,$0020(A2)
 	BEQ.B	L000F9
 L000F8:
@@ -20274,7 +20275,7 @@ L00938:
 	MOVE.W	D3,-(A7)
 	MOVE.L	A3,-(A7)
 	MOVE.L	D4,-(A7)
-	PEA	-$52CA(A4)
+	PEA	-$52CA(A4)	;_player + 0
 	JSR	_roll_em(PC)
 	LEA	$000E(A7),A7
 	TST.W	D0
@@ -20434,7 +20435,7 @@ _attack:
 L0094C:
 	CLR.L	-(A7)
 	CLR.L	-(A7)
-	PEA	-$52CA(A4)
+	PEA	-$52CA(A4)	;_player + 0
 	MOVE.L	$0008(A5),-(A7)
 	JSR	_roll_em(PC)
 	LEA	$0010(A7),A7
@@ -21221,7 +21222,7 @@ L00998:
 	ADD.W	D6,D0
 	MOVE.W	D0,D7
 	ADD.W	-$000C(A5),D7
-	LEA	-$52CA(A4),A6	;_player
+	LEA	-$52CA(A4),A6	;_player + 0
 	CMPA.L	$000C(A5),A6	;same as creature who is fighting here?
 	BNE.B	L00999
 
@@ -21572,7 +21573,7 @@ L009D9:
 	BNE.B	L009DA
 	SUB.W	$0026(A6),D4
 L009DA:
-	PEA	-$52CA(A4)
+	PEA	-$52CA(A4)	;_player + 0
 	MOVE.W	D4,-(A7)
 	JSR	_save_throw(PC)
 	ADDQ.W	#6,A7
@@ -24747,11 +24748,11 @@ _xfer_all:
 	TST.W	-$532E(A4)
 	BNE.B	L00B44
 	MOVE.W	#$0032,-(A7)
-	PEA	-$52CA(A4)
+	PEA	-$52CA(A4)	;_player + 0
 	BSR.B	_xfer
 	ADDQ.W	#6,A7
 L00B44:
-	PEA	-$52CA(A4)
+	PEA	-$52CA(A4)	;_player + 0
 	JSR	_xfer_monster(PC)
 	ADDQ.W	#4,A7
 	MOVE.W	#$00A6,-(A7)
@@ -25270,7 +25271,7 @@ _xfer_monster:
 	MOVEA.L	$0008(A5),A2
 	TST.W	-$532E(A4)
 	BNE.W	L00B84
-	LEA	-$52CA(A4),A6
+	LEA	-$52CA(A4),A6	;_player + 0
 	CMPA.L	A6,A2
 	BNE.B	L00B7C
 	MOVE.L	-$69AA(A4),$0024(A2)
@@ -29909,7 +29910,25 @@ __things:
 __t_alloc:
 	dc.l	$00000000
 
-_player:	ds.b	50
+_player:	dc.l	0	;0
+		dc.l	0	;4
+		dc.w	0	;8
+		dc.w	0	;10 position
+		dc.w	0	;12 position
+		dc.w	0	;14
+		dc.l	0	;16
+		dc.w	0	;20
+		dc.w	0	;22 flags
+		dc.w	0	;24 strength
+		dc.l	0	;26 experience
+		dc.w	0	;30 rank
+		dc.w	0	;32 base armor class or something (read only)
+		dc.w	0	;34 hp
+		dc.l	0	;36
+		dc.w	0	;40 max hp
+		dc.l	0	;42 *proom
+		dc.l	0	;46 *pack
+
 _cur_weapon:	ds.l	1
 _cur_armor:	ds.l	1
 _p_colors:	ds.l	14
