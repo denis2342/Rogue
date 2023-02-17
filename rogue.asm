@@ -2260,13 +2260,14 @@ _invert_row:
 __zapstr:
 	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
+
 	MOVEA.L	-$514C(A4),A6	;_StdWin
 	MOVEA.L	$0032(A6),A1
 	MOVE.B	$0018(A1),D4
 	MOVEA.L	-$514C(A4),A6	;_StdWin
 	MOVEA.L	$0032(A6),A1
 	MOVE.B	#$01,$0018(A1)
-	MOVE.L	$0008(A5),-$77C2(A4)
+	MOVE.L	$0008(A5),-$77C2(A4)	;_addch_text + 12
 
 	MOVE.W	-$5152(A4),D0	;_p_col
 	MOVE.W	-$5154(A4),D1	;_p_row
@@ -2291,6 +2292,7 @@ __zapstr:
 	MOVEA.L	-$514C(A4),A6	;_StdWin
 	MOVEA.L	$0032(A6),A1
 	MOVE.B	D4,$0018(A1)
+
 	MOVE.L	(A7)+,D4
 	UNLK	A5
 	RTS
@@ -11384,7 +11386,7 @@ _flush_type:
 	LINK	A5,#-$0000
 
 	LEA	-$48B2(A4),A6
-	MOVE.L	A6,-$47AE(A4)
+	MOVE.L	A6,-$47AE(A4)	;_kb_tail
 	MOVE.L	A6,-$47B2(A4)
 	TST.L	-$514C(A4)	;_StdWin
 	BEQ.B	L004ED
@@ -11424,11 +11426,11 @@ _readchar:
 	CLR.W	-$001E(A5)
 L004EE:
 	MOVEA.L	-$47B2(A4),A6
-	CMPA.L	-$47AE(A4),A6
+	CMPA.L	-$47AE(A4),A6	;_kb_tail
 	BEQ.B	L004F0
 
-	MOVEA.L	-$47AE(A4),A6
-	ADDQ.L	#1,-$47AE(A4)
+	MOVEA.L	-$47AE(A4),A6	;_kb_tail
+	ADDQ.L	#1,-$47AE(A4)	;_kb_tail
 	MOVE.B	(A6),D0
 	EXT.W	D0
 L004EF:
@@ -11438,7 +11440,7 @@ L004EF:
 
 L004F0:
 	LEA	-$48B2(A4),A6
-	MOVE.L	A6,-$47AE(A4)
+	MOVE.L	A6,-$47AE(A4)	;_kb_tail
 	MOVE.L	A6,-$47B2(A4)
 L004F1:
 	MOVEA.L	-$514C(A4),A6	;_StdWin
@@ -15188,6 +15190,11 @@ loop$	MOVEA.L	$0008(A5),A6
 L00685:	MOVE.L	(A7)+,D4
 	UNLK	A5
 	RTS
+
+;/*
+; * score:
+; *  Figure score and post it.
+; */
 
 _pr_scores:
 	LINK	A5,#-$0054
@@ -24319,7 +24326,7 @@ L00B1B:
 	beq	1$
 
 	moveq	#16-1,d2	;turn the color for the title.screen
-	lea	-$47A4(A4),a0
+	lea	-$47A4(A4),a0	_want
 loop$	move.b	(a0),d1
 	move.b	2(a0),(a0)
 	move.b	d1,2(a0)
@@ -28643,12 +28650,17 @@ _Window2:
 	dc.w	$000F		;Type
 
 	dc.l	$00000000
+
+; struct IntuiText
+
 _addch_text:
-	dc.l	$01000100
-	dc.l	$00000000
-	dc.l	_MyFont
-	dc.l	$00000000
-	dc.l	$00000000
+	dc.b	$01,$00		;FrontPen, BackPen
+	dc.b	$01,$00		;DrawMode
+	dc.w	$0000,$0000	;LeftEdge,TopEdge
+	dc.l	_MyFont		;*ITextFont
+	dc.l	$00000000	;*IText
+	dc.l	$00000000	;*NextText
+
 	dc.w	$0000
 
 _laugh:		dc.l	L001A3		;"you hear maniacal laughter%s."
