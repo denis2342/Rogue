@@ -10134,10 +10134,10 @@ _new_item:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
 	BSR.B	_talloc
-	MOVEA.L	D0,A2
 	TST.L	D0
 	BEQ.B	1$
 
+	MOVEA.L	D0,A2
 	CLR.L	$0004(A2)
 	CLR.L	(A2)
 1$
