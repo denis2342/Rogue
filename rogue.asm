@@ -1843,9 +1843,7 @@ __graphch:
 	TST.L	$00(A6,D3.w)
 	BNE.B	L00104
 
-	MOVEQ	#$00,D3
-	MOVE.B	D4,D3
-	MOVE.W	D3,-(A7)
+	MOVE.W	D4,-(A7)
 	JSR	__addch
 	ADDQ.W	#2,A7
 L00103:
@@ -11086,9 +11084,7 @@ L004DD:
 	TST.B	-$7064(A4)	;_map_up
 	BNE.B	L004DE
 
-	MOVEQ	#$00,D3
-	MOVE.B	D4,D3
-	MOVE.W	D3,-(A7)
+	MOVE.W	D4,-(A7)
 	JSR	__addch
 	ADDQ.W	#2,A7
 	BRA.W	L004E1
@@ -11118,16 +11114,12 @@ L004DE:
 	TST.B	-$7063(A4)	;_graphics_disabled
 	BNE.B	L004DF
 
-	MOVEQ	#$00,D3
-	MOVE.B	D4,D3
-	MOVE.W	D3,-(A7)
+	MOVE.W	D4,-(A7)
 	JSR	__graphch(PC)
 	ADDQ.W	#2,A7
 	BRA.B	L004E0
 L004DF:
-	MOVEQ	#$00,D3
-	MOVE.B	D4,D3
-	MOVE.W	D3,-(A7)
+	MOVE.W	D4,-(A7)
 	JSR	__addch
 	ADDQ.W	#2,A7
 L004E0:
