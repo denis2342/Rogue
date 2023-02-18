@@ -2052,8 +2052,10 @@ L00109:
 ;	CMP.W	#$0000,D0
 	BGE.B	L0010B
 	PEA	L00118(PC)	;"No rogue.char file"
-	JSR	_fatal
+	JSR	_db_print
 	ADDQ.W	#4,A7
+	ST	-$7063(A4)	;_graphics_disabled
+	BRA	readCharEnd
 L0010B:
 	MOVE.W	#$0002,-(A7)
 	PEA	-$0002(A5)
@@ -2098,6 +2100,7 @@ L0010E:
 	MOVE.W	D5,-(A7)
 	JSR	_close
 	ADDQ.W	#2,A7
+readCharEnd:
 
 	PEA	-$7852(A4)	;_NewScreen
 	JSR	_OpenScreen
@@ -2140,10 +2143,10 @@ L00114:	dc.b	"No intuition",0
 ;L00115:	dc.b	"layers.library",0
 ;L00116:	dc.b	"No layers",0
 L00117:	dc.b	"rogue.char",0
-L00118:	dc.b	"No rogue.char file",0
+L00118:	dc.b	"No rogue.char file",10,0
 L00119:	dc.b	"No memory for character data",0
 L0011A:	dc.b	"No Screen",0
-L0011B:	dc.b	"No Window",0,0
+L0011B:	dc.b	"No Window",0
 
 _wclose:
 ;	LINK	A5,#-$0000
@@ -28727,7 +28730,7 @@ _c_col:	ds.b	1
 _map_up:
 	dc.b	$01
 _graphics_disabled:
-	dc.b	$00
+	dc.b	$00		;disables itself if Rogue.Char file not present
 _CURSES_END:
 	dc.l	$0000FFFF
 
