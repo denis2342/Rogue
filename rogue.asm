@@ -15697,13 +15697,10 @@ L006CA:
 	MOVE.W	$0020(A2),D3
 	LEA	-$66F6(A4),A6	;_s_know
 	TST.B	$00(A6,D3.W)
-	BNE.B	L006CB
+	BNE.B	L006D7
 
 	EXT.L	D4
 	DIVS.W	#$0002,D4	;only worth half if we didnt knew it
-L006CB:
-	MOVE.W	$0020(A2),D3
-	LEA	-$66F6(A4),A6	;_s_know
 	ST	$00(A6,D3.W)
 	BRA.W	L006D7
 
@@ -15719,13 +15716,10 @@ L006CC:
 	MOVE.W	$0020(A2),D3
 	LEA	-$66E7(A4),A6	;_p_know
 	TST.B	$00(A6,D3.W)
-	BNE.B	L006CD
+	BNE.B	L006D7
 
 	EXT.L	D4
 	DIVS.W	#$0002,D4	;only worth half if we didnt knew it
-L006CD:
-	MOVE.W	$0020(A2),D3
-	LEA	-$66E7(A4),A6	;_p_know
 	ST	$00(A6,D3.W)
 	BRA.W	L006D7
 
@@ -15765,8 +15759,8 @@ L006D1:
 
 	EXT.L	D4
 	DIVS.W	#$0002,D4	;only worth half if we didnt knew it
-L006D2:
 	ORI.W	#O_ISKNOW,$0028(A2)
+L006D2:
 	MOVE.W	$0020(A2),D3
 	LEA	-$66D9(A4),A6	;_r_know
 	ST	$00(A6,D3.W)
@@ -15789,8 +15783,8 @@ L006D3:
 
 	EXT.L	D4
 	DIVS.W	#$0002,D4	;only worth half if we didnt knew it
-L006D4:
 	ORI.W	#O_ISKNOW,$0028(A2)
+L006D4:
 	MOVE.W	$0020(A2),D3
 	LEA	-$66CB(A4),A6	;_ws_know
 	ST	$00(A6,D3.W)
