@@ -1834,7 +1834,9 @@ L00102:
 __graphch:
 	LINK	A5,#-$0000
 	MOVEM.L	a2/a6/D4-D7,-(A7)
-	MOVE.B	$0009(A5),D4
+
+	MOVE.B	$0009(A5),D4	;in D4 is what we want to paint on the screen
+
 	MOVEQ	#$00,D3
 	MOVE.B	D4,D3
 	ASL.w	#4,D3
@@ -1883,7 +1885,7 @@ L00106:
 	MOVEA.L	-$514C(A4),A6	;_StdWin
 	MOVEA.L	$0032(A6),A1
 
-	lea	-$517C(A4),a0	;srcbitmap
+	lea	-$517C(A4),a0	;_chbm = srcbitmap
 	moveq	#0,d0
 	moveq	#0,d1
 
@@ -2051,19 +2053,22 @@ L00109:
 	MOVE.W	D0,D5
 ;	CMP.W	#$0000,D0
 	BGE.B	L0010B
+
 	PEA	L00118(PC)	;"No rogue.char file"
 	JSR	_db_print
 	ADDQ.W	#4,A7
 	ST	-$7063(A4)	;_graphics_disabled
 	BRA	readCharEnd
 L0010B:
-	MOVE.W	#$0002,-(A7)
+	MOVE.W	#$0002,-(A7)	;read two bytes
 	PEA	-$0002(A5)
-	MOVE.W	D5,-(A7)
+	MOVE.W	D5,-(A7)	;char filehd
 	JSR	_read
 	ADDQ.W	#8,A7
-	CMP.W	#$0002,D0
+
+	CMP.W	#$0002,D0	;did we read two byte?
 	BNE.B	L0010E
+
 	MOVEQ	#$00,D6
 L0010C:
 	MOVE.W	#$0009,-(A7)
@@ -2079,18 +2084,19 @@ L0010C:
 	ADD.L	D2,D3
 
 	LEA	-$5140(A4),A6	;_char_data
-	MOVE.L	D0,$00(A6,D3.L)
+	MOVE.L	D0,$00(A6,D3.L)	;save pointer of the chip mem we allocated
 	BNE.B	L0010D
 
-	PEA	L00119(PC)
+	PEA	L00119(PC)	;"No memory for character data"
 	JSR	_fatal
 	ADDQ.W	#4,A7
 L0010D:
-	MOVE.W	#$0012,-(A7)
+	MOVE.W	#18,-(A7)	;size
 	MOVE.L	$00(A6,D3.L),-(A7)
-	MOVE.W	D5,-(A7)
+	MOVE.W	D5,-(A7)	;char filehd
 	JSR	_read
 	ADDQ.W	#8,A7
+
 	ADDQ.W	#1,D6
 	CMP.W	#$0004,D6
 	BLT.B	L0010C
