@@ -15611,14 +15611,14 @@ L006AC:
 ; food
 
 L006AD:
-	MOVE.W	$001E(A2),D4
+	MOVE.W	$001E(A2),D4	;every food is worth 2 gold
 	ASL.W	#1,D4
 	BRA.W	L006D7
 
 ; worth of weapon
 
 L006AE:
-	MOVE.W	$0020(A2),D0
+	MOVE.W	$0020(A2),D0	;get the weapon subtype
 ;	EXT.L	D0
 	move	#0,d4
 	BRA.B	L006BA
@@ -15637,13 +15637,14 @@ L006B9:
 L006BA:
 	CMP.w	#$000A,D0
 	BCC.B	L006BC
+
 	ASL.w	#1,D0
-	MOVE.W	L006B9(PC,D0.W),D4
+	MOVE.W	L006B9(PC,D0.W),D4	;load the weapon gold value
 L006BC:
 	MOVE.W	$0022(A2),D3
 	ADD.W	$0024(A2),D3
 	MULU.W	#$0003,D3
-	ADD.W	$001E(A2),D3
+	ADD.W	$001E(A2),D3	;add the number we have
 	MULU.W	D3,D4
 	ORI.W	#O_ISKNOW,$0028(A2)
 	BRA.W	L006D7
@@ -15651,7 +15652,7 @@ L006BC:
 ; worth of armor
 
 L006BD:
-	MOVE.W	$0020(A2),D0
+	MOVE.W	$0020(A2),D0	;get the armor sub type
 ;	EXT.L	D0
 	move	#0,d4
 	BRA.B	L006C7
@@ -15667,8 +15668,9 @@ L006C6:
 L006C7:
 	CMP.w	#$0008,D0
 	BCC.B	L006C9
+
 	ASL.w	#1,D0
-	MOVE.W	L006C6(PC,D0.W),D4
+	MOVE.W	L006C6(PC,D0.W),D4	;load the armor gold value
 L006C9:
 	MOVEQ	#$09,D3		;load armor class value from weapon
 	SUB.W	$0026(A2),D3	;one point in armor class is worth 100 gold
@@ -15693,7 +15695,7 @@ L006CA:
 	ASL.w	#3,D3
 	LEA	-$6EEA(A4),A6	;_s_magic + 6
 	MOVE.W	$00(A6,D3.w),D4
-	MULU.W	$001E(A2),D4
+	MULU.W	$001E(A2),D4	;multiply by the amount we have
 	MOVE.W	$0020(A2),D3
 	LEA	-$66F6(A4),A6	;_s_know
 	TST.B	$00(A6,D3.W)
@@ -15712,7 +15714,7 @@ L006CC:
 	ASL.w	#3,D3
 	LEA	-$6E72(A4),A6	;_p_magic + 6
 	MOVE.W	$00(A6,D3.w),D4
-	MULU.W	$001E(A2),D4
+	MULU.W	$001E(A2),D4	;multiply by the amount we have
 	MOVE.W	$0020(A2),D3
 	LEA	-$66E7(A4),A6	;_p_know
 	TST.B	$00(A6,D3.W)
