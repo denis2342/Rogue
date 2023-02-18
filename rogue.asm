@@ -1740,7 +1740,7 @@ L000FD:
 	MOVEQ	#$08,D3
 L000FE:
 	MULU.W	$000A(A5),D3
-	ADD.W	-$77D0(A4),D3	;_Window2 + 50m,
+	ADD.W	-$77D0(A4),D3	;_Window2 + 50
 	MOVE.W	D3,-$5152(A4)	;_p_col
 
 	MULU.W	#$0009,D4
@@ -4828,9 +4828,16 @@ L0022C:
 	UNLK	A5
 	RTS
 
+;/*
+;* Create a monster:
+;* First look in a circle around him, next try his room
+;* otherwise give up
+;*/
+
 _plop_monster:
 	LINK	A5,#-$0002
 	MOVEM.L	D4/D5,-(A7)
+
 	CLR.B	-$0001(A5)
 	MOVE.W	$0008(A5),D4
 	SUBQ.W	#1,D4
@@ -4842,6 +4849,7 @@ L0022D:
 L0022E:
 	CMP.W	-$52BE(A4),D4	;_player + 12
 	BNE.B	L0022F
+
 	CMP.W	-$52C0(A4),D5	;_player + 10
 	BEQ.B	L00231
 L0022F:
@@ -4849,30 +4857,38 @@ L0022F:
 	MOVE.W	D4,-(A7)
 	JSR	_offmap
 	ADDQ.W	#4,A7
+
 	TST.W	D0
 	BNE.B	L00231
+
 	MOVE.W	D5,-(A7)
 	MOVE.W	D4,-(A7)
 	JSR	_winat
 	ADDQ.W	#4,A7
+
 	MOVE.B	D0,-$0002(A5)
 	MOVEQ	#$00,D3
 	MOVE.B	D0,D3
+
 	MOVE.W	D3,-(A7)
 	JSR	_step_ok
 	ADDQ.W	#2,A7
+
 	TST.W	D0
 	BEQ.B	L00231
+
 	MOVEQ	#$00,D3
 	MOVE.B	-$0002(A5),D3
-	CMP.W	#$003F,D3
+	CMP.W	#$003F,D3	;'?' scroll
 	BNE.B	L00230
+
 	MOVE.W	D5,-(A7)
 	MOVE.W	D4,-(A7)
 	JSR	_find_obj
 	ADDQ.W	#4,A7
+
 	MOVEA.L	D0,A6
-	CMPI.W	#$0006,$0020(A6)
+	CMPI.W	#S_SCAREM,$0020(A6)	;is it a scroll of scare monster?
 	BEQ.B	L00231
 L00230:
 	ADDQ.B	#1,-$0001(A5)
@@ -4882,6 +4898,7 @@ L00230:
 	JSR	_rnd
 	TST.W	D0
 	BNE.B	L00231
+
 	MOVEA.L	$000C(A5),A6
 	MOVE.W	D4,$0002(A6)
 	MOVEA.L	$000C(A5),A6
@@ -4893,14 +4910,17 @@ L00232:
 	ADDQ.W	#1,D3
 	CMP.W	D3,D5
 	BLE.W	L0022E
+
 	ADDQ.W	#1,D4
 L00233:
 	MOVE.W	$0008(A5),D3
 	ADDQ.W	#1,D3
 	CMP.W	D3,D4
 	BLE.W	L0022D
+
 	MOVEQ	#$00,D0
 	MOVE.B	-$0001(A5),D0
+
 	MOVEM.L	(A7)+,D4/D5
 	UNLK	A5
 	RTS
@@ -9176,11 +9196,13 @@ _conn:
 	MOVE.W	$0008(A5),D3
 	CMP.W	$000A(A5),D3
 	BGE.B	L00420
+
 	MOVE.W	$0008(A5),D5
 	MOVE.W	$0008(A5),D3
 	ADDQ.W	#1,D3
 	CMP.W	$000A(A5),D3
 	BNE.B	L0041E
+
 	MOVE.W	#$0072,-$0012(A5)
 	BRA.B	L0041F
 L0041E:
@@ -9193,6 +9215,7 @@ L00420:
 	ADDQ.W	#1,D3
 	CMP.W	$0008(A5),D3
 	BNE.B	L00421
+
 	MOVE.W	#$0072,-$0012(A5)
 	BRA.B	L00422
 L00421:
@@ -9205,10 +9228,11 @@ L00422:
 	MOVE.L	D3,-$0004(A5)
 	CMPI.W	#$0064,-$0012(A5)
 	BNE.W	L0042C
+
 	MOVE.W	D5,D4
 	ADDQ.W	#3,D4
 	MOVE.W	D4,D3
-	MULS.W	#$0042,D3
+	MULS.W	#66,D3
 	LEA	-$6088(A4),A6	;_rooms
 	ADD.L	A6,D3
 	MOVE.L	D3,-$0008(A5)
@@ -9218,6 +9242,7 @@ L00422:
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3
 	BEQ.B	L00423
+
 	MOVEA.L	-$0004(A5),A6
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0004,D3
@@ -9557,16 +9582,19 @@ L00443:
 	MOVEA.L	-$0006(A5),A6
 	TST.B	$00(A6,D4.W)
 	BEQ.B	L00444
+
 	MOVE.W	D4,D3
 	MULS.W	#$0014,D3
 	LEA	-$779A(A4),A6
 	TST.B	$00(A6,D3.L)
 	BNE.B	L00444
+
 	ADDQ.W	#1,D5
 	MOVE.W	D5,D0
 	JSR	_rnd
 	TST.W	D0
 	BNE.B	L00444
+
 	MOVE.W	D4,D3
 	MULS.W	#$0014,D3
 	LEA	-$77AC(A4),A6
@@ -9576,6 +9604,7 @@ L00444:
 	ADDQ.W	#1,D4
 	CMP.W	#$0009,D4
 	BLT.B	L00443
+
 	TST.W	D5
 	BNE.B	L00446
 L00445:
@@ -9588,6 +9617,7 @@ L00445:
 	MOVEA.L	-$0006(A5),A6
 	TST.B	$0012(A6)
 	BEQ.B	L00445
+
 	BRA.B	L00447
 L00446:
 	MOVEA.L	-$000A(A5),A6
@@ -9639,17 +9669,20 @@ L00449:
 	MOVEA.L	-$0006(A5),A6
 	TST.B	$00(A6,D4.W)
 	BEQ.B	L0044A
+
 	MOVE.W	D4,D3
 	EXT.L	D3
 	MOVEA.L	D3,A6
 	ADDA.L	-$0006(A5),A6
 	TST.B	$0009(A6)
 	BNE.B	L0044A
+
 	ADDQ.W	#1,D5
 	MOVE.W	D5,D0
 	JSR	_rnd
 	TST.W	D0
 	BNE.B	L0044A
+
 	MOVE.W	D4,D3
 	MULS.W	#$0014,D3
 	LEA	-$77AC(A4),A6
@@ -9659,8 +9692,10 @@ L0044A:
 	ADDQ.W	#1,D4
 	CMP.W	#$0009,D4
 	BLT.B	L00449
+
 	TST.W	D5
 	BEQ.B	L0044B
+
 	MOVE.L	-$0006(A5),D0
 	LEA	-$77AC(A4),A6
 	SUB.L	A6,D0
@@ -9693,6 +9728,7 @@ L0044C:
 	CMPI.W	#$0000,-$0002(A5)
 	BGT.W	L00448
 	JSR	_passnum(PC)
+
 	MOVEM.L	(A7)+,D4/D5
 	UNLK	A5
 	RTS
@@ -28614,10 +28650,10 @@ _MyFont:
 	dc.l	$00080001
 
 _NewScreen:
-	dc.w	$0000,$0000	;LeftEdge, TopEdge
+	dc.w	0,0		;LeftEdge, TopEdge
 	dc.w	640,200		;Width, Height
 	dc.w	$0004		;Depth
-	dc.w	$0001		;DetailPen, BlockPen
+	dc.b	$00,$01		;DetailPen, BlockPen
 	dc.w	$8000		;ViewModes
 	dc.w	$000F		;Type
 	dc.l	_MyFont		;*Font
