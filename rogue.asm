@@ -15621,20 +15621,6 @@ L006AE:
 	MOVE.W	$0020(A2),D0	;get the weapon subtype
 ;	EXT.L	D0
 	move	#0,d4
-	BRA.B	L006BA
-
-L006B9:
-	dc.w	8	;mace
-	dc.w	15	;broad sword
-	dc.w	15	;short bow
-	dc.w	1	;arrow
-	dc.w	2	;dagger
-	dc.w	75	;two handed sword
-	dc.w	1	;dart
-	dc.w	30	;crossbow
-	dc.w	1	;crossbow bolt
-	dc.w	5	;flail
-L006BA:
 	CMP.w	#$000A,D0
 	BCC.B	L006BC
 
@@ -15649,23 +15635,23 @@ L006BC:
 	ORI.W	#O_ISKNOW,$0028(A2)
 	BRA.W	L006D7
 
+L006B9:	dc.w	8	;mace
+	dc.w	15	;broad sword
+	dc.w	15	;short bow
+	dc.w	1	;arrow
+	dc.w	2	;dagger
+	dc.w	75	;two handed sword
+	dc.w	1	;dart
+	dc.w	30	;crossbow
+	dc.w	1	;crossbow bolt
+	dc.w	5	;flail
+
 ; worth of armor
 
 L006BD:
 	MOVE.W	$0020(A2),D0	;get the armor sub type
 ;	EXT.L	D0
 	move	#0,d4
-	BRA.B	L006C7
-L006C6:
-	dc.w	20	;leather armor
-	dc.w	25	;ring mail
-	dc.w	20	;studded leather armor
-	dc.w	30	;scale mail
-	dc.w	75	;chain mail
-	dc.w	80	;splint mail
-	dc.w	90	;banded mail
-	dc.w	150	;plate mail
-L006C7:
 	CMP.w	#$0008,D0
 	BCC.B	L006C9
 
@@ -15686,6 +15672,15 @@ L006C9:
 	ADD.W	D2,D4
 	ORI.W	#O_ISKNOW,$0028(A2)
 	BRA.W	L006D7
+
+L006C6:	dc.w	20	;leather armor
+	dc.w	25	;ring mail
+	dc.w	20	;studded leather armor
+	dc.w	30	;scale mail
+	dc.w	75	;chain mail
+	dc.w	80	;splint mail
+	dc.w	90	;banded mail
+	dc.w	150	;plate mail
 
 ; worth of scrolls
 
