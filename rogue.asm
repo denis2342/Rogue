@@ -3381,30 +3381,36 @@ L00184:
 L00185:
 	MOVE.L	A2,D3
 	BNE.B	L00184
+
 	PEA	-$6CAC(A4)	;_mlist
 	JSR	__free_list(PC)
 	ADDQ.W	#4,A7
+
 	JSR	_f_restor
+
 	PEA	-$6CB0(A4)	;_lvl_obj
 	JSR	__free_list(PC)
 	ADDQ.W	#4,A7
+
 	JSR	_do_rooms
 	ST	-$66FB(A4)	;_new_stats
 	JSR	_clear
 	JSR	_status
 	JSR	_do_passages(PC)
-	ADDQ.W	#1,-$60A6(A4)
+	ADDQ.W	#1,-$60A6(A4)	;_no_food
 	JSR	_put_things(PC)
 	PEA	-$0004(A5)
 	JSR	_blank_spot
 	ADDQ.W	#4,A7
 	MOVE.W	D0,D6
 	MOVEA.L	-$519C(A4),A6	;__level
-	MOVE.B	#$25,$00(A6,D6.W)
-	MOVEq	#$000A,D0
+	MOVE.B	#$25,$00(A6,D6.W)	;'%' STAIRS
+
+	MOVEq	#10,D0
 	JSR	_rnd
 	CMP.W	-$60B4(A4),D0	;_level
 	BGE.B	L00188
+
 	MOVE.W	-$60B4(A4),D3	;_level
 	EXT.L	D3
 	DIVS.W	#$0004,D3
@@ -3412,8 +3418,9 @@ L00185:
 	JSR	_rnd
 	ADDQ.W	#1,D0
 	MOVE.W	D0,-$60B8(A4)
-	CMPI.W	#$000A,-$60B8(A4)
+	CMPI.W	#10,-$60B8(A4)
 	BLE.B	L00186
+
 	MOVE.W	#$000A,-$60B8(A4)
 L00186:
 	MOVE.W	-$60B8(A4),D5
@@ -3426,6 +3433,7 @@ L00187:
 	PEA	-$0004(A5)
 	JSR	_blank_spot
 	ADDQ.W	#4,A7
+
 	MOVE.W	D0,D6
 	MOVE.W	D6,D3
 	EXT.L	D3
@@ -3442,6 +3450,7 @@ L00188:
 	PEA	-$52C0(A4)	;_player + 10
 	JSR	_blank_spot
 	ADDQ.W	#4,A7
+
 	MOVE.W	D0,D6
 	MOVEA.L	-$5198(A4),A6	;__flags
 	MOVE.B	$00(A6,D6.W),D3
@@ -3454,12 +3463,13 @@ L00188:
 
 	TST.L	D0
 	BNE.B	L00188
+
 	CLR.W	-$60B0(A4)	;_mpos
 	PEA	-$52C0(A4)	;_player + 10
 	JSR	_enter_room
 	ADDQ.W	#4,A7
 
-	MOVEq	#$0040,d2
+	MOVEq	#$0040,d2	;'@' PLAYER
 	MOVE.W	-$52C0(A4),d1	;hero.y
 	MOVE.W	-$52BE(A4),d0	;hero.x
 	JSR	_mvaddchquick
@@ -3469,6 +3479,7 @@ L00188:
 	MOVE.L	(A1)+,(A6)+
 	MOVE.L	-$52A0(A4),-$48C0(A4)	;_player + 42 (proom),_oldrp
 	JSR	_InitGadgets
+
 	MOVEM.L	(A7)+,D4-D6/A2/A3
 	UNLK	A5
 	RTS
@@ -12309,7 +12320,7 @@ L00545:
 	CLR.W	$002C(A2)
 	CLR.W	$0028(A2)		;flags like cursed and so on
 	CLR.B	$002A(A2)
-	CMPI.W	#$0003,-$60A6(A4)
+	CMPI.W	#$0003,-$60A6(A4)	;_no_food
 	BLE.B	L00546
 
 	MOVEQ	#$02,D0
@@ -12348,7 +12359,7 @@ L00549:
 ; food
 
 L0054A:
-	CLR.W	-$60A6(A4)
+	CLR.W	-$60A6(A4)	;_no_food
 	MOVE.W	#$003A,$000A(A2)	;':'
 	MOVEq	#10,D0
 	JSR	_rnd
@@ -17242,7 +17253,7 @@ L007F5:
 	JSR	_look
 	ADDQ.W	#2,A7
 L007F6:
-	MOVEq	#$0040,d2
+	MOVEq	#$0040,d2	;'@' PLAYER
 	MOVE.W	-$52C0(A4),d1	;_player + 10
 	MOVE.W	-$52BE(A4),d0	;_player + 12
 	JSR	_mvaddchquick
@@ -17617,7 +17628,7 @@ L00823:
 	SUB.W	-$52C0(A4),D3	;_player + 10
 	MOVE.W	D3,-$0018(A5)
 L00824:
-	MOVEq	#$0040,d2
+	MOVEq	#$0040,d2	;'@' PLAYER
 	MOVE.W	-$52C0(A4),d1	;_player + 10
 	MOVE.W	-$52BE(A4),d0	;_player + 12
 	JSR	_mvaddchquick
@@ -17914,7 +17925,7 @@ L00849:
 
 	CLR.B	-$66B6(A4)	;_running
 L0084A:
-	MOVEq	#$0040,d2
+	MOVEq	#$0040,d2	;'@' PLAYER
 	MOVE.W	-$52C0(A4),d1	;_player + 10
 	MOVE.W	-$52BE(A4),d0	;_player + 12
 	JSR	_mvaddchquick
