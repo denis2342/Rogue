@@ -22152,9 +22152,10 @@ L00A12:
 _new_monster:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/A2/A3,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	MOVE.B	#$01,$0008(A2)
-	MOVE.W	-$60B4(A4),D4	;_level
+	MOVE.W	-$60B4(A4),D4	;dungeon _level
 	SUB.W	#26,D4
 ;	CMP.W	#$0000,D4
 	BGE.B	1$
@@ -22165,16 +22166,19 @@ _new_monster:
 	PEA	-$6CAC(A4)	;_mlist
 	JSR	__attach
 	ADDQ.W	#8,A7
+
 	MOVE.B	$000D(A5),$000F(A2)	; monster type ABC...
-	MOVE.B	$000D(A5),$0010(A2)	; monster type ABC...
+	MOVE.B	$000D(A5),$0010(A2)	; xerox puts his disguise type here
 	MOVEA.L	A2,A6
 	ADDA.L	#$0000000A,A6
 	MOVEA.L	$000E(A5),A1
 	MOVE.L	(A1)+,(A6)+
 	MOVE.B	#$22,$0011(A2)
+
 	MOVE.L	$000E(A5),-(A7)
 	JSR	_roomin
 	ADDQ.W	#4,A7
+
 	MOVE.L	D0,$002A(A2)
 	MOVE.B	$000F(A2),D3
 	EXT.W	D3
@@ -22186,6 +22190,7 @@ _new_monster:
 	MOVE.W	$000E(A3),D3	; number for xd8 HP
 	ADD.W	D4,D3
 	MOVE.W	D3,$001E(A2)
+
 	MOVE.W	#$0008,-(A7)	;xd8
 	MOVE.W	$001E(A2),-(A7)
 	JSR	_roll
@@ -22195,21 +22200,23 @@ _new_monster:
 	MOVE.W	$0010(A3),D3	; AC (lower is better)
 	SUB.W	D4,D3
 	MOVE.W	D3,$0020(A2)
-	MOVE.L	$0014(A3),$0024(A2)	;move monsters 1d8 or 3d4
+	MOVE.L	$0014(A3),$0024(A2)	;move monsters 1d8 or 3d8
 	MOVE.W	$0008(A3),$0018(A2)	;all monster have $000A here
 	MOVE.W	D4,D3
 	MULU.W	#10,D3
 	EXT.L	D3
 	MOVE.L	D3,-(A7)
+
 	MOVE.L	A2,-(A7)
 	JSR	_exp_add(PC)
 	ADDQ.W	#4,A7
 	EXT.L	D0
+
 	MOVE.L	(A7)+,D3
 	ADD.L	D0,D3
-	ADD.L	$000A(A3),D3
+	ADD.L	$000A(A3),D3		;add monsters EXP value
 	MOVE.L	D3,$001A(A2)
-	MOVE.W	$0006(A3),$0016(A2)
+	MOVE.W	$0006(A3),$0016(A2)	;copy the flags (mean,greedy...)
 	MOVE.B	#$01,$000E(A2)
 	CLR.L	$002E(A2)
 
@@ -22244,7 +22251,7 @@ L00A16:
 	CMPI.W	#25,-$60B4(A4)	;_level
 	BLE.B	L00A18
 
-	ADDQ.w	#$01,D3		;as amulet only from level 25 onwards
+	ADDQ.w	#$01,D3		;disguise as amulet only from level 25 onwards
 L00A18:
 	MOVE.W	D3,D0
 	JSR	_rnd
@@ -22327,7 +22334,7 @@ _exp_add:
 	MOVEM.L	D4/A2,-(A7)
 	MOVEA.L	$0008(A5),A2
 
-	MOVE.W	$001E(A2),D0	;creature rank (level)
+	MOVE.W	$001E(A2),D0	;creature level
 
 	MOVE.W	$0028(A2),D4	;maxhp
 	EXT.L	D4
@@ -23503,6 +23510,7 @@ L00AB3:
 _mouse_char:
 	LINK	A5,#-$0006
 	MOVEM.L	D4-D7/A2/A3,-(A7)
+
 	MOVE.W	$0008(A5),D4
 	MOVE.W	$000A(A5),D5
 	MOVE.W	-$52C0(A4),D3	;_player + 10
@@ -23515,6 +23523,7 @@ _mouse_char:
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BNE.W	L00AB8
+
 	MOVE.W	-$533C(A4),-(A7)
 	MOVE.W	-$533E(A4),-(A7)
 	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
@@ -23529,6 +23538,7 @@ L00AB4:
 L00AB5:
 	TST.W	D7
 	BNE.B	L00AB6
+
 	TST.W	D6
 	BEQ.B	L00AB7
 L00AB6:
@@ -23542,6 +23552,7 @@ L00AB6:
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BEQ.B	L00AB7
+
 	MOVE.W	-$533C(A4),-(A7)
 	MOVE.W	-$533E(A4),-(A7)
 	MOVE.W	-$52C0(A4),D3	;_player + 10
@@ -23555,6 +23566,7 @@ L00AB6:
 	MOVEA.W	D0,A3
 	CMPA.W	A2,A3
 	BGE.B	L00AB7
+
 	MOVE.W	D7,-$0006(A5)
 	MOVE.W	D6,-$0004(A5)
 	MOVEA.W	A3,A2
@@ -23583,6 +23595,7 @@ L00AB8:
 	LEA	-$6758(A4),A6	;_mvt
 	MOVE.B	$00(A6,D3.L),D0
 	EXT.W	D0
+
 	MOVEM.L	(A7)+,D4-D7/A2/A3
 	UNLK	A5
 	RTS
@@ -29061,136 +29074,188 @@ _lvl_obj:
 _mlist:
 	dc.l	$00000000
 
-; 4=treasure, 8=flags, 12=$A, 14=$0, 16=EXP, 18=xd8 HP, 20=AC, 22=$1
+; 4=treasure, 6=flags, 8=$A, 10=EXP, 14=xd8 HP, 16=AC, 18=$1
 
 _monsters:
 	dc.l	L0075D		; #12 aquator, 8-17
-	dc.w	$0000,$0020,$000A,$0000,$0014,$0005,$0002,$0001
+	dc.w	$0000,$0020,$000A
+	dc.l	$00000014	;EXP
+	dc.w	$0005,$0002,$0001
 	dc.l	L0075E		;0d0/0d0
 	dc.w	$0000
 
 	dc.l	L0075F		; #3 bat, 0-8
-	dc.w	$0000,$8000,$000A,$0000,$0001,$0001,$0003,$0001
+	dc.w	$0000,$8000,$000A
+	dc.l	$00000001	;EXP
+	dc.w	$0001,$0003,$0001
 	dc.l	L00760		;1d2
 	dc.w	$0000
 
 	dc.l	L00761		; #11 centaur, 7-16
-	dc.w	$000F,$0000,$000A,$0000,$0019,$0004,$0004,$0001
+	dc.w	$000F,$0000,$000A
+	dc.l	$00000019	;EXP
+	dc.w	$0004,$0004,$0001
 	dc.l	L00762		;1d6/1d6
 	dc.w	$0000
 
 	dc.l	L00763		; #26 dragon, 22-26
-	dc.w	$0064,$0020,$000A,$0000,$1A90,$000A,$FFFF,$0001
+	dc.w	$0064,$0020,$000A
+	dc.l	$00001A90	;EXP
+	dc.w	$000A,$FFFF,$0001
 	dc.l	L00764		; 1d8/1d8/3d10
 	dc.w	$0000
 
 	dc.l	L00765		; #2 emu, 0-8
-	dc.w	$0000,$0020,$000A,$0000,$0002,$0001,$0007,$0001
+	dc.w	$0000,$0020,$000A
+	dc.l	$00000002	;EXP
+	dc.w	$0001,$0007,$0001
 	dc.l	L00766		; 1d2
 	dc.w	$0000
 
 	dc.l	L00767		; #18 venus flytrap, 14-23
-	dc.w	$0000,$0020,$000A,$0000,$0050,$0008,$0003,$0001
+	dc.w	$0000,$0020,$000A
+	dc.l	$00000050	;EXP
+	dc.w	$0008,$0003,$0001
 	dc.l	L00768		; %%%d0
 	dc.w	$0000
 
 	dc.l	L00769		; #21 griffin, 17-26
-	dc.w	$0014,$8220,$000A,$0000,$07D0,$000D,$0002,$0001
+	dc.w	$0014,$8220,$000A
+	dc.l	$000007D0	;EXP
+	dc.w	$000D,$0002,$0001
 	dc.l	L0076A		; 4d3/3d5/4d3
 	dc.w	$0000
 
 	dc.l	L0076B		; #4 hobgoblin, 0-9
-	dc.w	$0000,$0020,$000A,$0000,$0003,$0001,$0005,$0001
+	dc.w	$0000,$0020,$000A
+	dc.l	$00000003	;EXP
+	dc.w	$0001,$0005,$0001
 	dc.l	L0076C		; 1d8
 	dc.w	$0000
 
 	dc.l	L0076D		; #5 ice monster, 0-10
-	dc.w	$0000,$0020,$000A,$0000,$000F,$0001,$0009,$0001
+	dc.w	$0000,$0020,$000A
+	dc.l	$0000000F	;EXP
+	dc.w	$0001,$0009,$0001
 	dc.l	L0076E		; 1d2
 	dc.w	$0000
 
 	dc.l	L0076F		; #25 jabberwock, 21-26
-	dc.w	$0046,$0000,$000A,$0000,$0FA0,$000F,$0006,$0001
+	dc.w	$0046,$0000,$000A
+	dc.l	$00000FA0	;EXP
+	dc.w	$000F,$0006,$0001
 	dc.l	L00770		; 2d12/2d4
 	dc.w	$0000
 
 	dc.l	L00771		; #1 kestral, 0-8
-	dc.w	$0000,$8020,$000A,$0000,$0001,$0001,$0007,$0001
+	dc.w	$0000,$8020,$000A
+	dc.l	$00000001	;EXP
+	dc.w	$0001,$0007,$0001
 	dc.l	L00772		; 1d4
 	dc.w	$0000
 
 	dc.l	L00773		; #10 leprechaun, 6-15
-	dc.w	$0040,$0000,$000A,$0000,$000A,$0003,$0008,$0001
+	dc.w	$0040,$0000,$000A
+	dc.l	$0000000A	;EXP
+	dc.w	$0003,$0008,$0001
 	dc.l	L00774		; 1d2
 	dc.w	$0000
 
 	dc.l	L00775		; #21 medusa, 18-26
-	dc.w	$0028,$0020,$000A,$0000,$00C8,$0008,$0002,$0001
+	dc.w	$0028,$0020,$000A
+	dc.l	$000000C8	;EXP
+	dc.w	$0008,$0002,$0001
 	dc.l	L00776		; 3d4/3d4
 	dc.w	$0000
 
 	dc.l	L00777		; #14 nymph, 10-19
-	dc.w	$0064,$0000,$000A,$0000,$0025,$0003,$0009,$0001
+	dc.w	$0064,$0000,$000A
+	dc.l	$00000025	;EXP
+	dc.w	$0003,$0009,$0001
 	dc.l	L00778		; 0d0
 	dc.w	$0000
 
 	dc.l	L00779		; #7 orc, 3-12
-	dc.w	$000F,$0040,$000A,$0000,$0005,$0001,$0006,$0001
+	dc.w	$000F,$0040,$000A
+	dc.l	$00000005	;EXP
+	dc.w	$0001,$0006,$0001
 	dc.l	L0077A		; 1d8
 	dc.w	$0000
 
 	dc.l	L0077B		; #19 phantom, 15-24
-	dc.w	$0000,$0010,$000A,$0000,$0078,$0008,$0003,$0001
+	dc.w	$0000,$0010,$000A
+	dc.l	$00000078	;EXP
+	dc.w	$0008,$0003,$0001
 	dc.l	L0077C		; 4d4
 	dc.w	$0000
 
 	dc.l	L0077D		; #13 quagga, 9-16
-	dc.w	$001E,$0020,$000A,$0000,$0020,$0003,$0002,$0001
+	dc.w	$001E,$0020,$000A
+	dc.l	$00000020	;EXP
+	dc.w	$0003,$0002,$0001
 	dc.l	L0077E		; 1d2/1d2/1d4
 	dc.w	$0000
 
 	dc.l	L0077F		; #8 rattlesnake, 4-13
-	dc.w	$0000,$0020,$000A,$0000,$0009,$0002,$0003,$0001
+	dc.w	$0000,$0020,$000A
+	dc.l	$00000009	;EXP
+	dc.w	$0002,$0003,$0001
 	dc.l	L00780		; 1d6
 	dc.w	$0000
 
 	dc.l	L00781		; #6 slime, 2-11
-	dc.w	$0000,$0020,$000A,$0000,$0001,$0002,$0008,$0001
+	dc.w	$0000,$0020,$000A
+	dc.l	$00000001	;EXP
+	dc.w	$0002,$0008,$0001
 	dc.l	L00782		; 1d3
 	dc.w	$0000
 
 	dc.l	L00783		; #16 troll, 12-21
-	dc.w	$0032,$0220,$000A,$0000,$0078,$0006,$0004,$0001
+	dc.w	$0032,$0220,$000A
+	dc.l	$00000078	;EXP
+	dc.w	$0006,$0004,$0001
 	dc.l	L00784		; 1d8/1d8/2d6
 	dc.w	$0000
 
 	dc.l	L00785		; #20 ur-vile, 16-25
-	dc.w	$0000,$0020,$000A,$0000,$00BE,$0007,$FFFE,$0001
+	dc.w	$0000,$0020,$000A
+	dc.l	$000000BE	;EXP
+	dc.w	$0007,$FFFE,$0001
 	dc.l	L00786		; 1d3/1d3/1d3/4d6
 	dc.w	$0000
 
 	dc.l	L00787		; #24 vampire, 19-26
-	dc.w	$0014,$0220,$000A,$0000,$015E,$0008,$0001,$0001
+	dc.w	$0014,$0220,$000A
+	dc.l	$0000015E	;EXP
+	dc.w	$0008,$0001,$0001
 	dc.l	L00788		; 1d10
 	dc.w	$0000
 
 	dc.l	L00789		; #17 wraith, 13-22
-	dc.w	$0000,$0000,$000A,$0000,$0037,$0005,$0004,$0001
+	dc.w	$0000,$0000,$000A
+	dc.l	$00000037	;EXP
+	dc.w	$0005,$0004,$0001
 	dc.l	L0078A		; 1d6
 	dc.w	$0000
 
 	dc.l	L0078B		; #23 xeroc, 19-26
-	dc.w	$001E,$0000,$000A,$0000,$0064,$0007,$0007,$0001
+	dc.w	$001E,$0000,$000A
+	dc.l	$00000064	;EXP
+	dc.w	$0007,$0007,$0001
 	dc.l	L0078C		; 3d4
 	dc.w	$0000
 
 	dc.l	L0078D		; #15 yeti, 11-20
-	dc.w	$001E,$0000,$000A,$0000,$0032,$0004,$0006,$0001
+	dc.w	$001E,$0000,$000A
+	dc.l	$00000032	;EXP
+	dc.w	$0004,$0006,$0001
 	dc.l	L0078E		; 1d6/1d6
 	dc.w	$0000
 
 	dc.l	L0078F		; #9 zombie, 5-14
-	dc.w	$0000,$0020,$000A,$0000,$0006,$0002,$0008,$0001
+	dc.w	$0000,$0020,$000A
+	dc.l	$00000006	;EXP
+	dc.w	$0002,$0008,$0001
 	dc.l	L00790		; 1d8
 	dc.w	$0000
 _things:
