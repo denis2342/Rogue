@@ -22184,9 +22184,8 @@ _new_monster:
 	EXT.W	D3
 	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
-	LEA	-$6CA8(A4),A6	;_monsters
-	MOVEA.L	D3,A3
-	ADDA.L	A6,A3
+	LEA	-$6CA8(A4),A3	;_monsters
+	ADDA.L	D3,A3
 	MOVE.W	$000E(A3),D3	; number for xd8 HP
 	ADD.W	D4,D3
 	MOVE.W	D3,$001E(A2)
