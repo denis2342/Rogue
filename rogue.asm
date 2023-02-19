@@ -15279,7 +15279,7 @@ L00689:
 
 	cmp.b	-$46d8(A4),d4	;_all_clear + 1
 	bne	1$
-	move.b	#2,-$77CE(A4)	;changes the color in IntuiText
+	move.b	#3,-$77CE(A4)	;changes the color in IntuiText
 
 1$	MOVEA.L	$000A(A5),A6
 	MOVE.W	$0026(A6),D3
