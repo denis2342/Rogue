@@ -21264,7 +21264,7 @@ L00998:
 	JSR	_add_dam(PC)
 	ADDQ.W	#2,A7
 
-	MOVEM.L	D0-D7/A0-A3,-(A7)	;DEBUG here
+	MOVEM.L	D0/D4-D6/A0-A3,-(A7)	;DEBUG here
 	move.w	$000A(A3),-(a7)
 	moveq	#11,d1
 	sub.w	-$000A(A5),d1
@@ -21277,7 +21277,7 @@ L00998:
 	pea	debugtext
 	jsr	_db_print
 	LEA	$0012(A7),A7
-	MOVEM.L	(A7)+,D0-D7/A0-A3
+	MOVEM.L	(A7)+,D0/D4-D6/A0-A3
 
 	ADD.W	D6,D0
 	MOVE.W	D0,D7
