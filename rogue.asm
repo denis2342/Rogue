@@ -562,7 +562,7 @@ _init_materials:
 L00084:
 	CLR.B	$00(A6,D4.W)
 	ADDQ.W	#1,D4
-	CMP.W	#$0021,D4
+	CMP.W	#$0021,D4	;'!' potions
 	BCS.B	L00084
 
 	MOVEQ	#$00,D4
@@ -570,7 +570,7 @@ L00084:
 L00086:
 	CLR.B	$00(A6,D4.W)
 	ADDQ.W	#1,D4
-	CMP.W	#$0016,D4
+	CMP.W	#$0016,D4	;?
 	BCS.B	L00086
 
 	MOVEQ	#$00,D4
@@ -635,6 +635,7 @@ L0008C:
 	CLR.B	$00(A6,D4.W)
 	CMP.W	#$0000,D4
 	BLE.B	L0008D
+
 	MOVE.W	D4,D3
 	EXT.L	D3
 	ASL.L	#3,D3
@@ -650,6 +651,7 @@ L0008D:
 	ADDQ.W	#1,D4
 	CMP.W	#$000E,D4
 	BLT.W	L00088
+
 	MOVEM.L	(A7)+,D4/D5/A2
 	UNLK	A5
 	RTS
@@ -895,16 +897,19 @@ L00098:
 	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISHELD,D3	;C_ISHELD
 	BEQ.B	L00099
+
 	CMP.B	#$46,D4		;'F'
 	BEQ.B	L00099
+
 	PEA	L000C6(PC)	;"you are being held"
 	JSR	_msg
 	ADDQ.W	#4,A7
 	BRA.W	L00090
 L00099:
-	TST.W	-$6096(A4)
+	TST.W	-$6096(A4)	;_fall_level
 	BEQ.B	L0009A
-	SUBQ.W	#1,-$6096(A4)
+
+	SUBQ.W	#1,-$6096(A4)	;_fall_level
 	PEA	L000C7(PC)	;"Wild magic pulls you through the floor"
 	JSR	_descend(PC)
 	ADDQ.W	#4,A7
@@ -4929,11 +4934,11 @@ _runners:
 	BRA.W	L0023B
 L00234:
 	MOVE.W	$0016(A2),D3
-	AND.W	#$0080,D3	;ISHELD
+	AND.W	#C_ISHELD,D3	;C_ISHELD
 	BNE.W	L0023A
 
 	MOVE.W	$0016(A2),D3
-	AND.W	#$0004,D3	;ISRUN
+	AND.W	#C_ISRUN,D3	;C_ISRUN
 	BEQ.W	L0023A
 
 	MOVE.W	$000A(A2),-(A7)
@@ -4942,15 +4947,13 @@ L00234:
 	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
 	JSR	_DISTANCE
 	ADDQ.W	#8,A7
+
 	MOVE.W	D0,D4
 	MOVE.W	$0016(A2),D3
-	AND.W	#$2000,D3	;ISSLOW
+	AND.W	#C_ISSLOW,D3	;C_ISSLOW
 	BNE.B	L00235
 
-;	MOVE.B	$000F(A2),D3
-;	EXT.W	D3
-;	CMP.W	#$0053,D3	;'S' slime?
-	cmp.b	#$53,$000F(A2),
+	cmp.b	#$53,$000F(A2)	;'S' slime
 	BNE.B	L00236
 
 	CMP.W	#$0003,D4
@@ -4964,7 +4967,7 @@ L00236:
 	ADDQ.W	#4,A7
 L00237:
 	MOVE.W	$0016(A2),D3
-	AND.W	#$4000,D3	;ISHASTE
+	AND.W	#C_ISHASTE,D3	;C_ISHASTE
 	BEQ.B	L00238
 
 	MOVE.L	A2,-(A7)
@@ -29061,184 +29064,288 @@ _mlist:
 
 _monsters:
 	dc.l	L0075D		; #12 aquator, 8-17
-	dc.w	$0000,$0020,$000A
+	dc.w	$0000
+	dc.w	C_ISMEAN	;flags
+	dc.w	$000A
 	dc.l	20		;EXP
-	dc.w	$0005,$0002,$0001
+	dc.w	5		;5d8
+	dc.w	2		;AC 9
+	dc.w	1
 	dc.l	L0075E		;0d0/0d0
 	dc.w	$0000
 
 	dc.l	L0075F		; #3 bat, 0-8
-	dc.w	$0000,$8000,$000A
+	dc.w	$0000
+	dc.w	C_ISFLY		;flags
+	dc.w	$000A
 	dc.l	1		;EXP
-	dc.w	$0001,$0003,$0001
+	dc.w	1		;1d8
+	dc.w	3		;AC 8
+	dc.w	1
 	dc.l	L00760		;1d2
 	dc.w	$0000
 
 	dc.l	L00761		; #11 centaur, 7-16
-	dc.w	$000F,$0000,$000A
+	dc.w	$000F
+	dc.w	0		;flags
+	dc.w	$000A
 	dc.l	25		;EXP
-	dc.w	$0004,$0004,$0001
+	dc.w	4		;4d8
+	dc.w	4		;AC 7
+	dc.w	1
 	dc.l	L00762		;1d6/1d6
 	dc.w	$0000
 
 	dc.l	L00763		; #26 dragon, 22-26
-	dc.w	$0064,$0020,$000A
+	dc.w	$0064
+	dc.w	C_ISMEAN	;flags
+	dc.w	$000A
 	dc.l	6800		;EXP
-	dc.w	$000A,$FFFF,$0001
+	dc.w	10		;10d8
+	dc.w	-1		;AC 12
+	dc.w	1
 	dc.l	L00764		; 1d8/1d8/3d10
 	dc.w	$0000
 
 	dc.l	L00765		; #2 emu, 0-8
-	dc.w	$0000,$0020,$000A
+	dc.w	$0000
+	dc.w	C_ISMEAN	;flags
+	dc.w	$000A
 	dc.l	2		;EXP
-	dc.w	$0001,$0007,$0001
+	dc.w	1		;1d8
+	dc.w	7		;AC 4
+	dc.w	1
 	dc.l	L00766		; 1d2
 	dc.w	$0000
 
 	dc.l	L00767		; #18 venus flytrap, 14-23
-	dc.w	$0000,$0020,$000A
+	dc.w	$0000
+	dc.w	C_ISMEAN	;flags
+	dc.w	$000A
 	dc.l	80		;EXP
-	dc.w	$0008,$0003,$0001
+	dc.w	8		;8d8
+	dc.w	3		;AC 8
+	dc.w	1
 	dc.l	L00768		; %%%d0
 	dc.w	$0000
 
 	dc.l	L00769		; #21 griffin, 17-26
-	dc.w	$0014,$8220,$000A
+	dc.w	$0014
+	dc.w	C_ISMEAN|C_ISFLY|C_ISREGEN	;flags
+	dc.w	$000A
 	dc.l	2000		;EXP
-	dc.w	$000D,$0002,$0001
+	dc.w	13		;13d8
+	dc.w	2		;AC 9
+	dc.w	1
 	dc.l	L0076A		; 4d3/3d5/4d3
 	dc.w	$0000
 
 	dc.l	L0076B		; #4 hobgoblin, 0-9
-	dc.w	$0000,$0020,$000A
+	dc.w	$0000
+	dc.w	C_ISMEAN	;flags
+	dc.w	$000A
 	dc.l	3		;EXP
-	dc.w	$0001,$0005,$0001
+	dc.w	1		;1d8
+	dc.w	5		;AC 6
+	dc.w	1
 	dc.l	L0076C		; 1d8
 	dc.w	$0000
 
 	dc.l	L0076D		; #5 ice monster, 0-10
-	dc.w	$0000,$0020,$000A
+	dc.w	$0000
+	dc.w	C_ISMEAN	;flags
+	dc.w	$000A
 	dc.l	15		;EXP
-	dc.w	$0001,$0009,$0001
+	dc.w	1		;1d8
+	dc.w	9		;AC 2
+	dc.w	1
 	dc.l	L0076E		; 1d2
 	dc.w	$0000
 
 	dc.l	L0076F		; #25 jabberwock, 21-26
-	dc.w	$0046,$0000,$000A
+	dc.w	$0046
+	dc.w	0		;flags
+	dc.w	$000A
 	dc.l	4000		;EXP
-	dc.w	$000F,$0006,$0001
+	dc.w	15		;15d8
+	dc.w	6		;AC 5
+	dc.w	1
 	dc.l	L00770		; 2d12/2d4
 	dc.w	$0000
 
 	dc.l	L00771		; #1 kestral, 0-8
-	dc.w	$0000,$8020,$000A
+	dc.w	$0000
+	dc.w	C_ISMEAN|C_ISFLY	;flags
+	dc.w	$000A
 	dc.l	1		;EXP
-	dc.w	$0001,$0007,$0001
+	dc.w	1		;1d8
+	dc.w	7		;AC 4
+	dc.w	1
 	dc.l	L00772		; 1d4
 	dc.w	$0000
 
 	dc.l	L00773		; #10 leprechaun, 6-15
-	dc.w	$0040,$0000,$000A
+	dc.w	$0040
+	dc.w	0		;flags
+	dc.w	$000A
 	dc.l	10		;EXP
-	dc.w	$0003,$0008,$0001
+	dc.w	3		;3d8
+	dc.w	8		;AC 3
+	dc.w	1
 	dc.l	L00774		; 1d2
 	dc.w	$0000
 
 	dc.l	L00775		; #21 medusa, 18-26
-	dc.w	$0028,$0020,$000A
+	dc.w	$0028
+	dc.w	C_ISMEAN	;flags
+	dc.w	$000A
 	dc.l	200		;EXP
-	dc.w	$0008,$0002,$0001
+	dc.w	8		;8d8
+	dc.w	2		;AC 9
+	dc.w	1
 	dc.l	L00776		; 3d4/3d4
 	dc.w	$0000
 
 	dc.l	L00777		; #14 nymph, 10-19
-	dc.w	$0064,$0000,$000A
+	dc.w	$0064
+	dc.w	0		;flags
+	dc.w	$000A
 	dc.l	37		;EXP
-	dc.w	$0003,$0009,$0001
+	dc.w	3		;3d8
+	dc.w	9		;AC 2
+	dc.w	1
 	dc.l	L00778		; 0d0
 	dc.w	$0000
 
 	dc.l	L00779		; #7 orc, 3-12
-	dc.w	$000F,$0040,$000A
+	dc.w	$000F
+	dc.w	C_ISGREED	;flags
+	dc.w	$000A
 	dc.l	5		;EXP
-	dc.w	$0001,$0006,$0001
+	dc.w	1		;1d8
+	dc.w	6		;AC 5
+	dc.w	1
 	dc.l	L0077A		; 1d8
 	dc.w	$0000
 
 	dc.l	L0077B		; #19 phantom, 15-24
-	dc.w	$0000,$0010,$000A
+	dc.w	$0000
+	dc.w	C_ISINVIS	;flags
+	dc.w	$000A
 	dc.l	120		;EXP
-	dc.w	$0008,$0003,$0001
+	dc.w	8		;8d8
+	dc.w	3		;AC 8
+	dc.w	1
 	dc.l	L0077C		; 4d4
 	dc.w	$0000
 
 	dc.l	L0077D		; #13 quagga, 9-16
-	dc.w	$001E,$0020,$000A
+	dc.w	$001E
+	dc.w	C_ISMEAN	;flags
+	dc.w	$000A
 	dc.l	32		;EXP
-	dc.w	$0003,$0002,$0001
+	dc.w	3		;3d8
+	dc.w	2		;AC 9
+	dc.w	1
 	dc.l	L0077E		; 1d2/1d2/1d4
 	dc.w	$0000
 
 	dc.l	L0077F		; #8 rattlesnake, 4-13
-	dc.w	$0000,$0020,$000A
+	dc.w	$0000
+	dc.w	C_ISMEAN	;flags
+	dc.w	$000A
 	dc.l	9		;EXP
-	dc.w	$0002,$0003,$0001
+	dc.w	2		;2d8
+	dc.w	3		;AC 8
+	dc.w	1
 	dc.l	L00780		; 1d6
 	dc.w	$0000
 
 	dc.l	L00781		; #6 slime, 2-11
-	dc.w	$0000,$0020,$000A
+	dc.w	$0000
+	dc.w	C_ISMEAN	;flags
+	dc.w	$000A
 	dc.l	1		;EXP
-	dc.w	$0002,$0008,$0001
+	dc.w	2		;2d8
+	dc.w	8		;AC 3
+	dc.w	1
 	dc.l	L00782		; 1d3
 	dc.w	$0000
 
 	dc.l	L00783		; #16 troll, 12-21
-	dc.w	$0032,$0220,$000A
+	dc.w	$0032
+	dc.w	C_ISMEAN|C_ISREGEN	;flags
+	dc.w	$000A
 	dc.l	120		;EXP
-	dc.w	$0006,$0004,$0001
+	dc.w	6		;6d8
+	dc.w	4		;AC 7
+	dc.w	1
 	dc.l	L00784		; 1d8/1d8/2d6
 	dc.w	$0000
 
 	dc.l	L00785		; #20 ur-vile, 16-25
-	dc.w	$0000,$0020,$000A
+	dc.w	$0000
+	dc.w	C_ISMEAN	;flags
+	dc.w	$000A
 	dc.l	190		;EXP
-	dc.w	$0007,$FFFE,$0001
+	dc.w	7		;7d8
+	dc.w	-2		;AC 13
+	dc.w	1
 	dc.l	L00786		; 1d3/1d3/1d3/4d6
 	dc.w	$0000
 
 	dc.l	L00787		; #24 vampire, 19-26
-	dc.w	$0014,$0220,$000A
+	dc.w	$0014
+	dc.w	C_ISMEAN|C_ISREGEN	;flags
+	dc.w	$000A
 	dc.l	350		;EXP
-	dc.w	$0008,$0001,$0001
+	dc.w	8		;8d8
+	dc.w	1		;AC 10
+	dc.w	1
 	dc.l	L00788		; 1d10
 	dc.w	$0000
 
 	dc.l	L00789		; #17 wraith, 13-22
-	dc.w	$0000,$0000,$000A
+	dc.w	$0000
+	dc.w	0		;flags
+	dc.w	$000A
 	dc.l	55		;EXP
-	dc.w	$0005,$0004,$0001
+	dc.w	5		;5d8
+	dc.w	4		;AC 7
+	dc.w	1
 	dc.l	L0078A		; 1d6
 	dc.w	$0000
 
 	dc.l	L0078B		; #23 xeroc, 19-26
-	dc.w	$001E,$0000,$000A
+	dc.w	$001E
+	dc.w	0		;flags
+	dc.w	$000A
 	dc.l	100		;EXP
-	dc.w	$0007,$0007,$0001
+	dc.w	7		;7d8
+	dc.w	7		;AC 4
+	dc.w	1
 	dc.l	L0078C		; 3d4
 	dc.w	$0000
 
 	dc.l	L0078D		; #15 yeti, 11-20
-	dc.w	$001E,$0000,$000A
+	dc.w	$001E
+	dc.w	0		;flags
+	dc.w	$000A
 	dc.l	50		;EXP
-	dc.w	$0004,$0006,$0001
+	dc.w	4		;4d8
+	dc.w	6		;AC 5
+	dc.w	1
 	dc.l	L0078E		; 1d6/1d6
 	dc.w	$0000
 
 	dc.l	L0078F		; #9 zombie, 5-14
-	dc.w	$0000,$0020,$000A
+	dc.w	$0000
+	dc.w	C_ISMEAN	;flags
+	dc.w	$000A
 	dc.l	6		;EXP
-	dc.w	$0002,$0008,$0001
+	dc.w	2		;2d8
+	dc.w	8		;AC 3
+	dc.w	1
 	dc.l	L00790		; 1d8
 	dc.w	$0000
 _things:
