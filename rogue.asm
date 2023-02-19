@@ -22327,26 +22327,29 @@ _exp_add:
 	MOVEM.L	D4/A2,-(A7)
 	MOVEA.L	$0008(A5),A2
 
-	MOVE.W	$001E(A2),D0
+	MOVE.W	$001E(A2),D0	;creature rank (level)
 
 	MOVE.W	$0028(A2),D4	;maxhp
 	EXT.L	D4
 
 	CMPI.W	#$0001,D0	;lvl
 	BNE.B	L00A27
-	DIVS.W	#8,D4
+
+	DIVS.W	#8,D4		;divide by 8 if level is one
 	BRA.B	L00A28
 L00A27:
-	DIVS.W	#6,D4
+	DIVS.W	#6,D4		;divide by 6 otherwise
 L00A28:
 	CMPI.W	#9,D0		;lvl
 	BLE.B	L00A29
-	MULU.W	#20,D4
+
+	MULU.W	#20,D4		;from level 10 and more
 	BRA.B	L00A2A
 L00A29:
 	CMPI.W	#6,D0		;lvl
 	BLE.B	L00A2A
-	MULU.W	#4,D4
+
+	MULU.W	#4,D4		;from level 6 to 9
 L00A2A:
 	MOVE.W	D4,D0
 
