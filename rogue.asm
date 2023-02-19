@@ -1825,7 +1825,7 @@ _wmap:
 	ADDQ.W	#4,A7
 	CLR.L	-$5144(A4)	;_TextWin
 	ST	-$7064(A4)	;_map_up
-	MOVE.L	-$5148(A4),-$514C(A4)	;,_StdWin
+	MOVE.L	-$5148(A4),-$514C(A4)	;_RogueWin,_StdWin
 	JSR	_intui_sync(PC)
 L00102:
 ;	UNLK	A5
@@ -2050,7 +2050,7 @@ L00109:
 	PEA	L00117(PC)	;"rogue.char"
 	JSR	_open
 	ADDQ.W	#6,A7
-	MOVE.W	D0,D5
+	MOVE.W	D0,D5		;char filehd
 ;	CMP.W	#$0000,D0
 	BGE.B	L0010B
 
@@ -2111,27 +2111,32 @@ readCharEnd:
 	PEA	-$7852(A4)	;_NewScreen
 	JSR	_OpenScreen
 	ADDQ.W	#4,A7
+
 	MOVE.L	D0,-$5150(A4)	;_StdScr
 ;	TST.L	D0
 	BNE.B	L0010F
+
 	PEA	L0011A(PC)	;"No Screen"
 	JSR	_fatal
 	ADDQ.W	#4,A7
 L0010F:
-	PEA	$0009
-	PEA	$000A
-	PEA	$0004
+	PEA	$0009		;height
+	PEA	$000A		;width
+	PEA	$0004		;number of planes (bits per color)
 	PEA	-$517C(A4)	;_chbm
 	JSR	_InitBitMap
 	LEA	$0010(A7),A7
+
 	MOVE.L	-$5150(A4),-$7814(A4)	;_StdScr
 	PEA	-$7832(A4)		;_Window1
 	JSR	_OpenWindow
 	ADDQ.W	#4,A7
-	MOVE.L	D0,-$5148(A4)
+
+	MOVE.L	D0,-$5148(A4)	;_RogueWin
 	MOVE.L	D0,-$514C(A4)	;_StdWin
 ;	TST.L	D0
 	BNE.B	L00110
+
 	PEA	L0011B(PC)
 	JSR	_fatal
 	ADDQ.W	#4,A7
@@ -2170,14 +2175,14 @@ L0011C:
 	JSR	_CloseWindow
 	ADDQ.W	#4,A7
 L0011D:
-	TST.L	-$5148(A4)
+	TST.L	-$5148(A4)	;_RogueWin
 	BEQ.B	L0011E
 
-	MOVE.L	-$5148(A4),-(A7)
+	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
 	JSR	_ClearMenuStrip
 	ADDQ.W	#4,A7
 
-	MOVE.L	-$5148(A4),-(A7)
+	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
 	JSR	_CloseWindow
 	ADDQ.W	#4,A7
 L0011E:
@@ -2220,7 +2225,7 @@ _ScreenTitle:
 
 	PEA	-$5542(A4)
 	PEA	-$1
-	MOVE.L	-$5148(A4),-(A7)
+	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
 	JSR	_SetWindowTitles
 	LEA	$000C(A7),A7
 
@@ -20332,13 +20337,13 @@ L00938:
 	PEA	-$52CA(A4)	;_player + 0
 	JSR	_roll_em(PC)
 	LEA	$000E(A7),A7
-	TST.W	D0
+	TST.W	D0		;did we hit?
 	BNE.B	L00939
 
 	MOVE.L	A3,D3
 	BEQ.W	L00940
 
-	CMPI.W	#$0021,$000A(A3)
+	CMPI.W	#$0021,$000A(A3)	;'!' potion
 	BNE.W	L00940
 L00939:
 	CLR.B	-$0001(A5)
@@ -20969,18 +20974,19 @@ L00983:
 	MOVE.L	(A6)+,D2
 	BNE.B	L00982
 L00984:
-	ADDQ.W	#1,D4
+	ADDQ.W	#1,D4		;level of the player
 	MOVE.W	-$52AC(A4),D6	;_player + 30 (rank)
 	MOVE.W	D4,-$52AC(A4)	;_player + 30 (rank)
-	CMP.W	D6,D4
+	CMP.W	D6,D4		;compare old with new
 	BLE.B	L00986
 
-	MOVE.W	#$000A,-(A7)
+	MOVE.W	#$000A,-(A7)	;10
 	MOVE.W	D4,D3
-	SUB.W	D6,D3
+	SUB.W	D6,D3		;difference in level (mostly one)
 	MOVE.W	D3,-(A7)
-	JSR	_roll
+	JSR	_roll		;so mostly it is 1d10
 	ADDQ.W	#4,A7
+
 	MOVE.W	D0,D5
 	ADD.W	D5,-$52A2(A4)	;_player + 40 (max hp)
 	ADD.W	D5,-$52A8(A4)	;_player + 34 (hp)
@@ -22936,7 +22942,7 @@ _InstallMenus:
 	MOVE.L	D0,-$53A2(A4)
 
 	MOVE.L	-$53A2(A4),-(A7)
-	MOVE.L	-$5148(A4),-(A7)
+	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
 	JSR	_SetMenuStrip(PC)
 	ADDQ.W	#8,A7
 
@@ -23101,7 +23107,7 @@ L00A90:
 	RTS
 
 L00A91:
-	MOVE.L	-$5148(A4),-(A7)
+	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
 	JSR	_ClearMenuStrip
 	ADDQ.W	#4,A7
 	MOVEA.L	-$0006(A5),A6
@@ -23216,7 +23222,7 @@ L00A9A:
 	MOVE.L	A2,D3
 	BNE.B	L00A99
 	MOVE.L	-$53A2(A4),-(A7)
-	MOVE.L	-$5148(A4),-(A7)
+	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
 	JSR	_SetMenuStrip(PC)
 	ADDQ.W	#8,A7
 	BRA.W	L00A90
@@ -23316,7 +23322,7 @@ L00AAA:
 
 _fix_menu:
 	LINK	A5,#-$0000
-	MOVE.L	-$5148(A4),-(A7)
+	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
 	JSR	_ClearMenuStrip
 	ADDQ.W	#4,A7
 	MOVEQ	#$00,D3
@@ -23334,7 +23340,7 @@ _fix_menu:
 	BSR.B	_SetCheck
 	ADDQ.W	#6,A7
 	MOVE.L	-$53A2(A4),-(A7)
-	MOVE.L	-$5148(A4),-(A7)
+	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
 	JSR	_SetMenuStrip(PC)
 	ADDQ.W	#8,A7
 	UNLK	A5
@@ -25721,7 +25727,7 @@ _InitGadgets:
 	TST.W	-$5810(A4)
 	BEQ.B	L00B9C
 	CLR.L	-(A7)
-	MOVE.L	-$5148(A4),-(A7)
+	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
 	PEA	-$5894(A4)
 	JSR	_RefreshGadgets(PC)
 	LEA	$000C(A7),A7
@@ -25735,59 +25741,71 @@ L00B9C:
 	MOVE.W	#$0014,-(A7)
 	JSR	_malloc
 	ADDQ.W	#2,A7
+
 	MOVE.L	D0,-(A7)
 	PEA	L00B9D(PC)
 	JSR	_ctointui
 	LEA	$000A(A7),A7
+
 	MOVE.L	D0,-$584E(A4)
 	CLR.W	-(A7)
 	MOVE.W	#$0014,-(A7)
 	JSR	_malloc
 	ADDQ.W	#2,A7
+
 	MOVE.L	D0,-(A7)
 	PEA	L00B9E(PC)
 	JSR	_ctointui
 	LEA	$000A(A7),A7
+
 	MOVE.L	D0,-$587A(A4)
 	CLR.W	-(A7)
 	MOVE.W	#$0014,-(A7)
 	JSR	_malloc
 	ADDQ.W	#2,A7
+
 	MOVE.L	D0,-(A7)
 	PEA	L00B9F(PC)
 	JSR	_ctointui
 	LEA	$000A(A7),A7
+
 	MOVE.L	D0,-$5822(A4)
 	MOVE.W	#$FFFF,-(A7)
 	PEA	-$5894(A4)
-	MOVE.L	-$5148(A4),-(A7)
+	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
 	JSR	_AddGadget(PC)
 	LEA	$000A(A7),A7
+
 	MOVE.W	#$FFFF,-(A7)
 	PEA	-$5868(A4)
-	MOVE.L	-$5148(A4),-(A7)
+	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
 	JSR	_AddGadget(PC)
 	LEA	$000A(A7),A7
+
 	MOVE.W	#$FFFF,-(A7)
 	PEA	-$583C(A4)
-	MOVE.L	-$5148(A4),-(A7)
+	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
 	JSR	_AddGadget(PC)
 	LEA	$000A(A7),A7
+
 	CLR.L	-(A7)
-	MOVE.L	-$5148(A4),-(A7)
+	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
 	PEA	-$5894(A4)
 	JSR	_OnGadget(PC)
 	LEA	$000C(A7),A7
+
 	CLR.L	-(A7)
-	MOVE.L	-$5148(A4),-(A7)
+	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
 	PEA	-$5868(A4)
 	JSR	_OnGadget(PC)
 	LEA	$000C(A7),A7
+
 	CLR.L	-(A7)
-	MOVE.L	-$5148(A4),-(A7)
+	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
 	PEA	-$583C(A4)
 	JSR	_OnGadget(PC)
 	LEA	$000C(A7),A7
+
 	BRA.W	L00B9B
 
 L00B9D:	dc.b	"Rest",0
@@ -30001,7 +30019,11 @@ _IntuitionBase:	ds.l	1
 _GfxBase:	ds.l	1
 _LayersBase:	ds.l	1
 
-_chbm:	ds.l	10
+_chbm:	ds.w	1	;BytesPerRow
+	ds.w	1	;Rows
+	ds.w	1	;Flags
+	ds.w	1	;pad
+	ds.l	8	;planes[8]
 
 _p_row:
 	dc.w	$0000
