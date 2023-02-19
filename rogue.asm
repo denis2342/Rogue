@@ -11846,12 +11846,11 @@ _one_tick:
 	JSR	_DateStamp
 	ADDQ.W	#4,A7
 	MOVE.L	-$0004(A5),D4
-	BRA.B	L00518
 L00517:
 	PEA	-$000C(A5)
 	JSR	_DateStamp
 	ADDQ.W	#4,A7
-L00518:
+
 	CMP.L	-$0004(A5),D4
 	BEQ.B	L00517
 
