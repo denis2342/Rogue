@@ -22335,10 +22335,10 @@ _exp_add:
 	CMPI.W	#$0001,D0	;lvl
 	BNE.B	L00A27
 
-	DIVS.W	#8,D4		;divide by 8 if level is one
+	LSR.L	#3,D4		;divide by 8 if level is one
 	BRA.B	L00A28
 L00A27:
-	DIVS.W	#6,D4		;divide by 6 otherwise
+	DIVU.W	#6,D4		;divide by 6 otherwise
 L00A28:
 	CMPI.W	#9,D0		;lvl
 	BLE.B	L00A29
