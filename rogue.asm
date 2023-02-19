@@ -1853,34 +1853,13 @@ L00103:
 	RTS
 
 L00104:
-	MOVEQ	#$00,D5
-L00105:
-	MOVE.W	D5,D3
-;	EXT.L	D3
-	ASL.w	#2,D3
-
-	MOVEQ	#$00,D2
-	MOVE.B	D4,D2
-	ASL.w	#4,D2
-
-	MOVE.W	D5,D1
-	EXT.L	D1
-	ASL.L	#2,D1
-	ADD.L	D1,D2
-
-	LEA	-$5174(A4),A6	;_chbm + 8
 	LEA	-$5140(A4),A1	;_char_data
-	MOVE.L	$00(A1,D2.L),$00(A6,D3.w)
-	ADDQ.W	#1,D5
-	CMP.W	#$0004,D5
-	BLT.B	L00105
+	LEA	-$5174(A4),A6	;_chbm + 8
 
-	MOVE.W	-$5154(A4),D6	;_p_row
-	TST.B	-$7064(A4)	;_map_up
-	BEQ.B	L00106
+	add.w	d3,a1
 
-	ADD.W	#$000C,D6
-L00106:
+	movem.l	(a1)+,d0-d3	;copy the 4 plane pointers
+	movem.l	d0-d3,(a6)
 
 	MOVEA.L	-$514C(A4),A6	;_StdWin
 	MOVEA.L	$0032(A6),A1
@@ -1891,7 +1870,12 @@ L00106:
 
 	move.l	$0004(A1),a1	;dstbitmap
 	MOVE.W	-$5152(A4),D2	;_p_col ;dstx
-	move.l	d6,d3		;dsty
+	MOVE.W	-$5154(A4),D3	;_p_row = dsty
+
+	TST.B	-$7064(A4)	;_map_up
+	BEQ.B	L00106
+	ADD.W	#$000C,D3	;dsty + 12
+L00106:
 
 	moveq	#$000A,d4	;sizex
 	moveq	#$0009,d5	;sizey
