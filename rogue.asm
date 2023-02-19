@@ -29062,182 +29062,182 @@ _mlist:
 _monsters:
 	dc.l	L0075D		; #12 aquator, 8-17
 	dc.w	$0000,$0020,$000A
-	dc.l	$00000014	;EXP
+	dc.l	20		;EXP
 	dc.w	$0005,$0002,$0001
 	dc.l	L0075E		;0d0/0d0
 	dc.w	$0000
 
 	dc.l	L0075F		; #3 bat, 0-8
 	dc.w	$0000,$8000,$000A
-	dc.l	$00000001	;EXP
+	dc.l	1		;EXP
 	dc.w	$0001,$0003,$0001
 	dc.l	L00760		;1d2
 	dc.w	$0000
 
 	dc.l	L00761		; #11 centaur, 7-16
 	dc.w	$000F,$0000,$000A
-	dc.l	$00000019	;EXP
+	dc.l	25		;EXP
 	dc.w	$0004,$0004,$0001
 	dc.l	L00762		;1d6/1d6
 	dc.w	$0000
 
 	dc.l	L00763		; #26 dragon, 22-26
 	dc.w	$0064,$0020,$000A
-	dc.l	$00001A90	;EXP
+	dc.l	6800		;EXP
 	dc.w	$000A,$FFFF,$0001
 	dc.l	L00764		; 1d8/1d8/3d10
 	dc.w	$0000
 
 	dc.l	L00765		; #2 emu, 0-8
 	dc.w	$0000,$0020,$000A
-	dc.l	$00000002	;EXP
+	dc.l	2		;EXP
 	dc.w	$0001,$0007,$0001
 	dc.l	L00766		; 1d2
 	dc.w	$0000
 
 	dc.l	L00767		; #18 venus flytrap, 14-23
 	dc.w	$0000,$0020,$000A
-	dc.l	$00000050	;EXP
+	dc.l	80		;EXP
 	dc.w	$0008,$0003,$0001
 	dc.l	L00768		; %%%d0
 	dc.w	$0000
 
 	dc.l	L00769		; #21 griffin, 17-26
 	dc.w	$0014,$8220,$000A
-	dc.l	$000007D0	;EXP
+	dc.l	2000		;EXP
 	dc.w	$000D,$0002,$0001
 	dc.l	L0076A		; 4d3/3d5/4d3
 	dc.w	$0000
 
 	dc.l	L0076B		; #4 hobgoblin, 0-9
 	dc.w	$0000,$0020,$000A
-	dc.l	$00000003	;EXP
+	dc.l	3		;EXP
 	dc.w	$0001,$0005,$0001
 	dc.l	L0076C		; 1d8
 	dc.w	$0000
 
 	dc.l	L0076D		; #5 ice monster, 0-10
 	dc.w	$0000,$0020,$000A
-	dc.l	$0000000F	;EXP
+	dc.l	15		;EXP
 	dc.w	$0001,$0009,$0001
 	dc.l	L0076E		; 1d2
 	dc.w	$0000
 
 	dc.l	L0076F		; #25 jabberwock, 21-26
 	dc.w	$0046,$0000,$000A
-	dc.l	$00000FA0	;EXP
+	dc.l	4000		;EXP
 	dc.w	$000F,$0006,$0001
 	dc.l	L00770		; 2d12/2d4
 	dc.w	$0000
 
 	dc.l	L00771		; #1 kestral, 0-8
 	dc.w	$0000,$8020,$000A
-	dc.l	$00000001	;EXP
+	dc.l	1		;EXP
 	dc.w	$0001,$0007,$0001
 	dc.l	L00772		; 1d4
 	dc.w	$0000
 
 	dc.l	L00773		; #10 leprechaun, 6-15
 	dc.w	$0040,$0000,$000A
-	dc.l	$0000000A	;EXP
+	dc.l	10		;EXP
 	dc.w	$0003,$0008,$0001
 	dc.l	L00774		; 1d2
 	dc.w	$0000
 
 	dc.l	L00775		; #21 medusa, 18-26
 	dc.w	$0028,$0020,$000A
-	dc.l	$000000C8	;EXP
+	dc.l	200		;EXP
 	dc.w	$0008,$0002,$0001
 	dc.l	L00776		; 3d4/3d4
 	dc.w	$0000
 
 	dc.l	L00777		; #14 nymph, 10-19
 	dc.w	$0064,$0000,$000A
-	dc.l	$00000025	;EXP
+	dc.l	37		;EXP
 	dc.w	$0003,$0009,$0001
 	dc.l	L00778		; 0d0
 	dc.w	$0000
 
 	dc.l	L00779		; #7 orc, 3-12
 	dc.w	$000F,$0040,$000A
-	dc.l	$00000005	;EXP
+	dc.l	5		;EXP
 	dc.w	$0001,$0006,$0001
 	dc.l	L0077A		; 1d8
 	dc.w	$0000
 
 	dc.l	L0077B		; #19 phantom, 15-24
 	dc.w	$0000,$0010,$000A
-	dc.l	$00000078	;EXP
+	dc.l	120		;EXP
 	dc.w	$0008,$0003,$0001
 	dc.l	L0077C		; 4d4
 	dc.w	$0000
 
 	dc.l	L0077D		; #13 quagga, 9-16
 	dc.w	$001E,$0020,$000A
-	dc.l	$00000020	;EXP
+	dc.l	32		;EXP
 	dc.w	$0003,$0002,$0001
 	dc.l	L0077E		; 1d2/1d2/1d4
 	dc.w	$0000
 
 	dc.l	L0077F		; #8 rattlesnake, 4-13
 	dc.w	$0000,$0020,$000A
-	dc.l	$00000009	;EXP
+	dc.l	9		;EXP
 	dc.w	$0002,$0003,$0001
 	dc.l	L00780		; 1d6
 	dc.w	$0000
 
 	dc.l	L00781		; #6 slime, 2-11
 	dc.w	$0000,$0020,$000A
-	dc.l	$00000001	;EXP
+	dc.l	1		;EXP
 	dc.w	$0002,$0008,$0001
 	dc.l	L00782		; 1d3
 	dc.w	$0000
 
 	dc.l	L00783		; #16 troll, 12-21
 	dc.w	$0032,$0220,$000A
-	dc.l	$00000078	;EXP
+	dc.l	120		;EXP
 	dc.w	$0006,$0004,$0001
 	dc.l	L00784		; 1d8/1d8/2d6
 	dc.w	$0000
 
 	dc.l	L00785		; #20 ur-vile, 16-25
 	dc.w	$0000,$0020,$000A
-	dc.l	$000000BE	;EXP
+	dc.l	190		;EXP
 	dc.w	$0007,$FFFE,$0001
 	dc.l	L00786		; 1d3/1d3/1d3/4d6
 	dc.w	$0000
 
 	dc.l	L00787		; #24 vampire, 19-26
 	dc.w	$0014,$0220,$000A
-	dc.l	$0000015E	;EXP
+	dc.l	350		;EXP
 	dc.w	$0008,$0001,$0001
 	dc.l	L00788		; 1d10
 	dc.w	$0000
 
 	dc.l	L00789		; #17 wraith, 13-22
 	dc.w	$0000,$0000,$000A
-	dc.l	$00000037	;EXP
+	dc.l	55		;EXP
 	dc.w	$0005,$0004,$0001
 	dc.l	L0078A		; 1d6
 	dc.w	$0000
 
 	dc.l	L0078B		; #23 xeroc, 19-26
 	dc.w	$001E,$0000,$000A
-	dc.l	$00000064	;EXP
+	dc.l	100		;EXP
 	dc.w	$0007,$0007,$0001
 	dc.l	L0078C		; 3d4
 	dc.w	$0000
 
 	dc.l	L0078D		; #15 yeti, 11-20
 	dc.w	$001E,$0000,$000A
-	dc.l	$00000032	;EXP
+	dc.l	50		;EXP
 	dc.w	$0004,$0006,$0001
 	dc.l	L0078E		; 1d6/1d6
 	dc.w	$0000
 
 	dc.l	L0078F		; #9 zombie, 5-14
 	dc.w	$0000,$0020,$000A
-	dc.l	$00000006	;EXP
+	dc.l	6		;EXP
 	dc.w	$0002,$0008,$0001
 	dc.l	L00790		; 1d8
 	dc.w	$0000
