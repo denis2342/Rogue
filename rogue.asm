@@ -1759,14 +1759,14 @@ _alloc_raster:
 	ASR.W	#3,D3
 	AND.W	#$FFFE,D3
 	MULU.W	$000A(A5),D3
-	ADDQ.W	#1,D3
+;	ADDQ.W	#1,D3
 	EXT.L	D3
 	MOVE.L	D3,-(A7)
 	JSR	_lmalloc2
 	ADDQ.W	#4,A7
 
-	ADDQ.L	#1,D0
-	AND.L	#$FFFFFFFE,D0
+;	ADDQ.L	#1,D0
+;	AND.L	#$FFFFFFFE,D0
 	UNLK	A5
 	RTS
 
