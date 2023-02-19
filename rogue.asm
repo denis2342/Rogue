@@ -3411,10 +3411,9 @@ L00185:
 	CMP.W	-$60B4(A4),D0	;_level
 	BGE.B	L00188
 
-	MOVE.W	-$60B4(A4),D3	;_level
-	EXT.L	D3
-	DIVS.W	#$0004,D3
-	MOVE.W	D3,D0
+	MOVE.W	-$60B4(A4),D0	;_level
+	EXT.L	D0
+	DIVS.W	#$0004,D0
 	JSR	_rnd
 	ADDQ.W	#1,D0
 	MOVE.W	D0,-$60B8(A4)
