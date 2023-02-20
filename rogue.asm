@@ -1841,8 +1841,9 @@ __graphch:
 	MOVEQ	#$00,D3
 	MOVE.B	D4,D3
 	ASL.w	#4,D3
-	LEA	-$5140(A4),A6	;_char_data
-	TST.L	$00(A6,D3.w)
+	LEA	-$5140(A4),A1	;_char_data
+	ADD.L	D3,A1
+	TST.L	(A1)
 	BNE.B	L00104
 
 	MOVE.W	D4,-(A7)
@@ -1853,22 +1854,39 @@ L00103:
 	UNLK	A5
 	RTS
 
-L00104:
-	LEA	-$5140(A4),A1	;_char_data
-	LEA	-$5174(A4),A6	;_chbm + 8
+cache_value:	dc.l	-1
 
-	add.w	d3,a1
+playerbm:
+	dc.l	0
+	dc.l	0
+	ds.l	4
+
+L00104:
+	cmp.b	#$40,d4
+	bne	2$
+	lea	playerbm,a0
+	bra	_cache_quicker
+
+2$	cmp.b	cache_value(PC),D4
+	bne	1$
+	bra	_cache_quick
+
+1$	move.b	d4,cache_value
+
+;	LEA	-$5140(A4),A1	;_char_data
+	LEA	-$5174(A4),A6	;_chbm + 8
 
 	movem.l	(a1)+,d0-d3	;copy the 4 plane pointers
 	movem.l	d0-d3,(a6)
 
-	MOVEA.L	-$514C(A4),A6	;_StdWin
-	MOVEA.L	$0032(A6),A1
-
+_cache_quick:
 	lea	-$517C(A4),a0	;_chbm = srcbitmap
+_cache_quicker:
 	moveq	#0,d0
 	moveq	#0,d1
 
+	MOVEA.L	-$514C(A4),A6	;_StdWin
+	MOVEA.L	$0032(A6),A1
 	move.l	$0004(A1),a1	;dstbitmap
 	MOVE.W	-$5152(A4),D2	;_p_col ;dstx
 	MOVE.W	-$5154(A4),D3	;_p_row = dsty
@@ -2111,6 +2129,23 @@ L0010F:
 	PEA	-$517C(A4)	;_chbm
 	JSR	_InitBitMap
 	LEA	$0010(A7),A7
+
+	PEA	$0009		;height
+	PEA	$000A		;width
+	PEA	$0004		;number of planes (bits per color)
+	PEA	playerbm
+	JSR	_InitBitMap
+	LEA	$0010(A7),A7
+
+	LEA	-$5140(A4),A1	;_char_data
+	LEA	playerbm+8,A6	;playerbm + 8
+
+	moveq	#$40,d4
+	ASL.w	#4,D4
+	add.w	d4,a1
+
+	movem.l	(a1)+,d0-d3	;copy the 4 plane pointers
+	movem.l	d0-d3,(a6)
 
 	MOVE.L	-$5150(A4),-$7814(A4)	;_StdScr
 	PEA	-$7832(A4)		;_Window1
