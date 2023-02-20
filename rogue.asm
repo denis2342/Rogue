@@ -7986,16 +7986,18 @@ L00380:
 	JSR	_msg
 	ADDQ.W	#8,A7
 L00381:
-	TST.B	-$0083(A5)
-	BEQ.B	L00382
-	MOVE.W	#$000D,-(A7)
-	JSR	_set_attr(PC)
-	ADDQ.W	#2,A7
-	BRA.B	L00383
-L00382:
-	MOVE.W	#$0003,-(A7)
-	JSR	_set_attr(PC)
-	ADDQ.W	#2,A7
+;	TST.B	-$0083(A5)
+;	BEQ.B	L00382
+
+;	MOVE.W	#$000D,-(A7)
+;	JSR	_set_attr(PC)
+;	ADDQ.W	#2,A7
+
+;	BRA.B	L00383
+;L00382:
+;	MOVE.W	#$0003,-(A7)
+;	JSR	_set_attr(PC)
+;	ADDQ.W	#2,A7
 L00383:
 	JSR	_tick_pause
 
@@ -11215,60 +11217,60 @@ _addstr:
 	UNLK	A5
 	RTS
 
-_set_attr:
+;_set_attr:
 ;	LINK	A5,#-$0000
 ;	UNLK	A5
-	RTS
+;	RTS
 
-_error:
-	LINK	A5,#-$0004
-	PEA	-$0004(A5)
-	PEA	-$0002(A5)
-	JSR	_getrc(PC)
-	ADDQ.W	#8,A7
-
-	moveq	#0,d1
-	MOVE.W	$0008(A5),d0
-	JSR	_movequick
-
-	JSR	_clrtoeol(PC)
-	MOVE.W	$0016(A5),-(A7)
-	MOVE.W	$0014(A5),-(A7)
-	MOVE.W	$0012(A5),-(A7)
-	MOVE.W	$0010(A5),-(A7)
-	MOVE.W	$000E(A5),-(A7)
-	MOVE.L	$000A(A5),-(A7)
-	BSR.B	_printw
-	LEA	$000E(A7),A7
-
-	MOVE.W	-$0004(A5),d1
-	MOVE.W	-$0002(A5),d0
-	BSR	_movequick
-
-	UNLK	A5
-	RTS
+;_error:
+;	LINK	A5,#-$0004
+;	PEA	-$0004(A5)
+;	PEA	-$0002(A5)
+;	JSR	_getrc(PC)
+;	ADDQ.W	#8,A7
+;
+;	moveq	#0,d1
+;	MOVE.W	$0008(A5),d0
+;	JSR	_movequick
+;
+;	JSR	_clrtoeol(PC)
+;	MOVE.W	$0016(A5),-(A7)
+;	MOVE.W	$0014(A5),-(A7)
+;	MOVE.W	$0012(A5),-(A7)
+;	MOVE.W	$0010(A5),-(A7)
+;	MOVE.W	$000E(A5),-(A7)
+;	MOVE.L	$000A(A5),-(A7)
+;	BSR.B	_printw
+;	LEA	$000E(A7),A7
+;
+;	MOVE.W	-$0004(A5),d1
+;	MOVE.W	-$0002(A5),d0
+;	BSR	_movequick
+;
+;	UNLK	A5
+;	RTS
 
 ;/*
 ; * center:
 ; *  Return the index to center the given string
 ; */
 
-_center:
-	LINK	A5,#-$0000
-	MOVE.L	$000A(A5),-(A7)
-	MOVE.L	$000A(A5),A0
-	JSR	_strlenquick
-
-	MOVEQ	#$50,D3
-	SUB.W	D0,D3
-	EXT.L	D3
-	DIVS.W	#$0002,D3
-	MOVE.W	D3,-(A7)
-	MOVE.W	$0008(A5),-(A7)
-	JSR	_mvaddstr(PC)
-	ADDQ.W	#8,A7
-	UNLK	A5
-	RTS
+;_center:
+;	LINK	A5,#-$0000
+;	MOVE.L	$000A(A5),-(A7)
+;	MOVE.L	$000A(A5),A0
+;	JSR	_strlenquick
+;
+;	MOVEQ	#$50,D3
+;	SUB.W	D0,D3
+;	EXT.L	D3
+;	DIVS.W	#$0002,D3
+;	MOVE.W	D3,-(A7)
+;	MOVE.W	$0008(A5),-(A7)
+;	JSR	_mvaddstr(PC)
+;	ADDQ.W	#8,A7
+;	UNLK	A5
+;	RTS
 
 _printw:
 	LINK	A5,#-$0084
