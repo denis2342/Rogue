@@ -7974,6 +7974,7 @@ L0037E:
 	MOVEQ	#$01,D7
 	TST.B	-$0083(A5)
 	BNE.B	L0037F
+
 	MOVE.L	$0010(A5),-(A7)
 	PEA	L00393(PC)	;"you are hit by the %s"
 	JSR	_msg
@@ -8009,21 +8010,21 @@ L00383:
 	JSR	_standend
 	BRA.B	L00385
 L00384:
-	SUB.w	#$0020,D0
+	SUB.w	#$0020,D0	;' ' SPACE
 	BEQ.W	L00369
-	SUB.w	#$000B,D0
+	SUB.w	#$000B,D0	;'+' DOOR
 	BEQ.W	L00369
-	SUBQ.w	#2,D0
+	SUBQ.w	#2,D0		;'-' vertical WALL
 	BEQ.W	L00369
-	SUB.w	#$000F,D0
+	SUB.w	#$000F,D0	;'<' top left corner
 	BEQ.W	L00369
-	SUBQ.w	#2,D0
+	SUBQ.w	#2,D0		;'>' top right corner
 	BEQ.W	L00369
-	SUB.w	#$003D,D0
+	SUB.w	#$003D,D0	;'{' bottom left corner
 	BEQ.W	L00369
-	SUBQ.w	#1,D0
+	SUBQ.w	#1,D0		;'|' horizontal WALL
 	BEQ.W	L00369
-	SUBQ.w	#1,D0
+	SUBQ.w	#1,D0		;'}' bottom right corner
 	BEQ.W	L00369
 	BRA.W	L0036D
 L00385:
