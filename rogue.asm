@@ -13627,10 +13627,12 @@ L005DC:	JMP	L005DC(PC,D0.W)
 _ring_num:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	MOVE.W	$0028(A2),D3
 	AND.W	#O_ISKNOW,D3	;O_ISKNOW
 	BNE.B	L005DE
+
 	LEA	L005E5(PC),A6	;"",0
 	MOVE.L	A6,D0
 L005DD:
@@ -13653,13 +13655,13 @@ L005DF:
 	MOVE.L	-$51A0(A4),-(A7)
 	JSR	_strcpy
 	ADDQ.W	#8,A7
-	PEA	L005E6(PC)
+	PEA	L005E6(PC)	;' '
 	MOVE.L	-$51A0(A4),-(A7)
 	JSR	_strcat
 	ADDQ.W	#8,A7
 	BRA.B	L005E4
 L005E0:
-	LEA	L005E7(PC),A6
+	LEA	L005E7(PC),A6	;"",0
 	MOVE.L	A6,D0
 	BRA.B	L005DD
 L005E1:
@@ -13736,10 +13738,12 @@ L005FB:	dc.b	"1d6",0	; 1-6 avg 3.5
 _missile:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
-	MOVE.W	#$006D,-(A7)
+
+	MOVE.W	#$006D,-(A7)	;m weapon type
 	PEA	L00603(PC)	;"throw"
 	JSR	_get_item
 	ADDQ.W	#6,A7
+
 	MOVEA.L	D0,A2
 	TST.L	D0
 	BNE.B	L005FD
@@ -14091,6 +14095,7 @@ _hit_monster:
 
 	TST.L	D0
 	BEQ.B	L00619
+
 	MOVEA.L	D0,A2
 	MOVE.W	D4,-$53CC(A4)
 	MOVE.W	D5,-$53CE(A4)
@@ -23366,9 +23371,11 @@ L00AAA:
 
 _fix_menu:
 	LINK	A5,#-$0000
+
 	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
 	JSR	_ClearMenuStrip
 	ADDQ.W	#4,A7
+
 	MOVEQ	#$00,D3
 	MOVE.B	-$66B9(A4),D3	;_faststate
 	MOVE.W	D3,-(A7)
@@ -23376,6 +23383,7 @@ _fix_menu:
 	MOVE.W	#$0001,-(A7)
 	BSR.B	_SetCheck
 	ADDQ.W	#6,A7
+
 	MOVEQ	#$00,D3
 	MOVE.B	-$66AA(A4),D3	;_menu_style
 	MOVE.W	D3,-(A7)
@@ -23383,10 +23391,12 @@ _fix_menu:
 	MOVE.W	#$0001,-(A7)
 	BSR.B	_SetCheck
 	ADDQ.W	#6,A7
+
 	MOVE.L	-$53A2(A4),-(A7)
 	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
 	JSR	_SetMenuStrip(PC)
 	ADDQ.W	#8,A7
+
 	UNLK	A5
 	RTS
 
@@ -30243,16 +30253,15 @@ _p_row:
 	dc.w	$0000
 _p_col:
 	dc.w	$0000
-_StdScr:
-	dc.l	$00000000
-_StdWin:
-	dc.l	$00000000
-_RogueWin:
-	dc.l	$00000000
-_TextWin:
-	dc.l	$00000000
 
-_char_data:	ds.b	2048
+_StdScr:	dc.l	$00000000
+_StdWin:	dc.l	$00000000
+_RogueWin:	dc.l	$00000000
+_TextWin:	dc.l	$00000000
+
+_char_data:	ds.b	128	;we only need this
+		ds.b	1920	;this is now unused
+
 _huh:		ds.b	128
 
 _oldrp:
