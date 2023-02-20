@@ -11764,6 +11764,8 @@ _credits:
 	JSR	_cursor(PC)
 	ADDQ.W	#2,A7
 
+	move.w	d0,-(a7)	;saving _graphics_disabled state
+
 	MOVEq	#$0021,d1
 	MOVEq	#$0013,d0
 	JSR	_movequick
@@ -11777,9 +11779,10 @@ _credits:
 	CLR.W	-$77D2(A4)	;_Window2 + 48
 	CLR.W	-$77D0(A4)	;_Window2 + 50
 
-	CLR.W	-(A7)
+;	CLR.W	-(A7)	;getting _graphics_disabled state back (its already on the stack)
 	JSR	_cursor(PC)
 	ADDQ.W	#2,A7
+
 	TST.B	-$001B(A5)
 	BEQ.B	L00512
 
