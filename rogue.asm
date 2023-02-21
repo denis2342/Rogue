@@ -54,10 +54,9 @@ _init_player:
 	MOVEA.L	D0,A2
 	MOVE.W	#$006D,$000A(A2)	;m weapon type
 	CLR.W	$0020(A2)		;zero is mace
-	CLR.W	-(A7)		;create a mace
 	MOVE.L	A2,-(A7)
 	JSR	_init_weapon
-	ADDQ.W	#6,A7
+	ADDQ.W	#4,A7
 	MOVE.W	#$0001,$0022(A2)	;+1
 	MOVE.W	#$0001,$0024(A2)	;+1
 	ORI.W	#O_ISKNOW,$0028(A2)
@@ -77,10 +76,9 @@ _init_player:
 	MOVEA.L	D0,A2
 	MOVE.W	#$006D,$000A(A2)	;m weapon type
 	MOVE.W	#$0002,$0020(A2)	;2 is short bow
-	MOVE.W	#$0002,-(A7)	;short bow
 	MOVE.L	A2,-(A7)
 	JSR	_init_weapon
-	ADDQ.W	#6,A7
+	ADDQ.W	#4,A7
 	MOVE.W	#$0001,$0022(A2)	;+1
 	CLR.W	$0024(A2)		;+0
 	MOVE.W	#$0001,$001E(A2)	;one weapon
@@ -95,10 +93,9 @@ _init_player:
 	MOVEA.L	D0,A2
 	MOVE.W	#$006D,$000A(A2)	;m weapon type
 	MOVE.W	#$0003,$0020(A2)	;arrows
-	MOVE.W	#$0003,-(A7)	;arrows
 	MOVE.L	A2,-(A7)
 	JSR	_init_weapon
-	ADDQ.W	#6,A7
+	ADDQ.W	#4,A7
 	MOVEq	#$000F,D0	;create 25-40 arrows
 	JSR	_rnd
 	ADD.W	#$0019,D0
@@ -1433,10 +1430,9 @@ L000D4:
 	MOVEA.L	-$0004(A5),A6
 	MOVE.W	#$006D,$000A(A6)	;'m' weapon type
 	MOVE.W	#$0003,$0020(A6)
-	MOVE.W	#$0003,-(A7)
-	MOVE.L	-$0004(A5),-(A7)
+	MOVE.L	A6,-(A7)
 	JSR	_init_weapon
-	ADDQ.W	#6,A7
+	ADDQ.W	#4,A7
 	MOVEA.L	-$0004(A5),A6
 	MOVE.W	#$0001,$001E(A6)	;one weapon
 	ADDA.L	#$0000000C,A6
@@ -12421,10 +12417,9 @@ L0054D:
 	MOVEq	#10,D0
 	JSR	_rnd
 	MOVE.W	D0,$0020(A2)
-	MOVE.W	D0,-(A7)
 	MOVE.L	A2,-(A7)
 	JSR	_init_weapon
-	ADDQ.W	#6,A7
+	ADDQ.W	#4,A7
 
 	MOVEq	#100,D0
 	JSR	_rnd
@@ -14031,40 +14026,38 @@ L00615:	dc.b	" as it hits the ground",0
 
 _init_weapon:
 	LINK	A5,#-$0000
-	MOVEM.L	A2/A3,-(A7)
-	MOVEA.L	$0008(A5),A2
-	MOVEQ	#$00,D0
-	MOVE.B	$000D(A5),D0
+	MOVE.L	A2,-(A7)
 
-;	MOVEQ	#12,D1
-;	JSR	_mulu
+	MOVEA.L	$0008(A5),A2	;empty object we fill up now
+	MOVE.W	$0020(A2),D0	;weapon index
+
+	MOVEQ	#$6D,D3
+	ADD.B	D0,D3		; 'm' 'weapon type
+	MOVE.W	D3,$000A(A2)
+
 	mulu.w	#12,d0
 
-	LEA	-$6FDA(A4),A6	;_w_magic
-	MOVEA.L	D0,A3
-	ADDA.L	A6,A3
-	MOVEQ	#$6D,D3
-	ADD.B	$000D(A5),D3	; 'm' 'weapon type
-	MOVE.W	D3,$000A(A2)
-	BSR.B	_iw_setdam
-	MOVE.B	$0008(A3),$0014(A2)
-	MOVE.W	$000A(A3),$0028(A2)
-	MOVE.W	$0028(A2),D3
+	LEA	-$6FDA(A4),A6		;_w_magic
+	MOVE.L	$00(A6,D0.w),$0016(A2)	;wield damage
+	MOVE.L	$04(A6,D0.w),$001A(A2)	;throw damage
+	MOVE.B	$08(A6,D0.w),$0014(A2)	;weapon needed for better throw
+	MOVE.W	$0A(A6,D0.w),D3		;flags
+	move.w	D3,$0028(A2)
+
+	moveq	#1,d0		;default number of items
 	AND.W	#O_ISMANY,D3	; check for ISMANY
 	BEQ.B	L00616
 
-	MOVEq	#$0008,D0
+	MOVEq	#$0008,D0	;random count of bolts, arrows, darts...
 	JSR	_rnd
-	ADDQ.W	#8,D0		; 8 - 15
-	MOVE.W	D0,$001E(A2)	;random count of bolts, arrows, darts...
+	ADDQ.W	#8,D0		; add 8 - 15
 
 	MOVE.W	-$609C(A4),$002C(A2)	;set group for item
 	ADDQ.W	#1,-$609C(A4)		;_group++
-	BRA.B	L00617
 L00616:
-	MOVE.W	#$0001,$001E(A2)	;one item
-L00617:
-	MOVEM.L	(A7)+,A2/A3
+	MOVE.W	d0,$001E(A2)	;one or the random number of items
+
+	MOVE.L	(A7)+,A2
 	UNLK	A5
 	RTS
 
@@ -17080,10 +17073,9 @@ L007D9:
 	BNE.B	L007DC
 
 ;	MOVEA.L	-$0004(A5),A6
-	MOVE.W	$0020(A6),-(A7)
 	MOVE.L	A6,-(A7)
 	JSR	_init_weapon
-	ADDQ.W	#6,A7
+	ADDQ.W	#4,A7
 	CMP.B	#$2D,-$53A7(A4)	; '-'
 	BNE.B	L007DA
 
