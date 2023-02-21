@@ -24541,9 +24541,9 @@ _fade_in:
 	LEA	-$0040(A5),a0
 	JSR	_memset
 
-	MOVEQ	#$00,D4
+	MOVEQ	#16-1,D4
 L00B1F:
-	MOVEQ	#$00,D5
+	MOVEQ	#16-1,D5
 L00B20:
 	move.w	d5,d0
 	lea	-$0040(A5),a0
@@ -24564,25 +24564,19 @@ L00B20:
 1$	addq	#1,d3
 	dbra	d1,2$
 
-	ADDQ.W	#1,D5
-	CMP.W	#16,D5
-	BLT.W	L00B20
+	DBRA	D5,L00B20
 
 	JSR	_tick_pause
-	ADDQ.W	#1,D4
-	CMP.W	#16,D4
-	BLT.W	L00B1F
+	DBRA	D4,L00B1F
 
 	BRA.B	L00B26
 
-L00B24:	MOVEQ	#$00,D5
+L00B24:	MOVEQ	#16-1,D5
 1$	MOVEA.L	$0008(A5),A0
 	move.w	d5,d0
 	bsr	_setRGB4colors
+	DBRA	D5,1$
 
-	ADDQ.W	#1,D5
-	CMP.W	#16,D5
-	BLT.B	1$
 L00B26:
 	MOVEM.L	(A7)+,D4/D5
 	UNLK	A5
