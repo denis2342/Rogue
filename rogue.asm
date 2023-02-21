@@ -17029,11 +17029,11 @@ L007D6:
 	MOVE.L	A1,$001A(A6)
 	MOVE.L	$001A(A6),$0016(A6)
 	CLR.W	-$60B0(A4)	;_mpos
-	MOVEA.L	-$0004(A5),A6
+;	MOVEA.L	-$0004(A5),A6
 	CMPI.W	#$006D,$000A(A6)	; 'm' weapon type
 	BEQ.B	L007D7
 
-	MOVEA.L	-$0004(A5),A6
+;	MOVEA.L	-$0004(A5),A6
 	CMPI.W	#$0061,$000A(A6)	; 'a' armor type
 	BNE.W	L007DF
 L007D7:
@@ -17061,22 +17061,20 @@ L007D9:
 	MOVE.L	A6,-(A7)
 	JSR	_init_weapon
 	ADDQ.W	#4,A7
-	CMP.B	#$2D,-$53A7(A4)	; '-'
-	BNE.B	L007DA
 
 	MOVEq	#$0003,D0
 	JSR	_rnd
 	ADDQ.W	#1,D0
 	MOVEA.L	-$0004(A5),A6
+
+	CMP.B	#$2D,-$53A7(A4)	; '-'
+	BNE.B	1$
+
 	SUB.W	D0,$0022(A6)
-L007DA:
+1$
 	CMP.B	#$2B,-$53A7(A4)	; '+'
 	BNE.B	L007DB
 
-	MOVEq	#$0003,D0
-	JSR	_rnd
-	ADDQ.W	#1,D0
-	MOVEA.L	-$0004(A5),A6
 	ADD.W	D0,$0022(A6)
 L007DB:
 	BRA.B	L007DE
@@ -17085,28 +17083,26 @@ L007DC:
 	moveq	#$61,D3		;a armor type
 	ADD.W	$0020(A6),D3
 	MOVE.W	D3,$000A(A6)
-	MOVEA.L	-$0004(A5),A6
+;	MOVEA.L	-$0004(A5),A6
 	MOVE.W	$0020(A6),D3
 ;	EXT.L	D3
 	ASL.w	#1,D3
 	LEA	-$6F00(A4),A1	;_a_class
 	MOVE.W	$00(A1,D3.w),$0026(A6)
-	CMP.B	#$2D,-$53A7(A4)	; -
-	BNE.B	L007DD
 
 	MOVEq	#$0003,D0
 	JSR	_rnd
 	ADDQ.W	#1,D0
 	MOVEA.L	-$0004(A5),A6
+
+	CMP.B	#$2D,-$53A7(A4)	; -
+	BNE.B	1$
+
 	ADD.W	D0,$0026(A6)
-L007DD:
+1$
 	CMP.B	#$2B,-$53A7(A4)	; +
 	BNE.B	L007DE
 
-	MOVEq	#$0003,D0
-	JSR	_rnd
-	ADDQ.W	#1,D0
-	MOVEA.L	-$0004(A5),A6
 	SUB.W	D0,$0026(A6)
 L007DE:
 	BRA.W	L007EC
@@ -17131,17 +17127,10 @@ L007E0:
 	CLR.W	-$60B0(A4)	;_mpos
 L007E1:
 	CMP.B	#$2D,-$53A7(A4)	; '-'
-	BNE.B	L007E2
-
-	MOVEA.L	-$0004(A5),A6
-	ORI.W	#O_ISCURSED,$0028(A6)
-L007E2:
-	MOVEA.L	-$0004(A5),A6
-	CMP.B	#$2D,-$53A7(A4)	; '-'
 	BNE.B	L007E3
 
 	MOVE.W	#-1,$0026(A6)
-	BRA.B	L007E4
+	BRA.B	L007E5
 L007E3:
 	MOVE.L	A6,-(A7)
 	MOVEq	#$0002,D0
@@ -17149,7 +17138,6 @@ L007E3:
 	ADDQ.W	#1,D0
 	MOVEA.L	(A7)+,A6
 	MOVE.W	D0,$0026(A6)
-L007E4:
 	BRA.B	L007E9
 L007E5:
 	MOVEA.L	-$0004(A5),A6
@@ -17191,7 +17179,8 @@ L007EB:
 	CMPI.W	#$002A,$000A(A6)	; '*'
 	BNE.B	L007EC
 
-	PEA	L007F3(PC)	;"how much?"
+	CLR.W	-$60B0(A4)	;_mpos
+	PEA	L007F3(PC)	;"how much? "
 	JSR	_msg
 	ADDQ.W	#4,A7
 
@@ -17199,6 +17188,17 @@ L007EB:
 	PEA	$0026(A6)
 	JSR	_get_num(PC)
 	ADDQ.W	#4,A7
+
+	CLR.W	-$60B0(A4)	;_mpos
+
+	MOVEA.L	-$0004(A5),A6
+	move.w	$0026(A6),-(a7)
+	jsr	_money
+	addq.l	#2,a7
+
+	JSR	_status
+	BRA.W	L007C6
+
 L007EC:
 	CLR.L	-(A7)
 	MOVE.L	-$0004(A5),-(A7)
@@ -17211,7 +17211,7 @@ L007EE:	dc.b	"type of item: ",0
 L007EF:	dc.b	"which %c do you want? (0-f)",0
 L007F0:	dc.b	"0d0",0
 L007F1:	dc.b	"blessing? (+,-,n)",0
-L007F3:	dc.b	"how much?",0,0
+L007F3:	dc.b	"how much? ",0
 
 ;/*
 ; * teleport:
