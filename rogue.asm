@@ -61,7 +61,6 @@ _init_player:
 	MOVE.W	#$0001,$0024(A2)	;+1
 	ORI.W	#O_ISKNOW,$0028(A2)
 	MOVE.W	#$0001,$001E(A2)	;one mace
-	CLR.W	$002C(A2)	;group 0
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	A2,-(A7)
 	JSR	_add_pack
@@ -82,7 +81,6 @@ _init_player:
 	MOVE.W	#$0001,$0022(A2)	;+1
 	CLR.W	$0024(A2)		;+0
 	MOVE.W	#$0001,$001E(A2)	;one weapon
-	CLR.W	$002C(A2)	;group 0
 	ORI.W	#O_ISKNOW,$0028(A2)
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	A2,-(A7)
@@ -14038,6 +14036,7 @@ _init_weapon:
 	MOVE.W	$0A(A6,D0.w),D3		;flags
 	move.w	D3,$0028(A2)
 
+	moveq	#0,d1		;set group
 	moveq	#1,d0		;default number of items
 	AND.W	#O_ISMANY,D3	; check for ISMANY
 	BEQ.B	L00616
@@ -14046,10 +14045,11 @@ _init_weapon:
 	JSR	_rnd
 	ADDQ.W	#8,D0		; add 8 - 15
 
-	MOVE.W	-$609C(A4),$002C(A2)	;set group for item
+	MOVE.W	-$609C(A4),d1	;set group for item
 	ADDQ.W	#1,-$609C(A4)		;_group++
 L00616:
 	MOVE.W	d0,$001E(A2)	;one or the random number of items
+	MOVE.W	d1,$002C(A2)	;set group for item
 
 	MOVE.L	(A7)+,A2
 	UNLK	A5
@@ -17021,10 +17021,10 @@ L007D5:
 	MOVE.W	D3,$0020(A6)
 L007D6:
 	MOVEA.L	-$0004(A5),A6
-	CLR.W	$002C(A6)
-	MOVEA.L	-$0004(A5),A6
-	MOVE.W	#$0001,$001E(A6)
-	MOVEA.L	-$0004(A5),A6
+	CLR.W	$002C(A6)	;clear group
+;	MOVEA.L	-$0004(A5),A6
+	MOVE.W	#$0001,$001E(A6)	;one item
+;	MOVEA.L	-$0004(A5),A6
 	LEA	L007F0(PC),A1	;"0d0"
 	MOVE.L	A1,$001A(A6)
 	MOVE.L	$001A(A6),$0016(A6)
