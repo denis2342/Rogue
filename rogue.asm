@@ -8489,7 +8489,7 @@ L003CC:
 L003CD:
 	SUBQ.w	#4,D0
 	BEQ.B	L003CE
-	SUB.w	#$2A,D0		;. for rest
+	SUB.w	#$2A,D0		;'.' for rest
 	BEQ.B	L003CE
 	SUB.w	#$14,D0		;'B'
 	BEQ.B	L003CE
@@ -8703,10 +8703,16 @@ L003E5:
 	JSR	_ring_off(PC)
 	ADDQ.W	#4,A7
 	BRA.W	L00409
+
+; S save game
+
 L003E6:
 	CLR.B	-$66F9(A4)	;_after
 	JSR	_save_game
 	BRA.W	L00409
+
+; c call item
+
 L003E7:
 	CLR.B	-$66F9(A4)	;_after
 	JSR	_call(PC)
@@ -8757,6 +8763,9 @@ L003F0:
 	CLR.B	-$66F9(A4)	;_after
 	JSR	_discovered(PC)
 	BRA.W	L00409
+
+; CTRL-T
+
 L003F1:
 	CLR.B	-$66F9(A4)	;_after
 	EORI.B	#$01,-$66AB(A4)	;_expert
@@ -25538,29 +25547,34 @@ _xfer_object:
 	LINK	A5,#-$0000
 	TST.W	-$532E(A4)
 	BNE.B	L00B8D
+
 	MOVEA.L	$0008(A5),A6
 	TST.L	$0016(A6)
 	BNE.B	L00B8A
+
 	MOVEA.L	$0008(A5),A6
 	MOVE.L	-$69AE(A4),$0016(A6)
 L00B8A:
 	MOVEA.L	$0008(A5),A6
 	TST.L	$001A(A6)
 	BNE.B	L00B8B
+
 	MOVEA.L	$0008(A5),A6
 	MOVE.L	-$69AE(A4),$001A(A6)
 L00B8B:
 	MOVEA.L	$0008(A5),A6
-	CMPI.W	#$006D,$000A(A6)
+	CMPI.W	#$006D,$000A(A6)	;'m' weapon type
 	BNE.B	L00B8C
+
 	MOVE.L	$0008(A5),-(A7)
 	JSR	_iw_setdam
 	ADDQ.W	#4,A7
 	BRA.B	L00B8D
 L00B8C:
 	MOVEA.L	$0008(A5),A6
-	CMPI.W	#$002F,$000A(A6)
+	CMPI.W	#$002F,$000A(A6)	;'?' scroll
 	BNE.B	L00B8D
+
 	MOVE.L	$0008(A5),-(A7)
 	JSR	_ws_setdam
 	ADDQ.W	#4,A7
@@ -25576,6 +25590,7 @@ L00B8D:
 	ADDQ.W	#6,A7
 	TST.W	-$532E(A4)
 	BEQ.B	L00B90
+
 	MOVEA.L	$0008(A5),A6
 	MOVEA.L	$0016(A6),A1
 	CMPA.L	-$69AE(A4),A1
