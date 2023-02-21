@@ -24515,9 +24515,11 @@ _setRGB4colors:
 	MOVE.W	D0,D6
 	ASL.w	#2,D6
 
-	MOVE.B	$00(A0,D6.w),D1	;red
-	MOVE.B	$01(A0,D6.w),D2	;green
-	MOVE.B	$02(A0,D6.w),D3	;blue
+	add.w	d6,a0
+
+	MOVE.B	(A0)+,D1	;red
+	MOVE.B	(A0)+,D2	;green
+	MOVE.B	(A0),D3		;blue
 
 	MOVEA.L	-$5150(A4),A1	;_StdScr
 	LEA	$002C(A1),a0
