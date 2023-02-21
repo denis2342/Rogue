@@ -588,7 +588,7 @@ L00088:
 ;	EXT.L	D3
 	ASL.w	#2,D3
 	LEA	-$521C(A4),A6	;_ws_type
-	MOVE.L	-$7A4E(A4),$00(A6,D3.w)
+	MOVE.L	-$7A4E(A4),$00(A6,D3.w)	;_ws_wand
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
@@ -611,7 +611,7 @@ L0008A:
 ;	EXT.L	D3
 	ASL.w	#2,D3
 	LEA	-$521C(A4),A6	;_ws_type
-	MOVE.L	-$7A4A(A4),$00(A6,D3.w)
+	MOVE.L	-$7A4A(A4),$00(A6,D3.w)	;_ws_staff
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
@@ -16934,39 +16934,30 @@ L007C8:
 	BRA.B	L007D1
 
 L007C9:
-;	MOVEA.L	-$0004(A5),A6
 	MOVE.W	#$0021,$000A(A6)	; '!' potion
 	BRA.B	L007D2
 L007CA:
-;	MOVEA.L	-$0004(A5),A6
 	MOVE.W	#$003F,$000A(A6)	; '?' scroll
 	BRA.B	L007D2
 L007CB:
-;	MOVEA.L	-$0004(A5),A6
 	MOVE.W	#$002F,$000A(A6)	; '/' stick
 	BRA.B	L007D2
 L007CC:
-;	MOVEA.L	-$0004(A5),A6
 	MOVE.W	#$003D,$000A(A6)	; '=' ring
 	BRA.B	L007D2
 L007CD:
-;	MOVEA.L	-$0004(A5),A6
-	MOVE.W	#$006D,$000A(A6)	; ')' weapon
+	MOVE.W	#$006D,$000A(A6)	; 'm' weapon
 	BRA.B	L007D2
 L007CE:
-;	MOVEA.L	-$0004(A5),A6
-	MOVE.W	#$0061,$000A(A6)	; ']' armor
+	MOVE.W	#$0061,$000A(A6)	; 'a' armor
 	BRA.B	L007D2
 L007CF:
-;	MOVEA.L	-$0004(A5),A6
 	MOVE.W	#$002C,$000A(A6)	; ',' amulet of yendor
 	BRA	L007EC
 L007D0:
-;	MOVEA.L	-$0004(A5),A6
 	MOVE.W	#$003A,$000A(A6)	; ':' food
 	BRA.B	L007D2
 L007D0b:
-;	MOVEA.L	-$0004(A5),A6
 	MOVE.W	#$002A,$000A(A6)	; '*' gold
 	BRA	L007EB
 L007D1:
@@ -17165,18 +17156,18 @@ L007E5:
 	ORI.W	#O_ISCURSED,$0028(A6)
 	BRA.B	L007E9
 L007E6:
-	dc.w	L007E0-L007E8	;one entry per ring
-	dc.w	L007E0-L007E8
-	dc.w	L007E9-L007E8
-	dc.w	L007E9-L007E8
-	dc.w	L007E9-L007E8
-	dc.w	L007E9-L007E8
-	dc.w	L007E5-L007E8
-	dc.w	L007E0-L007E8
-	dc.w	L007E0-L007E8
-	dc.w	L007E9-L007E8
-	dc.w	L007E9-L007E8
-	dc.w	L007E5-L007E8
+	dc.w	L007E0-L007E8	;regeneration, can be good or bad
+	dc.w	L007E0-L007E8	;add strength, can be good or bad
+	dc.w	L007E9-L007E8	;always good
+	dc.w	L007E9-L007E8	;always good
+	dc.w	L007E9-L007E8	;always good
+	dc.w	L007E9-L007E8	;always good
+	dc.w	L007E5-L007E8	;aggravate monster, always cursed
+	dc.w	L007E0-L007E8	;dexterity, can be good or bad
+	dc.w	L007E0-L007E8	;add damage, can be good or bad
+	dc.w	L007E9-L007E8	;always good
+	dc.w	L007E9-L007E8	;always good
+	dc.w	L007E5-L007E8	;teleportation, always cursed
 L007E7:
 	CMP.w	#$000C,D0
 	BCC.B	L007E9
@@ -24900,6 +24891,7 @@ _xfer:
 	MOVE.W	$000C(A5),-$60A4(A4)	;_count
 	TST.W	-$532E(A4)
 	BEQ.B	L00B45
+
 	MOVE.W	$000C(A5),-(A7)
 	MOVE.L	$0008(A5),-(A7)
 	MOVE.W	-$532C(A4),-(A7)
@@ -24917,6 +24909,7 @@ L00B45:
 L00B46:
 	CMP.W	#$0000,D4
 	BGE.B	L00B47
+
 	MOVE.W	D4,-(A7)
 	PEA	L00B48(PC)
 	JSR	_fatal
@@ -24936,6 +24929,7 @@ _xfer_strs:
 L00B49:
 	TST.W	-$532E(A4)
 	BEQ.B	L00B4B
+
 	MOVE.W	D4,D3
 	MULU.W	#21,D3
 	ADD.L	$0008(A5),D3
@@ -24949,6 +24943,7 @@ L00B49:
 	ADDQ.W	#6,A7
 	TST.W	-$0002(A5)
 	BEQ.B	L00B4A
+
 	MOVE.W	-$0002(A5),-(A7)
 	MOVE.W	D4,D3
 	MULU.W	#21,D3
@@ -24965,6 +24960,7 @@ L00B4B:
 	ADDQ.W	#6,A7
 	TST.W	-$0002(A5)
 	BEQ.B	L00B4C
+
 	MOVE.W	-$0002(A5),-(A7)
 	MOVE.W	D4,D3
 	MULU.W	#21,D3
@@ -24985,6 +24981,7 @@ L00B4D:
 L00B4E:
 	CMP.W	$000C(A5),D4
 	BLT.W	L00B49
+
 	MOVE.L	(A7)+,D4
 	UNLK	A5
 	RTS
@@ -24992,11 +24989,13 @@ L00B4E:
 _xfer_choice:
 	LINK	A5,#-$0004
 	MOVEM.L	D4/D5/A2/A3,-(A7)
+
 	LEA	-$5290(A4),A6	;_p_colors
 	MOVEA.L	A6,A2
 L00B4F:
 	TST.W	-$532E(A4)
 	BEQ.B	L00B52
+
 	LEA	-$7A46(A4),A6	;_rainbow
 	MOVEA.L	A6,A3
 	BRA.B	L00B51
@@ -25009,6 +25008,7 @@ L00B51:
 	ADDQ.W	#8,A7
 	TST.W	D0
 	BNE.B	L00B50
+
 	MOVE.L	A3,D3
 	LEA	-$7A46(A4),A6	;_rainbow
 	SUB.L	A6,D3
@@ -25021,6 +25021,7 @@ L00B52:
 	ADDQ.W	#6,A7
 	TST.W	-$532E(A4)
 	BNE.B	L00B53
+
 	MOVE.W	-$0002(A5),D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
@@ -25031,11 +25032,13 @@ L00B53:
 	LEA	-$5258(A4),A6	;_prbuf
 	CMPA.L	A6,A2
 	BCS.B	L00B4F
+
 	LEA	-$5254(A4),A6	;_r_stones
 	MOVEA.L	A6,A2
 L00B54:
 	TST.W	-$532E(A4)
 	BEQ.B	L00B57
+
 	LEA	-$79D2(A4),A6	;_stones
 	MOVE.L	A6,D5
 	BRA.B	L00B56
@@ -25049,6 +25052,7 @@ L00B56:
 	ADDQ.W	#8,A7
 	TST.W	D0
 	BNE.B	L00B55
+
 	MOVE.L	D5,D0
 	LEA	-$79D2(A4),A6	;_stones
 	SUB.L	A6,D0
@@ -25062,6 +25066,7 @@ L00B57:
 	ADDQ.W	#6,A7
 	TST.W	-$532E(A4)
 	BNE.B	L00B58
+
 	MOVE.W	-$0002(A5),D3
 	MULU.W	#$0006,D3
 	LEA	-$79D2(A4),A6	;_stones
@@ -25082,6 +25087,7 @@ L00B58:
 	LEA	-$521C(A4),A6	;_ws_type
 	CMPA.L	A6,A2
 	BCS.W	L00B54
+
 ;	LEA	-$521C(A4),A6	;_ws_type
 	MOVE.L	A6,D4
 	LEA	-$51E4(A4),A6	;_ws_made
@@ -25090,9 +25096,10 @@ L00B58:
 L00B59:
 	TST.W	-$532E(A4)
 	BEQ.B	L00B60
+
 	MOVEA.L	D4,A6
 	MOVEA.L	(A6),A1
-	CMPA.L	-$7A4E(A4),A1
+	CMPA.L	-$7A4E(A4),A1	;_ws_wand
 	SEQ	D3
 	AND.W	#$0001,D3
 	MOVE.W	D3,-$0004(A5)
@@ -25102,6 +25109,7 @@ L00B59:
 	ADDQ.W	#6,A7
 	TST.W	-$0004(A5)
 	BEQ.B	L00B5A
+
 	LEA	-$78B2(A4),A6	;_wood
 	MOVEA.L	A6,A3
 	BRA.B	L00B5B
@@ -25146,10 +25154,10 @@ L00B60:
 	MOVEA.L	D4,A6
 	TST.W	-$0004(A5)
 	BEQ.B	L00B61
-	MOVE.L	-$7A4E(A4),(A6)
+	MOVE.L	-$7A4E(A4),(A6)	;_ws_wand
 	BRA.B	L00B62
 L00B61:
-	MOVE.L	-$7A4A(A4),(A6)
+	MOVE.L	-$7A4A(A4),(A6)	;_ws_staff
 L00B62:
 	MOVE.W	#$0002,-(A7)
 	PEA	-$0002(A5)
