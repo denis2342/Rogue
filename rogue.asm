@@ -8233,7 +8233,6 @@ _com_char:
 	MOVE.B	-$66BA(A4),D3	;_fastmode
 	CMP.B	-$66B9(A4),D3	;_faststate
 	SEQ	D4
-	AND.W	#$0001,D4
 	ST	-$48B8(A4)	;_menu_on
 L003A7:
 	JSR	_readchar
