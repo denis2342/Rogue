@@ -1836,11 +1836,10 @@ __graphch:
 
 	MOVEQ	#$00,D3
 	MOVE.B	D4,D3
-	ASL.w	#4,D3
+	ASL.w	#1,d3
 	LEA	-$5140(A4),A1	;_char_data
-	ADD.L	D3,A1
-	TST.L	(A1)
-	BNE.B	L00104
+	move.w	0(a1,d3.w),d1
+	BPL	L00104
 
 	MOVE.W	D4,-(A7)
 	JSR	__addch
@@ -1850,36 +1849,10 @@ L00103:
 	UNLK	A5
 	RTS
 
-cache_value:	dc.l	-1
-
-playerbm:
-	dc.l	0
-	dc.l	0
-	ds.l	4
-
 L00104:
-	cmp.b	#$40,d4
-	bne	2$
-	lea	playerbm,a0
-	bra	_cache_quicker
-
-2$	cmp.b	cache_value(PC),D4
-	bne	1$
-	bra	_cache_quick
-
-1$	move.b	d4,cache_value
-
-;	LEA	-$5140(A4),A1	;_char_data
-	LEA	-$5174(A4),A6	;_chbm + 8
-
-	movem.l	(a1)+,d0-d3	;copy the 4 plane pointers
-	movem.l	d0-d3,(a6)
-
-_cache_quick:
 	lea	-$517C(A4),a0	;_chbm = srcbitmap
-_cache_quicker:
+
 	moveq	#0,d0
-	moveq	#0,d1
 
 	MOVEA.L	-$514C(A4),A6	;_StdWin
 	MOVEA.L	$0032(A6),A1
@@ -2051,13 +2024,43 @@ L00109:
 	ADDQ.W	#6,A7
 	MOVE.W	D0,D5		;char filehd
 ;	CMP.W	#$0000,D0
-	BGE.B	L0010B
+	BGE.B	L0010B2
 
 	PEA	L00118(PC)	;"No rogue.char file"
 	JSR	_db_print
 	ADDQ.W	#4,A7
 	ST	-$7063(A4)	;_graphics_disabled
 	BRA	readCharEnd
+
+L0010B2:
+	LEA	-$5140(A4),A0	;_char_data
+	moveq	#-1,d1
+	move.w	#255,d0
+	jsr	_memset
+
+	MOVE.W	#2688,-(A7)	;4 * 72 * 9(pixel) + some spare
+	MOVE.W	#$000A,-(A7)
+	JSR	_alloc_raster(PC)
+	ADDQ.W	#4,A7
+
+	tst.l	D0
+	BNE.B	1$
+
+	PEA	L00119(PC)	;"No memory for character data"
+	JSR	_fatal
+	ADDQ.W	#4,A7
+
+1$	move.l	#1344,d1	;72 * 18 + some spare
+	lea	-$5174(A4),A3	;_chbm + 8 (where the planes begin)
+	move.l	D0,(A3)+
+	add.l	d1,d0
+	move.l	D0,(A3)+
+	add.l	d1,d0
+	move.l	D0,(A3)+
+	add.l	d1,d0
+	move.l	D0,(A3)
+
+	moveq	#0,d4
 L0010B:
 	MOVE.W	#$0002,-(A7)	;read two bytes
 	PEA	-$0002(A5)
@@ -2068,37 +2071,37 @@ L0010B:
 	CMP.W	#$0002,D0	;did we read two byte?
 	BNE.B	L0010E
 
-	MOVEQ	#$00,D6
-L0010C:
-	MOVE.W	#$0009,-(A7)
-	MOVE.W	#$000A,-(A7)
-	JSR	_alloc_raster(PC)
-	ADDQ.W	#4,A7
-
+	MOVEQ	#$00,D6		;start with plane 0
 	MOVE.W	-$0002(A5),D3
-	EXT.L	D3
-	ASL.L	#4,D3
-	MOVE.L	D6,D2
-	ASL.L	#2,D2
-	ADD.L	D2,D3
 
 	LEA	-$5140(A4),A6	;_char_data
-	MOVE.L	D0,$00(A6,D3.L)	;save pointer of the chip mem we allocated
-	BNE.B	L0010D
+	asl.w	#1,d3
 
-	PEA	L00119(PC)	;"No memory for character data"
-	JSR	_fatal
-	ADDQ.W	#4,A7
+	move.l	d4,d2
+	mulu	#9,d2		;calculate position in bitmap, then don't need to do it later
+	MOVE.w	D2,$00(A6,D3.w)	;remember which character was read at which position
 L0010D:
+	;calculate the position to read the bitmap to
+
+	LEA	-$5174(A4),A6	;_chbm + 8 (where the planes begin)
+	add.l	d6,a6
+	move.l	(a6),a6		;get one of the four planes depending on D6
+
+	move.l	d4,d3
+	mulu	#18,d3
+	add.l	d3,a6
+
 	MOVE.W	#18,-(A7)	;size
-	MOVE.L	$00(A6,D3.L),-(A7)
+	MOVE.L	A6,-(A7)
 	MOVE.W	D5,-(A7)	;char filehd
 	JSR	_read
 	ADDQ.W	#8,A7
 
-	ADDQ.W	#1,D6
-	CMP.W	#$0004,D6
-	BLT.B	L0010C
+	ADDQ.W	#4,D6
+	CMP.W	#16,D6
+	BLT.B	L0010D
+
+	addq.l	#1,d4
 
 	BRA.W	L0010B
 L0010E:
@@ -2119,29 +2122,12 @@ readCharEnd:
 	JSR	_fatal
 	ADDQ.W	#4,A7
 L0010F:
-	PEA	$0009		;height
-	PEA	$000A		;width
+	PEA	9*72		;height
+	PEA	10		;width
 	PEA	$0004		;number of planes (bits per color)
 	PEA	-$517C(A4)	;_chbm
 	JSR	_InitBitMap
 	LEA	$0010(A7),A7
-
-	PEA	$0009		;height
-	PEA	$000A		;width
-	PEA	$0004		;number of planes (bits per color)
-	PEA	playerbm
-	JSR	_InitBitMap
-	LEA	$0010(A7),A7
-
-	LEA	-$5140(A4),A1	;_char_data
-	LEA	playerbm+8,A6	;playerbm + 8
-
-	moveq	#$40,d4
-	ASL.w	#4,D4
-	add.w	d4,a1
-
-	movem.l	(a1)+,d0-d3	;copy the 4 plane pointers
-	movem.l	d0-d3,(a6)
 
 	MOVE.L	-$5150(A4),-$7814(A4)	;_StdScr
 	PEA	-$7832(A4)		;_Window1
@@ -30263,8 +30249,8 @@ _StdWin:	dc.l	$00000000
 _RogueWin:	dc.l	$00000000
 _TextWin:	dc.l	$00000000
 
-_char_data:	ds.b	128	;we only need this
-		ds.b	1920	;this is now unused
+_char_data:	ds.b	256	;we only need this
+		ds.b	1792	;this is now unused
 
 _huh:		ds.b	128
 
