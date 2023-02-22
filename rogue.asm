@@ -4698,22 +4698,24 @@ L0021F:
 _s_enchant:
 ;	LINK	A5,#-$0000
 	MOVEA.L	-$5298(A4),A6	;_cur_weapon
-	ANDI.W	#$FFFE,$0028(A6)	;clear ISCURSED bit
+
+	ANDI.W	#~O_ISCURSED,$0028(A6)	;clear O_ISCURSED bit
 	MOVEq	#$0002,D0
 	JSR	_rnd
+	MOVEA.L	-$5298(A4),A6	;_cur_weapon
 	TST.W	D0
 	BNE.B	L00220
-	MOVEA.L	-$5298(A4),A6	;_cur_weapon
+
 	ADDQ.W	#1,$0022(A6)
 	BRA.B	L00221
 L00220:
-	MOVEA.L	-$5298(A4),A6	;_cur_weapon
 	ADDQ.W	#1,$0024(A6)
 L00221:
 	MOVE.W	#$0001,-(A7)
-	MOVE.L	-$5298(A4),-(A7)	;_cur_weapon
+	MOVE.L	A6,-(A7)	;_cur_weapon
 	JSR	_pack_name
 	ADDQ.W	#6,A7
+
 ;	UNLK	A5
 	RTS
 
