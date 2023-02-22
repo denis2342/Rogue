@@ -22678,9 +22678,7 @@ _pick_mons:
 4$	CMP.b	#$20,(A2)	;' '
 	BNE.B	5$
 
-	MOVE.L	A2,D3
-	SUB.L	-$6996(A4),D3
-	MOVEA.L	D3,A2
+	SUBA.L	-$6996(A4),A2
 	ADDA.L	-$6992(A4),A2
 
 5$	MOVE.B	(A2),D0
