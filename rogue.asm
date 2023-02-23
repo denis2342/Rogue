@@ -6077,13 +6077,14 @@ _unpack:
 
 	MOVEQ	#$0B,D3
 L00295:
-	MOVE.L	(A1)+,(A6)+
+	MOVE.L	(A1)+,(A6)+	;we make a copy of the item to split it up
 	DBF	D3,L00295
-
 	MOVE.W	(A1)+,(A6)+
+
 	MOVE.W	#$0001,$001E(A2)
 	MOVEA.L	$0008(A5),A6
 	SUBQ.W	#1,$001E(A6)
+
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	$0008(A5),-(A7)
 	BSR.B	_pack_name
@@ -6132,6 +6133,7 @@ L0029F:
 	MOVEA.L	$0008(A5),A6
 	CMPI.W	#$002C,$000A(A6)	;did we unpack the amulet?
 	BNE.B	L002A0
+
 	CLR.B	-$66BD(A4)	;_amulet
 L002A0:
 	MOVE.L	$0008(A5),D0
