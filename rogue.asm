@@ -22223,7 +22223,7 @@ _new_monster:
 	MOVE.W	D3,$001E(A2)
 
 	MOVE.W	#$0008,-(A7)	;xd8
-	MOVE.W	$001E(A2),-(A7)
+	MOVE.W	D3,-(A7)
 	JSR	_roll
 	ADDQ.W	#4,A7
 	MOVE.W	D0,$0022(A2)
