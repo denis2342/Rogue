@@ -6086,7 +6086,7 @@ L00295:
 	SUBQ.W	#1,$001E(A6)
 
 	MOVE.W	#$0001,-(A7)
-	MOVE.L	$0008(A5),-(A7)
+	MOVE.L	A6,-(A7)
 	BSR.B	_pack_name
 	ADDQ.W	#6,A7
 	MOVEA.L	$0008(A5),A6
