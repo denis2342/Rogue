@@ -6941,6 +6941,7 @@ L00302:	dc.b	"you found %d gold pieces",0,0
 _fix_stick:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	MOVE.L	A2,-(A7)
 	BSR.B	_ws_setdam
@@ -6965,6 +6966,7 @@ L00304:
 L00305:
 	TST.L	D0
 	BEQ.B	L00304
+
 	SUBQ.L	#1,D0
 	BEQ.B	L00303
 L00306:
@@ -6975,6 +6977,7 @@ L00306:
 _ws_setdam:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	PEA	L0030A(PC)	;"staff"
 	MOVE.W	$0020(A2),D3
@@ -6996,6 +6999,7 @@ L00307:
 L00308:
 	CMPI.W	#$0001,$0020(A2)
 	BNE.B	L00309
+
 	LEA	L0030D(PC),A6	;"2d8"
 	MOVE.L	A6,$0016(A2)
 L00309:
@@ -7019,8 +7023,10 @@ L0030E:	dc.b	"1d1",0
 _do_zap:
 	LINK	A5,#-$0038
 	MOVEM.L	D4-D7/A2/A3,-(A7)
+
 	TST.L	$0008(A5)
 	BNE.B	L00310
+
 	MOVE.W	#$002F,-(A7)	;'/'
 	PEA	L00347(PC)	;"zap with"
 	JSR	_get_item
@@ -7048,6 +7054,7 @@ L00311:
 	MOVEA.L	$0008(A5),A6
 	TST.W	$0026(A6)
 	BNE.B	L00312
+
 	PEA	L00349(PC)	;"nothing happens"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -7472,11 +7479,13 @@ L0033D:
 L0033E:
 	CMPI.W	#$0002,-$0006(A5)
 	BNE.B	L0033F
+
 	LEA	L00353(PC),A2	;"bolt"
 	BRA.B	L00341
 L0033F:
 	CMPI.W	#$0003,-$0006(A5)
 	BNE.B	L00340
+
 	LEA	L00354(PC),A2	;"flame"
 	BRA.B	L00341
 L00340:
@@ -7494,9 +7503,9 @@ L00341:
 L00342:
 	dc.w	L00313-L00344	;light
 	dc.w	L00330-L00344	;striking
-	dc.w	L0033E-L00344	;lightning
-	dc.w	L0033E-L00344	;fire
-	dc.w	L0033E-L00344	;cold
+	dc.w	L0033E-L00344	;lightning bolt
+	dc.w	L0033E-L00344	;fire flame
+	dc.w	L0033E-L00344	;cold ice
 	dc.w	L0031A-L00344	;polymorph
 	dc.w	L0032C-L00344	;magic missile
 	dc.w	L00334-L00344	;haste monster
