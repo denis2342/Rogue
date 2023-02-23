@@ -7590,10 +7590,12 @@ L00358:
 	MOVEA.L	$002A(A6),A1
 	CMPA.L	-$52A0(A4),A1	;_player + 42 (proom)
 	BEQ.B	L00359
+
 	MOVEA.L	-$0004(A5),A6
 	MOVEA.L	$002A(A6),A1
 	CMPA.L	A2,A1
 	BEQ.B	L00359
+
 	TST.B	D5
 	BEQ.B	L0035A
 
@@ -7632,6 +7634,7 @@ L0035A:
 L0035B:
 	TST.L	-$0004(A5)
 	BNE.W	L00358
+
 	MOVE.L	A3,D3
 	LEA	-$00A4(A5),A6
 	SUB.L	A6,D3
@@ -7639,6 +7642,7 @@ L0035B:
 	MOVE.W	D3,D4
 ;	TST.W	D3
 	BNE.B	L0035D
+
 	PEA	L00362(PC)	;"you have a tingling feeling"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -7667,6 +7671,7 @@ L0035E:
 	SUB.W	D4,$0022(A6)
 	CMPI.W	#$0000,$0022(A6)
 	BGT.B	L0035F
+
 	MOVE.L	-$0004(A5),-(A7)
 	JSR	_see_monst
 	ADDQ.W	#4,A7
@@ -7685,6 +7690,7 @@ L00360:
 L00361:
 	TST.L	(A3)
 	BNE.B	L0035E
+
 	BRA.B	L0035C
 
 L00362:	dc.b	"you have a tingling feeling",0
