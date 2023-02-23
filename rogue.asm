@@ -7419,6 +7419,7 @@ L00335:
 	ADDQ.W	#2,A7
 	TST.W	D0
 	BEQ.B	L00336
+
 	ADD.W	-$608A(A4),D4	;_delta + 2
 	ADD.W	-$608C(A4),D5	;_delta + 0
 	BRA.B	L00335
@@ -7430,8 +7431,10 @@ L00336:
 	MOVE.L	D0,-$0004(A5)
 ;	TST.L	D0
 	BEQ.B	L0033D
+
 	CMPI.W	#$0007,-$0006(A5)	;7 = haste monster
 	BNE.B	L00339
+
 	MOVEA.L	-$0004(A5),A6
 	MOVE.W	$0016(A6),D3
 	AND.W	#$2000,D3	;check for ISSLOW
@@ -12354,13 +12357,13 @@ L00544:
 	RTS
 
 L00545:
-	CLR.W	$0024(A2)
-	CLR.W	$0022(A2)
+	CLR.W	$0024(A2)		;zero hit
+	CLR.W	$0022(A2)		;zero damage
 	MOVE.L	-$69AE(A4),$001A(A2)	;_no_damage
 	MOVE.L	$001A(A2),$0016(A2)
 	MOVE.W	#$000B,$0026(A2)	;armor class base value
 	MOVE.W	#$0001,$001E(A2)	;one item
-	CLR.W	$002C(A2)
+	CLR.W	$002C(A2)		;no group
 	CLR.W	$0028(A2)		;flags like cursed and so on
 	CLR.B	$002A(A2)
 	CMPI.W	#$0003,-$60A6(A4)	;_no_food
@@ -12408,6 +12411,7 @@ L0054A:
 	JSR	_rnd
 	TST.W	D0
 	BEQ.B	L0054B
+
 	CLR.W	$0020(A2)
 	BRA.B	L0054C
 L0054B:
@@ -12464,6 +12468,7 @@ L00551:
 	ASL.w	#1,D3
 	CMP.W	$00(A6,D3.w),D0
 	BLT.B	L00553
+
 	ADDQ.W	#1,D4
 L00552:
 	CMP.W	#$0008,D4
@@ -12521,6 +12526,7 @@ L00557:
 	MOVE.W	D0,$0026(A2)
 ;	TST.W	D0
 	BNE.B	L00558
+
 	MOVE.W	#$FFFF,$0026(A2)	;-1
 	ORI.W	#O_ISCURSED,$0028(A2)	; set curse bit
 L00558:
