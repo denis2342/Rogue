@@ -3321,33 +3321,6 @@ L0017C:
 	UNLK	A5
 	RTS
 
-_str_attr:
-	LINK	A5,#-$0000
-L0017D:
-	MOVEA.L	$0008(A5),A6
-	TST.B	(A6)
-	BEQ.B	L0017F
-	MOVEA.L	$0008(A5),A6
-	MOVE.B	(A6),D3
-	EXT.W	D3
-	CMP.W	#$0025,D3
-	BNE.B	L0017E
-	ADDQ.L	#1,$0008(A5)
-	JSR	_standout
-L0017E:
-	MOVEA.L	$0008(A5),A6
-	ADDQ.L	#1,$0008(A5)
-	MOVE.B	(A6),D3
-	EXT.W	D3
-	MOVE.W	D3,-(A7)
-	JSR	_addch
-	ADDQ.W	#2,A7
-	JSR	_standend
-	BRA.B	L0017D
-L0017F:
-	UNLK	A5
-	RTS
-
 _noterse:
 	TST.B	-$66B2(A4)	;_terse
 	BNE.B	1$
