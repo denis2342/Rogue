@@ -7616,7 +7616,6 @@ L00358:
 	JSR	_INDEXquick
 
 	MOVEA.L	-$5198(A4),A6	;__flags
-	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	AND.W	#$000F,D3
 	MULU.W	#$0042,D3
@@ -7654,8 +7653,7 @@ L0035C:
 L0035D:
 	CLR.L	(A3)
 	MOVE.W	-$52A8(A4),D3	;_player + 34 (hp)
-	EXT.L	D3
-	DIVS.W	#$0002,D3
+	ASR.W	#1,D3		;hp cut in half
 	MOVE.W	D3,-$52A8(A4)	;_player + 34 (hp)
 ;	MOVE.W	-$52A8(A4),D3	;_player + 34 (hp)
 	EXT.L	D3
