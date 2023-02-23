@@ -15530,7 +15530,7 @@ L006A2:
 	JSR	_tomb_center(PC)
 	ADDQ.W	#6,A7
 	MOVE.W	-$60B2(A4),-(A7)	;_purse
-	PEA	L006A7(PC)
+	PEA	L006A7(PC)		;"%u Au"
 	PEA	-$0050(A5)
 	JSR	_sprintf
 	LEA	$000A(A7),A7
@@ -15546,7 +15546,7 @@ L006A2:
 	ADDQ.W	#4,A7
 	MOVE.L	D0,D3
 	MOVE.L	D3,-(A7)
-	PEA	L006A8(PC)
+	PEA	L006A8(PC)	;"Killed by %s"
 	PEA	-$0050(A5)
 	JSR	_sprintf
 	LEA	$000C(A7),A7
@@ -15558,7 +15558,7 @@ L006A2:
 	MOVE.W	$000A(A6),D3
 	ADD.W	#$076C,D3
 	MOVE.W	D3,-(A7)
-	PEA	L006AA(PC)
+	PEA	L006AA(PC)	;"%d"
 	PEA	-$0050(A5)
 	JSR	_sprintf
 	LEA	$000A(A7),A7
@@ -16047,7 +16047,7 @@ L006EE:
 	TST.B	$000B(A5)
 	BEQ.B	L006EF
 
-	TST.B	D5
+	TST.B	D5		;should we put a vowel in front?
 	BEQ.B	L006EF
 
 	MOVE.L	A2,-(A7)
@@ -16068,6 +16068,7 @@ L006F0:
 	JSR	_strcat
 	ADDQ.W	#8,A7
 	MOVE.L	-$5258(A4),D0	;_prbuf
+
 	MOVEM.L	(A7)+,D4/D5/A2
 	UNLK	A5
 	RTS
@@ -17498,6 +17499,7 @@ L00817:
 _look:
 	LINK	A5,#-$0018
 	MOVEM.L	D4-D7/A2/A3,-(A7)
+
 	CLR.W	-$000A(A5)
 	ST	-$48B7(A4)		;_looking
 	MOVE.L	-$52A0(A4),-$0004(A5)	;_player + 42 (proom)
@@ -17582,7 +17584,7 @@ L0081B:
 	AND.W	#$0002,D3
 	BNE.B	L0081C
 
-	MOVE.W	#$0020,-(A7)
+	MOVE.W	#$0020,-(A7)	;' '
 	JSR	_addch
 	ADDQ.W	#2,A7
 L0081C:
@@ -17606,10 +17608,10 @@ L0081D:
 	AND.B	#$40,D3
 	BEQ.B	L0081F
 L0081E:
-	CMP.B	#$23,D6	;'#'
+	CMP.B	#$23,D6		;'#' PASSAGE
 	BEQ.B	L0081F
 
-	CMP.B	#$25,D6	;'%'
+	CMP.B	#$25,D6		;'%' STAIRS
 	BEQ.B	L0081F
 
 	MOVEA.L	-$0010(A5),A6
@@ -17620,7 +17622,7 @@ L0081E:
 	CMP.B	D2,D3
 	BNE.B	L0081F
 
-	MOVE.W	#$0023,-(A7)
+	MOVE.W	#$0023,-(A7)	;'#' PASSAGE
 	JSR	_addch
 	ADDQ.W	#2,A7
 L0081F:
@@ -17687,7 +17689,7 @@ L00825:
 L00826:
 	CMP.W	#$0000,D4
 	BLE.W	L00846
-	CMP.W	#$003C,D4
+	CMP.W	#$003C,D4	;'<' room corner
 	BGE.W	L00846
 	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
@@ -17718,10 +17720,10 @@ L00829:
 	MOVE.B	$00(A6,D3.W),D6
 	MOVEQ	#$00,D3
 	MOVE.B	D7,D3
-	CMP.W	#$002B,D3
+	CMP.W	#$002B,D3	;'+' DOOR
 	BEQ.B	L0082C
 
-	CMP.B	#$2B,D6
+	CMP.B	#$2B,D6		;'+' DOOR
 	BEQ.B	L0082C
 
 	MOVE.B	-$000B(A5),D3
@@ -17936,11 +17938,11 @@ L00845:
 	BEQ.B	L00846
 	SUBQ.w	#2,D0		;'>'	UP
 	BEQ.B	L00846
-	SUB.w	#$003D,D0	;'{'	room corner?
+	SUB.w	#$003D,D0	;'{'	top left room corner
 	BEQ.B	L00846
 	SUBQ.w	#1,D0		;'|'	WALL
 	BEQ.B	L00846
-	SUBQ.w	#1,D0		;'}'	room corner?
+	SUBQ.w	#1,D0		;'}'	top right room corner
 	BEQ.B	L00846
 	BRA.B	L00844
 L00846:
@@ -17977,6 +17979,7 @@ L0084A:
 	CLR.B	-$66B4(A4)	;_was_trapped
 L0084B:
 	CLR.B	-$48B7(A4)	;_looking
+
 	MOVEM.L	(A7)+,D4-D7/A2/A3
 	UNLK	A5
 	RTS
@@ -20421,14 +20424,14 @@ L0093C:
 
 	MOVE.B	#$01,-$0001(A5)
 	MOVEA.L	D4,A6
-	ORI.W	#$0100,$0016(A6)	;ISHUH
+	ORI.W	#C_ISHUH,$0016(A6)	;C_ISHUH
 	ANDI.W	#~C_CANHUH,-$52B4(A4)	;clear C_CANHUH,_player + 22 (flags)
 	PEA	L00947(PC)	;"your hands stop glowing red"
 	JSR	_msg
 	ADDQ.W	#4,A7
 L0093D:
 	MOVEA.L	D4,A6
-	CMPI.W	#$0000,$0022(A6)
+	CMPI.W	#$0000,$0022(A6)	;more than 0 hp left?
 	BGT.B	L0093E
 
 	MOVE.W	#$0001,-(A7)
@@ -20550,7 +20553,7 @@ L0094C:
 L0094D:
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	$0016(A6),D3
-	AND.W	#$1000,D3	;ISCANC
+	AND.W	#C_ISCANC,D3	;C_ISCANC
 	BNE.W	L00973
 
 ;	MOVEA.L	$0008(A5),A6
@@ -22211,7 +22214,7 @@ _new_monster:
 	JSR	_roomin
 	ADDQ.W	#4,A7
 
-	MOVE.L	D0,$002A(A2)
+	MOVE.L	D0,$002A(A2)	;room
 	MOVE.B	$000F(A2),D3
 	EXT.W	D3
 	SUB.W	#$0041,D3	;'A'
@@ -22220,19 +22223,19 @@ _new_monster:
 	ADDA.L	D3,A3
 	MOVE.W	$000E(A3),D3	; number for xd8 HP
 	ADD.W	D4,D3
-	MOVE.W	D3,$001E(A2)
+	MOVE.W	D3,$001E(A2)	;rank
 
 	MOVE.W	#$0008,-(A7)	;xd8
 	MOVE.W	D3,-(A7)
 	JSR	_roll
 	ADDQ.W	#4,A7
-	MOVE.W	D0,$0022(A2)
-	MOVE.W	D0,$0028(A2)
+	MOVE.W	D0,$0022(A2)	;hp
+	MOVE.W	D0,$0028(A2)	;max hp
 	MOVE.W	$0010(A3),D3	; AC (lower is better)
 	SUB.W	D4,D3
-	MOVE.W	D3,$0020(A2)
-	MOVE.L	$0014(A3),$0024(A2)	;move monsters 1d8 or 3d8
-	MOVE.W	$0008(A3),$0018(A2)	;all monster have $000A here
+	MOVE.W	D3,$0020(A2)	;base armor class
+	MOVE.L	$0014(A3),$0024(A2)	;pointer to "1d8" or "1d8/1d8/3d10"
+	MOVE.W	$0008(A3),$0018(A2)	;all monster have strength of 10
 	MOVE.W	D4,D3
 	MULU.W	#10,D3
 	EXT.L	D3
@@ -22246,10 +22249,10 @@ _new_monster:
 	MOVE.L	(A7)+,D3
 	ADD.L	D0,D3
 	ADD.L	$000A(A3),D3		;add monsters EXP value
-	MOVE.L	D3,$001A(A2)
+	MOVE.L	D3,$001A(A2)		;experience
 	MOVE.W	$0006(A3),$0016(A2)	;copy the flags (mean,greedy...)
 	MOVE.B	#$01,$000E(A2)
-	CLR.L	$002E(A2)
+	CLR.L	$002E(A2)	;start with empty pack
 
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L00A14
@@ -22260,6 +22263,7 @@ _new_monster:
 L00A14:
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BEQ.B	L00A16
+
 	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	CMPI.W	#R_AGGR,$0020(A6)	;aggravate monster
 	BNE.B	L00A16
@@ -29135,7 +29139,7 @@ _lvl_obj:
 _mlist:
 	dc.l	$00000000
 
-; 4=treasure, 6=flags, 8=$A, 10=EXP, 14=xd8 HP, 16=AC, 18=$1
+; 4=treasure, 6=flags, 8=strength, 10=EXP, 14=xd8 HP, 16=AC, 18=$1
 
 _monsters:
 	dc.l	L0075D		; #12 aquator, 8-17
@@ -30200,24 +30204,24 @@ __things:
 __t_alloc:
 	dc.l	$00000000
 
-_player:	dc.l	0	;0
-		dc.l	0	;4
-		dc.w	0	;8
-		dc.w	0	;10 position
-		dc.w	0	;12 position
-		dc.w	0	;14
-		dc.l	0	;16
-		dc.w	0	;20
-		dc.w	0	;22 flags
-		dc.w	0	;24 strength
-		dc.l	0	;26 experience
-		dc.w	0	;30 rank
-		dc.w	0	;32 base armor class or something (read only)
-		dc.w	0	;34 hp
-		dc.l	0	;36
-		dc.w	0	;40 max hp
-		dc.l	0	;42 *proom
-		dc.l	0	;46 *pack
+_player:	dc.l	0	;$00 0
+		dc.l	0	;$04 4
+		dc.w	0	;$08 8
+		dc.w	0	;$0A 10 position
+		dc.w	0	;$0C 12 position
+		dc.w	0	;$0E 14
+		dc.l	0	;$10 16 disguise
+		dc.w	0	;$14 20
+		dc.w	0	;$16 22 flags
+		dc.w	0	;$18 24 strength
+		dc.l	0	;$1A 26 experience
+		dc.w	0	;$1E 30 rank
+		dc.w	0	;$20 32 base armor class or something (read only)
+		dc.w	0	;$22 34 hp
+		dc.l	0	;$24 36 pointer to "1d8" or "1d8/1d8/3d10"
+		dc.w	0	;$28 40 max hp
+		dc.l	0	;$2A 42 *proom
+		dc.l	0	;$2E 46 *pack
 
 _cur_weapon:	ds.l	1
 _cur_armor:	ds.l	1
