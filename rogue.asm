@@ -11126,11 +11126,10 @@ _inch:
 
 	MOVEQ	#$00,D3
 	MOVE.B	-$7065(A4),D3	;_c_col
-	ADD.L	D3,D0
+	ADD.L	D0,D3
 	LEA	-$76F6(A4),A6	;_screen_map
-	MOVEQ	#$00,D3
-	MOVE.B	$00(A6,D0.L),D3
-	MOVE.W	D3,D0
+	MOVEQ	#$00,D0
+	MOVE.B	$00(A6,D3.L),D3
 
 ;	UNLK	A5
 	RTS
