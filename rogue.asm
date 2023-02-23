@@ -3171,6 +3171,7 @@ L00170:
 
 _show_win:
 	LINK	A5,#-$0000
+
 	MOVE.L	$0008(A5),-(A7)
 	CLR.W	-(A7)
 	CLR.W	-(A7)
@@ -3184,12 +3185,14 @@ _show_win:
 	MOVE.W	#$0020,-(A7)
 	BSR.B	_wait_for
 	ADDQ.W	#2,A7
+
 	UNLK	A5
 	RTS
 
 _getinfo:
 	LINK	A5,#-$00A6
 	MOVEM.L	D4/A2,-(A7)
+
 	CLR.W	-$0002(A5)
 	MOVE.W	#$0001,-$0006(A5)
 	MOVEA.L	$0008(A5),A2
@@ -3198,18 +3201,23 @@ _getinfo:
 	MOVE.W	#$0001,-(A7)
 	JSR	_cursor(PC)
 	ADDQ.W	#2,A7
+
 	MOVE.W	D0,-$0004(A5)
 L00171:
 	CMPI.W	#$0001,-$0006(A5)
 	BNE.W	L0017B
+
 	MOVE.W	#$005F,-(A7)
 	JSR	__addch
 	ADDQ.W	#2,A7
+
 	JSR	_readchar
 	MOVE.B	D0,D4
+
 	MOVE.W	#$0020,-(A7)
 	JSR	__addch
 	ADDQ.W	#2,A7
+
 	MOVE.B	D4,D0
 	EXT.W	D0
 ;	EXT.L	D0
@@ -3217,12 +3225,13 @@ L00171:
 L00172:
 	MOVEA.L	$0008(A5),A6
 	CMPA.L	A2,A6
-	BEQ.B	L00173
+	BEQ.B	1$
+
 	JSR	_backspace(PC)
 	SUBQ.W	#1,-$0002(A5)
 	SUBQ.L	#1,$0008(A5)
 	BRA.B	L00172
-L00173:
+1$
 	MOVEA.L	$0008(A5),A6
 	MOVEQ	#$1B,D3
 	MOVE.B	D3,(A6)
@@ -3231,29 +3240,33 @@ L00173:
 	MOVE.W	-$0004(A5),-(A7)
 	JSR	_cursor(PC)
 	ADDQ.W	#2,A7
+
 	BRA.B	L0017A
 L00174:
 	MOVEA.L	$0008(A5),A6
 	CMPA.L	A2,A6
-	BEQ.B	L00175
+	BEQ.B	2$
+
 	JSR	_backspace(PC)
 	SUBQ.W	#1,-$0002(A5)
 	SUBQ.L	#1,$0008(A5)
-L00175:
+2$
 	BRA.B	L0017A
 L00176:
 	MOVE.W	-$0002(A5),D3
 	CMP.W	$000C(A5),D3
-	BLT.B	L00177
+	BLT.B	3$
+
 	JSR	_beep(PC)
 	BRA.B	L0017A
-L00177:
+3$
 	ADDQ.W	#1,-$0002(A5)
 	MOVE.B	D4,D3
 	EXT.W	D3
 	MOVE.W	D3,-(A7)
 	JSR	_addch
 	ADDQ.W	#2,A7
+
 	MOVEA.L	$0008(A5),A6
 	ADDQ.L	#1,$0008(A5)
 	MOVE.B	D4,(A6)
@@ -3267,6 +3280,7 @@ L00178:
 	MOVE.W	-$0004(A5),-(A7)
 	JSR	_cursor(PC)
 	ADDQ.W	#2,A7
+
 	MOVE.B	D4,D3
 	EXT.W	D3
 	MOVE.W	D3,-$0006(A5)
@@ -3285,16 +3299,19 @@ L0017A:
 	BRA.W	L00171
 L0017B:
 	MOVE.W	-$0006(A5),D0
+
 	MOVEM.L	(A7)+,D4/A2
 	UNLK	A5
 	RTS
 
 _backspace:
 	LINK	A5,#-$0004
+
 	PEA	-$0004(A5)
 	PEA	-$0002(A5)
 	JSR	_getrc
 	ADDQ.W	#8,A7
+
 	SUBQ.W	#1,-$0004(A5)
 ;	CMPI.W	#$0000,-$0004(A5)
 	BGE.B	L0017C
@@ -10727,14 +10744,17 @@ L004AD:
 	MOVE.W	D2,-(A7)
 	JSR	_call_it
 	ADDQ.W	#6,A7
+
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	A2,-(A7)
 	JSR	_pack_name
 	ADDQ.W	#6,A7
+
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	A2,-(A7)
 	JSR	_unpack
 	ADDQ.W	#6,A7
+
 	MOVE.L	D0,-(A7)
 	JSR	_discard
 	ADDQ.W	#4,A7
@@ -10803,6 +10823,7 @@ _invis_on:
 _th_effect:
 	LINK	A5,#-$0000
 	MOVEM.L	A2/A3,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	MOVEA.L	$000C(A5),A3
 	MOVE.W	$0020(A2),D0
@@ -11072,6 +11093,7 @@ _mvaddchquick:
 _mvinch:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/D5,-(A7)
+
 	MOVE.W	$0008(A5),D4
 	MOVE.W	$000A(A5),D5
 
@@ -11087,12 +11109,14 @@ _mvinch:
 	LEA	-$76F6(A4),A6	;_screen_map
 	MOVEQ	#$00,D0
 	MOVE.B	$00(A6,D3.L),D0
+
 	MOVEM.L	(A7)+,D4/D5
 	UNLK	A5
 	RTS
 
 _inch:
 ;	LINK	A5,#-$0000
+
 	MOVEQ	#$00,D0
 	MOVE.B	-$7066(A4),D0	;_c_row
 
@@ -11107,6 +11131,7 @@ _inch:
 	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.L),D3
 	MOVE.W	D3,D0
+
 ;	UNLK	A5
 	RTS
 
@@ -22106,10 +22131,10 @@ _randmonster:
 	TST.B	$0009(A5)	;wandering sets one here
 	BEQ.B	L00A0F
 
-	MOVEA.L	-$6992(A4),A2	;_hero_damage + 24
+	MOVEA.L	-$6992(A4),A2	;normal monster list
 	BRA.B	L00A10
 L00A0F:
-	MOVEA.L	-$6996(A4),A2	;_hero_damage + 20
+	MOVEA.L	-$6996(A4),A2	;wandering monster list
 L00A10:
 	MOVEq	#$0005,D0
 	JSR	_rnd
