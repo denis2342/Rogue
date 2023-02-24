@@ -106,7 +106,7 @@ O_ISKNOW	equ	2	;100% sure
 O_SCAREUSED	equ	8
 O_ISMISL	equ	$10	;100% sure
 O_ISMANY	equ	$20	;100% sure
-O_SLAYED	equ	$40
+O_SPECKNOWN	equ	$40	;special feature known flag, used for slayer weapon
 
 ; flags for creatures and player
 

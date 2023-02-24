@@ -4324,7 +4324,7 @@ L001DC:
 L001DD:
 	JSR	_pick_mons
 	MOVEA.L	-$5298(A4),A6	;_cur_weapon
-	MOVE.B	D0,$002A(A6)
+	MOVE.B	D0,$002A(A6)	;set the monster which we can slay now
 	ADDQ.W	#1,$0022(A6)	;hplus
 	ADDQ.W	#1,$0024(A6)	;dplus
 	MOVE.W	#$0001,$0026(A6)
@@ -14053,17 +14053,17 @@ _init_weapon:
 
 	moveq	#0,d1		;set group
 	moveq	#1,d0		;default number of items
-	AND.W	#O_ISMANY,D3	; check for ISMANY
-	BEQ.B	L00616
+	AND.W	#O_ISMANY,D3	;check for O_ISMANY
+	BEQ.B	1$
 
 	MOVEq	#$0008,D0	;random count of bolts, arrows, darts...
 	JSR	_rnd
 	ADDQ.W	#8,D0		; add 8 - 15
 
-	MOVE.W	-$609C(A4),d1	;set group for item
-	ADDQ.W	#1,-$609C(A4)		;_group++
-L00616:
-	MOVE.W	d0,$001E(A2)	;one or the random number of items
+	MOVE.W	-$609C(A4),d1	;get group for item
+	ADDQ.W	#1,-$609C(A4)	;_group++
+
+1$	MOVE.W	d0,$001E(A2)	;one or the random number of items
 	MOVE.W	d1,$002C(A2)	;set group for item
 
 	MOVE.L	(A7)+,A2
@@ -14972,8 +14972,9 @@ _rnd:
 _roll:
 	LINK	A5,#-$0000
 	MOVEM.L	D4-D6,-(A7)
+
 	MOVE.W	$0008(A5),D4	; number of dices
-	MOVE.W	$000A(A5),D5	; number of eyes
+	MOVE.W	$000A(A5),D5	; number of sides/faces
 	MOVE.w	D4,D6
 	bra	2$
 
@@ -14983,6 +14984,7 @@ _roll:
 2$	dbra	d4,1$
 
 	MOVE.W	D6,D0
+
 	MOVEM.L	(A7)+,D4-D6
 	UNLK	A5
 	RTS
@@ -16718,7 +16720,7 @@ L007B3:
 
 ;/*
 ; * whatis:
-; *  What a certin object is
+; *  What a certain object is
 ; */
 
 _whatis:
@@ -16837,10 +16839,10 @@ L007BE:
 	SUB.w	#$000C,D0	;'m' weapon type
 	BEQ.B	L007BC
 L007BF:
-	TST.B	$002A(A2)
+	TST.B	$002A(A2)	;has item special feature?
 	BEQ.B	L007C0
 
-	ORI.W	#$0040,$0028(A2)	;O_SLAYED ???
+	ORI.W	#O_SPECKNOWN,$0028(A2)	;set O_SPECKNOWN
 L007C0:
 	TST.W	$000C(A5)
 	BEQ.B	L007C1
@@ -23702,7 +23704,7 @@ L00ABB:
 	JSR	_do_count(PC)
 	LEA	$000A(A7),A7
 	MOVE.W	D4,D3
-	AND.W	#$0004,D3
+	AND.W	#$0004,D3	;only the simple name?
 	BEQ.B	L00ABE
 
 	LEA	-$66F6(A4),A6	;_s_know
@@ -23741,7 +23743,7 @@ L00ABE:
 	BNE.B	L00ABF
 
 	MOVE.W	D4,D3
-	AND.W	#$0002,D3
+	AND.W	#$0002,D3	;with whats made of?
 	BEQ.B	L00AC0
 L00ABF:
 	MOVE.W	D5,D3
@@ -23765,7 +23767,7 @@ L00AC1:
 	JSR	_do_count(PC)
 	LEA	$000A(A7),A7
 	MOVE.W	D4,D3
-	AND.W	#$0004,D3
+	AND.W	#$0004,D3	;only the simple name?
 	BEQ.B	L00AC4
 
 	LEA	-$66E7(A4),A6	;_p_know
@@ -23838,7 +23840,7 @@ L00AC6:
 	BNE.B	L00AC7
 
 	MOVE.W	D4,D3
-	AND.W	#$0002,D3
+	AND.W	#$0002,D3	;with whats made of?
 	BEQ.B	L00AC7
 
 	PEA	-$6713(A4)
@@ -23849,7 +23851,7 @@ L00AC6:
 	BRA.B	L00ACB
 L00AC7:
 	MOVE.W	D4,D3
-	AND.W	#$0010,D3
+	AND.W	#$0010,D3	;should we change text for plurals?
 	BEQ.B	L00ACA
 
 	CMPI.W	#$0001,$001E(A2)	;one or more food?
@@ -23877,10 +23879,10 @@ L00ACB:
 
 L00ACC:
 	MOVE.W	D4,D3
-	AND.W	#$0010,D3	;O_ISMISL ?
+	AND.W	#$0010,D3	;should we change text for plurals?
 	BEQ.B	L00ACE
 
-	CMPI.W	#$0001,$001E(A2)
+	CMPI.W	#$0001,$001E(A2)	;how many do we have?
 	BLE.B	L00ACD
 
 	MOVE.W	$001E(A2),-(A7)
@@ -23902,7 +23904,7 @@ L00ACD:
 	ADDQ.W	#8,A7
 L00ACE:
 	MOVE.W	D4,D3
-	AND.W	#$0008,D3	;O_SCAREUSED ?
+	AND.W	#$0008,D3	;with stats or only name?
 	BEQ.B	L00ACF
 
 	MOVE.W	$0028(A2),D3
@@ -23922,10 +23924,10 @@ L00ACF:
 	BLE.B	L00AD0
 
 	MOVE.W	D4,D3
-	AND.W	#$0010,D3	;O_ISMISL ?
+	AND.W	#$0010,D3	;should we append 's' for plurals?
 	BEQ.B	L00AD0
 
-	LEA	L00B00(PC),A6
+	LEA	L00B00(PC),A6	;"s"
 	MOVE.L	A6,D3
 	BRA.B	L00AD1
 L00AD0:
@@ -23942,14 +23944,14 @@ L00AD1:
 	JSR	_nmadd
 	LEA	$000C(A7),A7
 	MOVE.W	D4,D3
-	AND.W	#$0040,D3	;O_SLAYED
+	AND.W	#$0040,D3	;print with full stats
 	BEQ.B	L00AD2
 
-	TST.B	$002A(A2)	; test for monster slayer weapon
+	TST.B	$002A(A2)	; test for special feature (monster slayer weapon)
 	BEQ.B	L00AD2
 
 	MOVE.W	$0028(A2),D3	;monster slayer already used?
-	AND.W	#O_SLAYED,D3
+	AND.W	#O_SPECKNOWN,D3
 	BEQ.B	L00AD2
 
 	MOVE.B	$002A(A2),D3
@@ -23968,7 +23970,7 @@ L00AD2:
 
 L00AD3:
 	MOVE.W	D4,D3
-	AND.W	#$0008,D3
+	AND.W	#$0008,D3	;with stats or only name?
 	BEQ.B	L00AD5
 
 	MOVE.W	$0028(A2),D3
@@ -23996,7 +23998,7 @@ L00AD3:
 	JSR	_nmadd
 	LEA	$000C(A7),A7
 	MOVE.W	D4,D3
-	AND.W	#$0040,D3
+	AND.W	#$0040,D3	;print with full stats
 	BEQ.B	L00AD4
 
 	MOVE.W	$0026(A2),D3
@@ -24031,7 +24033,7 @@ L00AD7:
 
 L00AD8:
 	MOVE.W	D4,D3
-	AND.W	#$0004,D3
+	AND.W	#$0004,D3	;only the simple name?
 	BEQ.W	L00ADC
 
 	LEA	-$66CB(A4),A6	;_ws_know
@@ -24092,7 +24094,7 @@ L00ADD:
 	BEQ.B	L00ADF
 
 	MOVE.W	D4,D3
-	AND.W	#$0002,D3
+	AND.W	#$0002,D3	;with whats made of?
 	BEQ.B	L00ADE
 
 	MOVE.W	D5,D3
@@ -24126,7 +24128,7 @@ L00ADF:
 	JSR	_do_count(PC)
 	LEA	$000A(A7),A7
 	MOVE.W	D4,D3
-	AND.W	#$0040,D3
+	AND.W	#$0040,D3	;print with full stats
 	BEQ.B	L00AE0
 
 	MOVE.L	A2,-(A7)
@@ -24142,11 +24144,13 @@ L00AE0:
 
 L00AE1:
 	MOVE.W	D4,D3
-	AND.W	#$0004,D3
+	AND.W	#$0004,D3	;only the simple name?
 	BEQ.W	L00AE7
+
 	LEA	-$66D9(A4),A6	;_r_know
 	TST.B	$00(A6,D5.W)
 	BEQ.B	L00AE4
+
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
@@ -24160,6 +24164,7 @@ L00AE1:
 	MOVE.W	D4,D3
 	AND.W	#$0008,D3
 	BEQ.B	L00AE2
+
 	MOVE.L	A2,-(A7)
 	JSR	_ring_num(PC)
 	ADDQ.W	#4,A7
@@ -24181,6 +24186,7 @@ L00AE4:
 	LEA	-$6308(A4),A6	;_r_guess
 	TST.B	$00(A6,D3.L)
 	BEQ.B	L00AE7
+
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
@@ -24236,22 +24242,26 @@ L00AEA:
 	BEQ.W	L00ACC
 L00AEB:
 	MOVE.W	D4,D3
-	AND.W	#$0001,D3
+	AND.W	#$0001,D3	;should we print the wearing/worn text?
 	BEQ.B	L00AEF
+
 	CMPA.L	-$5294(A4),A2	;_cur_armor
 	BNE.B	L00AEC
+
 	PEA	L00B0D(PC)	;"(being worn)"
 	JSR	_nmadd
 	ADDQ.W	#4,A7
 L00AEC:
 	CMPA.L	-$5298(A4),A2	;_cur_weapon
 	BNE.B	L00AED
+
 	PEA	L00B0E(PC)	;"(weapon in hand)"
 	JSR	_nmadd
 	ADDQ.W	#4,A7
 L00AED:
 	CMPA.L	-$5190(A4),A2	;_cur_ring_1
 	BNE.B	L00AEE
+
 	PEA	L00B0F(PC)	;"(on left hand)"
 	JSR	_nmadd
 	ADDQ.W	#4,A7
@@ -24259,19 +24269,22 @@ L00AED:
 L00AEE:
 	CMPA.L	-$518C(A4),A2	;_cur_ring_2
 	BNE.B	L00AEF
+
 	PEA	L00B10(PC)	;"(on right hand)"
 	JSR	_nmadd
 	ADDQ.W	#4,A7
 L00AEF:
 	MOVE.W	D4,D3
-	AND.W	#$0020,D3
+	AND.W	#$0020,D3	;should we capitalize the word
 	BNE.B	L00AF0
+
 	MOVEA.L	-$5258(A4),A6	;_prbuf
 	MOVE.B	(A6),D0
 	JSR	_isupper
 
 	TST.W	D0
 	BEQ.B	L00AF0
+
 	MOVEA.L	-$5258(A4),A6	;_prbuf
 	MOVE.L	A6,-(A7)
 	MOVEA.L	-$5258(A4),A6	;_prbuf
@@ -24284,8 +24297,9 @@ L00AEF:
 	BRA.B	L00AF1
 L00AF0:
 	MOVE.W	D4,D3
-	AND.W	#$0020,D3
+	AND.W	#$0020,D3	;should we capitalize the word
 	BEQ.B	L00AF1
+
 	MOVEA.L	-$5258(A4),A6	;_prbuf
 	MOVE.B	(A6),D0
 	JSR	_islower
