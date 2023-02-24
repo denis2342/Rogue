@@ -5340,7 +5340,7 @@ L00258:
 	CMP.B	#$22,D3		;'"'
 	BEQ.W	L0025C
 
-	CMP.B	#$20,D3		;' '
+	CMP.B	#$20,D3		;' ' SPACE
 	BNE.B	L0025A
 
 	MOVE.W	$000A(A6),-(A7)
@@ -5357,11 +5357,11 @@ L00258:
 
 	MOVEA.L	-$519C(A4),A6	;__level
 
-	CMP.B	#$2E,$00(A6,D0.W)	;'.'
+	CMP.B	#$2E,$00(A6,D0.W)	;'.' FLOOR
 	BNE.B	L0025A
 
 	MOVEA.L	$0008(A5),A6
-	MOVEq	#$2E,d2		;'.'
+	MOVEq	#$2E,d2		;'.' FLOOR
 	MOVE.W	$000A(A6),d1
 	MOVE.W	$000C(A6),d0
 	JSR	_mvaddchquick
@@ -5369,7 +5369,7 @@ L00258:
 	BRA.B	L0025C
 L0025A:
 	MOVEA.L	$0008(A5),A6
-	CMP.B	#$2E,$0011(A6)	;'.'
+	CMP.B	#$2E,$0011(A6)	;'.' FLOOR
 	BNE.B	L0025B
 
 	MOVE.W	$000A(A6),-(A7)
@@ -5380,7 +5380,7 @@ L0025A:
 	BNE.B	L0025B
 
 	MOVEA.L	$0008(A5),A6
-	MOVEq	#$20,d2		;' '
+	MOVEq	#$20,d2		;' ' SPACE
 	MOVE.W	$000A(A6),d1
 	MOVE.W	$000C(A6),d0
 	JSR	_mvaddchquick
@@ -5409,13 +5409,13 @@ L0025C:
 	ADDQ.W	#4,A7
 
 	MOVEA.L	$0008(A5),A6
-	MOVE.L	D0,$002A(A6)
+	MOVE.L	D0,$002A(A6)	;proom
 	BNE.B	1$
 
-	MOVE.L	A3,$002A(A6)
+	MOVE.L	A3,$002A(A6)	;proom
 	BRA.W	L0023E
 1$
-	MOVEA.L	$002A(A6),A1
+	MOVEA.L	$002A(A6),A1	;proom
 	CMPA.L	A3,A1
 	BEQ.B	L0025E
 
@@ -21786,6 +21786,7 @@ _raise_level:
 _thunk:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/D5/A2/A3,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	MOVEA.L	$000C(A5),A3
 	MOVE.L	$0010(A5),D4
@@ -21795,6 +21796,7 @@ _thunk:
 	ADDQ.W	#4,A7
 	CMP.W	#$006D,D0
 	BNE.B	L009E9
+
 	MOVE.L	D4,-(A7)
 	MOVE.W	$0020(A2),D3
 ;	EXT.L	D3
@@ -21894,7 +21896,7 @@ L009F5:
 ;	JSR	_standout
 L009F6:
 	MOVEA.L	$000C(A5),A6
-	CMP.b	#$2E,$0011(A6)	;'.'
+	CMP.b	#$2E,$0011(A6)	;'.' FLOOR
 	BNE.B	L009F7
 
 	MOVE.W	(A2),-(A7)
@@ -21904,7 +21906,7 @@ L009F6:
 	TST.W	D0
 	BNE.B	L009F7
 
-	MOVEq	#$0020,d2
+	MOVEq	#$0020,d2	;' ' SPACE
 	MOVE.W	(A2),d1
 	MOVE.W	$0002(A2),d0
 	JSR	_mvaddchquick
@@ -22202,7 +22204,7 @@ _new_monster:
 	ADDA.L	#$0000000A,A6
 	MOVEA.L	$000E(A5),A1
 	MOVE.L	(A1)+,(A6)+
-	MOVE.B	#$22,$0011(A2)
+	MOVE.B	#$22,$0011(A2)	;'"'
 
 	MOVE.L	$000E(A5),-(A7)
 	JSR	_roomin
