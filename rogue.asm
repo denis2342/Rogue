@@ -15350,13 +15350,12 @@ L00689:
 	CMPI.W	#26,$002C(A6)
 	BGE.B	L0068B
 
-	MOVE.W	#$0001,-(A7)
 	MOVEA.L	$000A(A5),A6
 	MOVE.W	$002A(A6),D3
 	AND.W	#$00FF,D3
 	MOVE.W	D3,-(A7)
 	JSR	_killname(PC)
-	ADDQ.W	#4,A7
+	ADDQ.W	#2,A7
 
 	MOVE.L	D0,-(A7)
 	PEA	L00692(PC)	;" by %s"
@@ -15538,12 +15537,11 @@ L006A2:
 	MOVE.W	#$0072,-(A7)
 	JSR	_tomb_center(PC)
 	ADDQ.W	#6,A7
-	MOVE.W	#$0001,-(A7)
 	MOVE.B	D4,D3
 	EXT.W	D3
 	MOVE.W	D3,-(A7)
 	JSR	_killname(PC)
-	ADDQ.W	#4,A7
+	ADDQ.W	#2,A7
 	MOVE.L	D0,D3
 	MOVE.L	D3,-(A7)
 	PEA	L006A8(PC)	;"Killed by %s"
@@ -16044,9 +16042,6 @@ L006ED:
 	BEQ.B	L006E8
 	BRA.B	L006EA		;check for the monsters
 L006EE:
-	TST.B	$000B(A5)
-	BEQ.B	L006EF
-
 	TST.B	D5		;should we put a vowel in front?
 	BEQ.B	L006EF
 
