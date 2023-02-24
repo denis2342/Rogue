@@ -21891,7 +21891,7 @@ L009F5:
 	CMP.b	#'#',$00(A6,D0.W)
 	BNE.B	L009F6
 
-	JSR	_standout
+;	JSR	_standout
 L009F6:
 	MOVEA.L	$000C(A5),A6
 	CMP.b	#$2E,$0011(A6)	;'.'
@@ -21921,7 +21921,7 @@ L009F7:
 	JSR	_mvaddchquick
 
 L009F8:
-	JSR	_standend
+;	JSR	_standend
 	MOVE.L	$000C(A5),-(A7)
 	PEA	-$6CAC(A4)	;_mlist
 	JSR	__detach
