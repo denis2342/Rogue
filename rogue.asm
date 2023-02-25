@@ -17772,6 +17772,12 @@ L0082C:
 	AND.W	#C_ISINVIS,D3	;C_ISINVIS
 	BEQ.B	L0082E
 
+	; bugfix: test if we actually can see the invisible
+
+	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	AND.W	#C_CANSEE,D3	;C_CANSEE
+	BNE	L0082E
+
 	TST.B	-$66BB(A4)	;_door_stop
 	BEQ.B	L0082D
 
