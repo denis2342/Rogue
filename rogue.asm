@@ -7551,15 +7551,12 @@ _drain:
 	JSR	_INDEXplayer
 
 	MOVEA.L	-$519C(A4),A6	;__level
-;	MOVEQ	#$00,D3
-	MOVE.B	$00(A6,D0.W),D3
-	CMP.b	#$2B,D3		;'+'?
+	CMP.b	#$2B,$00(A6,D0.W)	;'+'?
 	BNE.B	L00356
 
 ;	JSR	_INDEXplayer
 
 	MOVEA.L	-$5198(A4),A6	;__flags
-;	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	AND.W	#$000F,D3
 	MULU.W	#66,D3
@@ -7598,9 +7595,7 @@ L00358:
 	JSR	_INDEXquick
 
 	MOVEA.L	-$519C(A4),A6	;__level
-;	MOVEQ	#$00,D3
-	MOVE.B	$00(A6,D0.W),D3
-	CMP.b	#$2B,D3		;'+'?
+	CMP.b	#$2B,$00(A6,D0.W)	;'+'?
 	BNE.B	L0035A
 
 	MOVEA.L	-$0004(A5),A6
@@ -7766,12 +7761,9 @@ L00367:
 	MOVEA.L	(A7)+,A6
 	MOVE.L	(A7)+,D3
 	MOVE.B	D0,$00(A6,D3.L)
-	MOVEQ	#$00,D3
-	MOVE.B	D0,D3
-	MOVEQ	#$00,D2
-	MOVE.B	D4,D2
-	CMP.W	D2,D3
+	CMP.B	D4,D0
 	BNE.B	L00368
+
 	MOVE.W	A3,D3
 	MULS.W	#$0006,D3
 	LEA	-$004C(A5),A6
