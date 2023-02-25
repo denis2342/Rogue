@@ -11835,7 +11835,7 @@ L00512:
 	UNLK	A5
 	RTS
 
-L00513:	dc.b	"Title.Screen",0,0
+L00513:	dc.b	"Title.Screen.lz4",0,0
 
 _newmem:
 	LINK	A5,#-$0000
@@ -15420,7 +15420,7 @@ L0068F:
 	UNLK	A5
 	RTS
 
-L00690:	dc.b	"Hall.of.Fame",0
+L00690:	dc.b	"Hall.of.Fame.lz4",0
 L00691:	dc.b	'%5d %s, "%s"',0
 L00692:	dc.b	" by %s",0
 L00693:	dc.b	" killed on level %d",0
@@ -15587,7 +15587,7 @@ L006A2:
 	UNLK	A5
 	RTS
 
-L006A5:	dc.b	"Tombstone",0
+L006A5:	dc.b	"Tombstone.lz4",0
 ;L006A6:	dc.b	"Software Pirate",0
 L006A7:	dc.b	"%u Au",0
 L006A8:	dc.b	"Killed by %s",0
@@ -15978,7 +15978,7 @@ L006DF:	dc.b	"   Worth  Item",0
 L006E0:	dc.b	"%c) %5d  %s",0
 L006E1:	dc.b	"   %5u  Gold Pieces          ",0
 L006E2:	dc.b	"--Press any key to see Hall of Fame--",0
-L006E3:	dc.b	"Total.Winner",0
+L006E3:	dc.b	"Total.Winner.lz4",0
 L006E4:	dc.b	'Mr. Mctesq and the Grand Beeking say, "Congratulations"',0,0
 
 ;/*
@@ -23449,7 +23449,7 @@ _about_rogue:
 ;	UNLK	A5
 	RTS
 
-L00AAF:	dc.b	"Credits",0
+L00AAF:	dc.b	"Credits.lz4",0
 
 _mouse_go:
 	LINK	A5,#-$0000
@@ -24420,9 +24420,102 @@ L00B17:
 L00B18:	dc.b	"a%s %s",0
 L00B19:	dc.b	"%d %ss",0
 
+lz4_frame_error:
+;	illegal
+	PEA	blub1(PC)	;"lz4_frame_error"
+	JSR	_db_print
+	ADDQ.W	#4,A7
+	MOVEQ	#-$01,D0
+
+	BRA	L00B1A
+
+blub1:	dc.b	"lz4_frame_error",10,0,0
+
+lz4_frame_depack:
+	cmpi.l	#$04224d18,(a0)+	; LZ4 frame MagicNb
+	bne.s	lz4_frame_error
+
+	move.b	(a0),d0
+	andi.b	#%11000001,d0		; check version, no depacked size, and no DictID
+	cmpi.b	#%01000000,d0
+	bne.s	lz4_frame_error
+
+	btst	#3,(a0)	;skip 8 bytes if content-size bit is set
+	beq	1$
+	addq.l	#8,a0
+
+1$	; read 32bits block size without movep (little endian)
+	; even faster byte order reversal
+
+	move.b	4(a0),d0	;0004
+	swap	d0		;0400	4
+	move.b	6(a0),d0	;0406
+	lsl.l	#8,d0		;4060	8 + 16
+	move.b	5(a0),d0	;4065
+	swap	d0		;6540	4
+	move.b	3(a0),d0	;6543
+
+	lea	7(a0),a0	; skip LZ4 block header + packed data size
+
+; input: a0.l : packed buffer
+;		 a1.l : output buffer
+;		 d0.l : LZ4 packed block size (in bytes)
+
+lz4_depack:	lea	0(a0,d0.l),a2	; packed buffer end
+		moveq	#0,d0
+		moveq	#0,d2
+		moveq	#15,d4
+
+.tokenLoop:	move.b	(a0)+,d0
+		move.l	d0,d1
+		lsr.b	#4,d1
+		beq.s	.lenOffset
+
+		bsr.s	.readLen
+
+		bra	.litstart
+
+.litcopy:	move.b	(a0)+,(a1)+	; block could be > 64KiB
+.litstart	dbra	d1,.litcopy
+
+		; end test is always done just after literals
+		cmpa.l	a0,a2
+		ble.s	.readEnd
+
+.lenOffset:	move.b	(a0)+,d2	; read 16bits offset, little endian, unaligned
+		move.b	(a0)+,-(a7)
+		move.w	(a7)+,d1
+		move.b	d2,d1
+		movea.l	a1,a3
+		sub.l	d1,a3		; d1 bits 31..16 are always 0 here
+		moveq	#$f,d1
+		and.w	d0,d1
+
+		bsr.s	.readLen
+
+		addq.l	#4-1,d1		;-1 because of dbra
+
+.copy:		move.b	(a3)+,(a1)+	; block could be > 64KiB
+		dbra	d1,.copy
+
+;		subq.l	#1,d1
+;		bne.s	.copy
+		bra.s	.tokenLoop
+
+.readLen:	cmp.b	d1,d4
+		bne.s	.readEnd
+.readLoop:	move.b	(a0)+,d2
+		add.l	d2,d1		; final len could be > 64KiB
+		not.b	d2
+		beq.s	.readLoop
+.readEnd:	rts
+
+tmpbuf:		dc.l	0
+
 _show_ilbm:
 	LINK	A5,#-$0000
 	MOVEM.L	D4-D6,-(A7)
+
 	CLR.W	-(A7)
 	MOVE.L	$0008(A5),-(A7)	;filename
 	JSR	_AmigaOpen(PC)
@@ -24435,32 +24528,48 @@ _show_ilbm:
 	JSR	_db_print
 	ADDQ.W	#8,A7
 	MOVEQ	#-$01,D0
-L00B1A:
+L00B1A
+	move.l	tmpbuf,-(a7)
+	jsr	_free
+	ADDQ.W	#4,A7
+
 	MOVEM.L	(A7)+,D4-D6
 	UNLK	A5
 	RTS
 
 L00B1B:
-	MOVE.W	#64,-(A7)	;read header first, 64 bytes
-	PEA	-$47A4(A4)	;_want
+	move.w	#45000,-(a7)
+	JSR	_newmem
+	ADDQ.W	#2,A7
+	move.l	d0,d7
+
+	MOVE.W	#45000,-(A7)
+	move.l	d0,-(a7)
 	MOVE.W	D6,-(A7)	;filehandle
 	JSR	_read
 	ADDQ.W	#8,A7
 
-	tst.b	-$47AA(A4)	;_all_clear
-	beq	1$
+	MOVE.W	D6,-(A7)	;filehandle
+	JSR	_close
+	ADDQ.W	#2,A7
 
-	moveq	#16-1,d2	;turn the color for the title.screen
-	lea	-$47A4(A4),a0	_want
-loop$	move.b	(a0),d1
-	move.b	2(a0),(a0)
-	move.b	d1,2(a0)
-	addq.l	#4,a0
-	dbra	d2,loop$
+	move.l	#64064,-(a7)
+	JSR	_lmalloc
+	ADDQ.W	#4,A7
+	move.l	d0,tmpbuf
 
-	clr.b	-$47AA(A4)	;_all_clear
+	move.l	d0,a1
+	move.l	d7,a0
+	bsr	lz4_frame_depack
 
-1$	MOVE.W	#16000,D5	;load 16kb at once
+	move.l	d7,-(a7)
+	jsr	_free
+	ADDQ.W	#4,A7
+
+	move.l	tmpbuf,a0
+	bsr	reversetitle
+
+	MOVE.l	#16000,D5	;load 16kb at once
 	MOVEQ	#4-1,D4
 
 	MOVEA.L	$000C(A5),A3	;screen
@@ -24468,26 +24577,42 @@ loop$	move.b	(a0),d1
 	MOVEA.L	$0004(A3),A3	;get the bitmap
 	addq.l	#8,A3
 
-loop2$	MOVE.W	D5,-(A7)	;length
-	move.l	(a3)+,-(a7)	;get the planes
-
+	add.l	#64,tmpbuf
+loop2$
 	; we load the data directly into the bitmap planes
 
-	MOVE.W	D6,-(A7)	;filehandle
-	JSR	_read
-	ADDQ.W	#8,A7
+	MOVE.l	D5,d0	;length
+	move.l	(a3)+,a1	;get the planes
+	move.l	tmpbuf,a0
+
+	MOVEA.L	$0004,A6
+	jsr	_LVOCopyMemQuick(a6)
+	add.l	d5,tmpbuf
 
 	DBRA	D4,loop2$
 
-	MOVE.W	D6,-(A7)	;filehandle
-	JSR	_close
-	ADDQ.W	#2,A7
+	sub.l	#64064,tmpbuf
 
 	MOVE.W	$0010(A5),-(A7)
-	PEA	-$47A4(A4)	;_want
+	move.l	tmpbuf,-(a7)
 	BSR	_fade_in
 	ADDQ.W	#6,A7
+
 	BRA.B	L00B1A
+
+reversetitle:
+	tst.b	-$47AA(A4)	;_all_clear
+	beq	1$
+
+	moveq	#16-1,d2	;turn the color for the title.screen
+loop$	move.b	(a0),d1
+	move.b	2(a0),(a0)
+	move.b	d1,2(a0)
+	addq.l	#4,a0
+	dbra	d2,loop$
+
+	clr.b	-$47AA(A4)	;_all_clear
+1$	rts
 
 L00B1D:	dc.b	"Couldn't open %s",10,0
 
