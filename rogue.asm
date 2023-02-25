@@ -18974,10 +18974,10 @@ L008C1:
 
 L008C2:
 	MOVE.W	-$52BE(A4),D6	;_player + 12
-	ADDQ.W	#1,D6
 	MOVE.W	-$52C0(A4),D7	;_player + 10
+	MOVE.W	D6,D4
+	ADDQ.W	#1,D6
 	ADDQ.W	#1,D7
-	MOVE.W	-$52BE(A4),D4	;_player + 12
 	SUBQ.W	#1,D4
 	BRA.W	L008CB
 L008C3:
@@ -19005,7 +19005,6 @@ L008C5:
 ;	EXT.L	D0
 	MOVEA.w	D0,A2
 	ADDA.L	-$5198(A4),A2	;__flags
-	MOVEQ	#$00,D3
 	MOVE.B	(A2),D3
 	AND.W	#$0010,D3
 	BNE.W	L008C9
@@ -19020,7 +19019,7 @@ L008C5:
 	MOVE.L	D3,D0
 	BRA.W	L008C8
 L008C6:
-	MOVEq	#$0005,D0
+	MOVEq	#$0005,D0	;20% chance to find something in the wall
 	JSR	_rnd
 	TST.W	D0
 	BNE.W	L008C9
@@ -19030,15 +19029,13 @@ L008C6:
 	JSR	_INDEXquick
 
 	MOVEA.L	-$519C(A4),A6	;__level
-	MOVE.B	#$2B,$00(A6,D0.W)
+	MOVE.B	#$2B,$00(A6,D0.W)	;'+' DOOR
 	ORI.B	#$10,(A2)
 	CLR.B	-$66B6(A4)	;_running
-	MOVEQ	#$00,D3
-	MOVEQ	#$00,D3
-	MOVE.W	D3,-$60A4(A4)	;_count
+	CLR.W	-$60A4(A4)	;_count
 	BRA.W	L008C9
 L008C7:
-	MOVEq	#$0002,D0
+	MOVEq	#$0002,D0	;50% chance to find something on the floor
 	JSR	_rnd
 	TST.W	D0
 	BNE.W	L008C9
@@ -19048,25 +19045,25 @@ L008C7:
 	JSR	_INDEXquick
 
 	MOVEA.L	-$519C(A4),A6	;__level
-	MOVEQ	#$00,D3
 	MOVE.B	(A2),D3
 	AND.W	#$0007,D3
 	ADD.W	#$000E,D3
 	MOVE.B	D3,$00(A6,D0.W)
 	ORI.B	#$10,(A2)
 	CLR.B	-$66B6(A4)	;_running
-	MOVEQ	#$00,D3
-	MOVEQ	#$00,D3
-	MOVE.W	D3,-$60A4(A4)	;_count
+	CLR.W	D3,-$60A4(A4)	;_count
 	MOVE.B	(A2),D3
 	AND.W	#$0007,D3
+
 	MOVE.W	D3,-(A7)
 	JSR	_tr_name(PC)
 	ADDQ.W	#2,A7
+
 	MOVE.L	D0,-(A7)
 	PEA	L008CC(PC)	;"you found %s"
 	JSR	_msg
 	ADDQ.W	#8,A7
+
 	BRA.B	L008C9
 L008C8:
 	SUB.w	#$002D,D0	;'-' WALL
@@ -19093,6 +19090,7 @@ L008CA:
 L008CB:
 	CMP.W	D6,D4
 	BLE.W	L008C3
+
 	BRA.W	L008C1
 
 L008CC:	dc.b	"you found %s",0,0
