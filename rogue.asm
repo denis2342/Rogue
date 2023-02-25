@@ -19511,12 +19511,12 @@ L008FE:
 L008FF:
 	MOVEA.L	-$519C(A4),A6	;__level
 	MOVE.B	$00(A6,D5.W),D3
-	CMP.b	#'.',D3
+	CMP.b	#'.',D3		:FLOOR
 	BEQ.B	L00900
 
 ;	MOVEA.L	-$519C(A4),A6	;__level
 ;	MOVE.B	$00(A6,D5.W),D3
-	CMP.b	#'#',D3
+	CMP.b	#'#',D3		;PASSAGE
 	BNE.B	L008FE
 L00900:
 	MOVE.W	D5,D0
@@ -19533,6 +19533,7 @@ L00900:
 _do_rooms:
 	LINK	A5,#-$001C
 	MOVEM.L	D4/D5/A2,-(A7)
+
 	MOVE.W	-$60BC(A4),D3	;_maxrow
 	ADDQ.W	#1,D3
 	MOVE.W	D3,-$0016(A5)
@@ -19638,6 +19639,7 @@ L00906:
 	MOVE.L	A6,-(A7)
 	MOVE.W	-$000E(A5),D3
 	SUBQ.W	#2,D3
+
 	MOVE.W	D3,D0
 	JSR	_rnd
 	ADD.W	-$000A(A5),D0
@@ -19648,6 +19650,7 @@ L00906:
 	MOVE.L	A6,-(A7)
 	MOVE.W	-$000C(A5),D3
 	SUBQ.W	#2,D3
+
 	MOVE.W	D3,D0
 	JSR	_rnd
 	ADD.W	-$0008(A5),D0
@@ -19819,6 +19822,7 @@ L00910:
 	MOVE.L	-$0004(A5),-(A7)
 	JSR	_rnd_pos(PC)
 	ADDQ.W	#8,A7
+
 	MOVE.W	-$0012(A5),-(A7)
 	MOVE.W	-$0010(A5),-(A7)
 	JSR	_winat
