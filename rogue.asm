@@ -7822,9 +7822,7 @@ L0036E:
 	CLR.W	D3
 L0036F:
 	MOVE.B	D3,-$0001(A5)
-	MOVEQ	#$00,D3
-	MOVE.B	$0011(A2),D3
-	CMP.W	#$0022,D3
+	CMP.B	#$22,$0011(A2)	;'"'
 	BEQ.B	L00370
 
 	MOVE.W	-$0008(A5),d0
@@ -7848,9 +7846,7 @@ L00371:
 	LEA	-$0008(A5),A1
 	MOVE.L	(A1)+,(A6)+
 	MOVEQ	#$01,D7
-	MOVE.B	$000F(A2),D3
-	EXT.W	D3
-	CMP.W	#$0044,D3	; D = dragon
+	CMP.B	#$44,$000F(A2)	; D = dragon
 	BNE.B	L00372
 
 	PEA	L0038E(PC)	;"flame"
@@ -7898,9 +7894,8 @@ L00374:
 	MOVE.B	D5,D3
 	CMP.W	#$0058,D3	;'X'
 	BNE.B	L00375
-	MOVEQ	#$00,D3
-	MOVE.B	$0010(A2),D3
-	CMP.W	#$0058,D3
+
+	CMP.B	#$58,$0010(A2)	;'X'
 	BNE.B	L00377
 L00375:
 	LEA	-$52C0(A4),A6	;_player + 10
@@ -7976,7 +7971,6 @@ L0037C:
 	JSR	_roll
 	ADDQ.W	#4,A7
 	SUB.W	D0,-$52A8(A4)	;_player + 34 (hp)
-	CMPI.W	#$0000,-$52A8(A4)	;_player + 34 (hp)
 	BGT.B	L0037E
 
 	LEA	-$52C0(A4),A6	;_player + 10
