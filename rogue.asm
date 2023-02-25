@@ -19108,6 +19108,7 @@ _d_level:
 	MOVEA.L	-$519C(A4),A6	;__level
 	cmp.b	#'%',$00(A6,D0.W)	;'%'
 	BEQ.B	1$
+
 	PEA	L008CF(PC)	;"I see no way down"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -19134,11 +19135,14 @@ _u_level:
 	MOVEA.L	-$519C(A4),A6	;__level
 	cmp.b	#'%',$00(A6,D0.W)	;'%'
 	BNE.B	L008D3
+
 	TST.B	-$66BD(A4)	;_amulet
 	BEQ.B	L008D1
+
 	SUBQ.W	#1,-$60B4(A4)	;_level
 ;	TST.W	-$60B4(A4)	;_level
 	BNE.B	L008D0
+
 	JSR	_total_winner(PC)
 L008D0:
 	JSR	_new_level
