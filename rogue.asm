@@ -19432,13 +19432,17 @@ L008F5:
 	AND.W	#$0001,D0	;ISDARK?
 	BRA.B	L008F3
 
+; check wisdom for potion of discernment
+
 _check_wisdom:
 	LINK	A5,#-$0002
 	MOVEM.L	A2/A3,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
-	AND.W	#C_WISDOM,D3	;WISDOM
+	AND.W	#C_WISDOM,D3	;C_WISDOM
 	BNE.B	L008F8
+
 	MOVEQ	#$00,D0
 L008F7:
 	MOVEM.L	(A7)+,A2/A3
@@ -19448,16 +19452,19 @@ L008F7:
 L008F8:
 	CMPI.W	#$003F,$000A(A2)	;'?'
 	BNE.B	L008F9
+
 	CMPI.W	#$0006,$0020(A2)	;scroll of scare monster
 	BNE.B	L008F9
+
 	LEA	L008FC(PC),A3	;"You have mixed feelings about this object."
 	BRA.B	L008FB
 L008F9:
 	MOVE.L	A2,-(A7)
 	JSR	_goodch(PC)
 	ADDQ.W	#4,A7
-	CMP.W	#$002B,D0	;'+'
+	CMP.W	#$002B,D0	;'+' check for a 'positive' item
 	BEQ.B	L008FA
+
 	MOVEQ	#$00,D0
 	BRA.B	L008F7
 L008FA:
