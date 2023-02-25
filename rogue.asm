@@ -860,7 +860,7 @@ L00096:
 	CLR.B	-$66B6(A4)	;_running
 L00097:
 	MOVE.W	D5,D3
-	AND.W	#$0010,D3	;ISINVIS ???
+	AND.W	#$0010,D3
 	BNE.B	L00098
 
 	CMP.B	#$2E,D4		;'.' FLOOR
@@ -3897,7 +3897,7 @@ L001AC:
 	MOVEA.L	-$5294(A4),A6	;_cur_armor
 	SUBQ.W	#1,$0026(A6)
 ;	MOVEA.L	-$5294(A4),A6	;_cur_armor
-	ANDI.W	#$FFFE,$0028(A6)	;clear ISCURSED bit
+	ANDI.W	#~O_ISCURSED,$0028(A6)	;clear O_ISCURSED bit
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	-$5294(A4),-(A7)	;_cur_armor
 	JSR	_pack_name
@@ -7213,7 +7213,7 @@ L00322:
 	BNE.B	L00323
 
 	MOVEA.L	-$0004(A5),A6
-	ORI.W	#$1000,$0016(A6)	;C_ISCANC
+	ORI.W	#C_ISCANC,$0016(A6)	;C_ISCANC
 	ANDI.W	#$FBEF,$0016(A6)	;clear C_ISINVIS|C_CANHUH
 	MOVE.B	$000F(A6),$0010(A6)
 	BRA.W	L0032A
@@ -12268,7 +12268,7 @@ L00539:
 	BNE.B	L00538b
 L0053A:
 	MOVE.W	$0028(A2),D3
-	AND.W	#$0001,D3	; check for ISCURSED bit
+	AND.W	#O_ISCURSED,D3	; check for O_ISCURSED bit
 	BEQ.B	L0053B
 
 	PEA	L00543(PC)	;"you can't.  It appears to be cursed"
