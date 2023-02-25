@@ -19051,7 +19051,7 @@ L008C7:
 	MOVE.B	D3,$00(A6,D0.W)
 	ORI.B	#$10,(A2)
 	CLR.B	-$66B6(A4)	;_running
-	CLR.W	D3,-$60A4(A4)	;_count
+	CLR.W	-$60A4(A4)	;_count
 	MOVE.B	(A2),D3
 	AND.W	#$0007,D3
 
