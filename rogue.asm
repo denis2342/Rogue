@@ -10301,21 +10301,19 @@ chartest:
 	rts
 
 _toupper:
-	LINK	A5,#-$0000
-	MOVE.B	$0009(A5),D0
+	MOVE.B	$0005(A7),D0
 	JSR	_islower(PC)
 
 	TST.W	D0
 	BEQ.B	L0047F
 
-	MOVE.B	$0009(A5),D0
+	MOVE.B	$0005(A7),D0
 	SUB.B	#$0020,D0
 	BRA.B	L00480
 L0047F:
-	MOVE.B	$0009(A5),D0
+	MOVE.B	$0005(A7),D0
 L00480:
 	EXT.W	D0
-	UNLK	A5
 	RTS
 
 _tolower:
