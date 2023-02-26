@@ -24489,7 +24489,7 @@ lz4_depack:	lea	0(a0,d0.l),a2	; packed buffer end
 
 		bsr.s	.readLen
 
-		bra	.litstart
+		subq.w	#1,d1
 
 .litcopy:	move.b	(a0)+,(a1)+	; block could be > 64KiB
 .litstart	dbra	d1,.litcopy
@@ -24514,8 +24514,6 @@ lz4_depack:	lea	0(a0,d0.l),a2	; packed buffer end
 .copy:		move.b	(a3)+,(a1)+	; block could be > 64KiB
 		dbra	d1,.copy
 
-;		subq.l	#1,d1
-;		bne.s	.copy
 		bra.s	.tokenLoop
 
 .readLen:	cmp.b	d1,d4
@@ -24530,7 +24528,7 @@ tmpbuf:		dc.l	0
 
 _show_ilbm:
 	LINK	A5,#-$0000
-	MOVEM.L	D4-D6,-(A7)
+	MOVEM.L	D4-D7/a2-a3,-(A7)
 
 	CLR.W	-(A7)
 	MOVE.L	$0008(A5),-(A7)	;filename
@@ -24549,7 +24547,7 @@ L00B1A
 	jsr	_free
 	ADDQ.W	#4,A7
 
-	MOVEM.L	(A7)+,D4-D6
+	MOVEM.L	(A7)+,D4-D7/a2-a3
 	UNLK	A5
 	RTS
 
