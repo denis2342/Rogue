@@ -1388,8 +1388,8 @@ L000D0:
 	ADDQ.W	#8,A7
 	BRA.W	L000E2
 L000D1:
-	MOVE.W	#$0001,-(A7)
-	MOVE.W	-$52AA(A4),-(A7)	;_player + 32
+	MOVE.W	#$0001,-(A7)	;arrow is hplus = 1
+	MOVE.W	-$52AA(A4),-(A7)	;_player + 32 AC
 	MOVE.W	-$52AC(A4),D3	;_player + 30 (rank)
 	SUBQ.W	#1,D3
 	MOVE.W	D3,-(A7)
@@ -1457,8 +1457,8 @@ L000D7:
 	ADDQ.B	#1,-$66B4(A4)	;_was_trapped
 	BRA.W	L000E2
 L000D8:
-	MOVE.W	#$0001,-(A7)
-	MOVE.W	-$52AA(A4),-(A7)	;_player + 32
+	MOVE.W	#$0001,-(A7)	;hplus = 1
+	MOVE.W	-$52AA(A4),-(A7)	;_player + 32 AC
 	MOVE.W	-$52AC(A4),D3	;_player + 30 (rank)
 	ADDQ.W	#1,D3
 	MOVE.W	D3,-(A7)
@@ -1982,35 +1982,38 @@ __clrtoeol:
 _winit:
 	LINK	A5,#-$0002
 	MOVEM.L	D4-D6/A2,-(A7)
-	PEA	$001D
+	PEA	$001D		;version 29
 	PEA	L00111(PC)	;"graphics.library"
 	JSR	_OpenLibrary
 	ADDQ.W	#8,A7
 	MOVE.L	D0,-$5184(A4)	;_GfxBase
 ;	TST.L	-$5184(A4)
 	BNE.B	L00108
+
 	PEA	L00112(PC)
 	JSR	_fatal
 	ADDQ.W	#4,A7
 L00108:
-	PEA	$001D
+	PEA	$001D		;version 29
 	PEA	L00113(PC)	;"intuition.library"
 	JSR	_OpenLibrary
 	ADDQ.W	#8,A7
 	MOVE.L	D0,-$5188(A4)	;_IntuitionBase
 ;	TST.L	-$5188(A4)
 	BNE.B	L00109
+
 	PEA	L00114(PC)
 	JSR	_fatal
 	ADDQ.W	#4,A7
 L00109:
-;	PEA	$001D
+;	PEA	$001D		;version 29
 ;	PEA	L00115(PC)	;"layers.library"
 ;	JSR	_OpenLibrary
 ;	ADDQ.W	#8,A7
 ;	MOVE.L	D0,-$5180(A4)	;_LayersBase
 ;	TST.L	-$5180(A4)
 ;	BNE.B	L0010A
+
 ;	PEA	L00116(PC)	;"No layers"
 ;	JSR	_fatal
 ;	ADDQ.W	#4,A7
@@ -2769,6 +2772,7 @@ L00148:
 	PEA	-$0054(A5)
 	JSR	_addstr
 	ADDQ.W	#4,A7
+
 	MOVEM.L	(A7)+,D4/D5
 	UNLK	A5
 	RTS
@@ -3207,14 +3211,14 @@ L00171:
 	CMPI.W	#$0001,-$0006(A5)
 	BNE.W	L0017B
 
-	MOVE.W	#$005F,-(A7)
+	MOVE.W	#$005F,-(A7)	;'_' used as cursor
 	JSR	__addch
 	ADDQ.W	#2,A7
 
 	JSR	_readchar
 	MOVE.B	D0,D4
 
-	MOVE.W	#$0020,-(A7)
+	MOVE.W	#$0020,-(A7)	;' '
 	JSR	__addch
 	ADDQ.W	#2,A7
 
@@ -3233,7 +3237,7 @@ L00172:
 	BRA.B	L00172
 1$
 	MOVEA.L	$0008(A5),A6
-	MOVEQ	#$1B,D3
+	MOVEQ	#$1B,D3		;escape
 	MOVE.B	D3,(A6)
 	EXT.W	D3
 	MOVE.W	D3,-$0006(A5)
@@ -3413,13 +3417,13 @@ L00185:
 	DIVS.W	#$0004,D0
 	JSR	_rnd
 	ADDQ.W	#1,D0
-	MOVE.W	D0,-$60B8(A4)
-	CMPI.W	#10,-$60B8(A4)
+	MOVE.W	D0,-$60B8(A4)	;_dnum
+	CMPI.W	#10,D0		;_dnum
 	BLE.B	L00186
 
-	MOVE.W	#$000A,-$60B8(A4)
+	MOVE.W	#$000A,-$60B8(A4)	;_dnum
 L00186:
-	MOVE.W	-$60B8(A4),D5
+	MOVE.W	-$60B8(A4),D5	;_dnum
 L00187:
 	MOVE.W	D5,D3
 	SUBQ.W	#1,D5
@@ -20990,8 +20994,8 @@ _swing:
 
 	MOVEQ	#20,D3
 	SUB.W	$0004(A7),D3	;creature/player rank
-	SUB.W	$0006(A7),D3
-	ADD.W	$0008(A7),D0
+	SUB.W	$0006(A7),D3	;armor
+	ADD.W	$0008(A7),D0	;hplus
 	CMP.W	D3,D0
 	BLT.B	1$
 
@@ -21297,8 +21301,8 @@ L00998:
 
 	ADD.W	D5,D0			;hplus += str_hit
 	MOVE.W	D0,-(A7)
-	MOVE.W	-$000A(A5),-(A7)
-	MOVE.W	$0006(A2),-(A7)
+	MOVE.W	-$000A(A5),-(A7)	;AC
+	MOVE.W	$0006(A2),-(A7)		;rank
 	JSR	_swing(PC)
 	ADDQ.W	#6,A7
 	TST.W	D0
@@ -24482,10 +24486,10 @@ lz4_depack:	lea	0(a0,d0.l),a2	; packed buffer end
 		moveq	#0,d2
 		moveq	#15,d4
 
-.tokenLoop:	move.b	(a0)+,d0
+.tokenLoop:	move.b	(a0)+,d0	;read the token
 		move.l	d0,d1
 		lsr.b	#4,d1
-		beq.s	.lenOffset
+		beq.s	.lenOffset	;have we literals to copy?
 
 		bsr.s	.readLen
 
@@ -27918,7 +27922,7 @@ L00C9F:
 __main:
 	LINK	A5,#-$0004
 	MOVEM.L	D4-D6/A2/A3,-(A7)
-	PEA	$001F
+	PEA	$001F			;version 31
 	PEA	L00CAF(PC)		; dos.library
 	JSR	_OpenLibrary(PC)
 	ADDQ.W	#8,A7
@@ -27936,7 +27940,7 @@ L00CA0:
 	RTS
 
 ;L00CA1:
-;	PEA	$001F
+;	PEA	$001F			;version 31
 ;	PEA	L00CB0(PC)		;mathffp.library
 ;	JSR	__OpenLibrary(PC)
 ;	ADDQ.W	#8,A7
