@@ -3012,9 +3012,11 @@ _status:
 
 	TST.B	-$66FB(A4)	;_new_stats
 	BNE.B	L0015D
+
 	MOVE.W	-$54EC(A4),D3
 	CMP.W	-$52A8(A4),D3	;_player + 34 (hp)
 	BNE.B	L0015D
+
 	MOVE.W	-$54EA(A4),D3
 	CMP.W	-$52A2(A4),D3	;_player + 40 (max hp)
 	BEQ.B	L0015E
@@ -3033,9 +3035,11 @@ L0015D:
 L0015E:
 	TST.B	-$66FB(A4)	;_new_stats
 	BNE.B	L0015F
+
 	MOVE.W	-$54E8(A4),D3
 	CMP.W	-$52B2(A4),D3	;_player + 24 (strength)
 	BNE.B	L0015F
+
 	MOVE.W	-$54E6(A4),D3
 	CMP.W	-$6CC2(A4),D3	;_max_stats + 0 (max strength)
 	BEQ.B	L00160
@@ -3054,7 +3058,7 @@ L00160:
 	TST.B	-$66FB(A4)	;_new_stats
 	BNE.B	L00161
 
-	MOVE.W	-$54E4(A4),D3
+	MOVE.W	-$54E4(A4),D3	;last printed purse
 	CMP.W	-$60B2(A4),D3	;_purse
 	BEQ.B	L00162
 L00161:
@@ -3066,7 +3070,7 @@ L00161:
 	PEA	L0016B(PC)	;"Gold:%-5.5u"
 	JSR	_printw
 	ADDQ.W	#6,A7
-	MOVE.W	-$60B2(A4),-$54E4(A4)	;_purse
+	MOVE.W	-$60B2(A4),-$54E4(A4)	;_purse, last printed purse
 L00162:
 	TST.L	-$5294(A4)	;_cur_armor
 	BEQ.B	L00163
@@ -3075,7 +3079,7 @@ L00162:
 	MOVE.W	$0026(A6),D4
 	BRA.B	L00164
 L00163:
-	MOVE.W	-$52AA(A4),D4	;_player + 32
+	MOVE.W	-$52AA(A4),D4	;_player + 32 (AC)
 L00164:
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L00165
@@ -3083,6 +3087,7 @@ L00164:
 	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	CMP.W	#R_PROTECT,$0020(A6)
 	BNE.B	L00165
+
 	SUB.W	$0026(A6),D4
 L00165:
 	TST.L	-$518C(A4)	;_cur_ring_2
@@ -3091,12 +3096,13 @@ L00165:
 	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	CMP.W	#R_PROTECT,$0020(A6)
 	BNE.B	L00166
+
 	SUB.W	$0026(A6),D4
 L00166:
 	TST.B	-$66FB(A4)	;_new_stats
 	BNE.B	L00167
 
-	CMP.W	-$54E2(A4),D4
+	CMP.W	-$54E2(A4),D4	;last printed armor class
 	BEQ.B	L00168
 L00167:
 	MOVEq	#$002A,d1
@@ -3186,7 +3192,7 @@ _show_win:
 	MOVE.W	-$52BE(A4),d0	;_player + 12
 	JSR	_movequick
 
-	MOVE.W	#$0020,-(A7)
+	MOVE.W	#$0020,-(A7)	; SPACE
 	BSR.B	_wait_for
 	ADDQ.W	#2,A7
 
@@ -15683,7 +15689,7 @@ _total_winner:
 	JSR	_mvaddstr
 	ADDQ.W	#8,A7
 
-	MOVE.W	#$0020,-(A7)
+	MOVE.W	#$0020,-(A7)	; SPACE
 	JSR	_wait_for
 	ADDQ.W	#2,A7
 
@@ -26204,7 +26210,7 @@ L00BF3:
 	TST.L	(A2)
 	BNE.B	L00BF2
 
-	MOVE.W	#$0020,-(A7)
+	MOVE.W	#$0020,-(A7)	;SPACE
 	JSR	_wait_for
 	ADDQ.W	#2,A7
 	JSR	_wmap
