@@ -3993,10 +3993,12 @@ L001B6:
 	ADDQ.W	#8,A7
 	TST.W	D0
 	BEQ.B	L001B7
+
 	JSR	_new_item
 	MOVEA.L	D0,A3
 	TST.L	D0
 	BEQ.B	L001B7
+
 	PEA	-$0006(A5)
 	CLR.L	-(A7)
 	JSR	_randmonster
@@ -4023,6 +4025,7 @@ L001B9:
 	ADDQ.W	#4,A7
 	TST.B	-$66AA(A4)	;_menu_style
 	BEQ.B	L001BA
+
 	PEA	L001F2(PC)	;" More "
 	JSR	_more(PC)
 	ADDQ.W	#4,A7
@@ -4144,12 +4147,6 @@ L001C7:
 	ADDQ.W	#4,A7
 
 	ST	-$66EF(A4)	;_s_know + 7 "wild magic"
-;	ORI.W	#O_ISKNOW,$0028(A2)
-
-;	MOVE.W	$0020(A2),D3
-;	MULU.W	#21,D3
-;	LEA	-$656A(A4),A6	;_s_guess
-;	CLR.B	$00(A6,D3.L)
 
 ; special case for wild magic scrolls, because it is maybe not consumed
 
@@ -4163,7 +4160,7 @@ L001C7:
 	DIVS.W	#$0002,D3	;divide the players health in half
 	SUB.W	D3,-$52A8(A4)	;_player + 34 (hp)
 
-	MOVE.W	#$FFFF,-(A7)	;subtract one strength point
+	MOVE.W	#-1,-(A7)	;subtract one strength point
 
 	JSR	_chg_str
 	ADDQ.W	#2,A7
@@ -4283,6 +4280,7 @@ L001D6:
 L001D7:
 	TST.L	-$5298(A4)	;_cur_weapon
 	BEQ.B	L001D8
+
 	MOVE.L	-$5298(A4),-(A7)	;_cur_weapon
 	JSR	_typeof
 	ADDQ.W	#4,A7
@@ -5144,8 +5142,8 @@ L00245:
 
 	MOVEA.L	-$5198(A4),A6	;__flags
 	MOVE.B	$00(A6,D0.W),D3
-	AND.W	#$000F,D3
-	MULU.W	#$0042,D3
+	AND.W	#$000F,D3	;get the room number
+	MULU.W	#66,D3
 	LEA	-$5E36(A4),A6	;_passages
 	MOVE.L	D3,D4
 	ADD.L	A6,D4
@@ -10403,14 +10401,17 @@ L00489:
 	LEA	L004B1(PC),A6	;"you feel %s sick."
 	MOVE.L	A6,-$0004(A5)
 	ST	-$66E5(A4)	;_p_know + 2 (potion of poison)
+
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BEQ.B	L0048A
+
 	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	CMPI.W	#R_SUSTSTR,$0020(A6)
 	BEQ.B	L0048C
 L0048A:
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BEQ.B	L0048B
+
 	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	CMPI.W	#R_SUSTSTR,$0020(A6)
 	BEQ.B	L0048C
@@ -10606,6 +10607,7 @@ L0049D:
 	MOVE.W	-$52A8(A4),D3	;_player + 34 (hp)
 	CMP.W	-$52A2(A4),D3	;_player + 40 (max hp)
 	BNE.B	L0049E
+
 	ADDQ.W	#1,-$52A2(A4)	;_player + 40 (max hp)
 L0049E:
 	MOVE.W	-$52A2(A4),-$52A8(A4)	;_player + 40 (max hp),_player + 34 (hp)
@@ -10624,6 +10626,7 @@ L0049F:
 	ADDQ.W	#2,A7
 	TST.W	D0
 	BEQ.B	L004A0
+
 	PEA	L004BD(PC)	;"you feel yourself moving much faster"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -10640,7 +10643,6 @@ L004A1:
 	CMPI.W	#R_ADDSTR,$0020(A6)
 	BNE.B	L004A2
 
-;	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	MOVE.W	$0026(A6),D3
 	NEG.W	D3
 	MOVE.W	D3,-(A7)
@@ -10655,7 +10657,6 @@ L004A2:
 	CMPI.W	#R_ADDSTR,$0020(A6)
 	BNE.B	L004A3
 
-;	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	MOVE.W	$0026(A6),D3
 	NEG.W	D3
 	MOVE.W	D3,-(A7)
@@ -10676,7 +10677,6 @@ L004A4:
 	CMPI.W	#R_ADDSTR,$0020(A6)
 	BNE.B	L004A5
 
-;	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
 	MOVE.W	$0026(A6),-(A7)
 	PEA	-$52B2(A4)	;_player + 24 (strength)
 	JSR	_add_str(PC)
@@ -10684,11 +10684,11 @@ L004A4:
 L004A5:
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BEQ.B	L004A6
+
 	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	CMPI.W	#R_ADDSTR,$0020(A6)
 	BNE.B	L004A6
 
-;	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
 	MOVE.W	$0026(A6),-(A7)
 	PEA	-$52B2(A4)	;_player + 24 (strength)
 	JSR	_add_str(PC)
@@ -11346,8 +11346,13 @@ _printw:
 	UNLK	A5
 	RTS
 
+; move the cursor
+
+; D0 = row
+; D1 = column
+
 _movequick:
-	CMP.B	#$50,D1
+	CMP.B	#$50,D1		; position 80
 	BCS.B	L004E4
 
 	TST.B	D0
@@ -11356,10 +11361,10 @@ _movequick:
 	ADDQ.B	#1,D0
 	MOVEQ	#$00,D1
 L004E4:
-	CMP.B	#21,D0
+	CMP.B	#21,D0		; more than 20 lines?
 	BCS.B	L004E5
 
-	MOVEQ	#20,D0
+	MOVEQ	#20,D0		;20 is max
 L004E5:
 	MOVE.B	D0,-$7066(A4)	;_c_row
 	MOVE.B	D1,-$7065(A4)	;_c_col
@@ -11648,10 +11653,12 @@ L004FD:
 L004FE:
 	TST.B	-$7064(A4)	;_map_up
 	BEQ.B	L00501
+
 	MOVE.W	D6,D3
 ;	EXT.L	D3
 	AND.w	#$0003,D3
 	BEQ.B	L004FF
+
 	MOVEA.L	-$47B2(A4),A6
 	ADDQ.L	#1,-$47B2(A4)
 	MOVE.B	#$2E,(A6)
@@ -11659,6 +11666,7 @@ L004FE:
 L004FF:
 	TST.B	-$48B8(A4)	;_menu_on
 	BEQ.B	L00500
+
 	MOVEA.L	-$47B2(A4),A6
 	ADDQ.L	#1,-$47B2(A4)
 	MOVE.L	A6,-(A7)
@@ -11673,6 +11681,7 @@ L00500:
 L00501:
 	TST.B	-$66B0(A4)	;_want_click
 	BEQ.B	L00502
+
 	MOVE.W	D7,-(A7)
 	JSR	_sel_line(PC)
 	ADDQ.W	#2,A7
@@ -11692,6 +11701,7 @@ L00503:
 	ADDQ.W	#2,A7
 	TST.b	D0
 	BEQ.B	L00504
+
 	MOVEA.L	-$47B2(A4),A6
 	ADDQ.L	#1,-$47B2(A4)
 	MOVE.L	A6,-(A7)
@@ -11714,6 +11724,7 @@ L00505:
 ;	EXT.L	D3
 	AND.w	#$0003,D3
 	BEQ.B	L00506
+
 	MOVEA.L	-$47B2(A4),A6
 	ADDQ.L	#1,-$47B2(A4)
 	MOVE.B	#$73,(A6)
@@ -25368,22 +25379,27 @@ L00B65:
 
 _xfer_proom:
 	LINK	A5,#-$0002
+
 	CLR.W	-$0002(A5)
 	TST.W	-$532E(A4)
 	BEQ.B	L00B6A
+
 	MOVEA.L	$0008(A5),A6
 	TST.L	(A6)
 	BEQ.B	L00B67
+
 	MOVEA.L	$0008(A5),A6
 	LEA	-$6088(A4),A1	;_rooms
 	MOVEA.L	(A6),A0
 	CMPA.L	A1,A0
 	BCS.B	L00B66
+
 	MOVEA.L	$0008(A5),A6
 	LEA	-$5E36(A4),A1	;_passages
 	MOVEA.L	(A6),A0
 	CMPA.L	A1,A0
 	BCC.B	L00B66
+
 	MOVEA.L	$0008(A5),A6
 	MOVE.L	(A6),D0
 	LEA	-$6088(A4),A6	;_rooms
@@ -25405,6 +25421,7 @@ L00B66:
 L00B67:
 	TST.W	$000C(A5)
 	BEQ.B	L00B68
+
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	-$0002(A5),D3
 	EXT.L	D3
@@ -25420,6 +25437,7 @@ L00B69:
 L00B6A:
 	TST.W	$000C(A5)
 	BEQ.B	L00B6B
+
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	$0002(A6),-$0002(A5)
 	BRA.B	L00B6C
@@ -25432,6 +25450,7 @@ L00B6C:
 	MOVE.W	-$0002(A5),D3
 	AND.W	#$1000,D3
 	BEQ.B	L00B6D
+
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	-$0002(A5),D3
 	AND.W	#$0FFF,D3
@@ -25444,6 +25463,7 @@ L00B6D:
 	MOVE.W	-$0002(A5),D3
 	AND.W	#$2000,D3
 	BEQ.B	L00B6E
+
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	-$0002(A5),D3
 	AND.W	#$0FFF,D3
@@ -25464,9 +25484,11 @@ _xfer_pthing:
 	CLR.W	-$0002(A5)
 	TST.W	-$532E(A4)
 	BEQ.B	L00B73
+
 	MOVEA.L	$0008(A5),A6
 	TST.L	(A6)
 	BEQ.B	L00B70
+
 	MOVEA.L	$0008(A5),A6
 	MOVE.L	(A6),D0
 	SUB.L	-$52D2(A4),D0
@@ -25477,6 +25499,7 @@ _xfer_pthing:
 L00B70:
 	TST.W	$000C(A5)
 	BEQ.B	L00B71
+
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	-$0002(A5),D3
 	EXT.L	D3
@@ -25492,6 +25515,7 @@ L00B72:
 L00B73:
 	TST.W	$000C(A5)
 	BEQ.B	L00B74
+
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	$0002(A6),-$0002(A5)
 	BRA.B	L00B75
@@ -25504,6 +25528,7 @@ L00B75:
 	MOVE.W	-$0002(A5),D3
 	AND.W	#$1000,D3
 	BEQ.B	L00B76
+
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	-$0002(A5),D3
 	AND.W	#$0FFF,D3
@@ -25529,12 +25554,14 @@ L00B78:
 	MOVEA.L	-$52CE(A4),A6	;__t_alloc
 	TST.W	$00(A6,D3.L)
 	BEQ.B	L00B7B
+
 	MOVE.W	D4,D3
 	MULS.W	#$0032,D3
 	MOVEA.L	D3,A2
 	ADDA.L	-$52D2(A4),A2
 	TST.W	-$532E(A4)
 	BNE.B	L00B79
+
 	MOVE.W	#$0032,-(A7)
 	MOVE.L	A2,-(A7)
 	JSR	_xfer
@@ -25542,6 +25569,7 @@ L00B78:
 L00B79:
 	TST.B	$0008(A2)
 	BEQ.B	L00B7A
+
 	MOVE.L	A2,-(A7)
 	BSR.B	_xfer_monster
 	ADDQ.W	#4,A7
@@ -25554,6 +25582,7 @@ L00B7B:
 	ADDQ.W	#1,D4
 	CMP.W	#$0053,D4	;'S'
 	BLT.B	L00B78
+
 	MOVEM.L	(A7)+,D4/A2
 	UNLK	A5
 	RTS
@@ -25561,12 +25590,15 @@ L00B7B:
 _xfer_monster:
 	LINK	A5,#-$0002
 	MOVE.L	A2,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	TST.W	-$532E(A4)
 	BNE.W	L00B84
+
 	LEA	-$52CA(A4),A6	;_player + 0
 	CMPA.L	A6,A2
 	BNE.B	L00B7C
+
 	MOVE.L	-$69AA(A4),$0024(A2)
 	BRA.B	L00B7E
 L00B7C:
@@ -25574,6 +25606,7 @@ L00B7C:
 	EXT.W	D3
 	CMP.W	#$0046,D3
 	BNE.B	L00B7D
+
 	LEA	-$6735(A4),A6	;_f_damage
 	MOVE.L	A6,$0024(A2)
 	BRA.B	L00B7E
@@ -25811,6 +25844,7 @@ _BuildFuncTable:
 _XferKeys:
 	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
+
 	MOVEQ	#$00,D4
 L00B95:
 	MOVE.W	#$0020,-(A7)
@@ -25824,6 +25858,7 @@ L00B95:
 	ADDQ.W	#1,D4
 	CMP.W	#$000A,D4
 	BLT.B	L00B95
+
 	MOVE.L	(A7)+,D4
 	UNLK	A5
 	RTS
@@ -26076,8 +26111,10 @@ L00BA0:
 L00BA1:
 	TST.W	D5
 	BEQ.B	L00BA6
+
 	CMP.W	#$0200,D5
 	BLS.B	L00BA2
+
 	MOVE.W	#$0200,D6
 	BRA.B	L00BA3
 L00BA2:
@@ -26090,11 +26127,13 @@ L00BA3:
 	ADDQ.W	#8,A7
 	CMP.W	D6,D0
 	BNE.B	L00BA6
+
 	SUB.W	D6,D5
 	BRA.B	L00BA1
 L00BA6:
 	TST.W	D5
 	BEQ.B	L00BA7
+
 	MOVE.W	D4,-(A7)
 	BSR.B	_AmigaClose
 	ADDQ.W	#2,A7
@@ -26112,9 +26151,11 @@ L00BA7:
 L00BA8:
 	CMP.W	#$0000,D4
 	BGE.B	L00BA9
+
 	JSR	_OnVerify
 L00BA9:
 	MOVE.W	D4,D0
+
 	MOVEM.L	(A7)+,D4-D6
 	UNLK	A5
 	RTS
@@ -26123,6 +26164,7 @@ _AmigaOpen:
 	LINK	A5,#-$0002
 	TST.W	-$580E(A4)
 	BEQ.B	L00BAA
+
 	JSR	_OffVerify
 L00BAA:
 	CLR.W	-$580E(A4)
@@ -26133,6 +26175,7 @@ L00BAA:
 	MOVE.W	D0,-$0002(A5)
 	CMPI.W	#$0000,-$0002(A5)
 	BLE.B	L00BAB
+
 	JSR	_OnVerify
 L00BAB:
 	MOVE.W	-$0002(A5),D0
@@ -26143,6 +26186,7 @@ _AmigaClose:
 	LINK	A5,#-$0000
 	TST.W	-$580E(A4)
 	BNE.B	L00BAC
+
 	JSR	_OnVerify
 L00BAC:
 	MOVE.W	#$0001,-$580E(A4)
@@ -26193,6 +26237,7 @@ L00BF1:	dc.b	"-------- Press space when you are finished "
 _help:
 ;	LINK	A5,#-$0000
 	MOVEM.L	D4/A2,-(A7)
+
 	JSR	_wtext
 	MOVEQ	#$00,D4
 	LEA	-$580C(A4),A6
@@ -26214,6 +26259,7 @@ L00BF3:
 	JSR	_wait_for
 	ADDQ.W	#2,A7
 	JSR	_wmap
+
 	MOVEM.L	(A7)+,D4/A2
 ;	UNLK	A5
 	RTS
@@ -26339,11 +26385,13 @@ _strncmp:
 L00C03:
 	SUBQ.W	#1,D0
 	BMI.B	L00C05
+
 	MOVEA.L	$0004(A7),A0
 	MOVEA.L	$0008(A7),A1
 L00C04:
 	CMPM.B	(A1)+,(A0)+
 	BNE.B	L00C06
+
 	SUBQ.W	#1,A0
 	TST.B	(A0)+
 	DBEQ	D0,L00C04
@@ -30369,7 +30417,8 @@ _player:	dc.l	0	;$00 0
 		dc.w	0	;$0A 10 position
 		dc.w	0	;$0C 12 position
 		dc.w	0	;$0E 14
-		dc.l	0	;$10 16 disguise
+		dc.w	0	;$10 16 disguise
+		dc.w	0	;$12 18 maybe the runto destination for the monster
 		dc.w	0	;$14 20
 		dc.w	0	;$16 22 flags
 		dc.w	0	;$18 24 strength
