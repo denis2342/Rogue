@@ -3200,7 +3200,7 @@ _show_win:
 	RTS
 
 _getinfo:
-	LINK	A5,#-$00A6
+	LINK	A5,#-$0006	;changed from -$A6 to -$06, cant see anything using more than 6 bytes
 	MOVEM.L	D4/A2,-(A7)
 
 	CLR.W	-$0002(A5)
