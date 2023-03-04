@@ -15701,9 +15701,9 @@ _total_winner:
 
 	JSR	_clear
 
-	PEA	$0001
+	MOVE.W	#$0001,-(A7)
 	JSR	_cursor(PC)
-	ADDQ.W	#4,A7
+	ADDQ.W	#2,A7
 
 	PEA	L006DF(PC)	;"   Worth  Item"
 	CLR.W	-(A7)
