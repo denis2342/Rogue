@@ -4060,13 +4060,13 @@ L001BD:
 	BRA.B	L001C2
 L001BE:
 	MOVEA.L	-$5198(A4),A6	;__flags
-	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D7.W),D3
 	AND.W	#$0010,D3
 	BNE.B	L001BF
+
 	MOVEA.L	-$519C(A4),A6	;__level
-	MOVE.B	#$2B,$00(A6,D7.W)
-	MOVEQ	#$2B,D6
+	MOVEQ	#$2B,D6		;'+'
+	MOVE.B	D6,$00(A6,D7.W)
 	MOVEA.L	-$5198(A4),A6	;__flags
 	ANDI.B	#$EF,$00(A6,D7.W)
 L001BF:
@@ -4077,10 +4077,10 @@ L001BF:
 	MOVEA.L	D0,A3
 	TST.L	D0
 	BEQ.B	L001C0
-	MOVEQ	#$00,D3
-	MOVE.B	$0011(A3),D3
-	CMP.W	#$0020,D3
+
+	CMP.B	#$20,$0011(A3)	; SPACE
 	BNE.B	L001C0
+
 	MOVE.B	D6,$0011(A3)
 L001C0:
 	BRA.B	L001C3
@@ -4156,8 +4156,7 @@ L001C7:
 	ADDQ.W	#6,A7
 
 	MOVE.W	-$52A8(A4),D3	;_player + 34 (hp)
-	EXT.L	D3
-	DIVS.W	#$0002,D3	;divide the players health in half
+	LSR.W	#1,D3		;divide the players health in half
 	SUB.W	D3,-$52A8(A4)	;_player + 34 (hp)
 
 	MOVE.W	#-1,-(A7)	;subtract one strength point
@@ -11356,7 +11355,7 @@ _movequick:
 	BCS.B	L004E4
 
 	TST.B	D0
-	BEQ.B	L004E4
+	BEQ.B	L004E5
 
 	ADDQ.B	#1,D0
 	MOVEQ	#$00,D1
@@ -17623,7 +17622,7 @@ L0081D:
 	ADD.L	-$5198(A4),D0	;__flags
 	MOVE.L	D0,-$0010(A5)
 	MOVEA.L	-$0010(A5),A6
-	MOVEQ	#$00,D3
+;	MOVEQ	#$00,D3
 	MOVE.B	(A6),D3
 	AND.W	#$0020,D3
 	BNE.B	L0081E
