@@ -14974,17 +14974,13 @@ _rnd:
 	MOVE.L	D4,-(A7)
 
 	MOVE.W	D0,D4
-	BNE.B	1$
+	BEQ.B	2$
 
-	MOVEQ	#$00,D0
-	BRA.B	2$
-
-1$	BSR.B	_ran
+	BSR.B	_ran
 	MOVE.L	D0,D3
 	BSR.B	_ran		;this does not change D3
-	ADD.L	D0,D3
-	MOVE.L	D3,D0
-	AND.L	#$7FFFFFFF,D0
+	ADD.L	D3,D0
+	bclr	#31,D0
 	MOVE.W	D4,D1
 	EXT.L	D1
 	JSR	_mods
