@@ -15047,7 +15047,7 @@ _quit:
 	TST.W	D0
 	BEQ.B	1$
 
-	CLR.W	-(A7)
+	CLR.W	-(A7)			;killed by
 	MOVE.W	#$0001,-(A7)
 	MOVE.W	-$60B2(A4),-(A7)	;_purse
 	JSR	_score(PC)
@@ -15189,16 +15189,16 @@ L00677:
 	JSR	_strcpy
 	ADDQ.W	#8,A7
 
-	MOVE.W	$0008(A5),-$0006(A5)
+	MOVE.W	$0008(A5),-$0006(A5)	;gold
 	MOVE.B	$000D(A5),D3
 	EXT.W	D3
-	MOVE.W	D3,-$0004(A5)
+	MOVE.W	D3,-$0004(A5)		;killed by
 	TST.W	$000A(A5)
 	BEQ.B	L00678
 
 	MOVE.W	$000A(A5),-$0004(A5)
 L00678:
-	MOVE.W	-$60BA(A4),-$0002(A5)	;_ntraps
+	MOVE.W	-$60BA(A4),-$0002(A5)	;_ntraps (deepest level)
 	MOVE.W	-$52AC(A4),-$0008(A5)	;_player + 30 (rank)
 	PEA	-$01FA(A5)	;506 (460 + 46)
 	PEA	-$002E(A5)
@@ -15393,6 +15393,7 @@ L00689:
 	PEA	-$0052(A5)
 	JSR	_getrc
 	ADDQ.W	#8,A7
+
 	LEA	-$0050(A5),A0
 	JSR	_strlenquick
 
@@ -15594,7 +15595,7 @@ L006A2:
 
 	MOVE.B	D4,D3
 	EXT.W	D3
-	MOVE.W	D3,-(A7)
+	MOVE.W	D3,-(A7)		;killed by
 	CLR.W	-(A7)
 	MOVE.W	-$60B2(A4),-(A7)	;_purse
 	JSR	_score(PC)
@@ -22563,7 +22564,7 @@ L00A34:
 	BNE.W	L00A39
 
 	MOVE.W	$0016(A2),D3
-	AND.W	#C_ISFOUND,D3	;we saw her already
+	AND.W	#C_ISFOUND,D3	;she saw us already
 	BNE.W	L00A39
 
 	MOVE.W	$0016(A2),D3
@@ -24500,7 +24501,7 @@ lz4_depack:	lea	0(a0,d0.l),a2	; packed buffer end
 		subq.w	#1,d1
 
 .litcopy:	move.b	(a0)+,(a1)+	; block could be > 64KiB
-.litstart	dbra	d1,.litcopy
+		dbra	d1,.litcopy
 
 		; end test is always done just after literals
 		cmpa.l	a0,a2
@@ -29337,7 +29338,7 @@ _mlist:
 ; 4=treasure, 6=flags, 8=strength, 10=EXP, 14=xd8 HP, 16=AC, 18=$1
 
 _monsters:
-	dc.l	L0075D		; #12 aquator, 8-17
+	dc.l	L0075D		; #12 aquator, 7-16
 	dc.w	$0000
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -29359,7 +29360,7 @@ _monsters:
 	dc.l	L00760		;1d2
 	dc.w	$0000
 
-	dc.l	L00761		; #11 centaur, 7-16
+	dc.l	L00761		; #11 centaur, 6-15
 	dc.w	$000F
 	dc.w	0		;flags
 	dc.w	$000A
@@ -29370,7 +29371,7 @@ _monsters:
 	dc.l	L00762		;1d6/1d6
 	dc.w	$0000
 
-	dc.l	L00763		; #26 dragon, 22-26
+	dc.l	L00763		; #26 dragon, 21-26
 	dc.w	$0064
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -29392,7 +29393,7 @@ _monsters:
 	dc.l	L00766		; 1d2
 	dc.w	$0000
 
-	dc.l	L00767		; #18 venus flytrap, 14-23
+	dc.l	L00767		; #18 venus flytrap, 13-22
 	dc.w	$0000
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -29403,7 +29404,7 @@ _monsters:
 	dc.l	L00768		; %%%d0
 	dc.w	$0000
 
-	dc.l	L00769		; #21 griffin, 17-26
+	dc.l	L00769		; #21 griffin, 16-25
 	dc.w	$0014
 	dc.w	C_ISMEAN|C_ISFLY|C_ISREGEN	;flags
 	dc.w	$000A
@@ -29436,7 +29437,7 @@ _monsters:
 	dc.l	L0076E		; 1d2
 	dc.w	$0000
 
-	dc.l	L0076F		; #25 jabberwock, 21-26
+	dc.l	L0076F		; #25 jabberwock, 20-26
 	dc.w	$0046
 	dc.w	0		;flags
 	dc.w	$000A
@@ -29458,7 +29459,7 @@ _monsters:
 	dc.l	L00772		; 1d4
 	dc.w	$0000
 
-	dc.l	L00773		; #10 leprechaun, 6-15
+	dc.l	L00773		; #10 leprechaun, 5-14
 	dc.w	$0040
 	dc.w	0		;flags
 	dc.w	$000A
@@ -29469,7 +29470,7 @@ _monsters:
 	dc.l	L00774		; 1d2
 	dc.w	$0000
 
-	dc.l	L00775		; #21 medusa, 18-26
+	dc.l	L00775		; #21 medusa, 17-26
 	dc.w	$0028
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -29480,7 +29481,7 @@ _monsters:
 	dc.l	L00776		; 3d4/3d4
 	dc.w	$0000
 
-	dc.l	L00777		; #14 nymph, 10-19
+	dc.l	L00777		; #14 nymph, 9-18
 	dc.w	$0064
 	dc.w	0		;flags
 	dc.w	$000A
@@ -29491,7 +29492,7 @@ _monsters:
 	dc.l	L00778		; 0d0
 	dc.w	$0000
 
-	dc.l	L00779		; #7 orc, 3-12
+	dc.l	L00779		; #7 orc, 2-11
 	dc.w	$000F
 	dc.w	C_ISGREED	;flags
 	dc.w	$000A
@@ -29502,7 +29503,7 @@ _monsters:
 	dc.l	L0077A		; 1d8
 	dc.w	$0000
 
-	dc.l	L0077B		; #19 phantom, 15-24
+	dc.l	L0077B		; #19 phantom, 14-23
 	dc.w	$0000
 	dc.w	C_ISINVIS	;flags
 	dc.w	$000A
@@ -29513,7 +29514,7 @@ _monsters:
 	dc.l	L0077C		; 4d4
 	dc.w	$0000
 
-	dc.l	L0077D		; #13 quagga, 9-16
+	dc.l	L0077D		; #13 quagga, 8-15
 	dc.w	$001E
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -29524,7 +29525,7 @@ _monsters:
 	dc.l	L0077E		; 1d2/1d2/1d4
 	dc.w	$0000
 
-	dc.l	L0077F		; #8 rattlesnake, 4-13
+	dc.l	L0077F		; #8 rattlesnake, 3-12
 	dc.w	$0000
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -29535,7 +29536,7 @@ _monsters:
 	dc.l	L00780		; 1d6
 	dc.w	$0000
 
-	dc.l	L00781		; #6 slime, 2-11
+	dc.l	L00781		; #6 slime, 1-10
 	dc.w	$0000
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -29546,7 +29547,7 @@ _monsters:
 	dc.l	L00782		; 1d3
 	dc.w	$0000
 
-	dc.l	L00783		; #16 troll, 12-21
+	dc.l	L00783		; #16 troll, 11-20
 	dc.w	$0032
 	dc.w	C_ISMEAN|C_ISREGEN	;flags
 	dc.w	$000A
@@ -29557,7 +29558,7 @@ _monsters:
 	dc.l	L00784		; 1d8/1d8/2d6
 	dc.w	$0000
 
-	dc.l	L00785		; #20 ur-vile, 16-25
+	dc.l	L00785		; #20 ur-vile, 15-24
 	dc.w	$0000
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -29568,7 +29569,7 @@ _monsters:
 	dc.l	L00786		; 1d3/1d3/1d3/4d6
 	dc.w	$0000
 
-	dc.l	L00787		; #24 vampire, 19-26
+	dc.l	L00787		; #24 vampire, 18-26
 	dc.w	$0014
 	dc.w	C_ISMEAN|C_ISREGEN	;flags
 	dc.w	$000A
@@ -29579,7 +29580,7 @@ _monsters:
 	dc.l	L00788		; 1d10
 	dc.w	$0000
 
-	dc.l	L00789		; #17 wraith, 13-22
+	dc.l	L00789		; #17 wraith, 12-21
 	dc.w	$0000
 	dc.w	0		;flags
 	dc.w	$000A
@@ -29590,7 +29591,7 @@ _monsters:
 	dc.l	L0078A		; 1d6
 	dc.w	$0000
 
-	dc.l	L0078B		; #23 xeroc, 19-26
+	dc.l	L0078B		; #23 xeroc, 18-26
 	dc.w	$001E
 	dc.w	0		;flags
 	dc.w	$000A
@@ -29601,7 +29602,7 @@ _monsters:
 	dc.l	L0078C		; 3d4
 	dc.w	$0000
 
-	dc.l	L0078D		; #15 yeti, 11-20
+	dc.l	L0078D		; #15 yeti, 10-19
 	dc.w	$001E
 	dc.w	0		;flags
 	dc.w	$000A
@@ -29612,7 +29613,7 @@ _monsters:
 	dc.l	L0078E		; 1d6/1d6
 	dc.w	$0000
 
-	dc.l	L0078F		; #9 zombie, 5-14
+	dc.l	L0078F		; #9 zombie, 4-13
 	dc.w	$0000
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -29622,6 +29623,7 @@ _monsters:
 	dc.w	1
 	dc.l	L00790		; 1d8
 	dc.w	$0000
+
 _things:
 	dc.l	$00000000
 	dc.l	$001B0000
