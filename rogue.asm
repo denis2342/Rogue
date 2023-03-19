@@ -6054,7 +6054,7 @@ _unpack:
 	JSR	_new_item
 	MOVEA.L	D0,A2
 	TST.L	D0
-	BEQ.B	L00298
+	BEQ.B	L00297
 
 	MOVEA.L	A2,A6
 	MOVEA.L	$0008(A5),A1
@@ -6085,9 +6085,6 @@ L00297:
 	UNLK	A5
 	RTS
 
-L00298:
-	MOVEQ	#$00,D0
-	BRA.B	L00297
 L00299:
 	MOVEA.L	$0008(A5),A6
 	moveq	#1,d3
@@ -6109,10 +6106,10 @@ L0029F:
 	PEA	-$529C(A4)	;_player + 46 (pack)
 	JSR	__detach
 	ADDQ.W	#8,A7
-	CLR.L	-(A7)
+	CLR.W	-(A7)
 	MOVE.L	$0008(A5),-(A7)
 	BSR.B	_pack_name
-	ADDQ.W	#8,A7
+	ADDQ.W	#6,A7
 
 	MOVEA.L	$0008(A5),A6
 	CMPI.W	#$002C,$000A(A6)	;did we unpack the amulet?
