@@ -52,7 +52,6 @@ _init_player:
 
 	JSR	_new_item
 	MOVEA.L	D0,A2
-	MOVE.W	#$006D,$000A(A2)	;m weapon type
 	CLR.W	$0020(A2)		;zero is mace
 	MOVE.L	A2,-(A7)
 	JSR	_init_weapon
@@ -73,7 +72,6 @@ _init_player:
 
 	JSR	_new_item
 	MOVEA.L	D0,A2
-	MOVE.W	#$006D,$000A(A2)	;m weapon type
 	MOVE.W	#$0002,$0020(A2)	;2 is short bow
 	MOVE.L	A2,-(A7)
 	JSR	_init_weapon
@@ -89,7 +87,6 @@ _init_player:
 
 	JSR	_new_item
 	MOVEA.L	D0,A2
-	MOVE.W	#$006D,$000A(A2)	;m weapon type
 	MOVE.W	#$0003,$0020(A2)	;arrows
 	MOVE.L	A2,-(A7)
 	JSR	_init_weapon
@@ -1425,14 +1422,13 @@ L000D4:
 ;	TST.L	D0
 	BEQ.B	L000D5
 
-	MOVEA.L	-$0004(A5),A6
-	MOVE.W	#$006D,$000A(A6)	;'m' weapon type
+	MOVEA.L	D0,A6
 	MOVE.W	#$0003,$0020(A6)
 	MOVE.L	A6,-(A7)
 	JSR	_init_weapon
 	ADDQ.W	#4,A7
 	MOVEA.L	-$0004(A5),A6
-	MOVE.W	#$0001,$001E(A6)	;one weapon
+	MOVE.W	#$0001,$001E(A6)	;one arrow
 	ADDA.L	#$0000000C,A6
 	LEA	-$52C0(A4),A1	;_player + 10
 	MOVE.L	(A1)+,(A6)+
@@ -12446,7 +12442,6 @@ L0054C:
 ; weapon
 
 L0054D:
-	MOVE.W	#$006D,$000A(A2)	;m weapon type
 	MOVEq	#10,D0
 	JSR	_rnd
 	MOVE.W	D0,$0020(A2)
