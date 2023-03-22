@@ -15178,6 +15178,11 @@ L00677:
 	tst.b	-$66F8(A4)	;_noscore
 	bne	L00679
 
+	;hiding strength, maxhp and experience points in the highscore
+	move.l	-$52B0(A4),-$000E(A5)	;_player + 26 (EXP)
+	move.b	-$52B1(A4),-$000A(A5)	;_player + 24 strength
+	move.b	-$52A1(A4),-$0009(A5)	;_player + 40 (max HP)
+
 	PEA	-$672B(A4)	;_whoami
 	PEA	-$002E(A5)
 	JSR	_strcpy
