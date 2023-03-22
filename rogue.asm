@@ -14117,7 +14117,7 @@ _hit_monster:
 	JSR	_moatquick
 
 	TST.L	D0
-	BEQ.B	L00619
+	BEQ.B	L00618
 
 	MOVEA.L	D0,A2
 	MOVE.W	D4,-$53CC(A4)
@@ -14134,10 +14134,6 @@ L00618:
 	MOVEM.L	(A7)+,D4/D5/A2
 	UNLK	A5
 	RTS
-
-L00619:
-	MOVEQ	#$00,D0
-	BRA.B	L00618
 
 ;/*
 ; * num:
