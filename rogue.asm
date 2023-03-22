@@ -14108,6 +14108,7 @@ _iw_setdam:
 _hit_monster:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/D5/A2,-(A7)
+
 	MOVE.W	$0008(A5),D4
 	MOVE.W	$000A(A5),D5
 
