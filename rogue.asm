@@ -6142,9 +6142,8 @@ L002A1:
 	JSR	_nameof
 	ADDQ.W	#6,A7
 
-	MOVEA.L	D0,A3
-	MOVE.L	A3,-(A7)
-	MOVE.L	A3,A0
+	MOVEA.L	D0,A0
+	MOVE.L	A0,-(A7)
 	JSR	_strlenquick
 
 	ADDQ.W	#1,D0
