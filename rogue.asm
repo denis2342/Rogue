@@ -6131,8 +6131,9 @@ _pack_name:
 	MOVE.L	$0010(A2),-(A7)
 	JSR	_free
 	ADDQ.W	#4,A7
-L002A1:
+
 	CLR.L	$0010(A2)
+L002A1:
 	TST.W	$000C(A5)	;zero here means we just delete the entry
 	BEQ.B	L002A2
 
@@ -6140,6 +6141,7 @@ L002A1:
 	MOVE.L	A2,-(A7)
 	JSR	_nameof
 	ADDQ.W	#6,A7
+
 	MOVEA.L	D0,A3
 	MOVE.L	A3,-(A7)
 	MOVE.L	A3,A0
@@ -6149,6 +6151,7 @@ L002A1:
 	MOVE.W	D0,-(A7)
 	JSR	_newmem
 	ADDQ.W	#2,A7
+
 	MOVE.L	D0,-(A7)
 	JSR	_strcpy
 	ADDQ.W	#8,A7
@@ -6939,21 +6942,21 @@ _fix_stick:
 	EXT.L	D0
 	BRA.B	L00305
 L00303:
-	MOVE.W	#$0064,$0022(A2)
-	MOVE.W	#$0003,$0024(A2)
+	MOVE.W	#$0064,$0022(A2)	; +100 damage
+	MOVE.W	#$0003,$0024(A2)	; +3 hit
 	BRA.B	L00306
 L00304:
 	MOVEq	#$000A,D0
 	JSR	_rnd
 	ADD.W	#$000A,D0
-	MOVE.W	D0,$0026(A2)
+	MOVE.W	D0,$0026(A2)	;10-19 charges
 	BRA.B	L00306
 L00305:
 	TST.L	D0
-	BEQ.B	L00304
+	BEQ.B	L00304	;staff of light?
 
 	SUBQ.L	#1,D0
-	BEQ.B	L00303
+	BEQ.B	L00303	;staff of striking?
 L00306:
 	MOVEA.L	(A7)+,A2
 	UNLK	A5
@@ -6989,7 +6992,8 @@ L00308:
 	MOVE.L	A6,$0016(A2)
 L00309:
 	LEA	L0030E(PC),A6	;"1d1"
-	MOVE.L	A6,$001A(A2)
+	MOVE.L	A6,$001A(A2)	;throw damage
+
 	MOVEA.L	(A7)+,A2
 	UNLK	A5
 	RTS
@@ -7293,7 +7297,7 @@ L0032A:
 	MOVEA.L	-$0004(A5),A6
 	LEA	-$52C0(A4),A1	;_player + 10
 	MOVE.L	A1,$0012(A6)
-	ORI.W	#$0004,$0016(A6)	;C_ISRUN
+	ORI.W	#C_ISRUN,$0016(A6)	;C_ISRUN
 L0032B:
 	BRA.W	L00345
 
@@ -12611,6 +12615,7 @@ L00562:
 _pick_one:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/D5/A2/A3,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	MOVE.L	A2,D5
 	MOVE.W	$000C(A5),D3
@@ -12638,6 +12643,7 @@ L00566:
 	MOVE.L	A2,D0
 	SUB.L	D5,D0
 	LSR.L	#3,D0
+
 	MOVEM.L	(A7)+,D4/D5/A2/A3
 	UNLK	A5
 	RTS
@@ -21641,7 +21647,7 @@ _save_throw:
 	moveq	#14,D3
 	ADD.W	$0008(A5),D3
 	MOVEA.L	$000A(A5),A6
-	MOVE.W	$001E(A6),D2
+	MOVE.W	$001E(A6),D2	;rank of player/creature
 	EXT.L	D2
 	DIVS.W	#$0002,D2
 	MOVE.W	D3,D4
@@ -22594,7 +22600,7 @@ L00A35:
 	CMP.W	#$0003,D5
 	BGE	L00A39
 L00A36:
-	ORI.W	#$0008,$0016(A2)	;C_ISFOUND
+	ORI.W	#C_ISFOUND,$0016(A2)	;C_ISFOUND
 	MOVE.W	#$0003,-(A7)
 	JSR	_save
 	ADDQ.W	#2,A7
