@@ -4580,6 +4580,7 @@ L00210:
 	PEA	-$0004(A5)
 	JSR	_blank_spot
 	ADDQ.W	#4,A7
+
 	MOVE.W	D0,D5
 	MOVEA.L	-$5198(A4),A6	;__flags
 	MOVEQ	#$00,D3
@@ -4593,15 +4594,18 @@ L00210:
 
 	TST.L	D0
 	BNE.B	L00210
+
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	A3,-(A7)
 	JSR	_unpack
 	ADDQ.W	#6,A7
+
 	MOVEA.L	D0,A3
 	MOVE.L	A3,-(A7)
 	PEA	-$6CB0(A4)	;_lvl_obj
 	JSR	__attach
 	ADDQ.W	#8,A7
+
 	MOVEA.L	A3,A6
 	ADDA.L	#$0000000C,A6
 	LEA	-$0004(A5),A1
@@ -4612,8 +4616,10 @@ L00210:
 	MOVE.W	-$0002(A5),-(A7)
 	JSR	_cansee
 	ADDQ.W	#4,A7
+
 	TST.W	D0
 	BEQ.B	L00211
+
 	MOVEA.L	-$519C(A4),A6	;__level
 
 	MOVE.B	$00(A6,D5.W),D2
@@ -4637,6 +4643,7 @@ L00213:
 L00214:
 	CMP.w	#$0006,D0
 	BCC.B	L00216
+
 	ASL.w	#1,D0
 	MOVE.W	L00213(PC,D0.W),D0
 L00215:	JMP	L00215(PC,D0.W)
@@ -7221,7 +7228,7 @@ L00322:
 	MOVEA.L	-$0004(A5),A6
 	ORI.W	#C_ISCANC,$0016(A6)	;C_ISCANC
 	ANDI.W	#$FBEF,$0016(A6)	;clear C_ISINVIS|C_CANHUH
-	MOVE.B	$000F(A6),$0010(A6)
+	MOVE.B	$000F(A6),$0010(A6)	;make the xerox visible
 	BRA.W	L0032A
 L00323:
 	MOVE.L	-$0004(A5),-(A7)
@@ -12991,6 +12998,7 @@ L00585:	dc.b	"-Press space to continue-",0,0
 _end_line:
 	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
+
 	CLR.L	-(A7)
 	MOVE.L	$0008(A5),-(A7)
 	JSR	_add_line(PC)
@@ -13119,6 +13127,7 @@ L00596:
 _find_slot:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
+
 	LEA	-$544A(A4),A2
 	LEA	-$53D2(A4),A6
 
@@ -13150,6 +13159,7 @@ L00599:
 _daemon:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
+
 	BSR.B	_d_slot
 	MOVEA.L	D0,A2
 	MOVE.L	$0008(A5),-(A7)
@@ -13158,6 +13168,7 @@ _daemon:
 	MOVE.W	D0,(A2)
 	MOVE.W	$000C(A5),$0002(A2)
 	MOVE.W	#$FFFB,$0004(A2)
+
 	MOVEA.L	(A7)+,A2
 	UNLK	A5
 	RTS
@@ -13171,6 +13182,7 @@ _daemon:
 _do_daemons:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
+
 	LEA	-$544A(A4),A6
 	MOVEA.L	A6,A2
 L0059A:
@@ -13214,6 +13226,7 @@ L0059C:
 _fuse:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
+
 	JSR	_d_slot(PC)
 	MOVEA.L	D0,A2
 	MOVE.L	$0008(A5),-(A7)
@@ -13222,6 +13235,7 @@ _fuse:
 	MOVE.W	D0,(A2)
 	MOVE.W	$000C(A5),$0002(A2)
 	MOVE.W	$000E(A5),$0004(A2)
+
 	MOVEA.L	(A7)+,A2
 	UNLK	A5
 	RTS
@@ -13234,6 +13248,7 @@ _fuse:
 _lengthen:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
+
 	MOVE.L	$0008(A5),-(A7)
 	BSR.B	_cvt_f_i
 	ADDQ.W	#4,A7
@@ -21139,12 +21154,12 @@ L0098C:
 	JSR	_msg
 	LEA	$000C(A7),A7
 
-	ADD.W	#20,D5
-	ADD.W	#100,D6
+	ADD.W	#20,D5		;+20 hit
+	ADD.W	#100,D6		;+100 damage
 	BRA.B	L0098E
 L0098D:
-	ADDQ.W	#4,D5
-	ADDQ.W	#4,D6
+	ADDQ.W	#4,D5		;+4 hit
+	ADDQ.W	#4,D6		;+4 damage
 L0098E:
 	MOVEA.L	$0010(A5),A6
 	CMPA.L	-$5298(A4),A6	;check _cur_weapon
@@ -21182,7 +21197,7 @@ L00991:
 	ADD.W	$0026(A6),D5	;add hit from ring
 L00992:
 	MOVEA.L	$0010(A5),A6
-	MOVE.L	$0016(A6),-$0004(A5)
+	MOVE.L	$0016(A6),-$0004(A5)	;get wield damage
 	TST.B	$0015(A5)
 	BEQ.B	L00993
 
@@ -21195,7 +21210,7 @@ L00992:
 	BEQ.B	L00993
 
 ;	MOVEA.L	$0010(A5),A6
-	MOVE.B	$0014(A6),D3
+	MOVE.B	$0014(A6),D3	;get baseweapon
 	EXT.W	D3
 
 	MOVEA.L	-$5298(A4),A6	;_cur_weapon
@@ -21203,7 +21218,7 @@ L00992:
 	BNE.B	L00993
 
 	MOVEA.L	$0010(A5),A6
-	MOVE.L	$001A(A6),-$0004(A5)
+	MOVE.L	$001A(A6),-$0004(A5)	;get throw damage
 
 	MOVEA.L	-$5298(A4),A6	;_cur_weapon
 	ADD.W	$0022(A6),D5	;hplus
@@ -21218,7 +21233,7 @@ L00993:
 	BNE.B	L00994
 
 ;	MOVEA.L	$0010(A5),A6
-	SUBQ.W	#1,$0026(A6)
+	SUBQ.W	#1,$0026(A6)		;consume one charge
 	CMPI.W	#$0000,$0026(A6)
 	BGE.B	L00994
 
@@ -21227,8 +21242,8 @@ L00993:
 	MOVE.L	$0016(A6),-$0004(A5)
 
 ;	MOVEA.L	$0010(A5),A6
-	CLR.W	$0024(A6)
-	CLR.W	$0022(A6)
+	CLR.W	$0024(A6)	;0 hit
+	CLR.W	$0022(A6)	;0 damage
 
 ;	MOVEA.L	$0010(A5),A6
 	CLR.W	$0026(A6)
@@ -29330,7 +29345,7 @@ _mlist:
 ; 4=treasure, 6=flags, 8=strength, 10=EXP, 14=xd8 HP, 16=AC, 18=$1
 
 _monsters:
-	dc.l	L0075D		; #12 aquator, 7-16
+	dc.l	L0075D		; #12 aquator, 7-17
 	dc.w	$0000
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -29363,7 +29378,7 @@ _monsters:
 	dc.l	L00762		;1d6/1d6
 	dc.w	$0000
 
-	dc.l	L00763		; #26 dragon, 21-26
+	dc.l	L00763		; #26 dragon, 21-...
 	dc.w	$0064
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -29385,7 +29400,7 @@ _monsters:
 	dc.l	L00766		; 1d2
 	dc.w	$0000
 
-	dc.l	L00767		; #18 venus flytrap, 13-22
+	dc.l	L00767		; #18 venus flytrap, 13-23
 	dc.w	$0000
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -29396,7 +29411,7 @@ _monsters:
 	dc.l	L00768		; %%%d0
 	dc.w	$0000
 
-	dc.l	L00769		; #21 griffin, 16-25
+	dc.l	L00769		; #21 griffin, 16-26
 	dc.w	$0014
 	dc.w	C_ISMEAN|C_ISFLY|C_ISREGEN	;flags
 	dc.w	$000A
@@ -29429,7 +29444,7 @@ _monsters:
 	dc.l	L0076E		; 1d2
 	dc.w	$0000
 
-	dc.l	L0076F		; #25 jabberwock, 20-26
+	dc.l	L0076F		; #25 jabberwock, 20-...
 	dc.w	$0046
 	dc.w	0		;flags
 	dc.w	$000A
@@ -29451,7 +29466,7 @@ _monsters:
 	dc.l	L00772		; 1d4
 	dc.w	$0000
 
-	dc.l	L00773		; #10 leprechaun, 5-14
+	dc.l	L00773		; #10 leprechaun, 5-15
 	dc.w	$0040
 	dc.w	0		;flags
 	dc.w	$000A
@@ -29462,7 +29477,7 @@ _monsters:
 	dc.l	L00774		; 1d2
 	dc.w	$0000
 
-	dc.l	L00775		; #21 medusa, 17-26
+	dc.l	L00775		; #21 medusa, 17-...
 	dc.w	$0028
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -29473,7 +29488,7 @@ _monsters:
 	dc.l	L00776		; 3d4/3d4
 	dc.w	$0000
 
-	dc.l	L00777		; #14 nymph, 9-18
+	dc.l	L00777		; #14 nymph, 9-19
 	dc.w	$0064
 	dc.w	0		;flags
 	dc.w	$000A
@@ -29484,7 +29499,7 @@ _monsters:
 	dc.l	L00778		; 0d0
 	dc.w	$0000
 
-	dc.l	L00779		; #7 orc, 2-11
+	dc.l	L00779		; #7 orc, 2-12
 	dc.w	$000F
 	dc.w	C_ISGREED	;flags
 	dc.w	$000A
@@ -29495,7 +29510,7 @@ _monsters:
 	dc.l	L0077A		; 1d8
 	dc.w	$0000
 
-	dc.l	L0077B		; #19 phantom, 14-23
+	dc.l	L0077B		; #19 phantom, 14-24
 	dc.w	$0000
 	dc.w	C_ISINVIS	;flags
 	dc.w	$000A
@@ -29506,7 +29521,7 @@ _monsters:
 	dc.l	L0077C		; 4d4
 	dc.w	$0000
 
-	dc.l	L0077D		; #13 quagga, 8-15
+	dc.l	L0077D		; #13 quagga, 8-18
 	dc.w	$001E
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -29517,7 +29532,7 @@ _monsters:
 	dc.l	L0077E		; 1d2/1d2/1d4
 	dc.w	$0000
 
-	dc.l	L0077F		; #8 rattlesnake, 3-12
+	dc.l	L0077F		; #8 rattlesnake, 4-14
 	dc.w	$0000
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -29528,7 +29543,7 @@ _monsters:
 	dc.l	L00780		; 1d6
 	dc.w	$0000
 
-	dc.l	L00781		; #6 slime, 1-10
+	dc.l	L00781		; #6 slime, 1-11
 	dc.w	$0000
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -29539,7 +29554,7 @@ _monsters:
 	dc.l	L00782		; 1d3
 	dc.w	$0000
 
-	dc.l	L00783		; #16 troll, 11-20
+	dc.l	L00783		; #16 troll, 11-21
 	dc.w	$0032
 	dc.w	C_ISMEAN|C_ISREGEN	;flags
 	dc.w	$000A
@@ -29550,7 +29565,7 @@ _monsters:
 	dc.l	L00784		; 1d8/1d8/2d6
 	dc.w	$0000
 
-	dc.l	L00785		; #20 ur-vile, 15-24
+	dc.l	L00785		; #20 ur-vile, 15-25
 	dc.w	$0000
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -29561,7 +29576,7 @@ _monsters:
 	dc.l	L00786		; 1d3/1d3/1d3/4d6
 	dc.w	$0000
 
-	dc.l	L00787		; #24 vampire, 18-26
+	dc.l	L00787		; #24 vampire, 19-...
 	dc.w	$0014
 	dc.w	C_ISMEAN|C_ISREGEN	;flags
 	dc.w	$000A
@@ -29572,7 +29587,7 @@ _monsters:
 	dc.l	L00788		; 1d10
 	dc.w	$0000
 
-	dc.l	L00789		; #17 wraith, 12-21
+	dc.l	L00789		; #17 wraith, 12-22
 	dc.w	$0000
 	dc.w	0		;flags
 	dc.w	$000A
@@ -29583,7 +29598,7 @@ _monsters:
 	dc.l	L0078A		; 1d6
 	dc.w	$0000
 
-	dc.l	L0078B		; #23 xeroc, 18-26
+	dc.l	L0078B		; #23 xeroc, 18-...
 	dc.w	$001E
 	dc.w	0		;flags
 	dc.w	$000A
@@ -29594,7 +29609,7 @@ _monsters:
 	dc.l	L0078C		; 3d4
 	dc.w	$0000
 
-	dc.l	L0078D		; #15 yeti, 10-19
+	dc.l	L0078D		; #15 yeti, 10-20
 	dc.w	$001E
 	dc.w	0		;flags
 	dc.w	$000A
@@ -29605,7 +29620,7 @@ _monsters:
 	dc.l	L0078E		; 1d6/1d6
 	dc.w	$0000
 
-	dc.l	L0078F		; #9 zombie, 4-13
+	dc.l	L0078F		; #9 zombie, 4-14
 	dc.w	$0000
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
