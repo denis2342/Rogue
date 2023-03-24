@@ -6570,7 +6570,10 @@ L002D2:
 	CMPI.W	#$0020,-$0056(A5)
 	BEQ.B	L002D4
 
-	JSR	_end_add(PC)
+	CLR.W	-$54BC(A4)	;former function _end_add() inlined
+	CLR.B	-$54BA(A4)
+	JSR	_wmap
+
 	MOVE.W	-$0056(A5),D0
 L002D3:
 	MOVEM.L	(A7)+,D4-D7
@@ -12996,16 +12999,9 @@ _end_line:
 	CLR.W	-$54BC(A4)
 	CLR.B	-$54BA(A4)
 	MOVE.W	D4,D0
+
 	MOVE.L	(A7)+,D4
 	UNLK	A5
-	RTS
-
-_end_add:
-;	LINK	A5,#-$0000
-	CLR.W	-$54BC(A4)
-	CLR.B	-$54BA(A4)
-	JSR	_wmap
-;	UNLK	A5
 	RTS
 
 ;/*
