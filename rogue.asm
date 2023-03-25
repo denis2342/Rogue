@@ -11869,23 +11869,18 @@ L00512:
 L00513:	dc.b	"Title.Screen.lz4",0,0
 
 _newmem:
-	LINK	A5,#-$0000
-	MOVE.L	A2,-(A7)
-	MOVE.W	$0008(A5),-(A7)
+	MOVE.W	$0004(A7),-(A7)
 	JSR	_malloc
 	ADDQ.W	#2,A7
-	MOVEA.L	D0,A2
+
 	TST.L	D0
-	BNE.B	L00514
+	BNE.B	1$
 
 	PEA	L00515(PC)	;"No Memory"
 	JSR	_fatal
 	ADDQ.W	#4,A7
-L00514:
-	MOVE.L	A2,D0
-	MOVEA.L	(A7)+,A2
-	UNLK	A5
-	RTS
+
+1$	RTS
 
 L00515:	dc.b	"No Memory",0
 
