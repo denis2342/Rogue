@@ -6890,22 +6890,18 @@ L002FE:
 
 _money:
 	LINK	A5,#-$0000
-	MOVEM.L	D4/D5,-(A7)
+	MOVE.L	D5,-(A7)
 
-	MOVE.W	$0008(A5),D4
 	MOVEA.L	-$52A0(A4),A6	;_player + 42 (room)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3	;ISGONE
-	BEQ.B	L002FF
+	BEQ.B	1$
 
-	MOVEQ	#$23,D3		;'#' passage
-	BRA.B	L00300
-L002FF:
-	MOVEQ	#$2E,D3		;'.' floor
-L00300:
-	MOVE.B	D3,D5
-	ADD.W	D4,-$60B2(A4)	;_purse
-
+	MOVEQ	#$23,D5		;'#' passage
+	BRA.B	2$
+1$
+	MOVEQ	#$2E,D5		;'.' floor
+2$
 	MOVE.B	D5,D2
 	MOVE.W	-$52C0(A4),d1	;_player + 10
 	MOVE.W	-$52BE(A4),d0	;_player + 12
@@ -6916,15 +6912,17 @@ L00300:
 	MOVEA.L	-$519C(A4),A6	;__level
 	MOVE.B	D5,$00(A6,D0.W)
 
-	CMP.W	#$0000,D4	;no gold?
-	BLE.B	L00301
+	MOVE.W	$0008(A5),D3
+	ADD.W	D3,-$60B2(A4)	;_purse
+	CMP.W	#$0000,D3	;no gold?
+	BLE.B	3$
 
-	MOVE.W	D4,-(A7)
+	MOVE.W	D3,-(A7)
 	PEA	L00302(PC)	;"you found %d gold pieces"
 	JSR	_msg
 	ADDQ.W	#6,A7
-L00301:
-	MOVEM.L	(A7)+,D4/D5
+3$
+	MOVE.L	(A7)+,D5
 	UNLK	A5
 	RTS
 
