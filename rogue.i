@@ -1,4 +1,7 @@
 
+VS_FALL		equ	1
+VS_MAGIC	equ	3
+
 ; wands/staffs
 
 WS_LIGHT	equ	0
@@ -103,6 +106,7 @@ MAXARMORS		equ	8
 
 O_ISCURSED	equ	1
 O_ISKNOW	equ	2	;100% sure
+O_SLAYERUSED	equ	4
 O_SCAREUSED	equ	8
 O_ISMISL	equ	$10	;100% sure
 O_ISMANY	equ	$20	;100% sure
@@ -127,3 +131,22 @@ C_ISSLOW	equ	$2000	;creature has been slowed
 C_ISHASTE	equ	$4000	;creature has been hastened
 C_ISFLY		equ	$8000	;creature can fly
 
+;object struct:
+
+;$00		previous object?
+;$04		next object in list
+;$08
+;$0A	10	type of object (scroll/potion/weapon...)
+;$0C
+;$10	16	pointer to packname
+;$14	20	baseweapon for arrows/crossbowbolts
+;$16	22	pointer to wield damage
+;$1A	26	pointer to throw damage
+;$1E	30	number of items of this object
+;$20	32	subtype of object (which scroll/potion/weapon...)
+;$22	34	+hit
+;$24	36	+damage
+;$26	38	charges for staff/wand or +hit/damage with rings or armor points
+;$28	40	flags of object
+;$2A	42	monster slayer
+;$2C	44	group of object

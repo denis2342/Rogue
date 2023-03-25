@@ -1560,7 +1560,7 @@ L000ED:
 	JSR	_msg
 	ADDQ.W	#4,A7
 
-	MOVE.W	#$0001,-(A7)
+	MOVE.W	#VS_FALL,-(A7)
 	JSR	_save
 	ADDQ.W	#2,A7
 
@@ -7345,7 +7345,7 @@ L0032D:
 	BEQ.B	L0032E
 
 	MOVE.L	-$0004(A5),-(A7)
-	MOVE.W	#$0003,-(A7)
+	MOVE.W	#VS_MAGIC,-(A7)
 	JSR	_save_throw
 	ADDQ.W	#6,A7
 	TST.W	D0
@@ -7845,7 +7845,7 @@ L0036F:
 	MOVE.B	$00(A6,D0.W),$0011(A2)
 L00370:
 	MOVE.L	A2,-(A7)
-	MOVE.W	#$0003,-(A7)
+	MOVE.W	#VS_MAGIC,-(A7)
 	JSR	_save_throw
 	ADDQ.W	#6,A7
 	TST.W	D0
@@ -7952,7 +7952,7 @@ L00379:
 	CLR.W	D3
 L0037A:
 	MOVE.B	D3,-$0001(A5)
-	MOVE.W	#$0003,-(A7)
+	MOVE.W	#VS_MAGIC,-(A7)
 	JSR	_save
 	ADDQ.W	#2,A7
 	TST.W	D0
@@ -10900,6 +10900,7 @@ L004CA:
 L004CB:
 	ORI.W	#C_ISHASTE,$0016(A3)	;set C_ISHASTE
 	BRA.B	L004CF
+
 L004CC:
 	dc.w	L004C6-L004CE	;confusion
 	dc.w	L004C7-L004CE	;paralysis
@@ -20747,7 +20748,7 @@ L00966:
 	bsr	goldcalc
 	sub.w	D0,D4
 
-	MOVE.W	#$0003,-(A7)
+	MOVE.W	#VS_MAGIC,-(A7)
 	JSR	_save(PC)
 	ADDQ.W	#2,A7
 	TST.W	D0
@@ -21073,7 +21074,7 @@ _roll_em:
 	BNE.B	L0098E
 
 	MOVE.W	$0028(A6),D3
-	AND.W	#$0004,D3	;first time? then 100% chance
+	AND.W	#O_SLAYERUSED,D3	;first time? then 100% chance
 	BEQ.B	L00989
 
 	MOVEq	#100,D0		;1% chance the monster slayer works
@@ -21082,7 +21083,7 @@ _roll_em:
 	BNE.B	L0098D
 L00989:
 	MOVEA.L	$0010(A5),A6
-	ORI.W	#$0004,$0028(A6)	;mark as used
+	ORI.W	#O_SLAYERUSED,$0028(A6)	;mark as used
 
 	TST.B	-$66B2(A4)	;_terse
 	BNE.B	L0098A
@@ -21180,24 +21181,19 @@ L00993:
 	CMPI.W	#$002F,$000A(A6)	;'/' wand
 	BNE.B	L00994
 
-;	MOVEA.L	$0010(A5),A6
 	CMPI.W	#WS_STRIKING,$0020(A6)
 	BNE.B	L00994
 
-;	MOVEA.L	$0010(A5),A6
 	SUBQ.W	#1,$0026(A6)		;consume one charge
 	CMPI.W	#$0000,$0026(A6)
 	BGE.B	L00994
 
-;	MOVEA.L	$0010(A5),A6
 	MOVE.L	-$69AE(A4),$0016(A6)	;_no_damage
 	MOVE.L	$0016(A6),-$0004(A5)
 
-;	MOVEA.L	$0010(A5),A6
 	CLR.W	$0024(A6)	;0 hit
 	CLR.W	$0022(A6)	;0 damage
 
-;	MOVEA.L	$0010(A5),A6
 	CLR.W	$0026(A6)
 L00994:
 	MOVEA.L	$000C(A5),A6
@@ -21634,7 +21630,7 @@ _save:
 	MOVE.L	D4,-(A7)
 	MOVE.W	$0008(A5),D4
 
-	CMP.W	#$0003,D4	;VS_MAGIC
+	CMP.W	#VS_MAGIC,D4	;VS_MAGIC
 	BNE.B	L009DA
 
 	TST.L	-$5190(A4)	;_cur_ring_1
@@ -22032,7 +22028,7 @@ L00A05:
 	bsr	goldcalc
 	move.W	D0,D4
 
-	MOVE.W	#$0003,-(A7)
+	MOVE.W	#VS_MAGIC,-(A7)
 	JSR	_save(PC)
 	ADDQ.W	#2,A7
 	TST.W	D0
@@ -22555,7 +22551,7 @@ L00A35:
 	BGE	L00A39
 L00A36:
 	ORI.W	#C_ISFOUND,$0016(A2)	;C_ISFOUND
-	MOVE.W	#$0003,-(A7)
+	MOVE.W	#VS_MAGIC,-(A7)
 	JSR	_save
 	ADDQ.W	#2,A7
 	TST.W	D0
