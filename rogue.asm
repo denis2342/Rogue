@@ -21182,7 +21182,7 @@ L00993:
 	BNE.B	L00994
 
 	SUBQ.W	#1,$0026(A6)		;consume one charge
-	CMPI.W	#$0000,$0026(A6)
+;	CMPI.W	#$0000,$0026(A6)
 	BGE.B	L00994
 
 	MOVE.L	-$69AE(A4),$0016(A6)	;_no_damage
