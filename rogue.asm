@@ -15702,13 +15702,15 @@ L006AE:
 	ASL.w	#1,D0
 	MOVE.W	L006B9(PC,D0.W),D4	;load the weapon gold value
 L006BC:
-	MOVE.W	$0022(A2),D3
-	ADD.W	$0024(A2),D3
+	MOVE.W	$0022(A2),D3	;add hit
+	ADD.W	$0024(A2),D3	;add damage
 	MULU.W	#$0003,D3
 	ADD.W	$001E(A2),D3	;add the number we have
 	MULU.W	D3,D4
 	ORI.W	#O_ISKNOW,$0028(A2)
 	BRA.W	L006D7
+
+; gold value of the weapons
 
 L006B9:	dc.w	8	;mace
 	dc.w	15	;broad sword
@@ -15747,6 +15749,8 @@ L006C9:
 	ADD.W	D2,D4
 	ORI.W	#O_ISKNOW,$0028(A2)
 	BRA.W	L006D7
+
+; gold value of the armor
 
 L006C6:	dc.w	20	;leather armor
 	dc.w	25	;ring mail
@@ -15823,9 +15827,9 @@ L006CF:
 	ADD.W	D3,D4
 	BRA.B	L006D1
 L006D0:
-	MOVEQ	#$0A,D4		; or only ten if the rings has negative values
+	MOVEQ	#$0A,D4		; or only ten if the ring has negative values
 L006D1:
-	MOVE.W	$0028(A2),D3
+	MOVE.W	$0028(A2),D3	;get the flags
 	AND.W	#O_ISKNOW,D3
 	BNE.B	L006D2
 
@@ -15846,10 +15850,10 @@ L006D3:
 	ASL.w	#3,D3
 	LEA	-$6D92(A4),A6
 	MOVE.W	$00(A6,D3.w),D4
-	MOVE.W	$0026(A2),D3
+	MOVE.W	$0026(A2),D3	;get number of charges
 	MULU.W	#20,D3
 	ADD.W	D3,D4
-	MOVE.W	$0028(A2),D3
+	MOVE.W	$0028(A2),D3	;get the flags
 	AND.W	#O_ISKNOW,D3
 	BNE.B	L006D4
 
