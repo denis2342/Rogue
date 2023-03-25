@@ -10942,9 +10942,7 @@ _p_confuse:
 	MOVEq	#20,D0
 	JSR	_spread
 
-	MOVE.W	(A7)+,D3	;get rnd back from stack
-	ADD.W	D0,D3		;add spread
-	MOVE.W	D3,-(A7)	;put it back on stack for function
+	ADD.W	D0,(A7)		;add spread to rnd on stack
 
 	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISHUH,D3	;C_ISHUH
