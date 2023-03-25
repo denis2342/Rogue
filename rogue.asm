@@ -12660,40 +12660,52 @@ L00566:
 ; */
 
 _discovered:
-;	LINK	A5,#-$0000
+	MOVEM.L	D5-D7/A2/A3,-(A7)
 
-	MOVE.W	#$0021,-(A7)	;'!' potions
+	MOVEq	#$0021,D7	;'!' potions
+	MOVEQ	#14,D5
+	LEA	-$66E7(A4),A2	;_p_know
+	LEA	-$642E(A4),A3	;_p_guess
 	BSR.B	_print_disc
-	ADDQ.W	#2,A7
+
 	PEA	L00567(PC)	;" ",0
 	PEA	-$69CC(A4)	;_nullstr
 	JSR	_add_line(PC)
 	ADDQ.W	#8,A7
 
-	MOVE.W	#$003F,-(A7)	;'?' scrolls
+	MOVEq	#$003F,D7	;'?' scrolls
+	MOVEQ	#15,D5
+	LEA	-$66F6(A4),A2	;_s_know
+	LEA	-$656A(A4),A3	;_s_guess
 	BSR.B	_print_disc
-	ADDQ.W	#2,A7
+
 	PEA	L00567(PC)	;" ",0
 	PEA	-$69CC(A4)	;_nullstr
 	JSR	_add_line(PC)
 	ADDQ.W	#8,A7
 
-	MOVE.W	#$003D,-(A7)	;'=' rings
+	MOVEq	#$003D,D7	;'=' rings
+	MOVEQ	#14,D5
+	LEA	-$66D9(A4),A2	;_r_know
+	LEA	-$6308(A4),A3	;_r_guess
 	BSR.B	_print_disc
-	ADDQ.W	#2,A7
+
 	PEA	L00567(PC)	;" ",0
 	PEA	-$69CC(A4)	;_nullstr
 	JSR	_add_line(PC)
 	ADDQ.W	#8,A7
 
-	MOVE.W	#$002F,-(A7)	;'/' sticks
+	MOVEq	#$002F,D7	;'/' sticks
+	MOVEQ	#14,D5
+	LEA	-$66CB(A4),A2	;_ws_know
+	LEA	-$61E2(A4),A3	;_ws_guess
 	BSR.B	_print_disc
-	ADDQ.W	#2,A7
+
 	PEA	-$69CC(A4)	;_nullstr
 	JSR	_end_line(PC)
 	ADDQ.W	#4,A7
 
-;	UNLK	A5
+	MOVEM.L	(A7)+,D5-D7/A2/A3
 	RTS
 
 L00567:	dc.b	" ",0
@@ -12704,75 +12716,28 @@ L00567:	dc.b	" ",0
 ; */
 
 _print_disc:
-	LINK	A5,#-$0000
-	MOVEM.L	D4-D6/A2/A3,-(A7)
-	MOVEQ	#$00,D0
-	MOVE.B	$0009(A5),D0
-	BRA.B	L0056E
-L0056A:
-	MOVEQ	#15,D5
-	LEA	-$66F6(A4),A2	;_s_know
-	LEA	-$656A(A4),A3	;_s_guess
-	BRA.B	L0056F
-L0056B:
-	MOVEQ	#14,D5
-	LEA	-$66E7(A4),A2	;_p_know
-	LEA	-$642E(A4),A3	;_p_guess
-	BRA.B	L0056F
-L0056C:
-	MOVEQ	#14,D5
-	LEA	-$66D9(A4),A2	;_r_know
-	LEA	-$6308(A4),A3	;_r_guess
-	BRA.B	L0056F
-L0056D:
-	MOVEQ	#14,D5
-	LEA	-$66CB(A4),A2	;_ws_know
-	LEA	-$61E2(A4),A3	;_ws_guess
-	BRA.B	L0056F
-L0056E:
-	SUB.w	#$0021,D0	;'!' potions
-	BEQ.B	L0056B
-	SUB.w	#$000E,D0	;'/' wand/staff
-	BEQ.B	L0056D
-	SUB.w	#$000E,D0	;'=' rings
-	BEQ.B	L0056C
-	SUBQ.w	#2,D0		;'?' scrolls
-	BEQ.B	L0056A
-L0056F:
 	MOVE.W	D5,-(A7)
 	PEA	-$547E(A4)
 	JSR	_set_order(PC)
 	ADDQ.W	#6,A7
+
 	MOVE.W	#$0001,-$5492(A4)
 	CLR.W	-$5488(A4)
 	MOVEQ	#$00,D6		;discovery counter
-	MOVEQ	#$00,D4		;items indexer
-	BRA.B	L00573
+	BRA.B	L00572
 L00570:
-	MOVE.W	D4,D3
-;	EXT.L	D3
+	MOVE.W	D5,D3
 	ASL.w	#1,D3
 	LEA	-$547E(A4),A6
 	MOVE.W	$00(A6,D3.w),D2
 	TST.B	$00(A2,D2.W)	;did we knew it?
 	BNE.B	L00571
 
-;	MOVE.W	D4,D3
-;	EXT.L	D3
-;	ASL.w	#1,D3
-;	LEA	-$547E(A4),A6
-;	MOVE.W	$00(A6,D3.w),D2
 	MULU.W	#21,D2
 	TST.B	$00(A3,D2.L)	;did we guessed it?
 	BEQ.B	L00572
 L00571:
-	MOVEQ	#$00,D3
-	MOVE.B	$0009(A5),D3
-	MOVE.W	D3,-$54A6(A4)
-	MOVE.W	D4,D3
-;	EXT.L	D3
-	ASL.w	#1,D3
-	LEA	-$547E(A4),A6
+	MOVE.W	D7,-$54A6(A4)
 	MOVE.W	$00(A6,D3.w),-$5490(A4)
 	MOVE.W	#$0026,-(A7)
 	PEA	-$54B0(A4)
@@ -12783,19 +12748,14 @@ L00571:
 	PEA	-$69CC(A4)	;_nullstr
 	JSR	_add_line(PC)
 	LEA	$000C(A7),A7
-	ADDQ.W	#1,D6		;clear discovery counter
+	ADDQ.W	#1,D6		;increase discovery counter
 L00572:
-	ADDQ.W	#1,D4		;increase indexer
-L00573:
-	CMP.W	D5,D4		;are we done with the list?
-	BLT.B	L00570
+	DBRA	D5,L00570	;are we done with the list?
 
 	TST.W	D6		;did we discover anything?
 	BNE.B	L00574
 
-	MOVEQ	#$00,D3
-	MOVE.B	$0009(A5),D3
-	MOVE.W	D3,-(A7)
+	MOVE.W	D7,-(A7)
 	JSR	_nothing(PC)
 	ADDQ.W	#2,A7
 	MOVE.L	D0,-(A7)
@@ -12803,8 +12763,6 @@ L00573:
 	JSR	_add_line(PC)
 	ADDQ.W	#8,A7
 L00574:
-	MOVEM.L	(A7)+,D4-D6/A2/A3
-	UNLK	A5
 	RTS
 
 L00575:
