@@ -6946,13 +6946,13 @@ _fix_stick:
 	MOVEq	#$0005,D0
 	JSR	_rnd
 	ADDQ.W	#3,D0
-	MOVE.W	D0,$0026(A2)
+	MOVE.W	D0,$0026(A2)		;every stick has 3-7 charges
 	MOVE.W	$0020(A2),D0
 	EXT.L	D0
 	BRA.B	L00305
 L00303:
-	MOVE.W	#$0064,$0022(A2)	; +100 damage
-	MOVE.W	#$0003,$0024(A2)	; +3 hit
+	MOVE.W	#$0064,$0022(A2)	; +100 hit
+	MOVE.W	#$0003,$0024(A2)	; +3 damage
 	BRA.B	L00306
 L00304:
 	MOVEq	#$000A,D0
@@ -21314,13 +21314,12 @@ L00999:
 ;	MOVEQ	#$00,D3
 	BRA.B	L0099C
 L0099B:
-	MOVE.W	D7,D3
-	SUB.W	D3,$000A(A3)
+	SUB.W	D7,$000A(A3)
 L0099C:
 	MOVEQ	#$01,D4		;did_hit = TRUE
 
 L0099D:
-	MOVE.W	#$002F,-(A7)	;'/'
+	MOVE.W	#$002F,-(A7)	;'/'	;get next attack from creature/player
 	MOVE.L	-$0004(A5),-(A7)
 	JSR	_index
 	ADDQ.W	#6,A7
