@@ -6947,9 +6947,17 @@ _fix_stick:
 	JSR	_rnd
 	ADDQ.W	#3,D0
 	MOVE.W	D0,$0026(A2)		;every stick has 3-7 charges
+
 	MOVE.W	$0020(A2),D0
-	EXT.L	D0
-	BRA.B	L00305
+	BEQ.B	L00304	;staff of light
+
+	SUBQ.w	#1,D0
+	BEQ.B	L00303	;staff of striking
+L00306:
+	MOVEA.L	(A7)+,A2
+	UNLK	A5
+	RTS
+
 L00303:
 	MOVE.W	#$0064,$0022(A2)	; +100 hit
 	MOVE.W	#$0003,$0024(A2)	; +3 damage
@@ -6960,16 +6968,6 @@ L00304:
 	ADD.W	#$000A,D0
 	MOVE.W	D0,$0026(A2)	;10-19 charges
 	BRA.B	L00306
-L00305:
-	TST.L	D0
-	BEQ.B	L00304	;staff of light?
-
-	SUBQ.L	#1,D0
-	BEQ.B	L00303	;staff of striking?
-L00306:
-	MOVEA.L	(A7)+,A2
-	UNLK	A5
-	RTS
 
 _ws_setdam:
 	LINK	A5,#-$0000
