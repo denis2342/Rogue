@@ -6962,6 +6962,7 @@ L00303:
 	MOVE.W	#$0064,$0022(A2)	; +100 hit
 	MOVE.W	#$0003,$0024(A2)	; +3 damage
 	BRA.B	L00306
+
 L00304:
 	MOVEq	#$000A,D0
 	JSR	_rnd
