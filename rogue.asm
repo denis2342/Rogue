@@ -7244,7 +7244,7 @@ L00324:
 	BNE.B	L00326
 
 	MOVEA.L	-$0004(A5),A6
-	MOVE.B	#$22,$0011(A6)
+	MOVE.B	#$22,$0011(A6)	;'"'
 	PEA	$000A(A6)
 	JSR	_blank_spot
 	ADDQ.W	#4,A7
@@ -7309,19 +7309,19 @@ L0032B:
 
 L0032C:
 	ST	-$66C5(A4)		;set _ws_know + 6
-	MOVE.W	#$000A,-$0018(A5)
-	MOVE.W	#$0077,-$002E(A5)
+	MOVE.W	#$000A,-$0018(A5)	;subtype of weapon 10
+	MOVE.W	#$0077,-$002E(A5)	;'w' wand type
 	LEA	L0034E(PC),A6		;"1d8"
-	MOVE.L	A6,-$001E(A5)
-	MOVE.W	#$03E8,-$0016(A5)	;1000
-	MOVE.W	#$0001,-$0014(A5)
-	MOVE.W	#$0010,-$0010(A5)
+	MOVE.L	A6,-$001E(A5)		;throw damage
+	MOVE.W	#$03E8,-$0016(A5)	;hplus 1000
+	MOVE.W	#$0001,-$0014(A5)	;dplus 1
+	MOVE.W	#O_ISMISL,-$0010(A5)	;flags of object
 
 	TST.L	-$5298(A4)	;_cur_weapon
 	BEQ.B	L0032D
 
 	MOVEA.L	-$5298(A4),A6	;_cur_weapon
-	MOVE.B	$0021(A6),-$0024(A5)
+	MOVE.B	$0021(A6),-$0024(A5)	;baseweapon
 L0032D:
 	LEA	L0034F(PC),A6	;"missile"
 	MOVE.L	A6,-$6F34(A4)
@@ -7714,12 +7714,12 @@ L00364:
 	MOVE.B	-$0083(A5),D3
 	ADD.W	#$0077,D3
 	MOVE.W	D3,-$0078(A5)
-	MOVE.W	#$000A,-$0062(A5)
+	MOVE.W	#$000A,-$0062(A5)	;subtype 10
 	LEA	L0038C(PC),A6		;"6d6"
-	MOVE.L	A6,-$0068(A5)
-	MOVE.L	-$0068(A5),-$006C(A5)
-	MOVE.W	#$001E,-$0060(A5)
-	CLR.W	-$005E(A5)
+	MOVE.L	A6,-$0068(A5)		;throw damage
+	MOVE.L	A6,-$006C(A5)		;wield damage
+	MOVE.W	#$001E,-$0060(A5)	;hplus 24
+	CLR.W	-$005E(A5)		;dplus 0
 	MOVE.L	$0010(A5),-$6F34(A4)
 	MOVE.B	-$0077(A5),D4
 	LEA	-$0008(A5),A6
@@ -7846,7 +7846,7 @@ L00370:
 	TST.W	D0
 	BEQ.B	L00371
 
-	TST.B	-$0083(A5)
+	TST.B	-$0083(A5)	;is it a frost bolt?
 	BEQ.W	L00374
 L00371:
 	LEA	-$0076(A5),A6
@@ -29090,7 +29090,7 @@ _w_names:
 	dc.l	L006FF	; crossbow
 	dc.l	L00700	; crossbow bolt
 	dc.l	L00701	; flail
-	dc.l	$00000000
+	dc.l	$00000000	;missile is the tenth weapon with dynamic name
 
 _a_names:
 	dc.l	L00702	; leather armor
@@ -30359,7 +30359,8 @@ _player:	dc.l	0	;$00 0
 		dc.w	0	;$08 8
 		dc.w	0	;$0A 10 position
 		dc.w	0	;$0C 12 position
-		dc.w	0	;$0E 14
+		dc.b	0	;$0E 14 set to 1 at monster creation
+		dc.b	0	;$0F 15 xerox stuff
 		dc.w	0	;$10 16 disguise
 		dc.w	0	;$12 18 maybe the runto destination for the monster
 		dc.w	0	;$14 20
