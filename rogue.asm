@@ -271,7 +271,7 @@ _init_things:
 
 _init_colors:
 	LINK	A5,#-$001C
-	MOVEM.L	D4/D5,-(A7)
+	MOVE.L	D4,-(A7)
 
 	MOVEQ	#27-1,D4	;-1 so no jump to dbra needed
 	LEA	-$001B(A5),A6
@@ -283,18 +283,20 @@ _init_colors:
 L00074:
 	MOVEq	#$001B,D0
 	JSR	_rnd
-	MOVE.W	D0,D5
-	LEA	-$001B(A5),A6
-	TST.B	$00(A6,D5.W)
+
+;	LEA	-$001B(A5),A6
+;	TST.B	$00(A6,D0.W)
+	TST.B	-$1B(A5,D0.W)
+
 	BNE.B	L00074
 
 	LEA	-$001B(A5),A6
-	ST	$00(A6,D5.W)
+	ST	$00(A6,D0.W)
 	MOVE.W	D4,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
 	LEA	-$5290(A4),A6	;_p_colors
-	MOVE.W	D5,D2
+	MOVE.W	D0,D2
 ;	EXT.L	D2
 	ASL.w	#2,D2
 	LEA	-$7A46(A4),A1	;_rainbow
@@ -322,7 +324,7 @@ L00075:
 	CMP.W	#$000E,D4
 	BLT.B	L00074
 
-	MOVEM.L	(A7)+,D4/D5
+	MOVE.L	(A7)+,D4
 	UNLK	A5
 	RTS
 
