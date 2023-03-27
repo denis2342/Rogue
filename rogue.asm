@@ -21209,20 +21209,20 @@ L00995:
 	MOVEA.L	-$5294(A4),A6	;_cur_armor
 	MOVE.W	$0026(A6),-$000A(A5)
 L00996:
-	TST.L	-$5190(A4)	;_cur_ring_1
+	MOVE.L	-$5190(A4),D0	;_cur_ring_1
 	BEQ.B	L00997
 
-	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
+	MOVEA.L	D0,A6		;_cur_ring_1
 	CMP.W	#R_PROTECT,$0020(A6)	;test for R_PROTECT
 	BNE.B	L00997
 
 	MOVE.W	$0026(A6),D3
 	SUB.W	D3,-$000A(A5)	;add extra armor from ring 1
 L00997:
-	TST.L	-$518C(A4)	;_cur_ring_2
+	MOVE.L	-$518C(A4),D0	;_cur_ring_2
 	BEQ.B	L00998
 
-	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
+	MOVEA.L	D0,A6		;_cur_ring_2
 	CMP.W	#R_PROTECT,$0020(A6)	;test for R_PROTECT
 	BNE.B	L00998
 
