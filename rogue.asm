@@ -10116,19 +10116,16 @@ __attach:
 	LINK	A5,#-$0000
 	MOVEM.L	A2/A3,-(A7)
 
-	MOVEA.L	$0008(A5),A2
-	MOVEA.L	$000C(A5),A3
-	TST.L	(A2)
-	BEQ.B	L00467
+	MOVEA.L	$0008(A5),A2	;list
+	MOVEA.L	$000C(A5),A3	;item
+
+	CLR.L	$0004(A3)	;first item has no previous item
 
 	MOVE.L	(A2),(A3)
+	BEQ.B	L00468
+
 	MOVEA.L	(A2),A6
 	MOVE.L	A3,$0004(A6)
-	CLR.L	$0004(A3)
-	BRA.B	L00468
-L00467:
-	CLR.L	(A3)
-	CLR.L	$0004(A3)
 L00468:
 	MOVE.L	A3,(A2)
 
