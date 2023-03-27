@@ -21974,10 +21974,9 @@ L00A01:
 ;
 
 goldcalc:
-	MOVE.W	-$60B4(A4),D3	;_level
-	MULU.W	#$000A,D3
-	ADD.W	#$0032,D3
-	MOVE.W	D3,D0
+	MOVE.W	-$60B4(A4),D0	;_level
+	MULU.W	#$000A,D0
+	ADD.W	#$0032,D0
 	JSR	_rnd
 	ADDQ.W	#2,D0
 	RTS
