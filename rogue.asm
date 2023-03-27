@@ -18152,57 +18152,47 @@ L00861:	dc.b	"You feel bloated and fall asleep",0
 
 _chg_str:
 	LINK	A5,#-$0002
-	MOVE.L	D4,-(A7)
 
-	MOVE.W	$0008(A5),D4
-	BNE.B	L00863
-L00862:
-	MOVE.L	(A7)+,D4
-	UNLK	A5
-	RTS
+	MOVE.W	$0008(A5),D0
+	BEQ.B	L00862
 
-L00863:
-	MOVE.W	D4,-(A7)
+	MOVE.W	D0,-(A7)
 	PEA	-$52B2(A4)	;_player + 24 (strength)
 	BSR.B	_add_str
 	ADDQ.W	#6,A7
 
 	MOVE.W	-$52B2(A4),-$0002(A5)	;_player + 24 (strength)
 
-	TST.L	-$5190(A4)	;_cur_ring_1
-	BEQ.B	L00864
+	MOVE.L	-$5190(A4),D0	;_cur_ring_1
+	bsr	L00864
 
-	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
-	CMPI.W	#R_ADDSTR,$0020(A6)
-	BNE.B	L00864
+	MOVE.L	-$518C(A4),D0	;_cur_ring_2
+	bsr	L00864
 
-	MOVE.W	$0026(A6),D3
-	NEG.W	D3
-	MOVE.W	D3,-(A7)
-	PEA	-$0002(A5)
-	BSR.B	_add_str
-	ADDQ.W	#6,A7
-L00864:
-	TST.L	-$518C(A4)	;_cur_ring_2
-	BEQ.B	L00865
-
-	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
-	CMPI.W	#R_ADDSTR,$0020(A6)
-	BNE.B	L00865
-
-	MOVE.W	$0026(A6),D3
-	NEG.W	D3
-	MOVE.W	D3,-(A7)
-	PEA	-$0002(A5)
-	BSR.B	_add_str
-	ADDQ.W	#6,A7
-L00865:
 	MOVE.W	-$0002(A5),D3
 	CMP.W	-$6CC2(A4),D3	;_max_stats + 0 (max strength)
 	BLS.B	L00862
 
 	MOVE.W	-$0002(A5),-$6CC2(A4)	;_max_stats + 0 (max strength)
-	BRA.B	L00862
+L00862:
+	UNLK	A5
+	RTS
+
+L00864:
+	tst.l	d0
+	BEQ.B	1$
+
+	MOVEA.L	D0,A6
+	CMPI.W	#R_ADDSTR,$0020(A6)
+	BNE.B	1$
+
+	MOVE.W	$0026(A6),D3
+	NEG.W	D3
+	MOVE.W	D3,-(A7)
+	PEA	-$0002(A5)
+	BSR.B	_add_str
+	ADDQ.W	#6,A7
+1$	rts
 
 ;/*
 ; * add_str:
