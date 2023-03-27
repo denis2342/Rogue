@@ -10386,17 +10386,17 @@ L00489:
 	MOVE.L	A6,-$0004(A5)
 	ST	-$66E5(A4)	;_p_know + 2 (potion of poison)
 
-	TST.L	-$5190(A4)	;_cur_ring_1
+	MOVE.L	-$5190(A4),D0	;_cur_ring_1
 	BEQ.B	L0048A
 
-	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
+	MOVEA.L	D0,A6		;_cur_ring_1
 	CMPI.W	#R_SUSTSTR,$0020(A6)
 	BEQ.B	L0048C
 L0048A:
-	TST.L	-$518C(A4)	;_cur_ring_2
+	MOVE.L	-$518C(A4),D0	;_cur_ring_2
 	BEQ.B	L0048B
 
-	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
+	MOVEA.L	D0,A6		;_cur_ring_2
 	CMPI.W	#R_SUSTSTR,$0020(A6)
 	BEQ.B	L0048C
 L0048B:
@@ -10620,10 +10620,10 @@ L004A0:
 ; restore strength
 
 L004A1:
-	TST.L	-$5190(A4)	;_cur_ring_1
+	MOVE.L	-$5190(A4),D0	;_cur_ring_1
 	BEQ.B	L004A2
 
-	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
+	MOVEA.L	D0,A6		;_cur_ring_1
 	CMPI.W	#R_ADDSTR,$0020(A6)
 	BNE.B	L004A2
 
@@ -10634,10 +10634,10 @@ L004A1:
 	JSR	_add_str(PC)
 	ADDQ.W	#6,A7
 L004A2:
-	TST.L	-$518C(A4)	;_cur_ring_2
+	MOVE.L	-$518C(A4),D0	;_cur_ring_2
 	BEQ.B	L004A3
 
-	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
+	MOVEA.L	D0,A6		;_cur_ring_2
 	CMPI.W	#R_ADDSTR,$0020(A6)
 	BNE.B	L004A3
 
@@ -10654,10 +10654,10 @@ L004A3:
 
 	MOVE.W	-$6CC2(A4),-$52B2(A4)	;_max_stats + 0 (max strength),_player + 24 (strength)
 L004A4:
-	TST.L	-$5190(A4)	;_cur_ring_1
+	MOVE.L	-$5190(A4),D0	;_cur_ring_1
 	BEQ.B	L004A5
 
-	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
+	MOVEA.L	D0,A6		;_cur_ring_1
 	CMPI.W	#R_ADDSTR,$0020(A6)
 	BNE.B	L004A5
 
@@ -10666,10 +10666,10 @@ L004A4:
 	JSR	_add_str(PC)
 	ADDQ.W	#6,A7
 L004A5:
-	TST.L	-$518C(A4)	;_cur_ring_2
+	MOVE.L	-$518C(A4),D0	;_cur_ring_2
 	BEQ.B	L004A6
 
-	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
+	MOVEA.L	D0,A6		;_cur_ring_2
 	CMPI.W	#R_ADDSTR,$0020(A6)
 	BNE.B	L004A6
 
