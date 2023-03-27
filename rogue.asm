@@ -7855,6 +7855,9 @@ L00371:
 	LEA	-$0008(A5),A1
 	MOVE.L	(A1)+,(A6)+
 	MOVEQ	#$01,D7
+
+	; the dragon is immune to the fire flame
+
 	CMP.B	#$44,$000F(A2)	; D = dragon
 	BNE.B	L00372
 
@@ -7875,10 +7878,12 @@ L00372:
 	MOVE.W	-$0006(A5),-(A7)
 	JSR	_hit_monster(PC)
 	ADDQ.W	#8,A7
+
 	MOVE.W	-$0008(A5),-(A7)
 	MOVE.W	-$0006(A5),-(A7)
 	JSR	_mvinch(PC)
 	ADDQ.W	#4,A7
+
 	MOVEQ	#$00,D3
 	MOVE.B	D4,D3
 	CMP.W	D3,D0
@@ -10331,13 +10336,16 @@ L00482:
 _quaff:
 	LINK	A5,#-$0004
 	MOVEM.L	A2/A3,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	MOVE.L	A2,D3
 	BNE.B	L00484
+
 	MOVE.W	#$0021,-(A7)
 	PEA	L004AE(PC)
 	JSR	_get_item
 	ADDQ.W	#6,A7
+
 	MOVEA.L	D0,A2
 	TST.L	D0
 	BNE.B	L00484
@@ -10349,9 +10357,11 @@ L00483:
 L00484:
 	CMPI.W	#$0021,$000A(A2)	;'!' potion
 	BEQ.B	L00485
+
 	PEA	L004AF(PC)	;"yuk! Why would you want to drink that?"
 	JSR	_msg
 	ADDQ.W	#4,A7
+
 	BRA.B	L00483
 L00485:
 	MOVE.L	A2,-(A7)
@@ -10359,10 +10369,12 @@ L00485:
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BEQ.B	L00486
+
 	BRA.B	L00483
 L00486:
 	CMPA.L	-$5298(A4),A2	;_cur_weapon
 	BNE.B	L00487
+
 	CLR.L	-$5298(A4)	;_cur_weapon
 L00487:
 	MOVE.W	$0020(A2),D0
@@ -10377,6 +10389,7 @@ L00488:
 	PEA	L004B0(PC)	;"wait, what's going on? Huh? What? Who?"
 	JSR	_msg
 	ADDQ.W	#4,A7
+
 	BRA.W	L004AD
 
 ; potion of poison
@@ -10412,6 +10425,7 @@ L0048B:
 	MOVE.L	-$0004(A5),-(A7)
 	JSR	_msg
 	ADDQ.W	#8,A7
+
 	BRA.B	L0048D
 L0048C:
 	PEA	L004B3(PC)	;"momentarily"
@@ -10429,10 +10443,12 @@ L0048E:
 	MOVE.W	-$52AC(A4),-(A7)	;_player + 30 (rank)
 	JSR	_roll
 	ADDQ.W	#4,A7
+
 	ADD.W	D0,-$52A8(A4)	;_player + 34 (hp)
 	MOVE.W	-$52A8(A4),D3	;_player + 34 (hp)
 	CMP.W	-$52A2(A4),D3	;_player + 40 (max hp)
 	BLE.B	L0048F
+
 	ADDQ.W	#1,-$52A2(A4)	;_player + 40 (max hp)
 	MOVE.W	-$52A2(A4),-$52A8(A4)	;_player + 34 (hp),_player + 40 (max hp)
 L0048F:
@@ -10440,6 +10456,7 @@ L0048F:
 	PEA	L004B4(PC)	;"you begin to feel better"
 	JSR	_msg
 	ADDQ.W	#4,A7
+
 	BRA.W	L004AD
 
 ; potion of gain strength
@@ -10452,6 +10469,7 @@ L00490:
 	PEA	L004B5(PC)	;"you feel stronger. What bulging muscles!"
 	JSR	_msg
 	ADDQ.W	#4,A7
+
 	BRA.W	L004AD
 
 ; potion of night vision
@@ -10480,10 +10498,12 @@ L00493:
 	PEA	L004B6(PC)	;"Your vision is clouded for a moment.  Now it seems very bright in here."
 	JSR	_msg
 	ADDQ.W	#4,A7
+
 	ORI.W	#C_ISFOUND,-$52B4(A4)	;_player + 22 (flags)
 	PEA	-$52C0(A4)	;_player + 10
 	JSR	_leave_room
 	ADDQ.W	#4,A7
+
 	PEA	-$52C0(A4)	;_player + 10
 	JSR	_enter_room
 	ADDQ.W	#4,A7
@@ -10499,20 +10519,20 @@ L00494:
 
 	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_WISDOM,D3
-	BEQ.B	L00495
+	BEQ.B	1$
 
 	PEA	_foolish(PC)
 	JSR	_lengthen(PC)
 	ADDQ.W	#6,A7
-	BRA.B	L00496
-L00495:
+	BRA.B	2$
+1$
 	ORI.W	#C_WISDOM,-$52B4(A4)	;WISDOM, _player + 22 (flags)
 
 	CLR.W	-(A7)
 	PEA	_foolish(PC)
 	JSR	_fuse(PC)
 	ADDQ.W	#8,A7
-L00496:
+2$
 	PEA	L004B7(PC)	;"You feel light headed for a moment, then it passes."
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -10538,7 +10558,7 @@ L00497:
 L00498:
 	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_CANSEE,D3	;C_CANSEE
-	BNE.B	L00499
+	BNE.B	1$
 
 	MOVE.W	#300,D0
 	JSR	_spread
@@ -10548,11 +10568,12 @@ L00498:
 	PEA	_unsee(PC)
 	JSR	_fuse(PC)
 	ADDQ.W	#8,A7
+
 	CLR.L	-(A7)
 	JSR	_look
 	ADDQ.W	#4,A7
 	JSR	_invis_on(PC)
-L00499:
+1$
 	JSR	_sight(PC)
 	PEA	-$6713(A4)
 	PEA	L004B9(PC)	;"this potion tastes like %s juice"
@@ -10570,17 +10591,17 @@ L0049A:
 	ASL.w	#2,D3
 	MOVEA.L	-$51AC(A4),A6	;_e_levels
 	TST.L	$00(A6,D3.w)
-	BEQ.B	L0049B
+	BEQ.B	1$
 
 	PEA	L004BA(PC)	;"you suddenly feel much more skillful"
 	JSR	_msg
 	ADDQ.W	#4,A7
-	BRA.B	L0049C
-L0049B:
+	BRA.B	2$
+1$
 	PEA	L004BB(PC)	;"you suddenly feel much less skillful"
 	JSR	_msg
 	ADDQ.W	#4,A7
-L0049C:
+2$
 	JSR	_raise_level
 	BRA.W	L004AD
 
@@ -10590,10 +10611,10 @@ L0049D:
 	ST	-$66DE(A4)	;_p_know + 9 (potion of extra healing)
 	MOVE.W	-$52A8(A4),D3	;_player + 34 (hp)
 	CMP.W	-$52A2(A4),D3	;_player + 40 (max hp)
-	BNE.B	L0049E
+	BNE.B	1$
 
 	ADDQ.W	#1,-$52A2(A4)	;_player + 40 (max hp)
-L0049E:
+1$
 	MOVE.W	-$52A2(A4),-$52A8(A4)	;_player + 40 (max hp),_player + 34 (hp)
 	JSR	_sight(PC)
 	PEA	L004BC(PC)	;"you begin to feel much better"
@@ -10609,12 +10630,12 @@ L0049F:
 	JSR	_add_haste(PC)
 	ADDQ.W	#2,A7
 	TST.W	D0
-	BEQ.B	L004A0
+	BEQ.B	1$
 
 	PEA	L004BD(PC)	;"you feel yourself moving much faster"
 	JSR	_msg
 	ADDQ.W	#4,A7
-L004A0:
+1$
 	BRA.W	L004AD
 
 ; restore strength
@@ -10704,6 +10725,9 @@ L004A8:
 	JSR	_msg
 	ADDQ.W	#4,A7
 	BRA.B	L004AD
+
+; potion of unknown origin
+
 L004A9:
 	PEA	L004C2(PC)	;"what an odd tasting potion!"
 	JSR	_msg
@@ -30438,7 +30462,7 @@ _all_clear:
 	dc.w	0
 __whoami:	ds.l	1
 
-_want:	ds.b	64	;color palette of the images is loaded to here
+_want:	ds.b	64	;color palette of the images is loaded to here (unused now)
 
 _sverr:
 	dc.w	0
