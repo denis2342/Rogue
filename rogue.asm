@@ -16930,14 +16930,14 @@ L007C6:
 
 L007C7:
 	TST.B	-$66F7(A4)	;_again
-	BNE.B	L007C8
+	BNE.B	1$
 
 	PEA	L007EE(PC)	;"type of item: "
 	JSR	_msg
 	ADDQ.W	#4,A7
 	JSR	_readchar
 	MOVE.W	D0,-$53A4(A4)
-L007C8:
+1$
 	MOVE.W	-$53A4(A4),D0
 
 	MOVEA.L	-$0004(A5),A6
@@ -20634,7 +20634,7 @@ L00959:
 ; vampire/wraith
 
 L0095A:
-	MOVEq	#$0064,D0
+	MOVEq	#100,D0
 	JSR	_rnd
 	MOVEA.L	$0008(A5),A6
 	MOVE.B	$000F(A6),D3
@@ -20642,10 +20642,10 @@ L0095A:
 	CMP.b	#$57,D3		;'W' wraith
 	BNE.B	L0095B
 
-	MOVEQ	#$0F,D3		;15% chance
+	MOVEQ	#15,D3		;15% chance
 	BRA.B	L0095C
 L0095B:
-	MOVEQ	#$1E,D3		;vampire has %30 chance
+	MOVEQ	#30,D3		;vampire has %30 chance
 L0095C:
 	CMP.W	D3,D0
 	BGE.W	L00964
@@ -20655,6 +20655,8 @@ L0095C:
 ;	EXT.W	D3
 	CMP.b	#$57,D3		;'W' wraith
 	BNE.B	L00960
+
+; wraith drains experience/level
 
 	TST.L	-$52B0(A4)	;_player + 26 (EXP)
 	BNE.B	L0095D
@@ -20686,6 +20688,9 @@ L0095F:
 	ADDQ.W	#4,A7
 	MOVE.W	D0,D4
 	BRA.B	L00961
+
+; vampire drains life
+
 L00960:
 	MOVE.W	#$0005,-(A7)	;1d5
 	MOVE.W	#$0001,-(A7)
@@ -23921,7 +23926,7 @@ L00AD1:
 	TST.B	$002A(A2)	; test for special feature (monster slayer weapon)
 	BEQ.B	L00AD2
 
-	MOVE.W	$0028(A2),D3	;monster slayer already used?
+	MOVE.W	$0028(A2),D3	;monster slayer known?
 	AND.W	#O_SPECKNOWN,D3
 	BEQ.B	L00AD2
 
