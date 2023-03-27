@@ -16939,38 +16939,9 @@ L007C7:
 	MOVE.W	D0,-$53A4(A4)
 L007C8:
 	MOVE.W	-$53A4(A4),D0
-;	EXT.L	D0
-	BRA.B	L007D1
 
-L007C9:
-	MOVE.W	#$0021,$000A(A6)	; '!' potion
-	BRA.B	L007D2
-L007CA:
-	MOVE.W	#$003F,$000A(A6)	; '?' scroll
-	BRA.B	L007D2
-L007CB:
-	MOVE.W	#$002F,$000A(A6)	; '/' stick
-	BRA.B	L007D2
-L007CC:
-	MOVE.W	#$003D,$000A(A6)	; '=' ring
-	BRA.B	L007D2
-L007CD:
-	MOVE.W	#$006D,$000A(A6)	; 'm' weapon
-	BRA.B	L007D2
-L007CE:
-	MOVE.W	#$0061,$000A(A6)	; 'a' armor
-	BRA.B	L007D2
-L007CF:
-	MOVE.W	#$002C,$000A(A6)	; ',' amulet of yendor
-	BRA	L007EC
-L007D0:
-	MOVE.W	#$003A,$000A(A6)	; ':' food
-	BRA.B	L007D2
-L007D0b:
-	MOVE.W	#$002A,$000A(A6)	; '*' gold
-	BRA	L007EB
-L007D1:
 	MOVEA.L	-$0004(A5),A6
+
 	SUB.w	#$0021,D0	; '!' potion
 	BEQ.B	L007C9
 	SUBQ.w	#8,D0		; ')' weapon
@@ -16980,14 +16951,35 @@ L007D1:
 	SUBQ.w	#2,D0		; ',' amulet of yendor
 	BEQ.B	L007CF
 	SUBQ.w	#3,D0		; '/' stick
-	BEQ.B	L007CB
+	BEQ.B	L007C9
 	SUB.w	#$000E,D0	; '=' ring
-	BEQ.B	L007CC
+	BEQ.B	L007C9
 	SUBQ.w	#2,D0		; '?' scroll
-	BEQ.B	L007CA
+	BEQ.B	L007C9
 	SUB.w	#$001E,D0	; ']' armor
 	BEQ.B	L007CE
-	BRA.B	L007D0		; ':' food
+;	BRA.B	L007C9		; ':' food
+
+	MOVE.W  #$003A,$000A(A6)	;':' food
+	BRA.B	L007D2
+
+L007CD:
+	MOVE.W	#$006D,$000A(A6)	; 'm' weapon
+	BRA.B	L007D2
+L007CE:
+	MOVE.W	#$0061,$000A(A6)	; 'a' armor
+	BRA.B	L007D2
+L007CF:
+	MOVE.W	#$002C,$000A(A6)	; ',' amulet of yendor
+	BRA	L007EC
+L007D0b:
+	MOVE.W	#$002A,$000A(A6)	; '*' gold
+	BRA	L007EB
+
+L007C9:
+	MOVE.W	-$53A4(A4),$000A(A6)	; potion, stick, ring, scroll
+;	BRA.B	L007D2
+
 L007D2:
 	CLR.W	-$60B0(A4)	;_mpos
 	MOVEA.L	-$0004(A5),A6
