@@ -10084,23 +10084,28 @@ __abs:
 __detach:
 	LINK	A5,#-$0000
 	MOVEM.L	A2/A3,-(A7)
-	MOVEA.L	$0008(A5),A2
-	MOVEA.L	$000C(A5),A3
-	MOVEA.L	(A2),A6
-	CMPA.L	A3,A6
-	BNE.B	L00464
-	MOVE.L	(A3),(A2)
-L00464:
-	TST.L	$0004(A3)
+
+	MOVEA.L	$0008(A5),A2	;list
+	MOVEA.L	$000C(A5),A3	;item
+
+	MOVE.L	$0004(A3),D1	;do we have a previous item?
 	BEQ.B	L00465
-	MOVEA.L	$0004(A3),A6
-	MOVE.L	(A3),(A6)
+
+	MOVEA.L	D1,A6
+	MOVE.L	(A3),(A6)	;move next item to previous item
 L00465:
-	TST.L	(A3)
+	MOVE.L	(A3),D0		;do we have a next item?
 	BEQ.B	L00466
-	MOVEA.L	(A3),A6
-	MOVE.L	$0004(A3),$0004(A6)
+
+	MOVEA.L	D0,A6
+	MOVE.L	D1,$0004(A6)	;move previous item to next item
 L00466:
+	CMP.L	(A2),A3		;is the item the first in the list?
+	BNE.B	L00464
+
+	MOVE.L	D0,(A2)		;make the next item head of list
+L00464:
+
 	CLR.L	(A3)+
 	CLR.L	(A3)
 	MOVEM.L	(A7)+,A2/A3
