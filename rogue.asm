@@ -1423,7 +1423,7 @@ L000D4:
 	BEQ.B	L000D5
 
 	MOVEA.L	D0,A6
-	MOVE.W	#$0003,$0020(A6)
+	MOVE.W	#W_ARROW,$0020(A6)	;W_ARROW subtype
 	MOVE.L	A6,-(A7)
 	JSR	_init_weapon
 	ADDQ.W	#4,A7
@@ -1470,6 +1470,7 @@ L000D8:
 	SUB.W	D0,-$52A8(A4)	;_player + 34 (hp)
 	CMPI.W	#$0000,-$52A8(A4)	;_player + 34 (hp)
 	BGT.B	L000D9
+
 	PEA	L000EA(PC)	;"a poisoned dart killed you"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -3564,7 +3565,7 @@ L0018C:
 	JSR	_winat
 	ADDQ.W	#4,A7
 
-	CMP.W	#$002E,D0	;'.'
+	CMP.W	#$002E,D0	;'.' FLOOR
 	BEQ.B	L0018D
 
 	MOVE.W	-$0004(A5),-(A7)
@@ -3579,7 +3580,7 @@ L0018D:
 	JSR	_INDEXquick
 
 	MOVEA.L	-$519C(A4),A6	;__level
-	MOVE.B	#$2C,$00(A6,D0.W)
+	MOVE.B	#$2C,$00(A6,D0.W)	;"," amulet of yendor
 	MOVEA.L	A2,A6
 	ADDA.L	#$0000000C,A6
 	LEA	-$0004(A5),A1
@@ -3594,7 +3595,7 @@ L0018E:
 L0018F:
 	BRA.W	L00194
 L00190:
-	CMPI.W	#$0053,-$60A8(A4)	;'S' with _total
+	CMPI.W	#$0053,-$60A8(A4)	;83 objects _total
 	BGE.W	L00193
 
 	MOVEq	#100,D0
@@ -3691,7 +3692,7 @@ L00196:
 	SUBQ.W	#1,-$0002(A5)
 	TST.W	D3
 	BEQ.W	L00199
-	CMPI.W	#$0053,-$60A8(A4)	;'S' with _total
+	CMPI.W	#$0053,-$60A8(A4)	;83 objects _total
 	BGE.B	L00199
 L00197:
 	PEA	-$000C(A5)
@@ -6055,7 +6056,7 @@ _unpack:
 	CMPI.W	#$0001,$001E(A6)	;one item?
 	BLE.W	L0029E
 
-	TST.W	$000C(A5)
+	TST.W	$000C(A5)	;number of items to unpack
 	BEQ.B	L00299
 
 	JSR	_new_item
@@ -6068,20 +6069,21 @@ _unpack:
 
 	MOVEQ	#$0B,D3
 L00295:
-	MOVE.L	(A1)+,(A6)+	;we make a copy of the item to split it up
+	MOVE.L	(A1)+,(A6)+	;we make a copy of the object to split it up
 	DBF	D3,L00295
 	MOVE.W	(A1)+,(A6)+
 
 	MOVE.W	#$0001,$001E(A2)
 	MOVEA.L	$0008(A5),A6
-	SUBQ.W	#1,$001E(A6)
+	SUBQ.W	#1,$001E(A6)		;old object has one item less
 
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	A6,-(A7)
-	BSR.B	_pack_name
+	BSR.B	_pack_name	;update old object because it has one item less
 	ADDQ.W	#6,A7
+
 	MOVEA.L	$0008(A5),A6
-	TST.W	$002C(A6)
+	TST.W	$002C(A6)	;check for group
 	BNE.B	L00296
 
 	SUBQ.W	#1,-$60AA(A4)	;_inpack
@@ -6113,7 +6115,8 @@ L0029F:
 	PEA	-$529C(A4)	;_player + 46 (pack)
 	JSR	__detach
 	ADDQ.W	#8,A7
-	CLR.W	-(A7)
+
+	CLR.W	-(A7)		;zero means just clearing the name
 	MOVE.L	$0008(A5),-(A7)
 	BSR.B	_pack_name
 	ADDQ.W	#6,A7
@@ -6567,12 +6570,14 @@ L002D2:
 	PEA	-$0050(A5)
 	JSR	_sprintf
 	LEA	$000A(A7),A7
+
 	MOVEA.L	$0008(A5),A6
-	MOVE.L	$0010(A6),-(A7)
+	MOVE.L	$0010(A6),-(A7)		;print pack_name
 	PEA	-$0050(A5)
 	MOVE.L	$000E(A5),-(A7)
 	JSR	_add_line(PC)
 	LEA	$000C(A7),A7
+
 	MOVE.W	D0,-$0056(A5)
 	CMPI.W	#$0020,-$0056(A5)
 	BEQ.B	L002D4
@@ -7749,6 +7754,7 @@ L00367:
 	MOVE.W	-$0006(A5),-(A7)
 	JSR	_winat
 	ADDQ.W	#4,A7
+
 	MOVE.B	D0,D5
 	MOVE.W	A3,D3
 	MULU.W	#$0006,D3
@@ -7763,6 +7769,7 @@ L00367:
 	MOVE.W	-$0006(A5),-(A7)
 	JSR	_mvinch(PC)
 	ADDQ.W	#4,A7
+
 	MOVEA.L	(A7)+,A6
 	MOVE.L	(A7)+,D3
 	MOVE.B	D0,$00(A6,D3.L)
@@ -10201,7 +10208,7 @@ L0046D:
 
 L0046E:
 	ADDQ.W	#1,D4
-	CMP.W	#$0053,D4
+	CMP.W	#$0053,D4	;number of max total items
 	BLT.B	L0046B
 
 	MOVEQ	#$00,D0
@@ -12233,7 +12240,8 @@ L00533:
 	ADDA.L	#$0000000C,A6
 	LEA	-$52C0(A4),A1	;_player + 10
 	MOVE.L	(A1)+,(A6)+
-	CMPI.W	#$002C,$000A(A3)	;','
+
+	CMPI.W	#$002C,$000A(A3)	;',' amulet of yendor
 	BNE.B	L00534
 
 	CLR.B	-$66BD(A4)	;_amulet
@@ -12242,6 +12250,7 @@ L00534:
 	MOVE.L	A3,-(A7)
 	JSR	_nameof
 	ADDQ.W	#6,A7
+
 	MOVE.L	D0,-(A7)
 	PEA	L00537(PC)	;"dropped %s"
 	JSR	_msg
@@ -19093,14 +19102,14 @@ _u_level:
 	cmp.b	#'%',$00(A6,D0.W)	;'%'
 	BNE.B	L008D3
 
-	TST.B	-$66BD(A4)	;_amulet
+	TST.B	-$66BD(A4)	;_amulet, do we have it?
 	BEQ.B	L008D1
 
-	SUBQ.W	#1,-$60B4(A4)	;_level
+	SUBQ.W	#1,-$60B4(A4)	;_level, are we already at level 1?
 ;	TST.W	-$60B4(A4)	;_level
 	BNE.B	L008D0
 
-	JSR	_total_winner(PC)
+	JSR	_total_winner(PC)	;then we have reached the surface
 L008D0:
 	JSR	_new_level
 	PEA	L008D5(PC)	;"you feel a wrenching sensation in your gut"
@@ -19716,11 +19725,11 @@ L0090B:
 	MOVEA.L	-$519C(A4),A6	;__level
 	MOVE.B	$00(A6,D0.W),-$001B(A5)
 	MOVE.B	-$001B(A5),D3
-	CMP.b	#'.',D3
+	CMP.b	#'.',D3		;FLOOR
 	BEQ.B	L0090C
 
 ;	MOVE.B	-$001B(A5),D3
-	CMP.b	#'#',D3
+	CMP.b	#'#',D3		;PASSAGE
 	BEQ.B	L0090C
 	BRA.B	L0090B
 L0090C:
@@ -19731,10 +19740,9 @@ L0090C:
 	MOVE.L	(A1)+,(A6)+
 	MOVEA.L	-$001A(A5),A6
 	MOVE.W	#$0020,$0028(A6)
-;	MOVEA.L	-$001A(A5),A6
 	MOVE.W	#$0001,$002C(A6)
-;	MOVEA.L	-$001A(A5),A6
 	MOVE.W	#$002A,$000A(A6)
+
 	MOVE.L	-$001A(A5),-(A7)
 	PEA	-$6CB0(A4)	;_lvl_obj
 	JSR	__attach
@@ -22613,7 +22621,7 @@ _give_pack:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
 	MOVEA.L	$0008(A5),A2
-	CMPI.W	#$0053,-$60A8(A4)	;'S' with _total
+	CMPI.W	#$0053,-$60A8(A4)	;83 objects _total
 	BGE.B	L00A3D
 
 	MOVEq	#100,D0
@@ -24356,7 +24364,7 @@ L00B11:
 _do_count:
 	LINK	A5,#-$0000
 	MOVE.W	$000C(A5),D3
-	AND.W	#$0010,D3	;O_ISMISL or O_ISMANY ???
+	AND.W	#O_ISMISL,D3	;O_ISMISL
 	BEQ.B	L00B16
 
 	MOVEA.L	$0008(A5),A6
@@ -27639,6 +27647,7 @@ L00C86:
 	MOVE.L	D0,-$0004(A5)
 ;	TST.L	D0
 	BEQ.B	L00C84
+
 	MOVE.W	#$0400,$0010(A2)
 	ORI.B	#$02,$000C(A2)
 	MOVE.L	-$0004(A5),$0008(A2)
