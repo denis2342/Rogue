@@ -1475,15 +1475,15 @@ L000D8:
 	JSR	_death
 	ADDQ.W	#2,A7
 L000D9:
-	TST.L	-$5190(A4)	;_cur_ring_1
+	MOVE.L	-$5190(A4),D0	;_cur_ring_1
 	BEQ.B	L000DA
-	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
+	MOVEA.L	D0,A6		;_cur_ring_1
 	CMPI.W	#R_SUSTSTR,$0020(A6)	;ring of sustain strength
 	BEQ.B	L000DC
 L000DA:
-	TST.L	-$518C(A4)	;_cur_ring_2
+	MOVE.L	-$518C(A4),D0	;_cur_ring_2
 	BEQ.B	L000DB
-	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
+	MOVEA.L	D0,A6		;_cur_ring_2
 	CMPI.W	#R_SUSTSTR,$0020(A6)	;ring of sustain strength
 	BEQ.B	L000DC
 L000DB:
