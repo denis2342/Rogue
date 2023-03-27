@@ -21591,13 +21591,12 @@ _save_throw:
 	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
 
-	moveq	#14,D3
-	ADD.W	$0008(A5),D3
+	moveq	#14,D4
+	ADD.W	$0008(A5),D4
 	MOVEA.L	$000A(A5),A6
 	MOVE.W	$001E(A6),D2	;rank of player/creature
 	EXT.L	D2
 	DIVS.W	#$0002,D2
-	MOVE.W	D3,D4
 	SUB.W	D2,D4
 
 	MOVE.W	#20,-(A7)	;1d20
