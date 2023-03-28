@@ -10172,19 +10172,16 @@ L0046B:
 	BNE.B	L0046E
 
 	ADDQ.W	#1,-$60A8(A4)	;_total
-	MOVE.W	-$60A8(A4),D3	;_total
-	CMP.W	-$6098(A4),D3	;_maxitems
+	MOVE.W	-$60A8(A4),D0	;_total
+	CMP.W	-$6098(A4),D0	;_maxitems
 	BLE.B	L0046C
 
-	MOVE.W	-$60A8(A4),-$6098(A4)	;_total,_maxitems
+	MOVE.W	D0,-$6098(A4)	;_total,_maxitems
 L0046C:
-	MOVE.W	D4,D3
-	ASL.w	#1,D3
-	MOVEA.L	-$52CE(A4),A6	;__t_alloc
 	ADDQ.W	#1,$00(A6,D3.w)
 
 	CLR.W	d1
-	MOVE.W	#50,d0
+	MOVEq	#50,d0
 	MOVE.W	D4,D3
 	MULU.W	d0,D3
 	ADD.L	-$52D2(A4),D3
