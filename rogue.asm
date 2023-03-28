@@ -10232,32 +10232,31 @@ _discard:
 	MOVEM.L	D4/A2,-(A7)
 	MOVEA.L	$0008(A5),A2
 	MOVEQ	#$00,D4
-L00470:
-	MOVE.W	D4,D3
-	MULS.W	#$0032,D3
+
+1$	MOVE.W	D4,D3
+	MULU.W	#$0032,D3
 	ADD.L	-$52D2(A4),D3
 	CMP.L	A2,D3
-	BNE.B	L00472
+	BEQ.B	2$
 
-	SUBQ.W	#1,-$60A8(A4)	;_total
+	ADDQ.W	#1,D4
+	CMP.W	#$0053,D4
+	BLT.B	1$
+
+	MOVEQ	#$00,D0
+	BRA.B	3$
+
+2$	SUBQ.W	#1,-$60A8(A4)	;_total
 	MOVE.W	D4,D3
 ;	EXT.L	D3
 	ASL.w	#1,D3
 	MOVEA.L	-$52CE(A4),A6	;__t_alloc
 	CLR.W	$00(A6,D3.w)
 	MOVEQ	#$01,D0
-L00471:
-	MOVEM.L	(A7)+,D4/A2
+
+3$	MOVEM.L	(A7)+,D4/A2
 	UNLK	A5
 	RTS
-
-L00472:
-	ADDQ.W	#1,D4
-	CMP.W	#$0053,D4
-	BLT.B	L00470
-
-	MOVEQ	#$00,D0
-	BRA.B	L00471
 
 _isupper:
 	moveq	#$1,d3
