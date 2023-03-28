@@ -4968,19 +4968,19 @@ L00234:
 	AND.W	#C_ISRUN,D3	;C_ISRUN
 	BEQ.W	L0023A
 
-	MOVE.W	$000A(A2),-(A7)
-	MOVE.W	$000C(A2),-(A7)
-	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
-	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
-	JSR	_DISTANCE
-	ADDQ.W	#8,A7
-
 	MOVE.W	$0016(A2),D3
 	AND.W	#C_ISSLOW,D3	;C_ISSLOW
 	BNE.B	L00235
 
 	cmp.b	#$53,$000F(A2)	;'S' slime
 	BNE.B	L00236
+
+	MOVE.W	$000A(A2),-(A7)
+	MOVE.W	$000C(A2),-(A7)
+	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
+	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
+	JSR	_DISTANCE
+	ADDQ.W	#8,A7
 
 	CMP.W	#$0003,D0
 	BLE.B	L00236
@@ -5000,16 +5000,16 @@ L00237:
 	BSR.B	_do_chase
 	ADDQ.W	#4,A7
 L00238:
+	MOVE.W	$0016(A2),D3	;creature flags
+	AND.W	#C_ISFLY,D3	;C_ISFLY
+	BEQ.B	L00239
+
 	MOVE.W	$000A(A2),-(A7)
 	MOVE.W	$000C(A2),-(A7)
 	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
 	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
 	JSR	_DISTANCE
 	ADDQ.W	#8,A7
-
-	MOVE.W	$0016(A2),D3	;creature flags
-	AND.W	#C_ISFLY,D3	;C_ISFLY
-	BEQ.B	L00239
 
 	CMP.W	#$0003,D0
 	BLE.B	L00239
