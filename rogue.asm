@@ -8115,6 +8115,7 @@ L00394:	dc.b	"the %s whizzes by you",0,0
 _charge_str:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	MOVE.W	$0028(A2),D3
 	AND.W	#O_ISKNOW,D3
@@ -8131,6 +8132,7 @@ L00395:
 L00396:
 	LEA	-$54DA(A4),A6
 	MOVE.L	A6,D0
+
 	MOVEA.L	(A7)+,A2
 	UNLK	A5
 	RTS
@@ -10107,6 +10109,7 @@ L00464:
 
 	CLR.L	(A3)+
 	CLR.L	(A3)
+
 	MOVEM.L	(A7)+,A2/A3
 	UNLK	A5
 	RTS
@@ -10145,10 +10148,12 @@ L00468:
 __free_list:
 	LINK	A5,#-$0000
 	MOVEM.L	A2/A3,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 L00469:
 	TST.L	(A2)
 	BEQ.B	L0046A
+
 	MOVEA.L	(A2),A3
 	MOVE.L	(A3),(A2)
 	MOVE.L	A3,-(A7)
@@ -10230,6 +10235,7 @@ _new_item:
 _discard:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/A2,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	MOVEQ	#$00,D4
 
@@ -12383,15 +12389,15 @@ L00544:
 	RTS
 
 L00545:
-	CLR.W	$0024(A2)		;zero hit
-	CLR.W	$0022(A2)		;zero damage
-	MOVE.L	-$69AE(A4),$001A(A2)	;_no_damage
-	MOVE.L	$001A(A2),$0016(A2)
+	CLR.W	$0024(A2)		;zero damage
+	CLR.W	$0022(A2)		;zero hit
+	MOVE.L	-$69AE(A4),$001A(A2)	;_no_damage throw damage
+	MOVE.L	$001A(A2),$0016(A2)	;wield damage
 	MOVE.W	#$000B,$0026(A2)	;armor class base value
 	MOVE.W	#$0001,$001E(A2)	;one item
 	CLR.W	$002C(A2)		;no group
 	CLR.W	$0028(A2)		;flags like cursed and so on
-	CLR.B	$002A(A2)
+	CLR.B	$002A(A2)		;not a monster slayer
 	CMPI.W	#$0003,-$60A6(A4)	;_no_food
 	BLE.B	L00546
 
@@ -12450,7 +12456,7 @@ L0054C:
 L0054D:
 	MOVEq	#10,D0
 	JSR	_rnd
-	MOVE.W	D0,$0020(A2)
+	MOVE.W	D0,$0020(A2)	;random subtype
 	MOVE.L	A2,-(A7)
 	JSR	_init_weapon
 	ADDQ.W	#4,A7
@@ -12466,16 +12472,16 @@ L0054D:
 	MOVEq	#$0003,D0
 	JSR	_rnd
 	ADDQ.W	#1,D0
-	SUB.W	D0,$0022(A2)
+	SUB.W	D0,$0022(A2)	;1-3 negative hit
 	BRA.B	L0054F
 L0054E:
 	CMP.W	#15,D5
-	BGE.B	L0054F
+	BGE.B	L0054F		;5% chance for a enchanted weapon
 
 	MOVEq	#$0003,D0
 	JSR	_rnd
 	ADDQ.W	#1,D0
-	ADD.W	D0,$0022(A2)
+	ADD.W	D0,$0022(A2)	;1-3 positive hit
 L0054F:
 	BRA.W	L00562
 
@@ -12523,7 +12529,7 @@ L00553:
 	ADD.W	D0,$0026(A2)	;1-3 points bad
 	BRA.B	L00555
 L00554:
-	CMP.W	#28,D5		;only good values by a roll higher than 28
+	CMP.W	#28,D5		;18% chance for enchanted armor
 	BGE.B	L00555
 
 	MOVEq	#$0003,D0
@@ -13229,12 +13235,15 @@ _lengthen:
 _extinguish:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
+
 	MOVE.L	$0008(A5),-(A7)
 	BSR.B	_cvt_f_i
 	ADDQ.W	#4,A7
+
 	MOVE.W	D0,-(A7)
 	JSR	_find_slot(PC)
 	ADDQ.W	#2,A7
+
 	MOVEA.L	D0,A2
 	TST.L	D0
 	BEQ.B	1$
@@ -13424,6 +13433,7 @@ _ring_off:
 	BNE.B	L005B9
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BNE.B	L005B9
+
 	PEA	L005BF(PC)	;"you aren't wearing any rings"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -13460,9 +13470,11 @@ L005BC:
 	CLR.W	-$60B0(A4)	;_mpos
 	MOVE.L	A2,D3
 	BNE.B	L005BD
+
 	PEA	L005C0(PC)	;"not wearing such a ring"
 	JSR	_msg
 	ADDQ.W	#4,A7
+
 	CLR.B	-$66F9(A4)	;_after
 	BRA.B	L005B8
 L005BD:
@@ -13482,6 +13494,7 @@ L005BD:
 	MOVE.L	A2,-(A7)
 	JSR	_nameof
 	ADDQ.W	#6,A7
+
 	MOVE.L	D0,-(A7)
 	PEA	L005C1(PC)	;"was wearing %s(%c)"
 	JSR	_msg
@@ -14666,7 +14679,8 @@ L0064E:	dc.b	"the veil of darkness lifts",0,0
 _nohaste:
 ;	LINK	A5,#-$0000
 	ANDI.W	#~C_ISHASTE,-$52B4(A4)	;clear C_ISHASTE,_player + 22 (flags)
-	PEA	L0064F(PC)
+
+	PEA	L0064F(PC)	;"you feel yourself slowing down"
 	JSR	_msg
 	ADDQ.W	#4,A7
 ;	UNLK	A5
@@ -18801,13 +18815,15 @@ L008B9:
 _DISTANCE:
 ;	LINK	A5,#-$0000
 
-	MOVE.W	$0006(A7),D3
+	MOVE.W	$0006(A7),D3	;X^2
 	SUB.W	$000A(A7),D3
-	MOVE.W	$0004(A7),D0
-	SUB.W	$0008(A7),D0
 	MULU.W	D3,D3
+
+	MOVE.W	$0004(A7),D0	;Y^2
+	SUB.W	$0008(A7),D0
 	MULU.W	D0,D0
-	ADD.W	D3,D0
+
+	ADD.W	D3,D0		;X+Y
 
 ;	UNLK	A5
 	RTS
@@ -18815,15 +18831,18 @@ _DISTANCE:
 __ce:
 	LINK	A5,#-$0000
 	MOVEA.L	$0008(A5),A6
+
 	MOVEA.L	$000C(A5),A1
 	MOVE.W	(A6),D3
 	CMP.W	(A1),D3
 	BNE.B	L008BA
+
 	MOVEA.L	$0008(A5),A6
 	MOVEA.L	$000C(A5),A1
 	MOVE.W	$0002(A6),D3
 	CMP.W	$0002(A1),D3
 	BNE.B	L008BA
+
 	MOVEq	#$0001,D0
 	BRA.B	L008BB
 L008BA:
@@ -19005,7 +19024,7 @@ L008C7:
 	AND.W	#$0007,D3
 
 	MOVE.W	D3,-(A7)
-	JSR	_tr_name(PC)
+	JSR	_tr_name(PC)	;gets the pointer to the trap name
 	ADDQ.W	#2,A7
 
 	MOVE.L	D0,-(A7)
@@ -19667,6 +19686,7 @@ L00909:
 	MOVE.L	A6,-(A7)
 	JSR	_draw_room(PC)
 	ADDQ.W	#4,A7
+
 	MOVEq	#$0002,D0
 	JSR	_rnd
 	TST.W	D0
@@ -20763,7 +20783,7 @@ L00968:
 	MOVE.L	$0008(A5),-(A7)
 	MOVEA.L	$0008(A5),A6
 	PEA	$000A(A6)
-	JSR	_remove(PC)
+	JSR	_remove(PC)	;removes monster from screen
 	LEA	$000C(A7),A7
 
 	MOVE.W	-$60B2(A4),D3	;_purse
@@ -21033,6 +21053,7 @@ L00987:	dc.b	'and achieve the rank of "%s"',0,0
 _roll_em:
 	LINK	A5,#-$000C
 	MOVEM.L	D4-D7/A2/A3,-(A7)
+
 	MOVEQ	#$00,D4
 	MOVEA.L	$0008(A5),A2	;player
 	ADDA.L	#$00000018,A2
@@ -21101,7 +21122,7 @@ L0098D:
 	ADDQ.W	#4,D6		;+4 damage
 L0098E:
 	MOVEA.L	$0010(A5),A6
-	CMPA.L	-$5298(A4),A6	;check _cur_weapon
+	CMPA.L	-$5298(A4),A6	;is the used weapon the _cur_weapon?
 	BNE.B	L00992
 
 	TST.L	-$5190(A4)	;check for _cur_ring_1
@@ -21153,7 +21174,7 @@ L00992:
 	EXT.W	D3
 
 	MOVEA.L	-$5298(A4),A6	;_cur_weapon
-	CMP.W	$0020(A6),D3
+	CMP.W	$0020(A6),D3	;is it the corrct baseweapon?
 	BNE.B	L00993
 
 	MOVEA.L	$0010(A5),A6
@@ -21758,14 +21779,16 @@ _thunk:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/D5/A2/A3,-(A7)
 
-	MOVEA.L	$0008(A5),A2
-	MOVEA.L	$000C(A5),A3
-	MOVE.L	$0010(A5),D4
+	MOVEA.L	$0008(A5),A2	;missile
+	MOVEA.L	$000C(A5),A3	;monster name
+	MOVE.L	$0010(A5),D4	;words like 'hit'
 	MOVE.L	$0014(A5),D5
+
 	MOVE.L	A2,-(A7)
 	JSR	_typeof
 	ADDQ.W	#4,A7
-	CMP.W	#$006D,D0
+
+	CMP.W	#$006D,D0	;'m' weapon type
 	BNE.B	L009E9
 
 	MOVE.L	D4,-(A7)
@@ -30344,8 +30367,8 @@ __things:
 __t_alloc:
 	dc.l	$00000000
 
-_player:	dc.l	0	;$00 0
-		dc.l	0	;$04 4
+_player:	dc.l	0	;$00 0	next item in list
+		dc.l	0	;$04 4	previous item in list
 		dc.w	0	;$08 8
 		dc.w	0	;$0A 10 position
 		dc.w	0	;$0C 12 position
