@@ -13426,11 +13426,12 @@ L005B7:	dc.b	"you are now wearing %s (%c)",0
 
 _ring_off:
 	LINK	A5,#-$0000
-	MOVEM.L	D4/D5/A2,-(A7)
+	MOVE.L	A2,-(A7)
 	MOVEA.L	$0008(A5),A2
-	MOVEQ	#$00,D4
+
 	TST.L	-$5190(A4)	;_cur_ring_1
-	BNE.B	L005B9
+	BNE.B	L005BA
+
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BNE.B	L005B9
 
@@ -13439,34 +13440,30 @@ _ring_off:
 	ADDQ.W	#4,A7
 	CLR.B	-$66F9(A4)	;_after
 L005B8:
-	MOVEM.L	(A7)+,D4/D5/A2
+	MOVE.L	(A7)+,A2
 	UNLK	A5
 	RTS
 
 L005B9:
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BNE.B	L005BA
-	MOVEQ	#$01,D4
+	MOVEQ	#$01,D0
 	BRA.B	L005BC
 L005BA:
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BNE.B	L005BB
-	MOVEQ	#$00,D4
+	MOVEQ	#$00,D0
 	BRA.B	L005BC
 L005BB:
 	MOVE.L	A2,D3
 	BNE.B	L005BC
-	JSR	_gethand(PC)
-	MOVE.W	D0,D4
-;	CMP.W	#$0000,D0
-	BGE.B	L005BC
-	BRA.B	L005B8
+	JSR	_gethand
+	CMP.W	#$0000,D0
+	BLT.B	L005B8
 L005BC:
-	MOVE.W	D4,D3
-;	EXT.L	D3
-	ASL.w	#2,D3
+	ASL.w	#2,D0
 	LEA	-$5190(A4),A6	;_cur_ring_1
-	MOVEA.L	$00(A6,D3.w),A2
+	MOVEA.L	$00(A6,D0.w),A2
 	CLR.W	-$60B0(A4)	;_mpos
 	MOVE.L	A2,D3
 	BNE.B	L005BD
@@ -13479,17 +13476,18 @@ L005BC:
 	BRA.B	L005B8
 L005BD:
 	MOVE.L	A2,-(A7)
-	JSR	_pack_char(PC)
+	JSR	_can_drop
 	ADDQ.W	#4,A7
-	MOVE.B	D0,D5
-	MOVE.L	A2,-(A7)
-	JSR	_can_drop(PC)
-	ADDQ.W	#4,A7
+
 	TST.W	D0
-	BEQ.B	L005BE
-	MOVE.B	D5,D3
-	EXT.W	D3
-	MOVE.W	D3,-(A7)
+	BEQ.B	L005B8
+
+	MOVE.L	A2,-(A7)
+	JSR	_pack_char	;return the next unused pack character
+	ADDQ.W	#4,A7
+
+	EXT.W	D0
+	MOVE.W	D0,-(A7)
 	MOVE.W	#$001E,-(A7)
 	MOVE.L	A2,-(A7)
 	JSR	_nameof
@@ -13499,8 +13497,7 @@ L005BD:
 	PEA	L005C1(PC)	;"was wearing %s(%c)"
 	JSR	_msg
 	LEA	$000A(A7),A7
-L005BE:
-	BRA.W	L005B8
+	BRA.B	L005B8
 
 L005BF:	dc.b	"you aren't wearing any rings",0
 L005C0:	dc.b	"not wearing such a ring",0
