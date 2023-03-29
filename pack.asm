@@ -823,29 +823,25 @@ L002FA:	dc.b	"identify",0
 ; */
 
 _pack_char:
-	LINK	A5,#-$0000
-	MOVEM.L	D4/A2/A3,-(A7)
-	MOVEA.L	$0008(A5),A2
-	MOVEQ	#$61,D4
-	MOVEA.L	-$529C(A4),A3	;_player + 46 (pack)
+	MOVEA.L	$0004(A7),A1
+	MOVEQ	#'a',D1
+	MOVEA.L	-$529C(A4),A0	;_player + 46 (pack)
 	BRA.B	L002FE
 L002FB:
-	CMPA.L	A2,A3
-	BNE.B	L002FD
-	MOVE.L	D4,D0
-L002FC:
-	MOVEM.L	(A7)+,D4/A2/A3
-	UNLK	A5
-	RTS
+	CMPA.L	A1,A0
+	BEQ.B	L002FD
 
-L002FD:
-	ADDQ.B	#1,D4
-	MOVEA.L	(A3),A3		;get next pointer in pack
+	ADDQ.B	#1,D1
+	MOVEA.L	(A0),A0		;get next pointer in pack
 L002FE:
-	MOVE.L	A3,D3		;got an item?
+	MOVE.L	A0,D3		;got an item?
 	BNE.B	L002FB
 
 	MOVEQ	#$3F,D0		;return '?' if empty
+L002FC:
+	RTS
+
+L002FD:	MOVE.L	D1,D0
 	BRA.B	L002FC
 
 ;/*
