@@ -3116,15 +3116,6 @@ L00167:
 	MOVE.W	D4,-$54E2(A4)	;last printed armor class
 
 L00168:
-	MOVEq	#52,d1
-	MOVEq	#20,d0
-	JSR	_movequick
-
-	MOVE.L	-$52B0(A4),-(A7)	;_player + 26 (EXP)
-	PEA	L0016Cb(PC)	;"XP:%d"
-	JSR	_printw
-	ADDQ.W	#8,A7
-
 	CLR.B	-$66FB(A4)	;_new_stats
 
 	MOVE.w	-$0004(A5),d1
