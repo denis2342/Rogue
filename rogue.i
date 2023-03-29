@@ -133,20 +133,21 @@ C_ISFLY		equ	$8000	;creature can fly
 
 ;object struct:
 
-;$00		previous object?
-;$04		next object in list
-;$08
-;$0A	10	type of object (scroll/potion/weapon...)
-;$0C
-;$10	16	pointer to packname
-;$14	20	baseweapon for arrows/crossbowbolts
-;$16	22	pointer to wield damage
-;$1A	26	pointer to throw damage
-;$1E	30	number of items of this object
-;$20	32	subtype of object (which scroll/potion/weapon...)
-;$22	34	+hit
-;$24	36	+damage
-;$26	38	charges for staff/wand or +hit/damage with rings or armor points
-;$28	40	flags of object
-;$2A	42	monster slayer
-;$2C	44	group of object
+;82 38 ;$00		next item in list
+;7e 34 ;$04		previous item in list
+;7a 30 ;$08
+;78 2e ;$0A	10	type of object (scroll/potion/weapon...)
+;76 2c ;$0C	12	x
+;74 2a ;$0E	14	y
+;72 28 ;$10	16	pointer to packname
+;6e 24 ;$14	20	baseweapon for arrows/crossbowbolts
+;6c 22 ;$16	22	pointer to wield damage
+;68 1e ;$1A	26	pointer to throw damage
+;64 1a ;$1E	30	number of items of this object
+;62 18 ;$20	32	subtype of object (which scroll/potion/weapon...)
+;60 16 ;$22	34	+hit
+;14 ;$24	36	+damage
+;12 ;$26	38	charges for staff/wand or +hit/damage with rings or armor points
+;10 ;$28	40	flags of object
+;08 ;$2A	42	monster slayer
+;06 ;$2C	44	group of object

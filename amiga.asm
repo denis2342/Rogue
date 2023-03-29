@@ -1,0 +1,2857 @@
+_WBprint:
+	LINK	A5,#-$0000
+	JSR	_WBenchToFront
+	MOVE.W	$0012(A5),-(A7)
+	MOVE.W	$0010(A5),-(A7)
+	MOVE.W	$000E(A5),-(A7)
+	MOVE.W	$000C(A5),-(A7)
+	MOVE.L	$0008(A5),-(A7)
+	JSR	_printf
+	LEA	$000C(A7),A7
+	UNLK	A5
+	RTS
+
+_OffVerify:
+	LINK	A5,#-$0008
+	JSR	_Forbid
+	TST.L	-$514C(A4)	;_StdWin
+	BEQ.B	L00127
+	MOVE.L	-$7828(A4),D3
+	AND.L	#$FFFFDFFF,D3
+	MOVE.L	D3,-(A7)
+	MOVE.L	-$514C(A4),-(A7)	;_StdWin
+	JSR	_ModifyIDCMP
+	ADDQ.W	#8,A7
+	MOVEA.L	-$514C(A4),A6	;_StdWin
+	MOVEA.L	$0056(A6),A1
+	MOVE.L	$0014(A1),-$0004(A5)
+	BRA.B	L00126
+L00124:
+	MOVEA.L	-$0004(A5),A6
+	CMPI.L	#$00002000,$0014(A6)
+	BNE.B	L00125
+	MOVEA.L	-$0004(A5),A6
+	MOVE.W	#$0002,$0018(A6)
+	MOVE.L	-$0004(A5),-(A7)
+	JSR	_Remove
+	ADDQ.W	#4,A7
+	MOVE.L	-$0004(A5),-(A7)
+	JSR	_ReplyMsg
+	ADDQ.W	#4,A7
+L00125:
+	MOVE.L	-$0008(A5),-$0004(A5)
+L00126:
+	MOVEA.L	-$0004(A5),A6
+	MOVE.L	(A6),-$0008(A5)
+	TST.L	-$0008(A5)
+	BNE.B	L00124
+L00127:
+	JSR	_Permit
+	UNLK	A5
+	RTS
+
+_OnVerify:
+	LINK	A5,#-$0000
+	TST.L	-$514C(A4)	;_StdWin
+	BEQ.B	L00128
+	MOVE.L	-$7828(A4),-(A7)
+	MOVE.L	-$514C(A4),-(A7)	;_StdWin
+	JSR	_ModifyIDCMP
+	ADDQ.W	#8,A7
+L00128:
+	UNLK	A5
+	RTS
+
+_InitGadgets:
+	LINK	A5,#-$0000
+	TST.W	-$5810(A4)
+	BEQ.B	L00B9C
+	CLR.L	-(A7)
+	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
+	PEA	-$5894(A4)
+	JSR	_RefreshGadgets(PC)
+	LEA	$000C(A7),A7
+L00B9B:
+	UNLK	A5
+	RTS
+
+L00B9C:
+	MOVE.W	#$0001,-$5810(A4)
+	CLR.W	-(A7)
+	MOVE.W	#$0014,-(A7)
+	JSR	_malloc
+	ADDQ.W	#2,A7
+
+	MOVE.L	D0,-(A7)
+	PEA	L00B9D(PC)
+	JSR	_ctointui
+	LEA	$000A(A7),A7
+
+	MOVE.L	D0,-$584E(A4)
+	CLR.W	-(A7)
+	MOVE.W	#$0014,-(A7)
+	JSR	_malloc
+	ADDQ.W	#2,A7
+
+	MOVE.L	D0,-(A7)
+	PEA	L00B9E(PC)
+	JSR	_ctointui
+	LEA	$000A(A7),A7
+
+	MOVE.L	D0,-$587A(A4)
+	CLR.W	-(A7)
+	MOVE.W	#$0014,-(A7)
+	JSR	_malloc
+	ADDQ.W	#2,A7
+
+	MOVE.L	D0,-(A7)
+	PEA	L00B9F(PC)
+	JSR	_ctointui
+	LEA	$000A(A7),A7
+
+	MOVE.L	D0,-$5822(A4)
+	MOVE.W	#$FFFF,-(A7)
+	PEA	-$5894(A4)
+	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
+	JSR	_AddGadget(PC)
+	LEA	$000A(A7),A7
+
+	MOVE.W	#$FFFF,-(A7)
+	PEA	-$5868(A4)
+	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
+	JSR	_AddGadget(PC)
+	LEA	$000A(A7),A7
+
+	MOVE.W	#$FFFF,-(A7)
+	PEA	-$583C(A4)
+	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
+	JSR	_AddGadget(PC)
+	LEA	$000A(A7),A7
+
+	CLR.L	-(A7)
+	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
+	PEA	-$5894(A4)
+	JSR	_OnGadget(PC)
+	LEA	$000C(A7),A7
+
+	CLR.L	-(A7)
+	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
+	PEA	-$5868(A4)
+	JSR	_OnGadget(PC)
+	LEA	$000C(A7),A7
+
+	CLR.L	-(A7)
+	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
+	PEA	-$583C(A4)
+	JSR	_OnGadget(PC)
+	LEA	$000C(A7),A7
+
+	BRA.W	L00B9B
+
+L00B9D:	dc.b	"Rest",0
+L00B9E:	dc.b	"Search",0
+L00B9F:	dc.b	"Down",0,0
+
+_AmigaCreat:
+	LINK	A5,#-$0200
+	MOVEM.L	D4-D6,-(A7)
+	TST.W	-$580E(A4)
+	BEQ.B	L00BA0
+	JSR	_OffVerify
+L00BA0:
+	CLR.W	-$580E(A4)
+	MOVE.W	#$01B6,-(A7)
+	MOVE.L	$0008(A5),-(A7)
+	JSR	_creat(PC)
+	ADDQ.W	#6,A7
+	MOVE.W	D0,D4
+;	CMP.W	#$0000,D4
+	BLT.B	L00BA8
+	MOVE.W	$000C(A5),D5
+
+	CLR.W	d1
+	MOVE.W	#$0200,d0
+	LEA	-$0200(A5),a0
+	JSR	_memset
+
+L00BA1:
+	TST.W	D5
+	BEQ.B	L00BA6
+
+	CMP.W	#$0200,D5
+	BLS.B	L00BA2
+
+	MOVE.W	#$0200,D6
+	BRA.B	L00BA3
+L00BA2:
+	MOVE.W	D5,D6
+L00BA3:
+	MOVE.W	D6,-(A7)
+	PEA	-$0200(A5)
+	MOVE.W	D4,-(A7)
+	JSR	_write
+	ADDQ.W	#8,A7
+	CMP.W	D6,D0
+	BNE.B	L00BA6
+
+	SUB.W	D6,D5
+	BRA.B	L00BA1
+L00BA6:
+	TST.W	D5
+	BEQ.B	L00BA7
+
+	MOVE.W	D4,-(A7)
+	BSR.B	_AmigaClose
+	ADDQ.W	#2,A7
+	MOVEQ	#-$01,D4
+	MOVE.L	$0008(A5),-(A7)
+	JSR	_unlink(PC)
+	ADDQ.W	#4,A7
+	BRA.B	L00BA8
+L00BA7:
+	CLR.W	-(A7)
+	CLR.L	-(A7)
+	MOVE.W	D4,-(A7)
+	JSR	_lseek(PC)
+	ADDQ.W	#8,A7
+L00BA8:
+	CMP.W	#$0000,D4
+	BGE.B	L00BA9
+
+	JSR	_OnVerify
+L00BA9:
+	MOVE.W	D4,D0
+
+	MOVEM.L	(A7)+,D4-D6
+	UNLK	A5
+	RTS
+
+_AmigaOpen:
+	LINK	A5,#-$0002
+	TST.W	-$580E(A4)
+	BEQ.B	L00BAA
+
+	JSR	_OffVerify
+L00BAA:
+	CLR.W	-$580E(A4)
+	MOVE.W	$000C(A5),-(A7)
+	MOVE.L	$0008(A5),-(A7)
+	JSR	_open
+	ADDQ.W	#6,A7
+	MOVE.W	D0,-$0002(A5)
+	CMPI.W	#$0000,-$0002(A5)
+	BLE.B	L00BAB
+
+	JSR	_OnVerify
+L00BAB:
+	MOVE.W	-$0002(A5),D0
+	UNLK	A5
+	RTS
+
+_AmigaClose:
+	LINK	A5,#-$0000
+	TST.W	-$580E(A4)
+	BNE.B	L00BAC
+
+	JSR	_OnVerify
+L00BAC:
+	MOVE.W	#$0001,-$580E(A4)
+	MOVE.W	$0008(A5),-(A7)
+	JSR	_close
+	ADDQ.W	#2,A7
+	UNLK	A5
+	RTS
+
+L00BDD:	dc.b	"Here is a brief list of some of the keyboard commands "
+	dc.b	"in Rogue. For more",0
+L00BDE:	dc.b	"information on these, as well as instructions on how "
+	dc.b	"to use the mouse and",0
+L00BDF:	dc.b	"the menus, see the instruction manual.",0
+L00BE0:	dc.b	$00
+L00BE1:	dc.b	"a    Repeat last throw/zap           "
+	dc.b	"D    Show a list of magic discovered",0
+L00BE2:	dc.b	"c    Relabel a magic item            "
+	dc.b	"P    Put on a ring",0
+L00BE3:	dc.b	"d    Drop an object                  "
+	dc.b	"Q    Quit",0
+L00BE4:	dc.b	"e    Eat some food                   "
+	dc.b	"R    Remove (take off) a ring",0
+L00BE5:	dc.b	"i    Show inventory                  "
+	dc.b	"S    Save the game",0
+L00BE6:	dc.b	"q    Quaff (drink) a potion          "
+	dc.b	"T    Take off armor",0
+L00BE7:	dc.b	"r    Read a scroll                   "
+	dc.b	"W    Wear armor",0
+L00BE8:	dc.b	"s    Seach each adjacent position    "
+	dc.b	".    Rest",0
+L00BE9:	dc.b	"t    Throw an object                 "
+	dc.b	">    Go down a staircase",0
+L00BEA:	dc.b	"w    Wield a weapon                  "
+	dc.b	"<    Go up a staircase",0
+L00BEB:	dc.b	"z    Zap a magic wand/staff",0
+L00BEC:	dc.b	$00
+L00BED:	dc.b	"To move around in the dungeon, use the numeric keypad."
+	dc.b	"  Pressing the CTRL",0
+L00BEE:	dc.b	"key before a move, will repeat the move until you "
+	dc.b	"encounter something inter-",0
+L00BEF:	dc.b	"esting.  Pressing the SHIFT key before a move will "
+	dc.b	"repeat the move until",0
+L00BF0:	dc.b	"you run into something.",0
+L00BF1:	dc.b	"-------- Press space when you are finished "
+	dc.b	"viewing the instructions --------",0
+
+_help:
+;	LINK	A5,#-$0000
+	MOVEM.L	D4/A2,-(A7)
+
+	JSR	_wtext
+	MOVEQ	#$00,D4
+	LEA	-$580C(A4),A6
+	MOVEA.L	A6,A2
+	BRA.B	L00BF3
+
+L00BF2:	MOVE.L	(A2),-(A7)
+	CLR.W	-(A7)
+	MOVE.W	D4,-(A7)
+	JSR	_mvaddstr
+	ADDQ.W	#8,A7
+	ADDQ.L	#4,A2
+	ADDQ.W	#1,D4
+L00BF3:
+	TST.L	(A2)
+	BNE.B	L00BF2
+
+	MOVE.W	#$0020,-(A7)	;SPACE
+	JSR	_wait_for
+	ADDQ.W	#2,A7
+	JSR	_wmap
+
+	MOVEM.L	(A7)+,D4/A2
+;	UNLK	A5
+	RTS
+
+_atoi:
+	LINK	A5,#-$0000
+	MOVEM.L	D4/D5/A2,-(A7)
+	MOVEA.L	$0008(A5),A2
+L00BF4:
+	MOVE.B	(A2)+,D3
+	CMP.b	#$20,D3		;' '
+	BEQ.B	L00BF4
+	CMP.b	#$09,D3		;TAB
+	BEQ.B	L00BF4
+L00BF6:
+	MOVEQ	#$00,D5
+	CMP.b	#$2D,D3		;'-'
+	BNE.B	L00BF7
+
+	MOVEQ	#$01,D5
+	BRA.B	L00BF8
+L00BF7:
+	CMP.b	#$2B,D3		;'+'
+	BEQ.B	L00BF8
+	SUBQ.L	#1,A2
+L00BF8:
+	MOVEQ	#$00,D4
+	LEA	-$55CA(A4),A6		;_ctp_
+	BRA.B	L00BFA
+
+L00BF9:
+	SUB.W	#$0030,D3
+	MULU.W	#10,D4
+	ADD.W	D3,D4
+L00BFA:
+	MOVE.B	(A2)+,D3
+	EXT.W	D3
+	moveq	#$0004,D2
+	AND.B	$00(A6,D3.W),D2
+	BNE.B	L00BF9
+
+	TST.W	D5		;had minus?
+	BEQ.B	L00BFB
+	MOVE.W	D4,D0
+	NEG.W	D0
+	BRA.B	L00BFC
+L00BFB:
+	MOVE.W	D4,D0
+L00BFC:
+	MOVEM.L	(A7)+,D4/D5/A2
+	UNLK	A5
+	RTS
+
+_memset:
+	TST.B	D1
+	BEQ	4$
+	BRA.B	2$
+
+1$	MOVE.B	D1,(A0)+
+2$	DBF	D0,1$
+
+	RTS
+
+3$	CLR.B	(A0)+
+4$	DBF	D0,3$
+
+	RTS
+
+begin:
+;	MOVEA.L	(A7)+,A1
+;	SUBA.W	#$000A,A1
+;	MOVE.L	(A1),D1
+;	ADD.L	D1,D1
+;	ADD.L	D1,D1
+;	MOVEA.L	D1,A4
+;	ADDA.L	#$00008002,A4
+
+;	lea	__Dorg+$7FFE,a4
+	lea	_MathTransBase+$46d4,a4
+
+	LEA	-$5546(A4),A1	;__Uorg
+	LEA	-$5546(A4),A2	;__Uorg
+	CMPA.L	A1,A2
+	BNE.B	L00C00
+
+	MOVE.W	#((__Uend-__Uorg-2)/4),D1
+	BMI.B	L00C00
+1$
+	CLR.L	(A1)+
+	DBF	D1,1$
+L00C00:
+	MOVE.L	A7,-$4760(A4)		;__savsp
+	MOVEA.L	$0004,A6
+	MOVE.L	A6,-$475C(A4)		;_SysBase
+
+	MOVEM.L	D0/A0,-(A7)
+	JSR	__main(PC)
+	ADDQ.W	#8,A7
+	RTS
+
+_index:
+	MOVEA.L	$0004(A7),A0
+	MOVE.W	$0008(A7),D0
+L00C01:
+	MOVE.B	(A0)+,D1
+	BEQ.B	L00C02
+	CMP.B	D0,D1
+	BNE.B	L00C01
+	MOVE.L	A0,D0
+	SUBQ.L	#1,D0
+	RTS
+
+L00C02:
+	MOVEQ	#$00,D0
+	RTS
+
+_strcmp:
+	MOVE.W	#$7fff,D0
+	BRA.B	L00C03
+
+_strncmp:
+	MOVE.W	$000C(A7),D0
+L00C03:
+	SUBQ.W	#1,D0
+	BMI.B	L00C05
+
+	MOVEA.L	$0004(A7),A0
+	MOVEA.L	$0008(A7),A1
+L00C04:
+	CMPM.B	(A1)+,(A0)+
+	BNE.B	L00C06
+
+	SUBQ.W	#1,A0
+	TST.B	(A0)+
+	DBEQ	D0,L00C04
+L00C05:
+	MOVEQ	#$00,D0
+	RTS
+
+L00C06:
+	BLS.B	L00C07
+	MOVEQ	#$01,D0
+	RTS
+
+L00C07:
+	MOVEQ	#-$01,D0
+	RTS
+
+_lseek:
+	LINK	A5,#-$0000
+	MOVEM.L	D4/D5/A2,-(A7)
+
+	MOVE.W	$0008(A5),D4
+	JSR	_Chk_Abort(PC)
+	MOVE.W	D4,D3
+	BLT.B	L00C08
+
+	MULS.W	#$0006,D3
+	LEA	-$4758(A4),A2		;__devtab
+	ADDA.L	D3,A2
+
+	CMP.W	#$0013,D4
+	BGT.B	L00C08
+
+	TST.L	(A2)
+	BNE.B	L00C0A
+L00C08:
+	MOVE.W	#$0003,-$46E0(A4)	;_errno
+	MOVEQ	#-$01,D0
+L00C09:
+	MOVEM.L	(A7)+,D4/D5/A2
+	UNLK	A5
+	RTS
+
+L00C0A:
+	MOVE.W	$000E(A5),D3
+	EXT.L	D3
+	MOVEA.L	D3,A6
+	PEA	-$0001(A6)
+	MOVE.L	$000A(A5),-(A7)
+	MOVE.L	(A2),-(A7)
+	JSR	_Seek(PC)
+	LEA	$000C(A7),A7
+	MOVE.L	D0,D5
+	CMP.L	#$FFFFFFFF,D0
+	BNE.B	L00C0B
+
+	JSR	_IoErr(PC)
+	MOVE.W	D0,-$46E0(A4)	;_errno
+	MOVEQ	#-$01,D0
+	BRA.B	L00C09
+L00C0B:
+	CLR.L	-(A7)
+	CLR.L	-(A7)
+	MOVE.L	(A2),-(A7)
+	JSR	_Seek(PC)
+	LEA	$000C(A7),A7
+	BRA.B	L00C09
+
+_creat:
+	LINK	A5,#-$0000
+
+	MOVE.W	$000C(A5),-(A7)
+	MOVE.W	#$0301,-(A7)
+	MOVE.L	$0008(A5),-(A7)
+	BSR.B	_open
+	ADDQ.W	#8,A7
+
+	UNLK	A5
+	RTS
+
+_open:
+	LINK	A5,#-$0000
+	MOVEM.L	D4-D6/A2/A3,-(A7)
+
+	MOVEA.L	$0008(A5),A2
+	JSR	_Chk_Abort(PC)
+	LEA	-$4758(A4),A3		;__devtab
+	MOVEQ	#$00,D5
+L00C0C:
+	MOVE.W	D5,D3
+	MULS.W	#$0006,D3
+	TST.L	$00(A3,D3.L)
+	BEQ.B	L00C0D
+
+	ADDQ.W	#1,D5
+	CMP.W	#$0014,D5
+	BLT.B	L00C0C
+
+	MOVEQ	#$08,D6
+	BRA.W	L00C12
+L00C0D:
+	MOVE.W	$000C(A5),D3
+	AND.W	#$0200,D3
+	BEQ.B	L00C0E
+
+	PEA	-$1
+	MOVE.L	A2,-(A7)
+	JSR	_Lock(PC)
+	ADDQ.W	#8,A7
+	MOVE.L	D0,D4
+;	TST.L	D0
+	BEQ.B	L00C0E
+
+	MOVE.L	D4,-(A7)
+	JSR	_UnLock(PC)
+	ADDQ.W	#4,A7
+	MOVE.L	A2,-(A7)
+	JSR	_DeleteFile(PC)
+	ADDQ.W	#4,A7
+	TST.L	D0
+	BNE.B	L00C0E
+
+	JSR	_IoErr(PC)
+	MOVE.W	D0,D6
+	CMP.W	#$00CD,D0
+	BNE.B	L00C12
+L00C0E:
+	PEA	$03ED
+	MOVE.L	A2,-(A7)
+	JSR	_Open(PC)
+	ADDQ.W	#8,A7
+	MOVE.L	D0,D4
+;	TST.L	D4
+	BNE.B	L00C11
+
+	MOVE.W	$000C(A5),D3
+	AND.W	#$0100,D3
+	BNE.B	L00C0F
+
+	MOVEQ	#$01,D6
+	BRA.B	L00C12
+L00C0F:
+	PEA	$03EE
+	MOVE.L	A2,-(A7)
+	JSR	_Open(PC)
+	ADDQ.W	#8,A7
+	MOVE.L	D0,D4
+;	TST.L	D0
+	BNE.B	L00C10
+
+	JSR	_IoErr(PC)
+	MOVE.W	D0,D6
+	BRA.B	L00C12
+L00C10:
+	PEA	$0001
+	PEA	L00C16(PC)
+	MOVE.L	D4,-(A7)
+	JSR	_Write(PC)
+	LEA	$000C(A7),A7
+	PEA	-$1
+	CLR.L	-(A7)
+	MOVE.L	D4,-(A7)
+	JSR	_Seek(PC)
+	LEA	$000C(A7),A7
+	BRA.B	L00C14
+L00C11:
+	MOVE.W	$000C(A5),D3
+	AND.W	#$0500,D3
+	CMP.W	#$0500,D3
+	BNE.B	L00C14
+
+	MOVE.L	D4,-(A7)
+	JSR	_Close(PC)
+	ADDQ.W	#4,A7
+	MOVEQ	#$05,D6
+L00C12:
+	MOVE.W	D6,-$46E0(A4)	;_errno
+	MOVEQ	#-$01,D0
+L00C13:
+	MOVEM.L	(A7)+,D4-D6/A2/A3
+	UNLK	A5
+	RTS
+
+L00C14:
+	MOVE.W	D5,D3
+	MULS.W	#$0006,D3
+	MOVE.L	D4,$00(A3,D3.L)
+;	MOVE.W	D5,D3
+;	MULS.W	#$0006,D3
+	MOVEA.L	D3,A6
+	ADDA.L	A3,A6
+	MOVE.W	$000C(A5),$0004(A6)
+	MOVE.W	$000C(A5),D3
+	AND.W	#$0800,D3
+	BEQ.B	L00C15
+
+	PEA	$0001
+	CLR.L	-(A7)
+	MOVE.L	D4,-(A7)
+	JSR	_Seek(PC)
+	LEA	$000C(A7),A7
+L00C15:
+	MOVE.W	D5,D0
+	BRA.B	L00C13
+L00C16:
+	dc.w	$0000
+
+_read:
+	LINK	A5,#-$0000
+	MOVEM.L	D4/D5/A2,-(A7)
+	MOVE.W	$0008(A5),D4
+	JSR	_Chk_Abort(PC)
+	MOVE.W	D4,D3
+	BLT.B	L00C17
+
+	MULS.W	#$0006,D3
+	LEA	-$4758(A4),A2		;__devtab
+	ADDA.L	D3,A2
+
+	CMP.W	#$0013,D4
+	BGT.B	L00C17
+	TST.L	(A2)
+	BNE.B	L00C19
+L00C17:
+	MOVE.W	#$0003,-$46E0(A4)	;_errno
+	MOVEQ	#-$01,D0
+L00C18:
+	MOVEM.L	(A7)+,D4/D5/A2
+	UNLK	A5
+	RTS
+
+L00C19:
+	MOVE.W	$0004(A2),D3
+	AND.W	#$0003,D3
+	CMP.W	#$0001,D3
+	BNE.B	L00C1A
+
+	MOVE.W	#$0006,-$46E0(A4)	;_errno
+	MOVEQ	#-$01,D0
+	BRA.B	L00C18
+L00C1A:
+	MOVEQ	#$00,D3
+	MOVE.W	$000E(A5),D3
+	MOVE.L	D3,-(A7)
+	MOVE.L	$000A(A5),-(A7)
+	MOVE.L	(A2),-(A7)
+	JSR	_Read(PC)
+	LEA	$000C(A7),A7
+
+	MOVE.L	D0,D5
+	CMP.L	#$FFFFFFFF,D0
+	BNE.B	L00C1B
+
+	JSR	_IoErr(PC)
+	MOVE.W	D0,-$46E0(A4)	;_errno
+	MOVEQ	#-$01,D0
+	BRA.B	L00C18
+L00C1B:
+	MOVE.L	D5,D0
+	BRA.B	L00C18
+
+_mulu:
+	MOVEM.L	D2/D3,-(A7)
+	MOVE.W	D1,D2
+	MULU.W	D0,D2
+	MOVE.L	D1,D3
+	SWAP	D3
+	MULU.W	D0,D3
+	SWAP	D3
+	CLR.W	D3
+	ADD.L	D3,D2
+	SWAP	D0
+	MULU.W	D1,D0
+	SWAP	D0
+	CLR.W	D0
+	ADD.L	D2,D0
+	MOVEM.L	(A7)+,D2/D3
+	RTS
+
+_sprintf:
+	LINK	A5,#-$0000
+	MOVE.L	D4,-(A7)
+
+	MOVE.L	$0008(A5),-$532A(A4)
+
+	PEA	$0010(A5)
+	MOVE.L	$000C(A5),-(A7)
+	PEA	L00C1C(PC)
+	JSR	_format(PC)
+	LEA	$000C(A7),A7
+
+	MOVE.W	D0,D4
+	MOVEA.L	-$532A(A4),A6
+	CLR.B	(A6)
+	MOVE.W	D4,D0
+
+	MOVE.L	(A7)+,D4
+	UNLK	A5
+	RTS
+
+L00C1C:
+	LINK	A5,#-$0000
+	MOVEA.L	-$532A(A4),A6
+	ADDQ.L	#1,-$532A(A4)
+	MOVE.B	$0009(A5),D0
+	MOVE.B	D0,(A6)
+;	EXT.W	D0
+	AND.W	#$00FF,D0
+	UNLK	A5
+	RTS
+
+_gmtime:
+;	LINK	A5,#-$0000
+;	MOVE.L	$0008(A5),-(A7)
+;	BSR.B	_localtime
+;	ADDQ.W	#4,A7
+;	UNLK	A5
+;	RTS
+
+_localtime:
+	LINK	A5,#-$0000
+	MOVEM.L	D4-D6,-(A7)
+
+	MOVEA.L	$0008(A5),A6
+	MOVE.L	(A6),D4
+	MOVE.L	D4,D0
+	MOVEQ	#60,D1
+	JSR	_mods
+	MOVE.W	D0,-$5326(A4)
+	MOVE.L	D4,D0
+	MOVEQ	#60,D1
+	JSR	_divu
+	MOVE.L	D0,D4
+	MOVE.L	D4,D0
+	MOVEQ	#60,D1
+	JSR	_mods
+	MOVE.W	D0,-$5324(A4)
+	MOVE.L	D4,D0
+	MOVEQ	#60,D1
+	JSR	_divu
+	MOVE.L	D0,D4
+	MOVE.L	D4,D0
+	MOVEQ	#24,D1
+	JSR	_mods
+	MOVE.W	D0,-$5322(A4)
+	MOVE.L	D4,D0
+	MOVEQ	#24,D1
+	JSR	_divu
+	MOVE.L	D0,D4
+	MOVE.L	D4,D0
+	MOVEQ	#$07,D1
+	JSR	_mods
+	MOVE.W	D0,-$531A(A4)
+	MOVE.L	D4,D0
+	MOVE.L	#$000005B5,D1	;4 years in days + one day for leap year
+	JSR	_divu
+	ASL.L	#2,D0
+	ADD.L	#$0000004E,D0	;78
+	MOVE.W	D0,-$531C(A4)
+	MOVE.L	D4,D0
+	MOVE.L	#$000005B5,D1
+	JSR	_mods
+	MOVE.L	D0,D4
+L00C1D:
+	TST.L	D4
+	BEQ.B	L00C1F
+	MOVE.L	#$0000016D,D5
+	MOVE.W	-$531C(A4),D3
+	AND.W	#$0003,D3
+	BNE.B	L00C1E
+	ADDQ.L	#1,D5
+L00C1E:
+	CMP.L	D5,D4
+	BLT.B	L00C1F
+
+	SUB.L	D5,D4
+	ADDQ.W	#1,-$531C(A4)
+	BRA.B	L00C1D
+L00C1F:
+	ADDQ.L	#1,D4
+	MOVE.W	D4,-$5318(A4)
+	MOVEQ	#$00,D6
+L00C20:
+	MOVE.W	D6,D3
+	EXT.L	D3
+	ASL.L	#1,D3
+	LEA	-$57B4(A4),A6
+	MOVE.W	$00(A6,D3.L),D2
+	EXT.L	D2
+	MOVE.L	D2,D5
+	CMP.W	#$0001,D6
+	BNE.B	L00C21
+
+	MOVE.W	-$531C(A4),D3
+	AND.W	#$0003,D3
+	BNE.B	L00C21
+
+	ADDQ.L	#1,D5
+L00C21:
+	CMP.L	D5,D4
+	BLT.B	L00C22
+
+	SUB.L	D5,D4
+	ADDQ.W	#1,D6
+	CMP.W	#$000C,D6
+	BLT.B	L00C20
+L00C22:
+	MOVE.W	D6,-$531E(A4)
+	MOVE.W	D4,-$5320(A4)
+	LEA	-$5326(A4),A6
+	MOVE.L	A6,D0
+
+	MOVEM.L	(A7)+,D4-D6
+	UNLK	A5
+	RTS
+
+_time:
+	LINK	A5,#-$002C
+	CLR.L	-(A7)
+
+	PEA	-$002C(A5)
+	PEA	$0001
+	PEA	L00C25(PC)	;"timer.device"
+	JSR	_OpenDevice
+	LEA	$0010(A7),A7
+
+	TST.W	D0
+	BEQ.B	L00C23
+
+	PEA	L00C26(PC)	;"timer is not available"
+	JSR	_printf
+	ADDQ.W	#4,A7
+
+	MOVE.W	#$0001,-(A7)
+	JSR	_exit
+	ADDQ.W	#2,A7
+L00C23:
+	CLR.L	-(A7)
+	CLR.L	-(A7)
+	JSR	_CreatePort(PC)
+	ADDQ.W	#8,A7
+
+	MOVE.L	D0,-$001E(A5)
+	MOVE.W	#$000A,-$0010(A5)
+
+	PEA	-$002C(A5)
+	JSR	_DoIO(PC)
+	ADDQ.W	#4,A7
+
+	MOVE.L	-$0008(A5),D0
+	ADD.L	#$0007A120,D0	;500000
+	MOVE.L	#$000F4240,D1	;1000000
+	JSR	_divu
+	ADD.L	-$000C(A5),D0
+	MOVE.L	D0,-$0004(A5)
+
+	PEA	-$002C(A5)
+	JSR	_CloseDevice(PC)
+	ADDQ.W	#4,A7
+
+	MOVE.L	-$001E(A5),-(A7)
+	JSR	_DeletePort(PC)
+	ADDQ.W	#4,A7
+
+	TST.L	$0008(A5)
+	BEQ.B	L00C24
+
+	MOVEA.L	$0008(A5),A6
+	MOVE.L	-$0004(A5),(A6)
+L00C24:
+	MOVE.L	-$0004(A5),D0
+	UNLK	A5
+	RTS
+
+L00C25:	dc.b	"timer.device",0
+L00C26:	dc.b	"timer is not available",10,0,0
+
+_printf:
+	LINK	A5,#-$0000
+	MOVE.L	D4,-(A7)
+
+	LEA	-$530E(A4),A6
+	MOVE.L	A6,-$5312(A4)
+	PEA	$000C(A5)
+	MOVE.L	$0008(A5),-(A7)
+	PEA	L00C29(PC)
+	JSR	_format(PC)
+	LEA	$000C(A7),A7
+	MOVE.W	D0,D4
+	CMPI.W	#$0001,-$5764(A4)
+	BNE.B	L00C27
+
+	LEA	-$530E(A4),A6
+	MOVE.L	-$5312(A4),D3
+	SUB.L	A6,D3
+	MOVE.W	D3,-(A7)
+	PEA	-$530E(A4)
+	MOVE.B	-$5767(A4),D3
+	EXT.W	D3
+	MOVE.W	D3,-(A7)
+	JSR	_write
+	ADDQ.W	#8,A7
+	BRA.B	L00C28
+L00C27:
+	PEA	-$5774(A4)
+	LEA	-$530E(A4),A6
+	MOVE.L	-$5312(A4),D3
+	SUB.L	A6,D3
+	MOVE.W	D3,-(A7)
+	MOVE.W	#$0001,-(A7)
+	PEA	-$530E(A4)
+	JSR	_fwrite(PC)
+	LEA	$000C(A7),A7
+L00C28:
+	MOVE.W	D4,D0
+	MOVE.L	(A7)+,D4
+	UNLK	A5
+	RTS
+
+L00C29:
+	LINK	A5,#-$0000
+	MOVEA.L	-$5312(A4),A6
+	ADDQ.L	#1,-$5312(A4)
+	MOVE.B	$0009(A5),(A6)
+	LEA	-$530E(A4),A6
+	MOVE.L	-$5312(A4),D3
+	SUB.L	A6,D3
+	CMP.W	#$0028,D3
+	BNE.B	L00C2C
+	CMPI.W	#$0001,-$5764(A4)
+	BNE.B	L00C2A
+	LEA	-$530E(A4),A6
+	MOVE.L	-$5312(A4),D3
+	SUB.L	A6,D3
+	MOVE.W	D3,-(A7)
+	PEA	-$530E(A4)
+	MOVE.B	-$5767(A4),D3
+	EXT.W	D3
+	MOVE.W	D3,-(A7)
+	JSR	_write
+	ADDQ.W	#8,A7
+	BRA.B	L00C2B
+L00C2A:
+	PEA	-$5774(A4)
+	LEA	-$530E(A4),A6
+	MOVE.L	-$5312(A4),D3
+	SUB.L	A6,D3
+	MOVE.W	D3,-(A7)
+	MOVE.W	#$0001,-(A7)
+	PEA	-$530E(A4)
+	JSR	_fwrite(PC)
+	LEA	$000C(A7),A7
+L00C2B:
+	LEA	-$530E(A4),A6
+	MOVE.L	A6,-$5312(A4)
+L00C2C:
+	MOVE.W	$0008(A5),D0
+	AND.W	#$00FF,D0
+	UNLK	A5
+	RTS
+
+L00C2D:
+	LINK	A5,#-$0000
+	MOVEM.L	D4/A2,-(A7)
+	MOVEA.L	$000E(A5),A2
+	CMPI.W	#$0004,$0012(A5)
+	BNE.B	L00C2E
+	MOVEA.L	$0008(A5),A6
+	MOVE.L	(A6),D4
+	BRA.B	L00C30
+L00C2E:
+	CMPI.W	#$0000,$000C(A5)
+	BLE.B	L00C2F
+	MOVEA.L	$0008(A5),A6
+	MOVEQ	#$00,D3
+	MOVE.W	(A6),D3
+	MOVE.L	D3,D4
+	BRA.B	L00C30
+L00C2F:
+	MOVEA.L	$0008(A5),A6
+	MOVE.W	(A6),D3
+	EXT.L	D3
+	MOVE.L	D3,D4
+L00C30:
+	CLR.W	$0012(A5)
+	CMPI.W	#$0000,$000C(A5)
+	BGE.B	L00C31
+	NEG.W	$000C(A5)
+	CMP.L	#$00000000,D4
+	BGE.B	L00C31
+	NEG.L	D4
+	MOVE.W	#$0001,$0012(A5)
+L00C31:
+	SUBQ.L	#1,A2
+	MOVE.L	D4,D0
+	MOVE.W	$000C(A5),D1
+	EXT.L	D1
+	JSR	_modu(PC)
+	LEA	-$579C(A4),A6
+	MOVE.B	$00(A6,D0.W),(A2)
+	MOVE.L	D4,D0
+	MOVE.W	$000C(A5),D1
+	EXT.L	D1
+	JSR	_divu
+	MOVE.L	D0,D4
+;	TST.L	D0
+	BNE.B	L00C31
+	TST.W	$0012(A5)
+	BEQ.B	L00C32
+	SUBQ.L	#1,A2
+	MOVE.B	#$2D,(A2)
+L00C32:
+	MOVE.L	A2,D0
+	MOVEM.L	(A7)+,D4/A2
+	UNLK	A5
+	RTS
+
+_format:
+	LINK	A5,#-$00DE
+	MOVEM.L	D4/A2/A3,-(A7)
+
+	MOVEA.L	$0008(A5),A2
+	MOVEA.L	$000C(A5),A3
+	CLR.W	-$0006(A5)
+	MOVE.L	$0010(A5),-$0004(A5)
+L00C33:
+	MOVEA.L	A3,A6
+	ADDQ.L	#1,A3
+	MOVE.B	(A6),D3
+	EXT.W	D3
+	MOVE.W	D3,D4
+;	TST.W	D3
+	BEQ.W	L00C5E
+
+	CMP.W	#$0025,D4
+	BNE.W	L00C5B
+
+	CLR.B	-$00D0(A5)
+	MOVE.W	#1,-$0008(A5)
+	MOVE.W	#32,-$000A(A5)
+	MOVE.W	#10000,-$000C(A5)
+	MOVEA.L	A3,A6
+	ADDQ.L	#1,A3
+	MOVE.B	(A6),D3
+	EXT.W	D3
+	MOVE.W	D3,D4
+	CMP.W	#$002D,D3
+	BNE.B	L00C34
+
+	CLR.W	-$0008(A5)
+	MOVEA.L	A3,A6
+	ADDQ.L	#1,A3
+	MOVE.B	(A6),D3
+	EXT.W	D3
+	MOVE.W	D3,D4
+L00C34:
+	CMP.W	#$0030,D4	;'0'
+	BNE.B	L00C35
+
+	MOVE.W	#$0030,-$000A(A5)
+	MOVEA.L	A3,A6
+	ADDQ.L	#1,A3
+	MOVE.B	(A6),D3
+	EXT.W	D3
+	MOVE.W	D3,D4
+L00C35:
+	CMP.W	#$002A,D4	;'*'
+	BNE.B	L00C36
+
+	MOVEA.L	-$0004(A5),A6
+	ADDQ.L	#2,-$0004(A5)
+	MOVE.W	(A6),-$000E(A5)
+	MOVEA.L	A3,A6
+	ADDQ.L	#1,A3
+	MOVE.B	(A6),D3
+	EXT.W	D3
+	MOVE.W	D3,D4
+	BRA.B	L00C39
+L00C36:
+	CLR.W	-$000E(A5)
+	BRA.B	L00C38
+L00C37:
+	MOVE.W	-$000E(A5),D3
+	MULU.W	#$000A,D3
+	ADD.W	D4,D3
+	SUB.W	#$0030,D3
+	MOVE.W	D3,-$000E(A5)
+	MOVEA.L	A3,A6
+	ADDQ.L	#1,A3
+	MOVE.B	(A6),D3
+	EXT.W	D3
+	MOVE.W	D3,D4
+L00C38:
+	LEA	-$55CA(A4),A6		;_ctp_
+	moveq	#$0004,D2
+	AND.B	$00(A6,D4.W),D2
+	BNE.B	L00C37
+L00C39:
+	CMP.W	#$002E,D4	;'.'
+	BNE.B	L00C3D
+
+	MOVEA.L	A3,A6
+	ADDQ.L	#1,A3
+	MOVE.B	(A6),D3
+	EXT.W	D3
+	MOVE.W	D3,D4
+	CMP.W	#$002A,D3	;'*'
+	BNE.B	L00C3A
+
+	MOVEA.L	-$0004(A5),A6
+	ADDQ.L	#2,-$0004(A5)
+	MOVE.W	(A6),-$000C(A5)
+	MOVEA.L	A3,A6
+	ADDQ.L	#1,A3
+	MOVE.B	(A6),D3
+	EXT.W	D3
+	MOVE.W	D3,D4
+	BRA.B	L00C3D
+L00C3A:
+	CLR.W	-$000C(A5)
+	BRA.B	L00C3C
+L00C3B:
+	MOVE.W	-$000C(A5),D3
+	MULU.W	#$000A,D3
+	ADD.W	D4,D3
+	SUB.W	#$0030,D3
+	MOVE.W	D3,-$000C(A5)
+	MOVEA.L	A3,A6
+	ADDQ.L	#1,A3
+	MOVE.B	(A6),D3
+	EXT.W	D3
+	MOVE.W	D3,D4
+L00C3C:
+	LEA	-$55CA(A4),A6		;_ctp_
+	moveq	#$0004,D2
+	AND.B	$00(A6,D4.W),D2
+	BNE.B	L00C3B
+L00C3D:
+	MOVE.W	#$0002,-$0010(A5)
+	CMP.W	#$006C,D4		;'l' long
+	BNE.B	L00C3E
+
+	MOVEA.L	A3,A6
+	ADDQ.L	#1,A3
+	MOVE.B	(A6),D3
+	EXT.W	D3
+	MOVE.W	D3,D4
+	MOVE.W	#$0004,-$0010(A5)
+	BRA.B	L00C3F
+L00C3E:
+	CMP.W	#$0068,D4	;'h' hex
+	BNE.B	L00C3F
+
+	MOVEA.L	A3,A6
+	ADDQ.L	#1,A3
+	MOVE.B	(A6),D3
+	EXT.W	D3
+	MOVE.W	D3,D4
+L00C3F:
+	MOVE.W	D4,D0
+;	EXT.L	D0
+	BRA.B	L00C48
+L00C40:
+	MOVE.W	#$0008,-$0012(A5)
+	BRA.B	L00C44
+L00C41:
+	MOVE.W	#$000A,-$0012(A5)
+	BRA.B	L00C44
+L00C42:
+	MOVE.W	#$0010,-$0012(A5)
+	BRA.B	L00C44
+L00C43:
+	MOVE.W	#$FFF6,-$0012(A5)
+L00C44:
+	MOVE.W	-$0010(A5),-(A7)
+	PEA	-$00D0(A5)
+	MOVE.W	-$0012(A5),-(A7)
+	MOVE.L	-$0004(A5),-(A7)
+	JSR	L00C2D(PC)
+	LEA	$000C(A7),A7
+	MOVE.L	D0,-$0016(A5)
+	MOVE.W	-$0010(A5),D3
+	EXT.L	D3
+	ADD.L	D3,-$0004(A5)
+	BRA.B	L00C49
+L00C45:
+	MOVEA.L	-$0004(A5),A6
+	ADDQ.L	#4,-$0004(A5)
+	MOVE.L	(A6),-$0016(A5)
+	MOVE.L	-$0016(A5),A0
+	JSR	_strlenquick
+
+	MOVE.W	D0,-$0010(A5)
+	BRA.B	L00C4A
+L00C46:
+	MOVEA.L	-$0004(A5),A6
+	ADDQ.L	#2,-$0004(A5)
+	MOVE.W	(A6),D4
+L00C47:
+	LEA	-$00D1(A5),A6
+	MOVE.L	A6,-$0016(A5)
+	MOVE.B	D4,(A6)
+	BRA.B	L00C49
+L00C48:
+	SUB.w	#$0063,D0	;'c' char
+	BEQ.B	L00C46
+	SUBQ.w	#1,D0		;'d' decimal
+	BEQ.B	L00C43
+	SUB.w	#$000B,D0	;'p' pointer
+	BEQ.W	L00C40
+	SUBQ.w	#4,D0		;'u' unsigned word
+	BEQ.B	L00C45
+	SUBQ.w	#2,D0		;'w' word
+	BEQ.W	L00C41
+	SUBQ.w	#3,D0		;'z' long?
+	BEQ.W	L00C42
+	BRA.B	L00C47
+L00C49:
+	LEA	-$00D0(A5),A6
+	SUBA.L	-$0016(A5),A6
+	MOVE.W	A6,-$0010(A5)
+L00C4A:
+	MOVE.W	-$0010(A5),D3
+	CMP.W	-$000C(A5),D3
+	BLE.B	L00C4B
+	MOVE.W	-$000C(A5),-$0010(A5)
+L00C4B:
+	TST.W	-$0008(A5)
+	BEQ.B	L00C52
+
+	MOVEA.L	-$0016(A5),A6
+	MOVE.B	(A6),D3
+	EXT.W	D3
+
+	CMP.W	#$002D,D3	;'-'
+	BEQ.B	L00C4C
+
+	CMP.W	#$002B,D3	;'+'
+	BNE.B	L00C4E
+L00C4C:
+	CMPI.W	#$0030,-$000A(A5)	;'0'
+	BNE.B	L00C4E
+
+	SUBQ.W	#1,-$000E(A5)
+	MOVEA.L	-$0016(A5),A6
+	ADDQ.L	#1,-$0016(A5)
+	MOVE.B	(A6),D3
+	EXT.W	D3
+	MOVE.W	D3,-(A7)
+	JSR	(A2)
+	ADDQ.W	#2,A7
+	CMP.W	#$FFFF,D0
+	BNE.B	L00C4E
+
+	MOVEQ	#-$01,D0
+L00C4D:
+	MOVEM.L	(A7)+,D4/A2/A3
+	UNLK	A5
+	RTS
+
+L00C4E:
+	BRA.B	L00C51
+L00C4F:
+	MOVE.W	-$000A(A5),-(A7)
+	JSR	(A2)
+	ADDQ.W	#2,A7
+	CMP.W	#$FFFF,D0
+	BNE.B	L00C50
+
+	MOVEQ	#-$01,D0
+	BRA.B	L00C4D
+L00C50:
+	ADDQ.W	#1,-$0006(A5)
+L00C51:
+	MOVE.W	-$000E(A5),D3
+	SUBQ.W	#1,-$000E(A5)
+	CMP.W	-$0010(A5),D3
+	BGT.B	L00C4F
+L00C52:
+	CLR.W	-$0012(A5)
+	BRA.B	L00C55
+L00C53:
+	MOVEA.L	-$0016(A5),A6
+	ADDQ.L	#1,-$0016(A5)
+	MOVE.B	(A6),D3
+	EXT.W	D3
+	MOVE.W	D3,-(A7)
+	JSR	(A2)
+	ADDQ.W	#2,A7
+	CMP.W	#$FFFF,D0
+	BNE.B	L00C54
+	MOVEQ	#-$01,D0
+	BRA.B	L00C4D
+L00C54:
+	ADDQ.W	#1,-$0012(A5)
+L00C55:
+	MOVEA.L	-$0016(A5),A6
+	TST.B	(A6)
+	BEQ.B	L00C56
+	MOVE.W	-$0012(A5),D3
+	CMP.W	-$000C(A5),D3
+	BLT.B	L00C53
+L00C56:
+	MOVE.W	-$0012(A5),D3
+	ADD.W	D3,-$0006(A5)
+	TST.W	-$0008(A5)
+	BNE.B	L00C5A
+	BRA.B	L00C59
+L00C57:
+	MOVE.W	#$0020,-(A7)
+	JSR	(A2)
+	ADDQ.W	#2,A7
+	CMP.W	#$FFFF,D0
+	BNE.B	L00C58
+	MOVEQ	#-$01,D0
+	BRA.W	L00C4D
+L00C58:
+	ADDQ.W	#1,-$0006(A5)
+L00C59:
+	MOVE.W	-$000E(A5),D3
+	SUBQ.W	#1,-$000E(A5)
+	CMP.W	-$0010(A5),D3
+	BGT.B	L00C57
+L00C5A:
+	BRA.B	L00C5D
+L00C5B:
+	MOVE.W	D4,-(A7)
+	JSR	(A2)
+	ADDQ.W	#2,A7
+	CMP.W	#$FFFF,D0
+	BNE.B	L00C5C
+	MOVEQ	#-$01,D0
+	BRA.W	L00C4D
+L00C5C:
+	ADDQ.W	#1,-$0006(A5)
+L00C5D:
+	BRA.W	L00C33
+L00C5E:
+	MOVE.W	-$0006(A5),D0
+	BRA.W	L00C4D
+
+_mods:
+	MOVE.L	D4,-(A7)
+	CLR.L	D4
+	TST.L	D0
+	BPL.B	L00C63
+	NEG.L	D0
+	ADDQ.W	#1,D4
+L00C63:
+	TST.L	D1
+	BPL.B	L00C64
+	NEG.L	D1
+	EORI.W	#$0001,D4
+L00C64:
+	BSR.B	_divu
+	MOVE.L	D1,D0
+	TST.W	D4
+	BEQ.B	L00C62
+	NEG.L	D0
+L00C62:
+	MOVE.L	(A7)+,D4
+	RTS
+
+_modu:
+	BSR.B	_divu
+	MOVE.L	D1,D0
+	RTS
+
+_divu:
+	MOVEM.L	D2/D3,-(A7)
+	SWAP	D1
+	TST.W	D1
+	BNE.B	L00C66
+	SWAP	D1
+	CLR.W	D3
+	DIVU.W	D1,D0
+	BVC.B	L00C65
+	MOVE.W	D0,D2
+	CLR.W	D0
+	SWAP	D0
+	DIVU.W	D1,D0
+	MOVE.W	D0,D3
+	MOVE.W	D2,D0
+	DIVU.W	D1,D0
+L00C65:
+	MOVE.L	D0,D1
+	SWAP	D0
+	MOVE.W	D3,D0
+	SWAP	D0
+	CLR.W	D1
+	SWAP	D1
+	MOVEM.L	(A7)+,D2/D3
+	RTS
+
+L00C66:
+	SWAP	D1
+	CLR.L	D2
+	MOVEQ	#$1F,D3
+L00C67:
+	ASL.L	#1,D0
+	ROXL.L	#1,D2
+	SUB.L	D1,D2
+	BMI.B	L00C6A
+L00C68:
+	ADDQ.L	#1,D0
+	DBF	D3,L00C67
+	BRA.B	L00C6B
+L00C69:
+	ASL.L	#1,D0
+	ROXL.L	#1,D2
+	ADD.L	D1,D2
+	BPL.B	L00C68
+L00C6A:
+	DBF	D3,L00C69
+	ADD.L	D1,D2
+L00C6B:
+	MOVE.L	D2,D1
+	MOVEM.L	(A7)+,D2/D3
+	RTS
+
+_fwrite:
+	LINK	A5,#-$0000
+	MOVEM.L	D4/D5/A2,-(A7)
+	MOVEA.L	$0008(A5),A2
+	MOVE.W	$000C(A5),D5
+	MULU.W	$000E(A5),D5
+	MOVEQ	#$00,D4
+	BRA.B	L00C6F
+L00C6C:
+	MOVE.L	$0010(A5),-(A7)
+	MOVEA.L	A2,A6
+	ADDQ.L	#1,A2
+	MOVE.B	(A6),D3
+	EXT.W	D3
+	MOVE.W	D3,-(A7)
+	JSR	_putc(PC)
+	ADDQ.W	#6,A7
+	CMP.W	#$FFFF,D0
+	BNE.B	L00C6E
+
+	MOVEQ	#$00,D0
+L00C6D:
+	MOVEM.L	(A7)+,D4/D5/A2
+	UNLK	A5
+	RTS
+
+L00C6E:
+	ADDQ.W	#1,D4
+L00C6F:
+	CMP.W	D5,D4
+	BCS.B	L00C6C
+	MOVE.W	$000E(A5),D0
+	BRA.B	L00C6D
+
+_putc:
+	LINK	A5,#-$0000
+	MOVE.L	A2,-(A7)
+
+	MOVEA.L	$000A(A5),A2
+	MOVEA.L	(A2),A6
+	CMPA.L	$0004(A2),A6
+	BCS.B	L00C71
+
+	MOVE.W	$0008(A5),D3
+	AND.W	#$00FF,D3
+	MOVE.W	D3,-(A7)
+	MOVE.L	A2,-(A7)
+	JSR	_flsh_(PC)
+	ADDQ.W	#6,A7
+L00C70:
+	MOVEA.L	(A7)+,A2
+	UNLK	A5
+	RTS
+
+L00C71:
+	MOVEA.L	(A2),A6
+	ADDQ.L	#1,(A2)
+	MOVE.B	$0009(A5),D0
+	MOVE.B	D0,(A6)
+;	EXT.W	D0
+	AND.W	#$00FF,D0
+	BRA.B	L00C70
+
+; callback for flsh
+
+L00C72:
+;	LINK	A5,#-$0000
+	MOVE.L	A2,-(A7)
+
+	LEA	-$578A(A4),A2	;_Cbuffs
+L00C73:
+	MOVE.L	A2,-(A7)
+	BSR.B	_fclose
+	ADDQ.W	#4,A7
+
+	ADDA.L	#$00000016,A2
+
+	LEA	-$55D2(A4),A6	;_cls_
+	CMPA.L	A6,A2
+	BCS.B	L00C73
+
+	MOVEA.L	(A7)+,A2
+;	UNLK	A5
+	RTS
+
+_fclose:
+	LINK	A5,#-$0000
+	MOVEM.L	D4/A2,-(A7)
+
+	MOVEA.L	$0008(A5),A2
+	MOVEQ	#$00,D4
+	MOVE.L	A2,D3
+	BNE.B	L00C75
+
+	MOVEQ	#-$01,D0
+L00C74:
+	MOVEM.L	(A7)+,D4/A2
+	UNLK	A5
+	RTS
+
+L00C75:
+	TST.B	$000C(A2)
+	BEQ.B	L00C78
+
+	MOVE.B	$000C(A2),D3
+;	EXT.W	D3
+	AND.W	#$0004,D3
+	BEQ.B	L00C76
+
+	MOVE.W	#$FFFF,-(A7)
+	MOVE.L	A2,-(A7)
+	BSR.B	_flsh_
+	ADDQ.W	#6,A7
+	MOVE.W	D0,D4
+L00C76:
+	MOVE.B	$000D(A2),D3
+	EXT.W	D3
+	MOVE.W	D3,-(A7)
+	JSR	_close
+	ADDQ.W	#2,A7
+	OR.W	D0,D4
+	MOVE.B	$000C(A2),D3
+;	EXT.W	D3
+	AND.W	#$0002,D3
+	BEQ.B	L00C77
+
+	MOVE.L	$0008(A2),-(A7)
+	JSR	_free
+	ADDQ.W	#4,A7
+L00C77:
+	MOVE.B	$000C(A2),D3
+;	EXT.W	D3
+	AND.W	#$0020,D3
+	BEQ.B	L00C78
+
+	MOVE.L	$0012(A2),-(A7)
+	JSR	_unlink(PC)
+	ADDQ.W	#4,A7
+	MOVE.L	$0012(A2),-(A7)
+	JSR	_free
+	ADDQ.W	#4,A7
+L00C78:
+	CLR.L	(A2)
+	CLR.L	$0004(A2)
+	CLR.L	$0008(A2)
+	CLR.B	$000C(A2)
+	MOVE.W	D4,D0
+	BRA.B	L00C74
+
+_flsh_:
+	LINK	A5,#-$0002
+	MOVEM.L	D4/A2,-(A7)
+
+	MOVEA.L	$0008(A5),A2
+	LEA	L00C72(PC),A6
+	MOVE.L	A6,-$55D2(A4)	;_cls_
+	MOVE.B	$000C(A2),D3
+;	EXT.W	D3
+	AND.W	#$0010,D3
+	BEQ.B	L00C7A
+
+	MOVEQ	#-$01,D0
+L00C79:
+	MOVEM.L	(A7)+,D4/A2
+	UNLK	A5
+	RTS
+
+L00C7A:
+	MOVE.B	$000C(A2),D3
+;	EXT.W	D3
+	AND.W	#$0004,D3
+	BEQ.B	L00C7C
+
+	MOVE.L	(A2),D3
+	SUB.L	$0008(A2),D3
+	MOVE.W	D3,D4
+
+	MOVE.W	D4,-(A7)
+	MOVE.L	$0008(A2),-(A7)
+	MOVE.B	$000D(A2),D3
+	EXT.W	D3
+	MOVE.W	D3,-(A7)
+	JSR	_write
+	ADDQ.W	#8,A7
+
+	CMP.W	D4,D0
+	BEQ.B	L00C7C
+L00C7B:
+	ORI.B	#$10,$000C(A2)
+	CLR.L	(A2)
+	CLR.L	$0004(A2)
+	MOVEQ	#-$01,D0
+	BRA.B	L00C79
+L00C7C:
+	CMPI.W	#$FFFF,$000C(A5)
+	BNE.B	L00C7D
+
+	ANDI.B	#$FB,$000C(A2)
+	CLR.L	(A2)
+	CLR.L	$0004(A2)
+	MOVEQ	#$00,D0
+	BRA.B	L00C79
+L00C7D:
+	TST.L	$0008(A2)
+	BNE.B	L00C7E
+
+	MOVE.L	A2,-(A7)
+	JSR	_getbuff(PC)
+	ADDQ.W	#4,A7
+L00C7E:
+	CMPI.W	#$0001,$0010(A2)
+	BNE.B	L00C7F
+
+	MOVE.B	$000D(A5),-$0001(A5)
+	MOVE.W	#$0001,-(A7)
+	PEA	-$0001(A5)
+	MOVE.B	$000D(A2),D3
+	EXT.W	D3
+	MOVE.W	D3,-(A7)
+	JSR	_write
+	ADDQ.W	#8,A7
+	CMP.W	#$0001,D0
+	BNE.B	L00C7B
+
+	MOVE.W	$000C(A5),D0
+	BRA.W	L00C79
+L00C7F:
+	MOVE.L	$0008(A2),(A2)
+	MOVE.W	$0010(A2),D3
+	EXT.L	D3
+	ADD.L	$0008(A2),D3
+	MOVE.L	D3,$0004(A2)
+	ORI.B	#$04,$000C(A2)
+	MOVEA.L	(A2),A6
+	ADDQ.L	#1,(A2)
+	MOVE.B	$000D(A5),D0
+	MOVE.B	D0,(A6)
+;	EXT.W	D0
+	AND.W	#$00FF,D0
+	BRA.W	L00C79
+
+;_newstream:
+;;	LINK	A5,#-$0000
+;	MOVE.L	A2,-(A7)
+;	LEA	-$578A(A4),A2	;_Cbuffs
+;	LEA	-$55D2(A4),A6	;_cls_
+;
+;1$	TST.B	$000C(A2)
+;	BEQ.B	3$
+;	ADDA.L	#$00000016,A2
+;	CMPA.L	A6,A2
+;	BCS.B	1$
+;
+;	MOVEQ	#$00,D0
+;2$
+;	MOVEA.L	(A7)+,A2
+;;	UNLK	A5
+;	RTS
+;
+;3$	MOVE.L	A2,D0
+;	CLR.L	(A2)+
+;	CLR.L	(A2)+
+;	CLR.L	(A2)+
+;	BRA.B	2$
+
+_getbuff:
+	LINK	A5,#-$0004
+	MOVE.L	A2,-(A7)
+	MOVEA.L	$0008(A5),A2
+	MOVE.B	$000D(A2),D3
+	EXT.W	D3
+	MOVE.W	D3,-(A7)
+	JSR	_isatty(PC)
+	ADDQ.W	#2,A7
+	TST.W	D0
+	BEQ.B	L00C86
+L00C84:
+	MOVE.W	#$0001,$0010(A2)
+	MOVE.L	A2,D3
+	ADD.L	#$0000000E,D3
+	MOVE.L	D3,$0008(A2)
+L00C85:
+	MOVEA.L	(A7)+,A2
+	UNLK	A5
+	RTS
+
+L00C86:
+	MOVE.W	#$0400,-(A7)
+	JSR	_malloc
+	ADDQ.W	#2,A7
+	MOVE.L	D0,-$0004(A5)
+;	TST.L	D0
+	BEQ.B	L00C84
+
+	MOVE.W	#$0400,$0010(A2)
+	ORI.B	#$02,$000C(A2)
+	MOVE.L	-$0004(A5),$0008(A2)
+	BRA.B	L00C85
+
+; callback routine for freemem?
+
+L00C87:
+	LINK	A5,#-$0000
+	MOVEM.L	A2/A3,-(A7)
+	MOVEA.L	-$52E6(A4),A2
+	BRA.B	L00C89
+L00C88:
+	MOVEA.L	(A2),A3
+	MOVEA.L	$0004(A2),A6
+	PEA	$0008(A6)
+	MOVE.L	A2,-(A7)
+	JSR	_FreeMem(PC)
+	ADDQ.W	#8,A7
+	MOVEA.L	A3,A2
+L00C89:
+	MOVE.L	A2,D3
+	BNE.B	L00C88
+	CLR.L	-$52E6(A4)
+	MOVEM.L	(A7)+,A2/A3
+	UNLK	A5
+	RTS
+
+; 32bit memory allocation
+
+_lmalloc2:
+	LINK	A5,#-$0000
+	MOVE.L	A2,-(A7)
+
+	LEA	L00C87(PC),A6
+	MOVE.L	A6,-$55CE(A4)	;__cln
+	move.l	#2,-(a7)	; chip memory
+
+	MOVEA.L	$0008(A5),A6
+	PEA	$0008(A6)
+	JSR	_AllocMem(PC)
+	ADDQ.W	#8,A7
+
+	MOVEA.L	D0,A2
+	TST.L	D0
+	BNE.B	L00C8B
+
+	MOVEA.L	(A7)+,A2
+	UNLK	A5
+	RTS
+
+_lmalloc:
+	LINK	A5,#-$0000
+	MOVE.L	A2,-(A7)
+
+	LEA	L00C87(PC),A6
+	MOVE.L	A6,-$55CE(A4)	;__cln
+	CLR.L	-(A7)		; any sort of memory
+
+	MOVEA.L	$0008(A5),A6
+	PEA	$0008(A6)
+	JSR	_AllocMem(PC)
+	ADDQ.W	#8,A7
+
+	MOVEA.L	D0,A2
+	TST.L	D0
+	BNE.B	L00C8B
+
+L00C8A:
+	MOVEA.L	(A7)+,A2
+	UNLK	A5
+	RTS
+
+L00C8B:
+	MOVE.L	-$52E6(A4),(A2)
+	MOVE.L	$0008(A5),$0004(A2)
+	MOVE.L	A2,-$52E6(A4)
+	MOVE.L	A2,D0
+	ADDQ.L	#8,D0
+	BRA.B	L00C8A
+
+; 16bit memory allocation
+
+_malloc:
+;	LINK	A5,#-$0000
+	MOVEQ	#$00,D3
+;	MOVE.W	$0008(A5),D3
+	move.w	$0004(A7),D3
+
+	MOVE.L	D3,-(A7)
+	BSR.B	_lmalloc
+	ADDQ.W	#4,A7
+;	UNLK	A5
+	RTS
+
+_free:
+	LINK	A5,#-$0000
+	MOVEM.L	A2/A3,-(A7)
+	SUBA.L	A3,A3
+	MOVEA.L	-$52E6(A4),A2
+	BRA.B	L00C8D
+L00C8C:
+	MOVEA.L	$0008(A5),A6
+	SUBQ.L	#8,A6
+	CMPA.L	A2,A6
+	BEQ.B	L00C8F
+
+	MOVEA.L	A2,A3
+	MOVEA.L	(A2),A2
+L00C8D:
+	MOVE.L	A2,D3
+	BNE.B	L00C8C
+
+	MOVEQ	#-$01,D0
+L00C8E:
+	MOVEM.L	(A7)+,A2/A3
+	UNLK	A5
+	RTS
+
+L00C8F:
+	MOVE.L	A3,D3
+	BEQ.B	L00C90
+	MOVE.L	(A2),(A3)
+	BRA.B	L00C91
+L00C90:
+	MOVE.L	(A2),-$52E6(A4)
+L00C91:
+	MOVEA.L	$0004(A2),A6
+	PEA	$0008(A6)
+	MOVE.L	A2,-(A7)
+	JSR	_FreeMem(PC)
+	ADDQ.W	#8,A7
+	MOVEQ	#$00,D0
+	BRA.B	L00C8E
+
+_isatty:
+	LINK	A5,#-$0000
+	MOVE.W	$0008(A5),D3
+	MULS.W	#$0006,D3
+	LEA	-$4758(A4),A6		;__devtab
+	MOVE.L	$00(A6,D3.L),-(A7)
+	JSR	_IsInteractive(PC)
+	ADDQ.W	#4,A7
+;	TST.L	D0
+;	BEQ.B	L00C92
+;	MOVE.W	#$0001,D0
+;	BRA.B	L00C93
+;L00C92:
+;	CLR.W	D0
+;L00C93:
+	UNLK	A5
+	RTS
+
+_unlink:
+;	LINK	A5,#-$0000
+	MOVE.L	$0004(A7),-(A7)
+	JSR	_DeleteFile(PC)
+	ADDQ.W	#4,A7
+	TST.L	D0
+	BNE.B	L00C95
+	JSR	_IoErr(PC)
+	MOVE.W	D0,-$46E0(A4)	;_errno
+	MOVEQ	#-$01,D0
+L00C94:
+;	UNLK	A5
+	RTS
+
+L00C95:
+	MOVEQ	#$00,D0
+	BRA.B	L00C94
+
+_write:
+	LINK	A5,#-$0000
+	MOVEM.L	D4/D5/A2,-(A7)
+	MOVE.W	$0008(A5),D4
+	JSR	_Chk_Abort(PC)
+	MOVE.W	D4,D3
+	BLT.B	L00C96
+
+	MULS.W	#$0006,D3
+	LEA	-$4758(A4),A2		;__devtab
+	ADDA.L	D3,A2
+
+	CMP.W	#$0013,D4
+	BGT.B	L00C96
+
+	TST.L	(A2)
+	BNE.B	L00C98
+L00C96:
+	MOVE.W	#$0003,-$46E0(A4)	;_errno
+L00C97b:
+	MOVEQ	#-$01,D0
+L00C97:
+	MOVEM.L	(A7)+,D4/D5/A2
+	UNLK	A5
+	RTS
+
+L00C98:
+	MOVE.W	$0004(A2),D3
+	AND.W	#$0003,D3
+	BNE.B	L00C99
+
+	MOVE.W	#$0006,-$46E0(A4)	;_errno
+	BRA.B	L00C97b
+L00C99:
+	MOVEQ	#$00,D3
+	MOVE.W	$000E(A5),D3
+	MOVE.L	D3,-(A7)
+	MOVE.L	$000A(A5),-(A7)
+	MOVE.L	(A2),-(A7)
+	JSR	_Write(PC)
+	LEA	$000C(A7),A7
+	CMP.L	#$FFFFFFFF,D0
+	BNE.B	L00C97
+
+	JSR	_IoErr(PC)
+	MOVE.W	D0,-$46E0(A4)	;_errno
+	BRA.B	L00C97b
+
+_Chk_Abort:
+	LINK	A5,#-$0004
+
+	PEA	$1000
+	CLR.L	-(A7)
+	JSR	_SetSignal(PC)
+	ADDQ.W	#8,A7
+
+	MOVE.L	D0,-$0004(A5)
+	AND.L	#$00001000,D0
+	BNE.B	L00C9C
+
+	MOVEQ	#$00,D0
+L00C9B:
+	UNLK	A5
+	RTS
+
+L00C9C:
+	TST.W	-$46DE(A4)
+	BNE.B	L00C9D
+	MOVE.L	-$0004(A5),D0
+	BRA.B	L00C9B
+L00C9D:
+	PEA	$0004
+	PEA	L00C9E(PC)
+	JSR	_Output(PC)
+	MOVE.L	D0,-(A7)
+	JSR	_Write(PC)
+	LEA	$000C(A7),A7
+	MOVE.W	#$0001,-(A7)
+	JSR	_exit
+	ADDQ.W	#2,A7
+	BRA.B	L00C9B
+L00C9E:
+	dc.b	"^C",10,0
+
+_exit:
+	LINK	A5,#-$0000
+	TST.L	-$55D2(A4)	;_cls_
+	BEQ.B	L00C9F
+	MOVEA.L	-$55D2(A4),A6	;_cls_
+	JSR	(A6)
+L00C9F:
+	MOVE.W	$0008(A5),-(A7)
+	JSR	__exit(PC)
+	ADDQ.W	#2,A7
+	UNLK	A5
+	RTS
+
+__main:
+	LINK	A5,#-$0004
+	MOVEM.L	D4-D6/A2/A3,-(A7)
+	PEA	$001F			;version 31
+	PEA	L00CAF(PC)		; dos.library
+	JSR	_OpenLibrary(PC)
+	ADDQ.W	#8,A7
+	MOVE.L	D0,-$46DC(A4)		;_DOSBase
+;	TST.L	D0
+;	BNE.B	L00CA1
+	bne	L00CA2		; no need for mathffp.library
+
+	CLR.L	-(A7)
+	PEA	$00038007
+	JSR	_Alert(PC)
+	ADDQ.W	#8,A7
+L00CA0:
+	MOVEA.L	-$4760(A4),A7		;__savsp
+	RTS
+
+;L00CA1:
+;	PEA	$001F			;version 31
+;	PEA	L00CB0(PC)		;mathffp.library
+;	JSR	__OpenLibrary(PC)
+;	ADDQ.W	#8,A7
+;	MOVE.L	D0,-$46D8(A4)
+;;	TST.L	D0
+;	BNE.B	L00CA2
+;	CLR.L	-(A7)
+;	PEA	$00038005
+;	JSR	_Alert(PC)
+;	ADDQ.W	#8,A7
+;	BRA.B	L00CA0
+L00CA2:
+	CLR.L	-(A7)
+	JSR	_FindTask(PC)
+	ADDQ.W	#4,A7
+	MOVEA.L	D0,A3
+	TST.L	$00AC(A3)
+	BEQ.W	L00CAB
+
+	MOVE.L	$00AC(A3),D3
+	ASL.L	#2,D3
+	MOVE.L	D3,D5
+	MOVEA.L	D5,A6
+	MOVE.L	$0010(A6),D3
+	ASL.L	#2,D3
+	MOVEA.L	D3,A2
+	MOVE.B	(A2),D3
+	EXT.W	D3
+	EXT.L	D3
+	ADD.L	$0008(A5),D3
+	ADDQ.L	#2,D3
+	MOVE.W	D3,-$52E0(A4)
+	CLR.L	-(A7)
+	MOVE.W	-$52E0(A4),D3
+	EXT.L	D3
+	MOVE.L	D3,-(A7)
+	JSR	_AllocMem(PC)
+	ADDQ.W	#8,A7
+	MOVE.L	D0,-$52DA(A4)
+	MOVE.B	(A2),D3
+	EXT.W	D3
+	MOVE.W	D3,-(A7)
+	PEA	$0001(A2)
+	MOVE.L	-$52DA(A4),-(A7)
+	JSR	_strncpy
+	LEA	$000A(A7),A7
+	PEA	L00CB1(PC)
+	MOVE.B	(A2),D3
+	EXT.W	D3
+	EXT.L	D3
+	ADD.L	-$52DA(A4),D3
+	MOVE.L	D3,-(A7)
+	JSR	_strcpy
+	ADDQ.W	#8,A7
+	MOVE.W	$000A(A5),D3
+	ADDQ.W	#1,D3
+	MOVE.W	D3,-(A7)
+	MOVE.L	$000C(A5),-(A7)
+	MOVE.L	-$52DA(A4),-(A7)
+	JSR	_strncat(PC)
+	LEA	$000A(A7),A7
+	CLR.W	-$52E2(A4)
+	MOVEA.L	-$52DA(A4),A2
+L00CA3:
+	moveq	#0,d3
+	LEA	-$55CA(A4),A6		;_ctp_
+
+1$	MOVE.B	(A2),D3
+	moveq	#$0010,D2
+	AND.B	$00(A6,D3.W),D2
+	BEQ.B	L00CA4
+	ADDQ.L	#1,A2
+	BRA.B	1$
+L00CA4:
+	MOVE.B	(A2),D3
+;	EXT.W	D3
+	CMP.b	#$20,D3		;' '
+	BLT.B	L00CA7
+
+	LEA	-$55CA(A4),A6		;_ctp_
+	moveq	#0,d4
+1$
+	MOVE.B	(A2),D4
+	BEQ.B	L00CA6
+	moveq	#$0010,D2
+	AND.B	$00(A6,D4.W),D2
+	BNE.B	L00CA6
+	ADDQ.L	#1,A2
+	BRA.B	1$
+L00CA6:
+	MOVEA.L	A2,A6
+	ADDQ.L	#1,A2
+	CLR.B	(A6)
+	TST.W	D4
+	BEQ.B	L00CA7
+	ADDQ.W	#1,-$52E2(A4)
+	BRA.B	L00CA3
+L00CA7:
+	CLR.B	(A2)
+	CLR.L	-(A7)
+	MOVE.W	-$52E2(A4),D3
+	ADDQ.W	#1,D3
+	EXT.L	D3
+	ASL.L	#2,D3
+	MOVE.L	D3,-(A7)
+	JSR	_AllocMem
+	ADDQ.W	#8,A7
+	MOVE.L	D0,-$52DE(A4)
+	MOVEQ	#$00,D4
+	MOVEA.L	-$52DA(A4),A2
+	BRA.B	L00CAA
+
+L00CA8:
+	moveq	#0,d3
+	LEA	-$55CA(A4),A6		;_ctp_
+
+1$	MOVE.B	(A2),D3
+	moveq	#$0010,D2
+	AND.B	$00(A6,D3.W),D2
+	BEQ.B	L00CA9
+	ADDQ.L	#1,A2
+	BRA.B	1$
+L00CA9:
+	MOVEQ	#$00,D3
+	MOVE.W	D4,D3
+	ASL.L	#2,D3
+	MOVEA.L	-$52DE(A4),A6
+	MOVE.L	A2,$00(A6,D3.L)
+	MOVE.L	A2,A0
+	JSR	_strlenquick
+
+	ADDQ.W	#1,D0
+	EXT.L	D0
+	ADDA.L	D0,A2
+	ADDQ.W	#1,D4
+L00CAA:
+	CMP.W	-$52E2(A4),D4
+	BCS.B	L00CA8
+	MOVEQ	#$00,D3
+	MOVE.W	D4,D3
+	ASL.L	#2,D3
+	MOVEA.L	-$52DE(A4),A6
+	CLR.L	$00(A6,D3.L)
+	JSR	_Input
+	MOVE.L	D0,-$4758(A4)		;__devtab
+	MOVE.W	#$8000,-$4754(A4)
+	JSR	_Output(PC)
+	MOVE.L	D0,-$4752(A4)
+	MOVE.W	#$8001,-$474E(A4)
+	JSR	_Output
+	MOVE.L	D0,-$474C(A4)
+	MOVE.W	#$8001,-$4748(A4)
+	MOVE.W	#$0001,-$46DE(A4)	;_Enable_Abort
+	MOVE.L	-$52DE(A4),-(A7)
+	MOVE.W	-$52E2(A4),-(A7)
+	JSR	_main
+	ADDQ.W	#6,A7
+	CLR.W	-(A7)
+	JSR	__exit
+	ADDQ.W	#2,A7
+	BRA.W	L00CAE
+L00CAB:
+	PEA	$005C(A3)
+	JSR	_WaitPort
+	ADDQ.W	#4,A7
+	PEA	$005C(A3)
+	JSR	_GetMsg
+	ADDQ.W	#4,A7
+	MOVE.L	D0,-$52D6(A4)
+	MOVEA.L	-$52D6(A4),A6
+	TST.L	$0024(A6)
+	BEQ.B	L00CAC
+	MOVEA.L	-$52D6(A4),A6
+	MOVEA.L	$0024(A6),A1
+	MOVE.L	(A1),-(A7)
+	JSR	_CurrentDir
+	ADDQ.W	#4,A7
+L00CAC:
+	MOVEA.L	-$52D6(A4),A6
+	TST.L	$0020(A6)
+	BEQ.B	L00CAD
+
+	PEA	$03ED
+	MOVEA.L	-$52D6(A4),A6
+	MOVE.L	$0020(A6),-(A7)
+	JSR	_Open
+	ADDQ.W	#8,A7
+	MOVE.L	D0,-$4758(A4)		;__devtab
+;	TST.L	D0
+	BEQ.B	L00CAD
+
+	MOVE.L	D0,D3
+	MOVE.L	D3,-$474C(A4)
+	MOVE.L	D3,-$4752(A4)
+	MOVE.W	#$8000,-$4754(A4)
+	MOVE.W	#$8001,-$4748(A4)
+	MOVE.W	#$8001,-$474E(A4)
+	ASL.L	#2,D3
+	MOVE.L	D3,-$0004(A5)
+	MOVEA.L	-$0004(A5),A6
+	MOVE.L	$0008(A6),$00A4(A3)
+L00CAD:
+	MOVE.L	-$52D6(A4),-(A7)
+	CLR.W	-(A7)
+	JSR	_main
+	ADDQ.W	#6,A7
+	CLR.W	-(A7)
+	BSR.B	__exit
+	ADDQ.W	#2,A7
+L00CAE:
+	MOVEM.L	(A7)+,D4-D6/A2/A3
+	UNLK	A5
+	RTS
+
+L00CAF:	dc.b	"dos.library",0
+;L00CB0:	dc.b	"mathffp.library",0
+L00CB1:	dc.b	" ",0
+
+__exit:
+	LINK	A5,#-$0002
+	CLR.W	-$0002(A5)
+L00CB2:
+	MOVE.W	-$0002(A5),-(A7)
+	JSR	_close
+	ADDQ.W	#2,A7
+	ADDQ.W	#1,-$0002(A5)
+	CMPI.W	#$000A,-$0002(A5)
+	BLT.B	L00CB2
+
+	TST.L	-$55CE(A4)	;__cln
+	BEQ.B	L00CB3
+
+	MOVEA.L	-$55CE(A4),A6	;__cln
+	JSR	(A6)
+L00CB3:
+;	TST.L	-$46D4(A4)		;_MathTransBase
+;	BEQ.B	L00CB4
+;	MOVE.L	-$46D4(A4),-(A7)
+;	JSR	_CloseLibrary(PC)
+;	ADDQ.W	#4,A7
+L00CB4:
+;	TST.L	-$46D8(A4)		;_MathBase
+;	BEQ.B	L00CB5
+;	MOVE.L	-$46D8(A4),-(A7)
+;	JSR	_CloseLibrary(PC)
+;	ADDQ.W	#4,A7
+L00CB5:
+	TST.L	-$52D6(A4)
+	BNE.B	L00CB6
+
+	MOVE.W	-$52E0(A4),D3
+	EXT.L	D3
+	MOVE.L	D3,-(A7)
+	MOVE.L	-$52DA(A4),-(A7)
+	JSR	_FreeMem
+	ADDQ.W	#8,A7
+
+	MOVE.W	-$52E2(A4),D3
+	ADDQ.W	#1,D3
+	EXT.L	D3
+	ASL.L	#2,D3
+	MOVE.L	D3,-(A7)
+	MOVE.L	-$52DE(A4),-(A7)
+	JSR	_FreeMem(PC)
+	ADDQ.W	#8,A7
+
+	MOVE.W	$0008(A5),D3
+	EXT.L	D3
+	MOVE.L	D3,-(A7)
+	JSR	_Exit
+	ADDQ.W	#4,A7
+	BRA.B	L00CB7
+L00CB6:
+	JSR	_Forbid
+	MOVE.L	-$52D6(A4),-(A7)
+	JSR	_ReplyMsg
+	ADDQ.W	#4,A7
+	MOVE.L	$0008(A5),D0
+	MOVEA.L	-$4760(A4),A7		;__savsp
+	RTS
+
+L00CB7:
+	UNLK	A5
+	RTS
+
+_strcat:
+	MOVEq	#-1,D0
+	BRA.B	L00CB8
+_strncat:
+	MOVE.W	$000C(A7),D0
+L00CB8:
+	MOVEA.L	$0004(A7),A0
+
+1$	TST.B	(A0)+
+	BNE.B	1$
+
+	SUBQ.W	#1,A0
+	MOVEA.L	$0008(A7),A1
+	SUBQ.W	#1,D0
+
+2$	MOVE.B	(A1)+,(A0)+
+	DBEQ	D0,2$
+
+	CLR.B	-(A0)
+	MOVE.L	$0004(A7),D0
+	RTS
+
+_strcpy:
+	MOVEA.L	$0004(A7),A0
+	MOVEA.L	$0008(A7),A1
+	moveq	#-1,d0
+
+1$	MOVE.B	(A1)+,(A0)+
+	DBEQ	d0,1$
+
+	MOVE.L	$0004(A7),D0
+	RTS
+
+_strlenquick:
+	moveq	#-1,d0
+
+1$	tst.b	(a0)+
+	dbeq	d0,1$
+
+	neg.w	d0
+	subq.w	#1,d0
+	rts
+
+;_strlen:
+;	MOVEA.L	$0004(A7),A0
+;	MOVE.L	A0,D0
+;
+;1$	TST.B	(A0)+
+;	BNE.B	1$
+;
+;	SUBA.L	D0,A0
+;	MOVE.L	A0,D0
+;	SUBQ.L	#1,D0
+;	RTS
+
+_strncpy:
+	MOVEM.L	$0004(A7),A0/A1
+	MOVE.L	A0,D0
+	MOVE.W	$000C(A7),D1
+	BRA.B	L00CBE
+L00CBD:
+	MOVE.B	(A1)+,(A0)+
+L00CBE:
+	DBEQ	D1,L00CBD
+	ADDQ.W	#1,D1
+	BRA.B	L00CC0
+L00CBF:
+	CLR.B	(A0)+
+L00CC0:
+	DBF	D1,L00CBF
+	RTS
+
+_close:
+	LINK	A5,#-$0000
+	MOVEM.L	D4-D6/A2,-(A7)
+
+	MOVE.W	$0008(A5),D4
+	MOVE.W	D4,D3
+	BLT.B	L00CC1
+
+	MULS.W	#$0006,D3
+	LEA	-$4758(A4),A2		;__devtab
+	ADDA.L	D3,A2
+
+	CMP.W	#$0013,D4
+	BGT.B	L00CC1
+
+	TST.L	(A2)
+	BNE.B	L00CC3
+L00CC1:
+	MOVE.W	#$0003,-$46E0(A4)	;_errno
+	MOVEQ	#-$01,D0
+L00CC2:
+	MOVEM.L	(A7)+,D4-D6/A2
+	UNLK	A5
+	RTS
+
+L00CC3:
+	MOVE.W	$0004(A2),D3
+	AND.W	#$8000,D3
+	BNE.B	L00CC4
+
+	MOVE.L	(A2),-(A7)
+	JSR	_Close
+	ADDQ.W	#4,A7
+L00CC4:
+	CLR.L	(A2)
+	MOVEQ	#$00,D0
+	BRA.B	L00CC2
+
+_Close:
+	MOVE.L	$0004(A7),D1
+	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	JMP	_LVOClose(A6)
+_CurrentDir:
+	MOVE.L	$0004(A7),D1
+	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	JMP	_LVOCurrentDir(A6)
+_DateStamp:
+	MOVE.L	$0004(A7),D1
+	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	JMP	_LVODateStamp(A6)
+_DeleteFile:
+	MOVE.L	$0004(A7),D1
+	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	JMP	_LVODeleteFile(A6)
+_Exit:
+	MOVE.L	$0004(A7),D1
+	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	JMP	_LVOExit(A6)
+_Input:
+	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	JMP	_LVOInput(A6)
+_IoErr:
+	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	JMP	_LVOIoErr(A6)
+_IsInteractive:
+	MOVE.L	$0004(A7),D1
+	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	JMP	_LVOIsInteractive(A6)
+_Lock:
+	MOVEM.L	$0004(A7),D1/D2
+	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	JMP	_LVOLock(A6)
+_Open:
+	MOVEM.L	$0004(A7),D1/D2
+	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	JMP	_LVOOpen(A6)
+_Output:
+	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	JMP	_LVOOutput(A6)
+_Read:
+	MOVEM.L	$0004(A7),D1-D3
+	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	JMP	_LVORead(A6)
+_Seek:
+	MOVEM.L	$0004(A7),D1-D3
+	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	JMP	_LVOSeek(A6)
+_UnLock:
+	MOVE.L	$0004(A7),D1
+	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	JMP	_LVOUnLock(A6)
+_Write:
+	MOVEM.L	$0004(A7),D1-D3
+	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	JMP	_LVOWrite(A6)
+
+_Alert:
+	MOVEM.L	D7/A5,-(A7)
+	MOVEM.L	$000C(A7),D7/A5
+	MOVEA.L	-$475C(A4),A6		;_SysBase
+	JSR	_LVOAlert(A6)
+	MOVEM.L	(A7)+,D7/A5
+	RTS
+_CloseDevice:
+	MOVEA.L	$0004(A7),A1
+	MOVEA.L	-$475C(A4),A6		;_SysBase
+	JMP	_LVOCloseDevice(A6)
+_CloseLibrary:
+	MOVEA.L	$0004(A7),A1
+	MOVEA.L	-$475C(A4),A6		;_SysBase
+	JMP	_LVOCloseLibrary(A6)
+
+_CreatePort:
+	LINK	A5,#-$0000
+	MOVEM.L	D4/A2,-(A7)
+	PEA	-$1
+	JSR	_AllocSignal(PC)
+	ADDQ.W	#4,A7
+	MOVE.L	D0,D4
+	CMP.L	#$FFFFFFFF,D0
+	BNE.B	L00CC6
+	MOVEQ	#$00,D0
+L00CC5:
+	MOVEM.L	(A7)+,D4/A2
+	UNLK	A5
+	RTS
+
+L00CC6:
+	PEA	$00010001
+	PEA	$0022
+	JSR	_AllocMem(PC)
+	ADDQ.W	#8,A7
+	MOVEA.L	D0,A2
+	TST.L	D0
+	BNE.B	L00CC7
+	MOVE.L	D4,-(A7)
+	JSR	_FreeSignal(PC)
+	ADDQ.W	#4,A7
+	MOVEQ	#$00,D0
+	BRA.B	L00CC5
+L00CC7:
+	MOVE.L	$0008(A5),$000A(A2)
+	MOVE.B	$000F(A5),$0009(A2)
+	MOVE.B	#$04,$0008(A2)
+	CLR.B	$000E(A2)
+	MOVE.B	D4,$000F(A2)
+	CLR.L	-(A7)
+	JSR	_FindTask(PC)
+	ADDQ.W	#4,A7
+	MOVE.L	D0,$0010(A2)
+	TST.L	$0008(A5)
+	BEQ.B	L00CC8
+	MOVE.L	A2,-(A7)
+	JSR	_AddPort(PC)
+	ADDQ.W	#4,A7
+	BRA.B	L00CC9
+L00CC8:
+	PEA	$0014(A2)
+	JSR	_NewList(PC)
+	ADDQ.W	#4,A7
+L00CC9:
+	MOVE.L	A2,D0
+	BRA.B	L00CC5
+
+_DeletePort:
+	LINK	A5,#-$0000
+	MOVE.L	A2,-(A7)
+	MOVEA.L	$0008(A5),A2
+	TST.L	$000A(A2)
+	BEQ.B	L00CCA
+	MOVE.L	A2,-(A7)
+	JSR	_RemPort(PC)
+	ADDQ.W	#4,A7
+L00CCA:
+	MOVE.B	#$FF,$0008(A2)
+	MOVE.L	#$FFFFFFFF,$0014(A2)
+	MOVEQ	#$00,D3
+	MOVE.B	$000F(A2),D3
+	MOVE.L	D3,-(A7)
+	JSR	_FreeSignal(PC)
+	ADDQ.W	#4,A7
+	PEA	$0022
+	MOVE.L	A2,-(A7)
+	JSR	_FreeMem(PC)
+	ADDQ.W	#8,A7
+	MOVEA.L	(A7)+,A2
+	UNLK	A5
+	RTS
+
+_AddPort:
+	MOVEA.L	$0004(A7),A1
+	MOVEA.L	-$475C(A4),A6		;_SysBase
+	JMP	_LVOAddPort(A6)
+_AllocSignal:
+	MOVE.L	$0004(A7),D0
+	MOVEA.L	-$475C(A4),A6		;_SysBase
+	JMP	_LVOAllocSignal(A6)
+_AllocMem:
+	MOVEM.L	$0004(A7),D0/D1
+	MOVEA.L	-$475C(A4),A6		;_SysBase
+	JMP	_LVOAllocMem(A6)
+_DoIO:
+	MOVEA.L	$0004(A7),A1
+	MOVEA.L	-$475C(A4),A6		;_SysBase
+	JMP	_LVODoIO(A6)
+_FindTask:
+	MOVEA.L	$0004(A7),A1
+	MOVEA.L	-$475C(A4),A6		;_SysBase
+	JMP	_LVOFindTask(A6)
+_Forbid:
+	MOVEA.L	-$475C(A4),A6		;_SysBase
+	JMP	_LVOForbid(A6)
+_FreeMem:
+	MOVEA.L	$0004(A7),A1
+	MOVE.L	$0008(A7),D0
+	MOVEA.L	-$475C(A4),A6		;_SysBase
+	JMP	_LVOFreeMem(A6)
+_FreeSignal:
+	MOVE.L	$0004(A7),D0
+	MOVEA.L	-$475C(A4),A6		;_SysBase
+	JMP	_LVOFreeSignal(A6)
+_GetMsg:
+	MOVEA.L	$0004(A7),A0
+	MOVEA.L	-$475C(A4),A6		;_SysBase
+	JMP	_LVOGetMsg(A6)
+
+_NewList:
+	MOVEA.L	$0004(A7),A0
+	MOVE.L	A0,(A0)
+	ADDQ.L	#4,(A0)
+	CLR.L	$0004(A0)
+	MOVE.L	A0,$0008(A0)
+	RTS
+
+_OpenDevice:
+	MOVEA.L	$0004(A7),A0
+	MOVEM.L	$0008(A7),D0/A1
+	MOVE.L	$0010(A7),D1
+	MOVEA.L	-$475C(A4),A6		;_SysBase
+	JMP	_LVOOpenDevice(A6)
+_OpenLibrary:
+	MOVEA.L	-$475C(A4),A6		;_SysBase
+	MOVEA.L	$0004(A7),A1
+	MOVE.L	$0008(A7),D0
+	JMP	_LVOOpenLibrary(A6)
+_Permit:
+	MOVEA.L	-$475C(A4),A6		;_SysBase
+	JMP	_LVOPermit(A6)
+_Remove:
+	MOVEA.L	$0004(A7),A1
+	MOVEA.L	-$475C(A4),A6		;_SysBase
+	JMP	_LVORemove(A6)
+_RemPort:
+	MOVEA.L	$0004(A7),A1
+	MOVEA.L	-$475C(A4),A6		;_SysBase
+	JMP	_LVORemPort(A6)
+_ReplyMsg:
+	MOVEA.L	$0004(A7),A1
+	MOVEA.L	-$475C(A4),A6		;_SysBase
+	JMP	_LVOReplyMsg(A6)
+_SetSignal:
+	MOVEM.L	$0004(A7),D0/D1
+	MOVEA.L	-$475C(A4),A6		;_SysBase
+	JMP	_LVOSetSignal(A6)
+_WaitPort:
+	MOVEA.L	$0004(A7),A0
+	MOVEA.L	-$475C(A4),A6		;_SysBase
+	JMP	_LVOWaitPort(A6)
+
+;_BltBitMap:
+;	MOVEM.L	D4-D7/A2,-(A7)
+;	MOVEA.L	$0018(A7),A0
+;	MOVEM.L	$001C(A7),D0/D1/A1
+;	MOVEM.L	$0028(A7),D2-D7/A2
+;	MOVEA.L	-$5184(A4),A6	;_GfxBase
+;	JSR	_LVOBltBitMap(A6)
+;	MOVEM.L	(A7)+,D4-D7/A2
+;	RTS
+_ClearEOL:
+	MOVEA.L	$0004(A7),A1
+	MOVEA.L	-$5184(A4),A6	;_GfxBase
+	JMP	_LVOClearEOL(A6)
+_ClearScreen:
+	MOVEA.L	$0004(A7),A1
+	MOVEA.L	-$5184(A4),A6	;_GfxBase
+	JMP	_LVOClearScreen(A6)
+_InitBitMap:
+	MOVEA.L	$0004(A7),A0
+	MOVEM.L	$0008(A7),D0-D2
+	MOVEA.L	-$5184(A4),A6	;_GfxBase
+	JMP	_LVOInitBitMap(A6)
+_GfxMove:
+	MOVEA.L	$0004(A7),A1
+	MOVEM.L	$0008(A7),D0/D1
+	MOVEA.L	-$5184(A4),A6	;_GfxBase
+	JMP	_LVOMove(A6)
+
+_RectFill:
+	MOVEA.L	$0004(A7),A1
+	MOVEM.L	$0008(A7),D0-D3
+	MOVEA.L	-$5184(A4),A6	;_GfxBase
+	JMP	_LVORectFill(A6)
+
+_SetAPen:
+	MOVEA.L	$0004(A7),A1
+	MOVE.L	$0008(A7),D0
+	MOVEA.L	-$5184(A4),A6	;_GfxBase
+	JMP	_LVOSetAPen(A6)
+
+_SetDrMd:
+	MOVEA.L	$0004(A7),A1
+	MOVE.L	$0008(A7),D0
+	MOVEA.L	-$5184(A4),A6	;_GfxBase
+	JMP	_LVOSetDrMd(A6)
+
+_SetRGB4:
+;	MOVEA.L	$0004(A7),A0
+;	MOVEM.L	$0008(A7),D0-D3
+;	MOVEA.L	-$5184(A4),A6	;_GfxBase
+;	JMP	_LVOSetRGB4(A6)
+
+_TextLength:
+	MOVEA.L	$0004(A7),A1
+	MOVEA.L	$0008(A7),A0
+	MOVE.L	$000C(A7),D0
+	MOVEA.L	-$5184(A4),A6	;_GfxBase
+	JMP	_LVOTextLength(A6)
+
+_AddGadget:
+	MOVEM.L	$0004(A7),A0/A1
+	MOVE.L	$000C(A7),D0
+	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	JMP	_LVOAddGadget(A6)
+
+_AutoRequest:
+	MOVEM.L	A2/A3,-(A7)
+	MOVEM.L	$000C(A7),A0-A3
+	MOVEM.L	$001C(A7),D0-D3
+	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	JSR	_LVOAutoRequest(A6)
+	MOVEM.L	(A7)+,A2/A3
+	RTS
+
+_ClearMenuStrip:
+	MOVEA.L	$0004(A7),A0
+	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	JMP	_LVOClearMenuStrip(A6)
+
+_CloseScreen:
+	MOVEA.L	$0004(A7),A0
+	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	JMP	_LVOCloseScreen(A6)
+
+_CloseWindow:
+	MOVEA.L	$0004(A7),A0
+	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	JMP	_LVOCloseWindow(A6)
+
+_CurrentTime:
+	MOVEM.L	$0004(A7),A0/A1
+	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	JMP	_LVOCurrentTime(A6)
+
+_ItemAddress:
+	MOVEA.L	$0004(A7),A0
+	MOVE.L	$0008(A7),D0
+	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	JMP	_LVOItemAddress(A6)
+
+_ModifyIDCMP:
+	MOVEA.L	$0004(A7),A0
+	MOVE.L	$0008(A7),D0
+	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	JMP	_LVOModifyIDCMP(A6)
+
+_OnGadget:
+	MOVE.L	A2,-(A7)
+	MOVEM.L	$0008(A7),A0-A2
+	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	JSR	_LVOOnGadget(A6)
+	MOVEA.L	(A7)+,A2
+	RTS
+
+_OpenScreen:
+	MOVEA.L	$0004(A7),A0
+	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	JMP	_LVOOpenScreen(A6)
+
+_OpenWindow:
+	MOVEA.L	$0004(A7),A0
+	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	JMP	_LVOOpenWindow(A6)
+
+;_PrintIText:
+;	MOVEM.L	$0004(A7),A0/A1
+;	MOVEM.L	$000C(A7),D0/D1
+;	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+;	JMP	_LVOPrintIText(A6)
+
+_RefreshGadgets:
+	MOVE.L	A2,-(A7)
+	MOVEM.L	$0008(A7),A0-A2
+	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	JSR	_LVORefreshGadgets(A6)
+	MOVEA.L	(A7)+,A2
+	RTS
+
+_SetMenuStrip:
+	MOVEM.L	$0004(A7),A0/A1
+	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	JMP	_LVOSetMenuStrip(A6)
+
+_SetWindowTitles:
+	MOVE.L	A2,-(A7)
+	MOVEM.L	$0008(A7),A0-A2
+	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	JSR	_LVOSetWindowTitles(A6)
+	MOVEA.L	(A7)+,A2
+	RTS
+
+_WBenchToBack:
+	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	JMP	_LVOWBenchToBack(A6)
+
+_WBenchToFront:
+	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	JMP	_LVOWBenchToBack(A6)
+
+_RawKeyConvert:
+	MOVE.L	A2,-(A7)
+	MOVEM.L	$0008(A7),A0/A1
+	MOVEM.L	$0010(A7),D1/A2
+	MOVEA.L	-$48B6(A4),A6	;_ConsoleDevice
+	JSR	-$0030(A6)
+	MOVEA.L	(A7)+,A2
+	RTS
+
