@@ -1229,43 +1229,14 @@ L009A6:
 	MOVEq	#$0004,D0
 	JSR	_rnd
 L009A7:
-;	EXT.L	D0
-	BRA.B	L009B1
-L009A8:
-	LEA	L009B4(PC),A6	;"scored an excellent hit on"
-	BRA.B	L009B3
-L009A9:
-	LEA	L009B5(PC),A6	;"hit"
-	BRA.B	L009B3
-L009AA:
 	MOVE.L	A2,D3
-	BNE.B	1$
-	LEA	L009B6(PC),A6	;"have injured"
-	BRA.B	L009B3
-1$	LEA	L009B7(PC),A6	;"has injured"
-	BRA.B	L009B3
+	BEQ.B	L009B3
 
-L009AD:
-	MOVE.L	A2,D3
-	BNE.B	1$
-	LEA	L009B8(PC),A6	;"swing and hit"
-	BRA.B	L009B3
-1$	LEA	L009B9(PC),A6	;"swings and hits"
-	BRA.B	L009B3
-
-L009B0:
-	dc.w	L009A8-L009B2	;"scored an excellent hit on"
-	dc.w	L009A9-L009B2	;"hit"
-	dc.w	L009AA-L009B2	;"have injured"
-	dc.w	L009AD-L009B2	;"swing and hit"
-L009B1:
-	CMP.w	#$0004,D0
-	BCC.B	L009B3
-	ASL.w	#1,D0
-	MOVE.W	L009B0(PC,D0.W),D0
-L009B2:	JMP	L009B2(PC,D0.W)
+	addq.w	#4,d0
 L009B3:
-	MOVE.L	A6,D4
+	ASL.w	#2,D0
+	MOVE.L	L009B0(PC,D0.W),D4
+
 	CLR.L	-(A7)
 	MOVE.L	A3,-(A7)
 	JSR	_prname(PC)
@@ -1278,6 +1249,17 @@ L009B3:
 	MOVEM.L	(A7)+,D4/A2/A3
 	UNLK	A5
 	RTS
+
+L009B0:
+	dc.l	L009B4	;"scored an excellent hit on"
+	dc.l	L009B5	;"hit"
+	dc.l	L009B6	;"have injured"
+	dc.l	L009B8	;"swing and hit"
+
+	dc.l	L009B4	;"scored an excellent hit on"
+	dc.l	L009B5	;"hit"
+	dc.l	L009B7	;"has injured"
+	dc.l	L009B9	;"swings and hits"
 
 L009B4:	dc.b	"scored an excellent hit on",0
 L009B5:	dc.b	"hit",0
@@ -1315,55 +1297,14 @@ L009BC:
 	MOVEq	#$0004,D0
 	JSR	_rnd
 L009BD:
-;	EXT.L	D0
-	BRA.B	L009CB
-L009BE:
 	MOVE.L	A2,D3
-	BNE.B	L009BF
-	LEA	L009CE(PC),A6	;"swing and miss"
-	BRA.B	L009CD
-L009BF:
-	LEA	L009CF(PC),A6	;"swings and misses"
-	BRA.B	L009CD
+	BEQ.B	L009CD
 
-L009C1:
-	MOVE.L	A2,D3
-	BNE.B	L009C2
-	LEA	L009D0(PC),A6	;"miss"
-	BRA.B	L009CD
-L009C2:
-	LEA	L009D1(PC),A6	;"misses"
-	BRA.B	L009CD
+	addq.w	#4,d0
+L009CD:
+	ASL.w	#2,D0
+	MOVE.L	L009CA(PC,D0.W),D4
 
-L009C4:
-	MOVE.L	A2,D3
-	BNE.B	L009C5
-	LEA	L009D2(PC),A6	;"barely miss"
-	BRA.B	L009CD
-L009C5:
-	LEA	L009D3(PC),A6	;"barely misses"
-	BRA.B	L009CD
-L009C7:
-	MOVE.L	A2,D3
-	BNE.B	L009C8
-	LEA	L009D4(PC),A6	;"don't hit"
-	BRA.B	L009CD
-L009C8:
-	LEA	L009D5(PC),A6	;"doesn't hit"
-	BRA.B	L009CD
-L009CA:
-	dc.w	L009BE-L009CC	;"swing and miss"
-	dc.w	L009C1-L009CC	;"miss"
-	dc.w	L009C4-L009CC	;"barely miss"
-	dc.w	L009C7-L009CC	;"don't hit"
-L009CB:
-	CMP.w	#$0004,D0
-	BCC.B	L009CD
-	ASL.w	#1,D0
-	MOVE.W	L009CA(PC,D0.W),D0
-L009CC:	JMP	L009CC(PC,D0.W)
-
-L009CD:	MOVE.L	A6,D4
 	CLR.L	-(A7)
 	MOVE.L	A3,-(A7)
 	JSR	_prname(PC)
@@ -1376,6 +1317,17 @@ L009CD:	MOVE.L	A6,D4
 	MOVEM.L	(A7)+,D4/A2/A3
 	UNLK	A5
 	RTS
+
+L009CA:
+	dc.l	L009CE	;"swing and miss"
+	dc.l	L009D0	;"miss"
+	dc.l	L009D2	;"barely miss"
+	dc.l	L009D4	;"don't hit"
+
+	dc.l	L009CF	;"swings and misses"
+	dc.l	L009D1	;"misses"
+	dc.l	L009D3	;"barely misses"
+	dc.l	L009D5	;"doesn't hit"
 
 L009CE:	dc.b	"swing and miss",0
 L009CF:	dc.b	"swings and misses",0
