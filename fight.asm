@@ -64,9 +64,11 @@ L00934:
 L00935:
 	CLR.W	-$60A0(A4)	;_quiet
 	CLR.W	-$60A4(A4)	;_count
+
 	MOVE.L	A2,-(A7)
-	JSR	_start_run
+	JSR	_start_run	;attacked monster wakes up and will run to you
 	ADDQ.W	#4,A7
+
 	MOVEA.L	D4,A6
 	MOVE.B	$000F(A6),D3
 	CMP.B	#$58,D3		;'X' xeroc
@@ -98,6 +100,7 @@ L00937:
 	MULU.W	#26,D3
 	LEA	-$6CA8(A4),A6	;_monsters
 	MOVE.L	$00(A6,D3.L),D5
+
 	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L00938
@@ -152,6 +155,7 @@ L0093B:
 	MOVE.L	A3,-(A7)
 	JSR	_unpack
 	ADDQ.W	#6,A7
+
 	MOVE.L	D0,-(A7)
 	JSR	_discard
 	ADDQ.W	#4,A7
@@ -1163,17 +1167,22 @@ L009EF:	dc.b	"the %s",0
 _hit:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/A2/A3,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	MOVEA.L	$000C(A5),A3
+
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	A2,-(A7)
 	JSR	_prname(PC)
 	ADDQ.W	#6,A7
+
 	MOVE.L	D0,-(A7)
 	JSR	_addmsg
 	ADDQ.W	#4,A7
+
 	TST.B	-$66B2(A4)	;_terse
 	BNE.B	L009A5
+
 	TST.B	-$66AB(A4)	;_expert
 	BEQ.B	L009A6
 L009A5:
@@ -1195,11 +1204,13 @@ L009B3:
 	MOVE.L	A3,-(A7)
 	JSR	_prname(PC)
 	ADDQ.W	#8,A7
+
 	MOVE.L	D0,-(A7)
 	MOVE.L	D4,-(A7)
 	PEA	L009BA(PC)	;"%s %s "
 	JSR	_msg
 	LEA	$000C(A7),A7
+
 	MOVEM.L	(A7)+,D4/A2/A3
 	UNLK	A5
 	RTS
@@ -1231,17 +1242,22 @@ L009BA:	dc.b	" %s %s",0,0
 _miss:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/A2/A3,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	MOVEA.L	$000C(A5),A3
 	MOVE.W	#$0001,-(A7)
+
 	MOVE.L	A2,-(A7)
 	JSR	_prname(PC)
 	ADDQ.W	#6,A7
+
 	MOVE.L	D0,-(A7)
 	JSR	_addmsg
 	ADDQ.W	#4,A7
+
 	TST.B	-$66B2(A4)	;_terse
 	BNE.B	L009BB
+
 	TST.B	-$66AB(A4)	;_expert
 	BEQ.B	L009BC
 L009BB:
@@ -1263,11 +1279,13 @@ L009CD:
 	MOVE.L	A3,-(A7)
 	JSR	_prname(PC)
 	ADDQ.W	#8,A7
+
 	MOVE.L	D0,-(A7)
 	MOVE.L	D4,-(A7)
 	PEA	L009D6(PC)	;" %s %s"
 	JSR	_msg
 	LEA	$000C(A7),A7
+
 	MOVEM.L	(A7)+,D4/A2/A3
 	UNLK	A5
 	RTS
@@ -1444,6 +1462,7 @@ L0022C:
 _remove:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/A2/A3,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	TST.L	$000C(A5)
 	BNE.B	L009F1
@@ -1542,6 +1561,7 @@ L009F8:
 _killed:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
+
 	MOVEA.L	$0008(A5),A6
 	MOVE.L	$001A(A6),D3
 	ADD.L	D3,-$52B0(A4)	;_player + 26 (EXP)
@@ -1571,7 +1591,7 @@ L00A04:
 	RTS
 
 L00A05:
-	MOVE.W	#$002A,$000A(A2)	;'*'
+	MOVE.W	#$002A,$000A(A2)	;'*' gold
 
 	bsr	goldcalc
 	move.W	D0,D4
@@ -1590,7 +1610,6 @@ L00A05:
 	ADD.W	D0,D4
 	bsr	goldcalc
 	ADD.W	D0,D4
-
 L00A06:
 	move.w	D4,$0026(A2)
 
@@ -1600,6 +1619,7 @@ L00A06:
 	JSR	__attach
 	ADDQ.W	#8,A7
 	BRA.B	L00A08
+
 L00A07:
 	SUB.w	#$0046,D0	;'F' Venus Flytrap
 	BEQ.W	L00A02

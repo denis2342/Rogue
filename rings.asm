@@ -6,10 +6,12 @@
 _ring_on:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/A2,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	MOVEQ	#-$01,D4
 	MOVE.L	A2,D3
 	BNE.B	L005A6
+
 	MOVE.W	#$003D,-(A7)
 	PEA	L005B4(PC)	;"put on"
 	JSR	_get_item
@@ -20,6 +22,7 @@ _ring_on:
 L005A6:
 	CMPI.W	#$003D,$000A(A2)	;'=' ring type
 	BEQ.B	L005A7
+
 	PEA	L005B5(PC)	;"you can't put that on your finger"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -41,18 +44,23 @@ L005A9:
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BNE.W	L005B3
+
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BNE.B	L005AA
+
 	MOVEQ	#$00,D4
 L005AA:
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BNE.B	L005AB
+
 	MOVEQ	#$01,D4
 L005AB:
 	TST.L	-$5190(A4)	;_cur_ring_1
 	BNE.B	L005AC
+
 	TST.L	-$518C(A4)	;_cur_ring_2
 	BNE.B	L005AC
+
 	JSR	_gethand(PC)
 	MOVE.W	D0,D4
 ;	CMP.W	#$0000,D0
@@ -60,6 +68,7 @@ L005AB:
 L005AC:
 	CMP.W	#$0000,D4
 	BGE.B	L005AD
+
 	PEA	L005B6(PC)	;"you already have a ring on each hand"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -70,10 +79,12 @@ L005AD:
 	ASL.w	#2,D3
 	LEA	-$5190(A4),A6	;_cur_ring_x
 	MOVE.L	A2,$00(A6,D3.w)
+
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	A2,-(A7)
 	JSR	_pack_name
 	ADDQ.W	#6,A7
+
 	MOVE.W	$0020(A2),D0
 ;	EXT.L	D0
 	BRA.B	L005B1
@@ -99,11 +110,14 @@ L005B2:
 	MOVE.L	A2,-(A7)
 	JSR	_pack_char(PC)
 	ADDQ.W	#4,A7
+
 	MOVE.W	D0,-(A7)
+
 	MOVE.W	#$001F,-(A7)
 	MOVE.L	A2,-(A7)
 	JSR	_nameof
 	ADDQ.W	#6,A7
+
 	MOVE.L	D0,-(A7)
 	PEA	L005B7(PC)	;"you are now wearing %s (%c)"
 	JSR	_msg
