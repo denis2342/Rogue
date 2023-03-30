@@ -3,84 +3,38 @@
 ; */
 
 _str_plus:
-;	LINK	A5,#-$0000
 
-	MOVE.W	$0004(A7),D3
-	CMP.W	#$0008,D3
-	BCC.B	L009DC
-
-	MOVE.L	D3,D0
-	SUBQ.W	#7,D0
-L009DB:
-;	UNLK	A5
-	RTS
-
-L009DC:
-	MOVEQ	#$00,D0
-
-	CMP.W	#17,D3
-	BLT.B	L009E0
-	ADDQ.W	#1,D0
-L009DD:
-	CMP.W	#19,D3
-	BLT.B	L009E0
-	ADDQ.W	#1,D0
-L009DE:
-	CMP.W	#21,D3
-	BLT.B	L009E0
-	ADDQ.W	#1,D0
-L009DF:
-	CMP.W	#31,D3
-	BLT.B	L009E0
-	ADDQ.W	#1,D0
-L009E0:
-	BRA.B	L009DB
+	lea	str_hit_list,a0
+	bra	str_common
 
 ;/*
 ; * adjustments to damage done due to strength
 ; */
 
 _add_dam:
-;	LINK	A5,#-$0000
 
+	lea	str_dam_list,a0
+	bra	str_common
+
+str_common:
 	MOVE.W	$0004(A7),D3
 	CMP.W	#$0008,D3
-	BCC.B	L009E2
+	BCC.B	2$
 
-	MOVE.W	D3,D0
+	MOVE.L	D3,D0
 	SUBQ.W	#7,D0
-L009E1:
-;	UNLK	A5
+1$
 	RTS
 
-L009E2:
-	moveq	#0,d0
+2$	MOVEQ	#$00,D0
 
-	CMP.W	#16,D3
-	BLT.B	L009E1
+3$	CMP.b	(a0)+,D3
+	BLT.B	1$
 	ADDQ.W	#1,D0
-L009E3:
-	CMP.W	#17,D3
-	BLT.B	L009E1
-	ADDQ.W	#1,D0
-L009E4:
-	CMP.W	#18,D3
-	BLT.B	L009E1
-	ADDQ.W	#1,D0
-L009E5:
-	CMP.W	#20,D3
-	BLT.B	L009E1
-	ADDQ.W	#1,D0
-L009E6:
-	CMP.W	#22,D3
-	BLT.B	L009E1
-	ADDQ.W	#1,D0
-L009E7:
-	CMP.W	#31,D3
-	BLT.B	L009E1
-	ADDQ.W	#1,D0
-L009E8:
-	BRA.B	L009E1
+	bra	3$
+
+str_hit_list: dc.b	17,19,21,31,0
+str_dam_list: dc.b	16,17,18,20,22,31,0
 
 ;/*
 ; * fight:
