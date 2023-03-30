@@ -325,6 +325,28 @@ L00B44:
 	UNLK	A5
 	RTS
 
+_XferKeys:
+	LINK	A5,#-$0000
+	MOVE.L	D4,-(A7)
+
+	MOVEQ	#$00,D4
+L00B95:
+	MOVE.W	#$0020,-(A7)
+	MOVE.W	D4,D3
+	EXT.L	D3
+	ASL.L	#2,D3
+	MOVEA.L	-$5898(A4),A6	;_FuncKeys
+	MOVE.L	$00(A6,D3.L),-(A7)
+	JSR	_xfer
+	ADDQ.W	#6,A7
+	ADDQ.W	#1,D4
+	CMP.W	#$000A,D4
+	BLT.B	L00B95
+
+	MOVE.L	(A7)+,D4
+	UNLK	A5
+	RTS
+
 _xfer:
 	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)

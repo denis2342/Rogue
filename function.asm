@@ -30,28 +30,6 @@ _BuildFuncTable:
 	UNLK	A5
 	RTS
 
-_XferKeys:
-	LINK	A5,#-$0000
-	MOVE.L	D4,-(A7)
-
-	MOVEQ	#$00,D4
-L00B95:
-	MOVE.W	#$0020,-(A7)
-	MOVE.W	D4,D3
-	EXT.L	D3
-	ASL.L	#2,D3
-	MOVEA.L	-$5898(A4),A6	;_FuncKeys
-	MOVE.L	$00(A6,D3.L),-(A7)
-	JSR	_xfer
-	ADDQ.W	#6,A7
-	ADDQ.W	#1,D4
-	CMP.W	#$000A,D4
-	BLT.B	L00B95
-
-	MOVE.L	(A7)+,D4
-	UNLK	A5
-	RTS
-
 _NewFuncString:
 	LINK	A5,#-$0000
 
@@ -185,3 +163,54 @@ L00B99:	dc.b	'Changing F%d from "%s" to: ',0
 
 L00B9A:	dc.b	0,0
 
+_do_macro:
+	LINK	A5,#-$0000
+	MOVE.L	A2,-(A7)
+
+	MOVEA.L	-$5258(A4),A2	;_prbuf
+	MOVE.L	$0008(A5),-(A7)	;show old macro content
+	PEA	L008F1(PC)	;"F9 was %s, enter new macro: "
+	JSR	_msg
+	ADDQ.W	#8,A7
+
+	MOVE.W	$000C(A5),D3	;length of macro buffer
+	SUBQ.W	#1,D3
+
+	MOVE.W	D3,-(A7)
+	MOVE.L	-$5258(A4),-(A7)	;_prbuf
+	JSR	_getinfo
+	ADDQ.W	#6,A7
+
+	CMP.W	#$001B,D0	;escape
+	BEQ.B	3$
+
+	MOVEA.L	$0008(A5),A6	;_macro address
+
+1$	MOVE.B	(A2)+,D3
+	CMP.b	#$06,D3
+	BEQ.B	2$
+
+	MOVE.B	D3,(A6)+
+
+2$	TST.B	D3
+	BNE.B	1$
+
+3$	PEA	L008F2(PC)
+	JSR	_msg
+	ADDQ.W	#4,A7
+
+	JSR	_flush_type
+
+; bugfix
+
+	MOVE.L	$0008(A5),-(A7)		;_macro
+	MOVE.W	#$0009,-(A7)		;F9
+	JSR	_NewFuncString
+	ADDQ.W	#6,A7
+
+	MOVEA.L	(A7)+,A2
+	UNLK	A5
+	RTS
+
+L008F1:	dc.b	"F9 was %s, enter new macro: ",0
+L008F2:	dc.b	$00

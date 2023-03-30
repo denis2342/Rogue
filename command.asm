@@ -644,7 +644,7 @@ L003F4:
 	CLR.B	-$66F9(A4)	;_after
 	MOVE.W	#$0029,-(A7)
 	PEA	-$674D(A4)	;_macro
-	JSR	_do_macro(PC)
+	JSR	_do_macro
 	ADDQ.W	#6,A7
 	BRA.W	L00409
 
@@ -1217,58 +1217,6 @@ L008C1:
 	RTS
 
 L008CC:	dc.b	"you found %s",0,0
-
-_do_macro:
-	LINK	A5,#-$0000
-	MOVE.L	A2,-(A7)
-
-	MOVEA.L	-$5258(A4),A2	;_prbuf
-	MOVE.L	$0008(A5),-(A7)	;show old macro content
-	PEA	L008F1(PC)	;"F9 was %s, enter new macro: "
-	JSR	_msg
-	ADDQ.W	#8,A7
-
-	MOVE.W	$000C(A5),D3	;length of macro buffer
-	SUBQ.W	#1,D3
-
-	MOVE.W	D3,-(A7)
-	MOVE.L	-$5258(A4),-(A7)	;_prbuf
-	JSR	_getinfo
-	ADDQ.W	#6,A7
-
-	CMP.W	#$001B,D0	;escape
-	BEQ.B	3$
-
-	MOVEA.L	$0008(A5),A6	;_macro address
-
-1$	MOVE.B	(A2)+,D3
-	CMP.b	#$06,D3
-	BEQ.B	2$
-
-	MOVE.B	D3,(A6)+
-
-2$	TST.B	D3
-	BNE.B	1$
-
-3$	PEA	L008F2(PC)
-	JSR	_msg
-	ADDQ.W	#4,A7
-
-	JSR	_flush_type
-
-; bugfix
-
-	MOVE.L	$0008(A5),-(A7)		;_macro
-	MOVE.W	#$0009,-(A7)		;F9
-	JSR	_NewFuncString
-	ADDQ.W	#6,A7
-
-	MOVEA.L	(A7)+,A2
-	UNLK	A5
-	RTS
-
-L008F1:	dc.b	"F9 was %s, enter new macro: ",0
-L008F2:	dc.b	$00
 
 ;/*
 ; * d_level:
