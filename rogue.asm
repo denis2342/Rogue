@@ -2492,6 +2492,40 @@ L0052B:	dc.b	"can't drop it, ",0,0
 
  include 'weapons.asm'
 
+_typeof:
+	MOVEA.L	$0004(A7),A6
+	MOVE.W	$000A(A6),D0
+
+_typech:
+	CMP.b	#$6D,D0		; m
+	BLT.B	1$
+
+	CMP.b	#$79,D0		; y
+	BGE.B	3$
+
+	MOVEQ	#$6D,D0		; m weapon type
+	rts
+
+1$	CMP.b	#$61,D0		; a
+	BLT.B	2$
+
+	CMP.b	#$69,D0		; i
+	BGE.B	3$
+
+	MOVEQ	#$61,D0		; a armor type
+	rts
+
+2$	CMP.b	#$0E,D0		; #14
+	BLT.B	3$
+
+	CMP.b	#$14,D0		; #20
+	BGE.B	3$
+
+	MOVEQ	#$0E,D0		; #14
+
+3$	ext.w	d0
+	RTS
+
 _foolish:
 ;	LINK	A5,#-$0000
 	ANDI.W	#~C_WISDOM,-$52B4(A4)	;clear C_WISDOM,_player + 22 (flags)

@@ -686,38 +686,3 @@ L00638:
 	CLR.W	D0
 L00639:
 	BRA.B	L00634
-
-_typeof:
-	MOVEA.L	$0004(A7),A6
-	MOVE.W	$000A(A6),D0
-
-_typech:
-	CMP.b	#$6D,D0		; m
-	BLT.B	1$
-
-	CMP.b	#$79,D0		; y
-	BGE.B	3$
-
-	MOVEQ	#$6D,D0		; m weapon type
-	rts
-
-1$	CMP.b	#$61,D0		; a
-	BLT.B	2$
-
-	CMP.b	#$69,D0		; i
-	BGE.B	3$
-
-	MOVEQ	#$61,D0		; a armor type
-	rts
-
-2$	CMP.b	#$0E,D0		; #14
-	BLT.B	3$
-
-	CMP.b	#$14,D0		; #20
-	BGE.B	3$
-
-	MOVEQ	#$0E,D0		; #14
-
-3$	ext.w	d0
-	RTS
-
