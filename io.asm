@@ -1080,22 +1080,22 @@ L00170:
 ; *  Function used to display a window and wait before returning
 ; */
 
-_show_win:
-	LINK	A5,#-$0000
-
-	MOVE.L	$0008(A5),-(A7)
-	CLR.W	-(A7)
-	CLR.W	-(A7)
-	JSR	_mvaddstr
-	ADDQ.W	#8,A7
-
-	MOVE.W	-$52C0(A4),d1	;_player + 10
-	MOVE.W	-$52BE(A4),d0	;_player + 12
-	JSR	_movequick
-
-	MOVE.W	#$0020,-(A7)	; SPACE
-	BSR.B	_wait_for
-	ADDQ.W	#2,A7
-
-	UNLK	A5
-	RTS
+;_show_win:
+;	LINK	A5,#-$0000
+;
+;	MOVE.L	$0008(A5),-(A7)
+;	CLR.W	-(A7)
+;	CLR.W	-(A7)
+;	JSR	_mvaddstr
+;	ADDQ.W	#8,A7
+;
+;	MOVE.W	-$52C0(A4),d1	;_player + 10
+;	MOVE.W	-$52BE(A4),d0	;_player + 12
+;	JSR	_movequick
+;
+;	MOVE.W	#$0020,-(A7)	; SPACE
+;	BSR.B	_wait_for
+;	ADDQ.W	#2,A7
+;
+;	UNLK	A5
+;	RTS
