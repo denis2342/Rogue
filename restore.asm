@@ -1085,3 +1085,12 @@ L00B8D:
 	UNLK	A5
 	RTS
 
+_iw_setdam:
+	MOVE.W	$0020(A2),D3
+	MULU.W	#12,D3
+	LEA	-$6FDA(A4),A6	;_w_magic
+;	MOVEA.L	D3,A3
+;	ADDA.L	A6,A3
+	MOVE.L	$00(A6,D3.w),$0016(A2)	; wield damage
+	MOVE.L	$04(A6,D3.w),$001A(A2)	; throw damage
+	RTS
