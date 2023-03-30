@@ -991,19 +991,19 @@ L00162:
 L00163:
 	MOVE.W	-$52AA(A4),D4	;_player + 32 (AC)
 L00164:
-	TST.L	-$5190(A4)	;_cur_ring_1
+	MOVE.L	-$5190(A4),D0	;_cur_ring_1
 	BEQ.B	L00165
 
-	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
+	MOVEA.L	D0,A6		;_cur_ring_1
 	CMP.W	#R_PROTECT,$0020(A6)
 	BNE.B	L00165
 
 	SUB.W	$0026(A6),D4
 L00165:
-	TST.L	-$518C(A4)	;_cur_ring_2
+	MOVE.L	-$518C(A4),D0	;_cur_ring_2
 	BEQ.B	L00166
 
-	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
+	MOVEA.L	D0,A6		;_cur_ring_2
 	CMP.W	#R_PROTECT,$0020(A6)
 	BNE.B	L00166
 
