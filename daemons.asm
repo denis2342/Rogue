@@ -237,12 +237,13 @@ L0064F:	dc.b	"you feel yourself slowing down",0,0
 
 _stomach:
 ;	LINK	A5,#-$0000
-	MOVEM.L	D4/D5,-(A7)
-	MOVE.W	-$609E(A4),D3	;_food_left
+	MOVE.L	D4,-(A7)
+
+	MOVE.W	-$609E(A4),D4	;_food_left
 	BGT.B	L00653
 
 	SUBQ.W	#1,-$609E(A4)	;_food_left
-	CMP.W	#$FCAE,D3	;-352
+	CMP.W	#$FCAE,D4	;-352
 	BGE.B	L00650
 
 	MOVE.W	#$0073,-(A7)	;'s' starvation
@@ -276,8 +277,6 @@ L00650:
 	JSR	_NewRank(PC)
 	BRA.B	L00656
 L00653:
-	MOVE.W	D3,D4	;_food_left
-
 	CLR.W	-(A7)
 	JSR	_ring_eat(PC)
 	ADDQ.W	#2,A7
@@ -290,19 +289,20 @@ L00653:
 
 	MOVE.W	(A7)+,D3
 	ADD.W	D0,D3
-	MOVE.W	D3,D5
-	ADDQ.W	#1,D5
-	TST.B	-$66B2(A4)	;_terse
-	BEQ.B	L00654
+	ADDQ.W	#1,D3
 
-	MULU.W	#$0002,D5
-L00654:
-	SUB.W	D5,-$609E(A4)	;_food_left
+	TST.B	-$66B2(A4)	;_terse
+	BEQ.B	1$
+
+	MULU.W	#$0002,D3
+
+1$	SUB.W	D3,-$609E(A4)	;_food_left
+
 	CMPI.W	#150,-$609E(A4)	;_food_left
-	BGE.B	L00655
+	BGE.B	2$
 
 	CMP.W	#150,D4
-	BLT.B	L00655
+	BLT.B	2$
 
 	MOVE.W	#$0002,-$609A(A4)	;_hungry_state
 	JSR	_NewRank(PC)
@@ -310,8 +310,8 @@ L00654:
 	JSR	_msg
 	ADDQ.W	#4,A7
 	BRA.B	L00656
-L00655:
-	CMPI.W	#300,-$609E(A4)	;_food_left
+
+2$	CMPI.W	#300,-$609E(A4)	;_food_left
 	BGE.B	L00656
 
 	CMP.W	#300,D4
@@ -323,6 +323,6 @@ L00655:
 	JSR	_msg
 	ADDQ.W	#4,A7
 L00656:
-	MOVEM.L	(A7)+,D4/D5
+	MOVE.L	(A7)+,D4
 ;	UNLK	A5
 	RTS
