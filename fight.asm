@@ -1568,59 +1568,7 @@ _killed:
 	MOVEA.L	$0008(A5),A6
 	MOVE.B	$000F(A6),D0
 	EXT.W	D0
-;	EXT.L	D0
-	BRA.W	L00A07
 
-; killed a venus flytrap
-
-L00A02:
-	ANDI.W	#~C_ISHELD,-$52B4(A4)	;clear C_ISHELD, _player + 22 (flags)
-	JSR	_f_restor
-	BRA.W	L00A08
-
-; killed a leprechaun
-
-L00A03:
-	JSR	_new_item
-	MOVEA.L	D0,A2
-	TST.L	D0
-	BNE.B	L00A05
-L00A04:
-	MOVEA.L	(A7)+,A2
-	UNLK	A5
-	RTS
-
-L00A05:
-	MOVE.W	#$002A,$000A(A2)	;'*' gold
-
-	bsr	goldcalc
-	move.W	D0,D4
-
-	MOVE.W	#VS_MAGIC,-(A7)
-	JSR	_save(PC)
-	ADDQ.W	#2,A7
-	TST.W	D0
-	BEQ.B	L00A06
-
-	bsr	goldcalc
-	ADD.W	D0,D4
-	bsr	goldcalc
-	ADD.W	D0,D4
-	bsr	goldcalc
-	ADD.W	D0,D4
-	bsr	goldcalc
-	ADD.W	D0,D4
-L00A06:
-	move.w	D4,$0026(A2)
-
-	MOVE.L	A2,-(A7)
-	MOVEA.L	$0008(A5),A6
-	PEA	$002E(A6)
-	JSR	__attach
-	ADDQ.W	#8,A7
-	BRA.B	L00A08
-
-L00A07:
 	SUB.w	#$0046,D0	;'F' Venus Flytrap
 	BEQ.W	L00A02
 	SUBQ.w	#6,D0		;'L' Leprechaun
@@ -1659,7 +1607,55 @@ L00A09:
 	ADDQ.W	#8,A7
 L00A0A:
 	JSR	_check_level(PC)
-	BRA.W	L00A04
+L00A04:
+	MOVEA.L	(A7)+,A2
+	UNLK	A5
+	RTS
+
+; killed a venus flytrap
+
+L00A02:
+	ANDI.W	#~C_ISHELD,-$52B4(A4)	;clear C_ISHELD, _player + 22 (flags)
+	JSR	_f_restor
+	BRA.W	L00A08
+
+; killed a leprechaun
+
+L00A03:
+	JSR	_new_item
+	MOVEA.L	D0,A2
+	TST.L	D0
+	BEQ.B	L00A04
+
+L00A05:
+	MOVE.W	#$002A,$000A(A2)	;'*' gold
+
+	bsr	goldcalc
+	move.W	D0,D4
+
+	MOVE.W	#VS_MAGIC,-(A7)
+	JSR	_save(PC)
+	ADDQ.W	#2,A7
+	TST.W	D0
+	BEQ.B	L00A06
+
+	bsr	goldcalc
+	ADD.W	D0,D4
+	bsr	goldcalc
+	ADD.W	D0,D4
+	bsr	goldcalc
+	ADD.W	D0,D4
+	bsr	goldcalc
+	ADD.W	D0,D4
+L00A06:
+	move.w	D4,$0026(A2)
+
+	MOVE.L	A2,-(A7)
+	MOVEA.L	$0008(A5),A6
+	PEA	$002E(A6)
+	JSR	__attach
+	ADDQ.W	#8,A7
+	BRA.B	L00A08
 
 L00A0B:	dc.b	"you have defeated ",0
 L00A0C:	dc.b	"the %s",0
