@@ -232,7 +232,7 @@ L001BE:
 	BNE.B	L001BF
 
 	MOVEA.L	-$519C(A4),A6	;__level
-	MOVEQ	#$2B,D6		;'+'
+	MOVEQ	#$2B,D6		;'+' DOOR
 	MOVE.B	D6,$00(A6,D7.W)
 	MOVEA.L	-$5198(A4),A6	;__flags
 	ANDI.B	#$EF,$00(A6,D7.W)
@@ -270,7 +270,8 @@ L001C2:
 	BEQ.B	L001BE
 	SUBQ.w	#1,D0		;'}'
 	BEQ.B	L001BE
-	MOVEQ	#$20,D6
+
+	MOVEQ	#$20,D6		;' '
 	BRA.B	L001C3
 L001C3:
 	CMP.B	#$2B,D6		;'+'
@@ -357,6 +358,7 @@ L001CA:
 	MOVEA.L	-$0006(A5),A6
 	CMPA.L	-$52A0(A4),A6	;_player + 42 (proom)
 	BEQ	L001E6
+
 	MOVE.B	#$01,-$66EE(A4)
 	BRA.W	L001E6
 
@@ -365,6 +367,7 @@ L001CA:
 L001CC:
 	TST.L	-$5298(A4)	;_cur_weapon
 	BEQ.B	L001CD
+
 	MOVE.L	-$5298(A4),-(A7)	;_cur_weapon
 	JSR	_typeof
 	ADDQ.W	#4,A7
@@ -464,7 +467,7 @@ L001DA:
 	MOVE.L	-$77B4(A4),D3	;_in_dist
 L001DB:
 	MOVE.L	D3,-(A7)
-	MOVE.L	-$77B8(A4),-(A7)	;_laugh
+	MOVE.L	-$77B8(A4),-(A7)	;_laugh "you hear maniacal laughter%s."
 	JSR	_msg
 	ADDQ.W	#8,A7
 	BRA.W	L001E1
@@ -496,9 +499,9 @@ L001DD:
 	JSR	_pick_mons
 	MOVEA.L	-$5298(A4),A6	;_cur_weapon
 	MOVE.B	D0,$002A(A6)	;set the monster which we can slay now
-	ADDQ.W	#1,$0022(A6)	;hplus
-	ADDQ.W	#1,$0024(A6)	;dplus
-	MOVE.W	#$0001,$0026(A6)
+	ADDQ.W	#1,$0022(A6)	;hplus + 1
+	ADDQ.W	#1,$0024(A6)	;dplus + 1
+	MOVE.W	#$0001,$0026(A6)	;number of charges
 	TST.B	-$66B2(A4)	;_terse
 	BNE.B	L001DE
 

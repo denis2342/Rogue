@@ -20,6 +20,7 @@ _do_run:
 _do_move:
 	LINK	A5,#-$0000
 	MOVEM.L	D4-D7,-(A7)
+
 	CLR.B	-$66B8(A4)	;_firstmove
 	TST.B	-$66AD(A4)	;_bailout
 	BEQ.B	L00091
@@ -28,6 +29,7 @@ _do_move:
 	PEA	L000C3(PC)	;"the crack widens ... "
 	JSR	_msg
 	ADDQ.W	#4,A7
+
 	PEA	L000C4(PC)
 	JSR	_descend(PC)
 	ADDQ.W	#4,A7
@@ -39,6 +41,7 @@ L00090:
 L00091:
 	TST.W	-$60AE(A4)	;_no_move
 	BEQ.B	L00092
+
 	SUBQ.W	#1,-$60AE(A4)	;_no_move
 	PEA	L000C5(PC)	;"you are still stuck in the bear trap"
 	JSR	_msg
@@ -153,7 +156,7 @@ L00098:
 	AND.W	#C_ISHELD,D3	;C_ISHELD
 	BEQ.B	L00099
 
-	CMP.B	#$46,D4		;'F'
+	CMP.B	#$46,D4		;'F' venus flytrap
 	BEQ.B	L00099
 
 	PEA	L000C6(PC)	;"you are being held"
@@ -179,6 +182,7 @@ L0009A:
 L0009B:
 	TST.B	-$66B6(A4)	;_running
 	BEQ.W	L000B1
+
 	MOVEA.L	-$52A0(A4),A6	;_player + 42 (proom)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3	;ISGONE?
@@ -348,6 +352,7 @@ L000AF:
 	SUB.W	#$0068,D0
 	CMP.W	#$0005,D0
 	BCC.B	L000B1
+
 	ASL.W	#1,D0
 	MOVE.W	L000AE(PC,D0.W),D0
 L000B0:	JMP	L000B0(PC,D0.W)
@@ -365,6 +370,7 @@ L000B2:
 	MOVE.B	$00(A6,D0.W),D3
 	AND.W	#$0040,D3
 	BEQ.B	L000B3
+
 	PEA	-$5194(A4)	;_nh
 	JSR	_enter_room
 	ADDQ.W	#4,A7
@@ -420,6 +426,7 @@ L000BB:
 	CLR.B	-$66B6(A4)	;_running
 	CMP.B	#$25,D4
 	BEQ.B	L000BC
+
 	MOVE.B	D4,-$66A9(A4)	;_take
 L000BC:
 	JSR	_INDEXplayer

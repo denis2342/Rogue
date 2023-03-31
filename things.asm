@@ -8,14 +8,17 @@
 _nameof:
 	LINK	A5,#-$0050
 	MOVEM.L	D4-D6/A2,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	MOVE.W	$000C(A5),D4
 	MOVE.W	$0020(A2),D5
 	MOVEQ	#$00,D6
 	MOVE.L	-$5258(A4),-$5336(A4)	;_prbuf
+
 	MOVE.L	A2,-(A7)
 	JSR	_typeof
 	ADDQ.W	#4,A7
+
 ;	EXT.L	D0
 	BRA.W	L00AEA
 

@@ -1014,6 +1014,7 @@ L00288:
 _find_dest:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/D5/A2/A3,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	MOVE.B	$000F(A2),D3
 	EXT.W	D3
@@ -1045,7 +1046,7 @@ L0028D:
 	MOVEA.L	-$6CB0(A4),A3	;_lvl_obj
 	BRA.B	L00294
 L0028E:
-	CMPI.W	#$003F,$000A(A3)	;'?'
+	CMPI.W	#$003F,$000A(A3)	;'?' scroll
 	BNE.B	L0028F
 
 	CMPI.W	#S_SCAREM,$0020(A3)	;scroll of scare monster

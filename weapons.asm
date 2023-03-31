@@ -469,7 +469,7 @@ L00622:	dc.b	",%s%d",0
 
 ;/*
 ; * wield:
-; *  Pull out a certain weapon
+; */  Pull out a certain weapon
 
 _wield:
 	LINK	A5,#-$0000

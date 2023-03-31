@@ -520,6 +520,7 @@ L00A3C:	dc.b	"the medusa's gaze has confused you",0,0
 _give_pack:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	CMPI.W	#$0053,-$60A8(A4)	;83 objects _total
 	BGE.B	L00A3D

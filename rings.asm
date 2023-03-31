@@ -273,6 +273,7 @@ L005CA:	dc.b	"please type L or R",0,0
 
 _ring_eat:
 ;	LINK	A5,#-$0000
+
 	MOVE.W	$0004(A7),D3
 	ASL.w	#2,D3
 	LEA	-$5190(A4),A6	;_cur_ring_1
