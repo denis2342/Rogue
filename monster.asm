@@ -394,15 +394,17 @@ L00A31:
 	AND.W	#C_ISHELD,D3	;C_ISHELD
 	BNE.B	L00A34
 
-	TST.L	-$5190(A4)	;_cur_ring_1
+	MOVE.L	-$5190(A4),D0	;_cur_ring_1
 	BEQ.B	L00A32
-	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
+
+	MOVEA.L	D0,A6		;_cur_ring_1
 	CMPI.W	#R_STEALTH,$0020(A6)	; ring of stealth
 	BEQ.B	L00A34
 L00A32:
-	TST.L	-$518C(A4)	;_cur_ring_2
+	MOVE.L	-$518C(A4),D0	;_cur_ring_2
 	BEQ.B	L00A33
-	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
+
+	MOVEA.L	D0,A6		;_cur_ring_2
 	CMPI.W	#R_STEALTH,$0020(A6)	; ring of stealth
 	BEQ.B	L00A34
 L00A33:
