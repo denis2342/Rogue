@@ -667,7 +667,7 @@ L00861:	dc.b	"You feel bloated and fall asleep",0
 
 _check_level:
 ;	LINK	A5,#-$0000
-	MOVEM.L	D4-D6,-(A7)
+	MOVE.L	D4,-(A7)
 
 	MOVEQ	#$00,D4
 	MOVEA.L	-$51AC(A4),A6	;_e_levels
@@ -683,21 +683,20 @@ L00983:
 	BNE.B	L00982
 L00984:
 	ADDQ.W	#1,D4		;level of the player
-	MOVE.W	-$52AC(A4),D6	;_player + 30 (rank)
+	MOVE.W	-$52AC(A4),D0	;_player + 30 (rank)
 	MOVE.W	D4,-$52AC(A4)	;_player + 30 (rank)
-	CMP.W	D6,D4		;compare old with new
+	CMP.W	D0,D4		;compare old with new
 	BLE.B	L00986
 
 	MOVE.W	#$000A,-(A7)	;10
 	MOVE.W	D4,D3
-	SUB.W	D6,D3		;difference in level (mostly one)
+	SUB.W	D0,D3		;difference in level (mostly one)
 	MOVE.W	D3,-(A7)
 	JSR	_roll		;so mostly it is 1d10
 	ADDQ.W	#4,A7
 
-	MOVE.W	D0,D5
-	ADD.W	D5,-$52A2(A4)	;_player + 40 (max hp)
-	ADD.W	D5,-$52A8(A4)	;_player + 34 (hp)
+	ADD.W	D0,-$52A2(A4)	;_player + 40 (max hp)
+	ADD.W	D0,-$52A8(A4)	;_player + 34 (hp)
 	MOVE.W	-$52A8(A4),D3	;_player + 34 (hp)
 	CMP.W	-$52A2(A4),D3	;_player + 40 (max hp)
 	BLE.B	L00985
@@ -722,7 +721,7 @@ L00985:
 	JSR	_NewRank(PC)
 	ADDQ.W	#4,A7
 L00986:
-	MOVEM.L	(A7)+,D4-D6
+	MOVE.L	(A7)+,D4
 ;	UNLK	A5
 	RTS
 
