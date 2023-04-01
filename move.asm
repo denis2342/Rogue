@@ -359,7 +359,7 @@ L000B0:	JMP	L000B0(PC,D0.W)
 L000B1:
 	CLR.B	-$66B6(A4)	;_running
 	CLR.B	-$66F9(A4)	;_after
-	BRA.W	L000C2
+	BRA.W	L00090
 L000B2:
 	CLR.B	-$66B6(A4)	;_running
 
@@ -421,7 +421,7 @@ L000BA:
 	PEA	-$5194(A4)	;_nh
 	JSR	_fight
 	LEA	$000E(A7),A7
-	BRA.W	L000C0
+	BRA.W	L00090
 L000BB:
 	CLR.B	-$66B6(A4)	;_running
 	CMP.B	#$25,D4
@@ -483,8 +483,7 @@ L000BF:
 	LEA	-$52C0(A4),A6	;_player + 10
 	LEA	-$5194(A4),A1	;_nh
 	MOVE.L	(A1)+,(A6)+
-L000C0:
-	BRA.B	L000C2
+	BRA.B	L00090
 L000C1:
 	SUB.w	#$000E,D0
 	BEQ.W	L000B4
@@ -509,8 +508,6 @@ L000C1:
 	SUBQ.w	#1,D0
 	BEQ.W	L0009B
 	BRA.W	L000B9
-L000C2:
-	BRA.W	L00090
 
 L000C3:	dc.b	"the crack widens ... ",0
 L000C4:	dc.b	$00
