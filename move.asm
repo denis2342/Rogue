@@ -680,12 +680,11 @@ L000D1:
 	MOVE.W	#$0061,-(A7)	;'a' arrow
 	JSR	_death
 	ADDQ.W	#2,A7
-	BRA.B	L000D3
+	BRA.B	L000D6
 L000D2:
 	PEA	L000E8(PC)	;"oh no! An arrow shot you"
 	JSR	_msg
 	ADDQ.W	#4,A7
-L000D3:
 	BRA.B	L000D6
 L000D4:
 	JSR	_new_item
