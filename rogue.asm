@@ -2014,9 +2014,9 @@ _initscr:
 	RTS
 
 _endwin:
-	LINK	A5,#-$0000
+;	LINK	A5,#-$0000
 	JSR	_wclose(PC)
-	UNLK	A5
+;	UNLK	A5
 	RTS
 
 _ready_to_go:
