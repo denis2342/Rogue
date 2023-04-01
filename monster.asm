@@ -533,8 +533,8 @@ _give_pack:
 	EXT.W	D3
 	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
-	LEA	-$6CA4(A4),A6	;_monsters + 4
-	CMP.W	$00(A6,D3.L),D0
+	LEA	-$6CA8(A4),A6	;_monsters
+	CMP.W	$04(A6,D3.L),D0	;compare with monster treasure chance
 	BGE.B	L00A3D
 
 	JSR	_new_thing
