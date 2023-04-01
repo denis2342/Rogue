@@ -109,9 +109,8 @@ L00134:
 	JSR	_can_drop
 	ADDQ.W	#4,A7
 	TST.W	D0
-	BNE.B	L00135
-	BRA.B	L00133
-L00135:
+	BEQ.B	L00133
+
 	CLR.L	-$5294(A4)	;_cur_armor
 	MOVE.W	#$005C,-(A7)
 	MOVE.L	A2,-(A7)
