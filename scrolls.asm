@@ -10,7 +10,7 @@ _read_scroll:
 	CLR.B	-$0001(A5)
 	MOVE.L	A2,D3
 	BNE.B	L001A5
-	MOVE.W	#$003F,-(A7)	;'?'
+	MOVE.W	#$003F,-(A7)	;'?' scroll type
 	PEA	L001E7(PC)	;"read"
 	JSR	_get_item
 	ADDQ.W	#6,A7
@@ -228,14 +228,14 @@ L001BD:
 L001BE:
 	MOVEA.L	-$5198(A4),A6	;__flags
 	MOVE.B	$00(A6,D7.W),D3
-	AND.W	#$0010,D3
+	AND.W	#F_REAL,D3
 	BNE.B	L001BF
 
 	MOVEA.L	-$519C(A4),A6	;__level
 	MOVEQ	#$2B,D6		;'+' DOOR
 	MOVE.B	D6,$00(A6,D7.W)
 	MOVEA.L	-$5198(A4),A6	;__flags
-	ANDI.B	#$EF,$00(A6,D7.W)
+	ANDI.B	#~F_REAL,$00(A6,D7.W)
 L001BF:
 	MOVE.W	D5,d1
 	MOVE.W	D4,d0
@@ -297,12 +297,14 @@ L001C4:
 L001C5:
 	JSR	_standend
 	ADDQ.W	#1,D5
-	CMP.W	#$003C,D5
+	CMP.W	#$003C,D5	;'<'
 	BLT.W	L001BD
+
 	ADDQ.W	#1,D4
 L001C6:
 	CMP.W	-$60BC(A4),D4	;_maxrow
 	BLT.W	L001BC
+
 	BRA.W	L001E6
 
 ; wild magic scroll
@@ -757,7 +759,7 @@ L00210:
 	MOVEA.L	-$5198(A4),A6	;__flags
 	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D5.W),D3
-	AND.W	#$0010,D3
+	AND.W	#F_REAL,D3
 	BEQ.B	L00210
 
 	MOVE.W	-$0004(A5),d1

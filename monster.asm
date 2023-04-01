@@ -381,7 +381,7 @@ L00A31:
 	AND.W	#C_ISRUN,D3	;C_ISRUN
 	BNE.B	L00A34
 
-	MOVEq	#$0003,D0
+	MOVEq	#$0003,D0	;33% chance that we do not wake it up
 	JSR	_rnd
 	TST.W	D0
 	BEQ.B	L00A34
@@ -424,7 +424,7 @@ L00A34:
 	BNE.W	L00A39
 
 	MOVE.W	$0016(A2),D3
-	AND.W	#C_ISCANC,D3	;her abilities are canceled
+	AND.W	#C_ISCANC,D3	;her abilitiy is canceled
 	BNE.W	L00A39
 
 	MOVE.W	$0016(A2),D3
@@ -558,7 +558,8 @@ _save_throw:
 
 	moveq	#14,D4
 	ADD.W	$0008(A5),D4
-	MOVEA.L	$000A(A5),A6
+
+	MOVEA.L	$000A(A5),A6	;creature/player
 	MOVE.W	$001E(A6),D2	;rank of player/creature
 	EXT.L	D2
 	DIVS.W	#$0002,D2

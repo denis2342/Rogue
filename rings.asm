@@ -12,7 +12,7 @@ _ring_on:
 	MOVE.L	A2,D3
 	BNE.B	L005A6
 
-	MOVE.W	#$003D,-(A7)
+	MOVE.W	#$003D,-(A7)	;'=' ring type
 	PEA	L005B4(PC)	;"put on"
 	JSR	_get_item
 	ADDQ.W	#6,A7

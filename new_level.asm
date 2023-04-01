@@ -20,7 +20,7 @@ L00183:
 	MOVE.L	-$519C(A4),a0	;__level
 	JSR	_memset
 
-	MOVEq	#$0010,d1	;what you see is what you get
+	MOVEq	#F_REAL,d1	;what you see is what you get
 	MOVE.W	#1760,d0
 	MOVE.L	-$5198(A4),a0	;__flags
 	JSR	_memset
@@ -92,7 +92,7 @@ L00187:
 	EXT.L	D3
 	MOVEA.L	D3,A3
 	ADDA.L	-$5198(A4),A3	;__flags
-	ANDI.B	#$EF,(A3)	;all but F_REAL
+	ANDI.B	#~F_REAL,(A3)	;clear F_REAL
 
 	MOVEq	#$0006,D0
 	JSR	_rnd
@@ -107,7 +107,7 @@ L00188:
 	MOVE.W	D0,D6
 	MOVEA.L	-$5198(A4),A6	;__flags
 	MOVE.B	$00(A6,D6.W),D3
-	AND.B	#$0010,D3	;F_REAL
+	AND.B	#F_REAL,D3	;F_REAL
 	BEQ.B	L00188
 
 	MOVE.W	-$52C0(A4),d1	;_player + 10
@@ -278,15 +278,9 @@ L00191:
 	JSR	_INDEXquick
 
 	MOVEA.L	-$519C(A4),A6	;__level
-	CMPI.B	#$002E,$00(A6,D0.W)
+	CMPI.B	#$002E,$00(A6,D0.W)	;'.' FLOOR
 	BEQ.B	L00192
-
-;	MOVE.W	-$0004(A5),d0
-;	MOVE.W	-$0002(A5),d1
-;	JSR	_INDEXquick
-
-;	MOVEA.L	-$519C(A4),A6	;__level
-	CMPI.B	#$0023,$00(A6,D0.W)
+	CMPI.B	#$0023,$00(A6,D0.W)	;'#' PASSAGE
 	BNE.B	L00191
 L00192:
 	MOVE.W	-$0004(A5),d0
@@ -317,9 +311,11 @@ L00194:
 _treas_room:
 	LINK	A5,#-$000C
 	MOVEM.L	A2/A3,-(A7)
+
 	JSR	_rnd_room(PC)
 	MULS.W	#$0042,D0
 	LEA	-$6088(A4),A6	;_rooms
+
 	MOVEA.L	D0,A3
 	ADDA.L	A6,A3
 	MOVE.W	$0006(A3),D3
@@ -343,6 +339,7 @@ L00196:
 	SUBQ.W	#1,-$0002(A5)
 	TST.W	D3
 	BEQ.W	L00199
+
 	CMPI.W	#$0053,-$60A8(A4)	;83 objects _total
 	BGE.B	L00199
 L00197:
@@ -360,14 +357,9 @@ L00197:
 	MOVEA.L	-$519C(A4),A6	;__level
 
 	MOVE.B	$00(A6,D3.W),D2
-	CMP.B	#$2E,D2
+	CMP.B	#$2E,D2		;'.' FLOOR
 	BEQ.B	L00198
-
-;	MOVE.W	-$0004(A5),D3
-;	MOVEA.L	-$519C(A4),A6	;__level
-;	MOVEQ	#$00,D2
-;	MOVE.B	$00(A6,D3.W),D2
-	CMP.B	#$23,D2
+	CMP.B	#$23,D2		;'#' PASSAGE
 	BNE.B	L00197
 L00198:
 	JSR	_new_thing
@@ -428,6 +420,7 @@ L0019D:
 	MOVE.W	D0,-$0004(A5)
 	MOVE.W	-$0004(A5),D3
 	MOVEA.L	-$519C(A4),A6	;__level
+
 	MOVE.B	$00(A6,D3.W),D2
 	CMP.B	#$2E,D2		;'.' FLOOR
 	BEQ.B	L0019E
@@ -447,19 +440,24 @@ L0019F:
 L001A0:
 	CMPI.W	#$000A,-$0006(A5)
 	BEQ.B	L001A1
+
 	JSR	_new_item
 	MOVEA.L	D0,A2
 	TST.L	D0
 	BEQ.B	L001A1
+
 	PEA	-$000C(A5)
 	CLR.L	-(A7)
 	JSR	_randmonster
 	ADDQ.W	#4,A7
+
 	MOVE.W	D0,-(A7)
 	MOVE.L	A2,-(A7)
 	JSR	_new_monster
 	LEA	$000A(A7),A7
-	ORI.W	#$0020,$0016(A2)
+
+	ORI.W	#C_ISMEAN,$0016(A2)	;all monster here are mean
+
 	MOVE.L	A2,-(A7)
 	JSR	_give_pack
 	ADDQ.W	#4,A7

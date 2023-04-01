@@ -102,6 +102,18 @@ A_BANDED_MAIL		equ	6
 A_PLATE_MAIL		equ	7
 MAXARMORS		equ	8
 
+;/*
+; * Flags for level map
+; */
+
+F_PASS		equ	$80	;is a passageway
+F_SEEN		equ	$40	;have seen this spot before
+F_DROPPED	equ	$20	;object was dropped here
+F_LOCKED	equ	$20	;door is locked
+F_REAL		equ	$10	;what you see is what you get
+F_PNUM		equ	$0f	;passage number mask
+F_TMASK		equ	$07	;trap number mask
+
 ; flags for objects
 
 O_ISCURSED	equ	1

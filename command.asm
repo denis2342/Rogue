@@ -776,7 +776,7 @@ L003FA:
 
 	MOVEA.L	-$5198(A4),A6	;__flags
 	MOVE.B	$00(A6,D0.W),D3
-	AND.W	#$0007,D3
+	AND.W	#F_TMASK,D3
 	MOVE.W	D3,-(A7)
 	JSR	_tr_name(PC)
 	ADDQ.W	#2,A7
@@ -1051,7 +1051,7 @@ L0040B:
 
 	MOVEA.L	-$5198(A4),A6	;__flags
 	MOVE.B	$00(A6,D0.W),D3
-	AND.W	#$0040,D3
+	AND.W	#F_SEEN,D3
 	BNE.B	L0040C
 	JSR	_mouse_adjust
 	MOVE.B	D0,-$66A8(A4)	;_runch
@@ -1129,7 +1129,7 @@ L008C5:
 	MOVEA.w	D0,A2
 	ADDA.L	-$5198(A4),A2	;__flags
 	MOVE.B	(A2),D3
-	AND.W	#$0010,D3
+	AND.W	#F_REAL,D3
 	BNE.W	L008C9
 
 	MOVE.W	D5,d0

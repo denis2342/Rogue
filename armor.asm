@@ -6,6 +6,7 @@
 _wear:
 	LINK	A5,#-$0000
 	MOVEM.L	A2/A3,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	TST.L	-$5294(A4)	;_cur_armor
 	BEQ.B	L0012A
@@ -26,10 +27,12 @@ L00129:
 L0012A:
 	MOVE.L	A2,D3
 	BNE.B	L0012B
-	MOVE.W	#$0061,-(A7)
+
+	MOVE.W	#$0061,-(A7)	;'a' armor type
 	PEA	L00130(PC)	;"wear"
 	JSR	_get_item
 	ADDQ.W	#6,A7
+
 	MOVEA.L	D0,A2
 	TST.L	D0
 	BEQ.B	L00129
@@ -37,8 +40,10 @@ L0012B:
 	MOVE.L	A2,-(A7)
 	JSR	_typeof
 	ADDQ.W	#4,A7
+
 	CMP.W	#$0061,D0
 	BEQ.B	L0012C
+
 	PEA	L00131(PC)	;"you can't wear that"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -47,23 +52,30 @@ L0012C:
 	MOVE.L	A2,-(A7)
 	JSR	_check_wisdom
 	ADDQ.W	#4,A7
+
 	TST.W	D0
 	BNE.B	L00129
+
 	JSR	_waste_time(PC)
-	ORI.W	#$0002,$0028(A2)
+
+	ORI.W	#O_ISKNOW,$0028(A2)
 	MOVE.L	A2,-$5294(A4)	;_cur_armor
+
 	MOVE.W	#$005C,-(A7)
 	MOVE.L	A2,-(A7)
 	JSR	_nameof
 	ADDQ.W	#6,A7
+
 	MOVE.L	D0,-(A7)
 	PEA	L00132(PC)	;"you are now wearing %s"
 	JSR	_msg
 	ADDQ.W	#8,A7
+
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	A2,-(A7)
 	JSR	_pack_name
 	ADDQ.W	#6,A7
+
 	BRA	L00129
 
 L0012E:	dc.b	"you are already wearing some%s.",0

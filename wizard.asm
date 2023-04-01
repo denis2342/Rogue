@@ -146,10 +146,10 @@ L007C1:
 	; for rings and wands/staff we want to check if there
 	; are more items who need an update
 
-	CMP.B	#'/',d6		; wand/staff
+	CMP.B	#'/',d6		; wand/staff type
 	beq	1$
 
-	CMP.B	#'=',d6		; ring
+	CMP.B	#'=',d6		; ring type
 	bne	L007B4
 
 1$	bsr	_pack_update
@@ -165,7 +165,7 @@ _pack_update:
 	move.l	a3,-(a7)
 	MOVE.L	-$529C(A4),a3	;_player + 46 (pack)
 
-;	MOVE.W	$000A(A2),d6	;item type we want to update
+;	MOVE.W	$0A(A2),d6	;item type we want to update
 	move.w	$20(A2),d5	;subtype
 
 	bra	2$
@@ -173,7 +173,7 @@ _pack_update:
 1$	cmp.l	A2,A3		;don't update twice!
 	beq	3$
 
-	cmp.w	$000A(A3),d6		;item type from list same as item type we want to update?
+	cmp.w	$0A(A3),d6	;item type from list same as item type we want to update?
 	bne	3$
 
 	cmp.w	$20(a3),d5	;is it even the same subtype?
@@ -527,13 +527,16 @@ L007F4:
 	MOVE.L	D3,-(A7)
 	JSR	_rnd_pos
 	ADDQ.W	#8,A7
+
 	MOVE.W	-$0004(A5),-(A7)
 	MOVE.W	-$0002(A5),-(A7)
 	JSR	_winat
 	ADDQ.W	#4,A7
+
 	MOVE.W	D0,-(A7)
 	JSR	_step_ok
 	ADDQ.W	#2,A7
+
 	TST.W	D0
 	BEQ.B	L007F4
 
@@ -547,12 +550,14 @@ L007F4:
 	PEA	-$52C0(A4)	;_player + 10
 	JSR	_leave_room
 	ADDQ.W	#4,A7
+
 	LEA	-$52C0(A4),A6	;_player + 10
 	LEA	-$0004(A5),A1
 	MOVE.L	(A1)+,(A6)+
 	PEA	-$52C0(A4)	;_player + 10
 	JSR	_enter_room
 	ADDQ.W	#4,A7
+
 	BRA.B	L007F6
 L007F5:
 	LEA	-$52C0(A4),A6	;_player + 10
@@ -632,7 +637,7 @@ L007FC:
 
 	MOVEA.L	-$5198(A4),A6	;__flags
 	MOVE.B	$00(A6,D0.W),D6
-	AND.W	#$0010,D6
+	AND.W	#F_REAL,D6
 	TST.W	D6
 	BNE.B	L007FD
 

@@ -127,7 +127,7 @@ L00096:
 	CLR.B	-$66B6(A4)	;_running
 L00097:
 	MOVE.W	D5,D3
-	AND.W	#$0010,D3
+	AND.W	#F_REAL,D3
 	BNE.B	L00098
 
 	CMP.B	#$2E,D4		;'.' FLOOR
@@ -139,7 +139,7 @@ L00097:
 
 	MOVEA.L	-$519C(A4),A6	;__level
 	MOVE.W	D5,D3
-	AND.W	#$0007,D3
+	AND.W	#F_TMASK,D3
 	ADD.W	#$000E,D3
 	MOVE.B	D3,D4
 	MOVE.B	D3,$00(A6,D0.W)
@@ -149,7 +149,7 @@ L00097:
 	JSR	_INDEXquick
 
 	MOVEA.L	-$5198(A4),A6	;__flags
-	ORI.B	#$10,$00(A6,D0.W)
+	ORI.B	#F_REAL,$00(A6,D0.W)
 	BRA.B	L00099
 L00098:
 	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
@@ -210,7 +210,7 @@ L0009C:
 	MOVEA.L	-$5198(A4),A6	;__flags
 ;	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
-	AND.W	#$0040,D3
+	AND.W	#F_SEEN,D3	;F_SEEN have seen this spot before
 	BNE.B	L0009D
 
 	JSR	_INDEXplayer
@@ -238,7 +238,7 @@ L0009F:
 	MOVEA.L	-$5198(A4),A6	;__flags
 ;	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
-	AND.W	#$0040,D3
+	AND.W	#F_SEEN,D3	;F_SEEN have seen this spot before
 	BNE.B	L000A0
 
 	JSR	_INDEXplayer
@@ -280,7 +280,7 @@ L000A5:
 
 	MOVEA.L	-$5198(A4),A6	;__flags
 	MOVE.B	$00(A6,D0.W),D3
-	AND.B	#$40,D3
+	AND.B	#F_SEEN,D3	;F_SEEN have seen this spot before
 	BNE.B	L000A6
 
 ;	MOVE.W	-$52C0(A4),D0	;_player + 10
@@ -309,7 +309,7 @@ L000A8:
 	MOVEA.L	-$5198(A4),A6	;__flags
 ;	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
-	AND.W	#$0040,D3
+	AND.W	#F_SEEN,D3	;F_SEEN have seen this spot before
 	BNE.B	L000A9
 
 ;	MOVE.W	-$52C0(A4),D0	;_player + 10
@@ -368,7 +368,7 @@ L000B2:
 	MOVEA.L	-$5198(A4),A6	;__flags
 	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
-	AND.W	#$0040,D3
+	AND.W	#F_SEEN,D3	;F_SEEN have seen this spot before
 	BEQ.B	L000B3
 
 	PEA	-$5194(A4)	;_nh
@@ -390,7 +390,7 @@ L000B5:
 	BRA.W	L00090
 L000B7:
 	MOVE.W	D5,D3
-	AND.W	#$0010,D3
+	AND.W	#F_REAL,D3
 	BNE.B	L000BC
 
 	PEA	-$52C0(A4)	;_player + 10
@@ -439,7 +439,7 @@ L000BC:
 	JSR	_mvaddchquick
 
 	MOVE.W	D5,D3
-	AND.W	#$0040,D3
+	AND.W	#F_SEEN,D3
 	BEQ.B	L000BE
 
 	MOVE.W	-$6090(A4),d0
@@ -456,7 +456,7 @@ L000BC:
 
 	MOVEA.L	-$5198(A4),A6	;__flags
 	MOVE.B	$00(A6,D0.W),D3
-	AND.B	#$20,D3
+	AND.B	#F_DROPPED,D3	;F_DROPPED object was dropped here
 	BEQ.B	L000BE
 L000BD:
 	PEA	-$5194(A4)	;_nh
@@ -464,7 +464,7 @@ L000BD:
 	ADDQ.W	#4,A7
 L000BE:
 	MOVE.W	D5,D3
-	AND.W	#$0020,D3
+	AND.W	#F_DROPPED,D3
 	BEQ.B	L000BF
 
 	MOVE.W	-$6090(A4),d0
@@ -473,7 +473,7 @@ L000BE:
 
 	MOVEA.L	-$5198(A4),A6	;__flags
 	MOVE.B	$00(A6,D0.W),D3
-	AND.B	#$20,D3
+	AND.B	#F_DROPPED,D3		;F_DROPPED object was dropped here
 	BNE.B	L000BF
 
 	PEA	-$5194(A4)	;_nh
@@ -619,7 +619,7 @@ _be_trapped:
 	MOVE.W	D0,D5
 	MOVEA.L	-$5198(A4),A6	;__flags
 	MOVE.B	$00(A6,D5.W),D3
-	AND.B	#$07,D3
+	AND.B	#F_TMASK,D3	;trap number mask
 	MOVE.B	D3,D4
 	MOVEA.L	-$519C(A4),A6	;__level
 	MOVE.B	D4,D3

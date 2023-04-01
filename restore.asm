@@ -1,5 +1,6 @@
 _save_game:
 	LINK	A5,#-$0056
+
 	PEA	-$672B(A4)	;_whoami
 	PEA	L00B2E(PC)
 	MOVE.L	-$5258(A4),-(A7)	;_prbuf
@@ -114,6 +115,7 @@ L00B36:	dc.b	"Game saved as %s",0
 _restore_game:
 	LINK	A5,#-$0050
 	MOVE.L	A2,-(A7)
+
 	PEA	-$672B(A4)	;_whoami
 	PEA	L00B3D(PC)
 	MOVE.L	-$5258(A4),-(A7)	;_prbuf
@@ -226,6 +228,7 @@ L00B43:	dc.b	"%s's game restored",0
 _xfer_all:
 	LINK	A5,#-$0002
 	MOVEM.L	D4/D5/A2/A3,-(A7)
+
 	MOVE.W	#$0050,-(A7)
 	PEA	-$672B(A4)	;_whoami
 	JSR	_xfer
@@ -321,6 +324,7 @@ L00B44:
 	MOVE.W	-$532C(A4),-(A7)
 	JSR	_AmigaClose(PC)
 	ADDQ.W	#2,A7
+
 	MOVEM.L	(A7)+,D4/D5/A2/A3
 	UNLK	A5
 	RTS

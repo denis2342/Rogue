@@ -107,7 +107,7 @@ L0081D:
 	MOVEA.L	-$0010(A5),A6
 ;	MOVEQ	#$00,D3
 	MOVE.B	(A6),D3
-	AND.W	#$0020,D3
+	AND.W	#F_DROPPED,D3
 	BNE.B	L0081E
 
 	MOVEA.L	-$0010(A5),A6
@@ -546,7 +546,7 @@ _eat:
 	MOVE.L	A2,D3
 	BNE.B	L00851
 
-	MOVE.W	#$003A,-(A7)	;':' food
+	MOVE.W	#$003A,-(A7)	;':' food type
 	PEA	L0085C(PC)	;"eat"
 	JSR	_get_item
 	ADDQ.W	#6,A7

@@ -91,7 +91,7 @@ _do_zap:
 	TST.L	$0008(A5)
 	BNE.B	L00310
 
-	MOVE.W	#$002F,-(A7)	;'/'
+	MOVE.W	#$002F,-(A7)	;'/' wand/staff type
 	PEA	L00347(PC)	;"zap with"
 	JSR	_get_item
 	ADDQ.W	#6,A7
@@ -635,7 +635,7 @@ _drain:
 
 	MOVEA.L	-$5198(A4),A6	;__flags
 	MOVE.B	$00(A6,D0.W),D3
-	AND.W	#$000F,D3
+	AND.W	#F_PNUM,D3	;passage number mask
 	MULU.W	#66,D3
 	LEA	-$5E36(A4),A6	;_passages
 	MOVEA.L	D3,A2
@@ -682,8 +682,8 @@ L00358:
 
 	MOVEA.L	-$5198(A4),A6	;__flags
 	MOVE.B	$00(A6,D0.W),D3
-	AND.W	#$000F,D3
-	MULU.W	#$0042,D3
+	AND.W	#F_PNUM,D3	;passage number mask
+	MULU.W	#66,D3
 	LEA	-$5E36(A4),A6	;_passages
 	ADD.L	A6,D3
 	CMP.L	-$52A0(A4),D3	;_player + 42 (proom)

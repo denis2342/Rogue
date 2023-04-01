@@ -50,7 +50,7 @@ _missile:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
 
-	MOVE.W	#$006D,-(A7)	;m weapon type
+	MOVE.W	#$006D,-(A7)	;'m' weapon type
 	PEA	L00603(PC)	;"throw"
 	JSR	_get_item
 	ADDQ.W	#6,A7
@@ -258,7 +258,7 @@ L0060B:
 	MOVEA.L	-$5198(A4),A6	;__flags
 ;	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
-	AND.B	#$40,D3
+	AND.B	#F_SEEN,D3	;have seen this spot before
 	BNE.B	L0060C
 
 ;	MOVEA.L	$0008(A5),A6
@@ -269,7 +269,7 @@ L0060B:
 ;	MOVEA.L	-$5198(A4),A6	;__flags
 ;	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
-	AND.B	#$20,D3
+	AND.B	#F_DROPPED,D3	;object was dropped here
 	BEQ.B	L0060D
 L0060C:
 	JSR	_standout
@@ -500,7 +500,7 @@ L00626:
 	MOVE.L	A2,D3
 	BNE.B	L00628
 
-	MOVE.W	#$006D,-(A7)	; weapon type
+	MOVE.W	#$006D,-(A7)	;'m' weapon type
 	PEA	L0062B(PC)	;"wield"
 	JSR	_get_item
 	ADDQ.W	#6,A7

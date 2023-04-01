@@ -194,7 +194,7 @@ L00245:
 
 	MOVEA.L	-$5198(A4),A6	;__flags
 	MOVE.B	$00(A6,D0.W),D3
-	AND.W	#$000F,D3	;get the room number
+	AND.W	#F_PNUM,D3	;get the room number
 	MULU.W	#66,D3
 	LEA	-$5E36(A4),A6	;_passages
 	MOVE.L	D3,D4
@@ -876,7 +876,7 @@ L0027E:
 	ADD.L	-$5198(A4),D4	;__flags
 	MOVEA.L	D4,A6
 	MOVE.B	(A6),D3
-	AND.W	#$0040,D3	;room flags?
+	AND.W	#F_SEEN,D3	;F_SEEN
 	BEQ.B	L0027F
 
 ;	MOVEA.L	D4,A6

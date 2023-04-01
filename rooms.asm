@@ -1009,6 +1009,7 @@ L00925:
 _leave_room:
 	LINK	A5,#-$0000
 	MOVEM.L	D4-D7/A2/A3,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	MOVEA.L	-$52A0(A4),A3	;_player + 42 (proom)
 
@@ -1019,7 +1020,7 @@ _leave_room:
 	MOVEA.L	-$5198(A4),A6	;__flags
 ;	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
-	AND.W	#$000F,D3
+	AND.W	#F_PNUM,D3	;F_PNUM passage number mask
 	MULU.W	#66,D3
 	LEA	-$5E36(A4),A6	;_passages
 	ADD.L	A6,D3

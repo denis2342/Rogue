@@ -217,8 +217,8 @@ _door:
 	MOVE.W	(A6)+,d0
 	MOVE.W	(A6),d1
 	JSR	_INDEXquick
-
 	MOVE.W	D0,D4
+
 	MOVEq	#10,D0
 	JSR	_rnd
 	ADDQ.W	#1,D0
@@ -230,6 +230,8 @@ _door:
 	TST.W	D0
 	BNE.B	L00450
 
+	; 20% chance for a secret door
+
 	MOVEA.L	-$519C(A4),A6	;__level
 	MOVEA.L	$000C(A5),A1
 	MOVEA.L	$0008(A5),A0
@@ -238,11 +240,9 @@ _door:
 	CMP.W	$0002(A0),D3
 	BEQ.B	L0044D
 
-;	MOVEA.L	$0008(A5),A0
 	MOVE.W	$0002(A0),D3
 	ADD.W	$0006(A0),D3
 	SUBQ.W	#1,D3
-;	MOVEA.L	$000C(A5),A1
 	CMP.W	$0002(A1),D3
 	BNE.B	L0044E
 L0044D:
@@ -253,7 +253,7 @@ L0044E:
 L0044F:
 	MOVE.B	D3,$00(A6,D4.W)
 	MOVEA.L	-$5198(A4),A6	;__flags
-	ANDI.B	#$EF,$00(A6,D4.W)	;clear F_REAL
+	ANDI.B	#~F_REAL,$00(A6,D4.W)	;clear F_REAL
 	BRA.B	L00451
 L00450:
 	MOVEA.L	-$519C(A4),A6	;__level
@@ -377,6 +377,7 @@ L0045A:
 _numpass:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/A2/A3,-(A7)
+
 	MOVE.W	$000A(A5),-(A7)
 	MOVE.W	$0008(A5),-(A7)
 	JSR	_offmap
@@ -398,7 +399,7 @@ L0045C:
 	ADDA.L	-$5198(A4),A2	;__flags
 	MOVEQ	#$00,D3
 	MOVE.B	(A2),D3
-	AND.W	#$000F,D3
+	AND.W	#F_PNUM,D3
 	BNE.B	L0045B
 
 	TST.B	-$54BE(A4)
@@ -486,10 +487,10 @@ _psplat:
 	JSR	_INDEXquick
 
 	MOVEA.L	-$519C(A4),A6	;__level
-	MOVE.B	#$23,$00(A6,D0.W)
+	MOVE.B	#$23,$00(A6,D0.W)	;'#' PASSAGE
 
 	MOVEA.L	-$5198(A4),A6	;__flags
-	ORI.B	#$40,$00(A6,D0.W)
+	ORI.B	#F_SEEN,$00(A6,D0.W)	;set F_SEEN
 
 	RTS
 

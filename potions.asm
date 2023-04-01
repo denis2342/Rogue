@@ -11,7 +11,7 @@ _quaff:
 	MOVE.L	A2,D3
 	BNE.B	L00484
 
-	MOVE.W	#$0021,-(A7)
+	MOVE.W	#$0021,-(A7)	;'!' potion type
 	PEA	L004AE(PC)
 	JSR	_get_item
 	ADDQ.W	#6,A7
