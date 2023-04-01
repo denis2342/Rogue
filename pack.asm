@@ -96,12 +96,9 @@ _pack_name:
 	TST.L	$0010(A2)
 	BEQ.B	L002A1
 
-	move.l	$0010(A2),a0
-	move.l	#"ABCD",(a0)
-
-;	MOVE.L	$0010(A2),-(A7)		;DEBUG CODE
-;	JSR	_free
-;	ADDQ.W	#4,A7
+	MOVE.L	$0010(A2),-(A7)
+	JSR	_free
+	ADDQ.W	#4,A7
 
 	CLR.L	$0010(A2)
 L002A1:
