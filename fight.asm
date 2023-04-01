@@ -816,10 +816,10 @@ L0098E:
 	CMPA.L	-$5298(A4),A6	;is the used weapon the _cur_weapon?
 	BNE.B	L00992
 
-	TST.L	-$5190(A4)	;check for _cur_ring_1
+	MOVE.L	-$5190(A4),D0	;get _cur_ring_1
 	BEQ.B	L00990
 
-	MOVEA.L	-$5190(A4),A6	;get _cur_ring_1
+	MOVEA.L	D0,A6		;get _cur_ring_1
 	CMPI.W	#R_ADDDAM,$0020(A6)
 	BNE.B	L0098F
 
@@ -832,10 +832,10 @@ L0098F:
 	ADD.W	$0026(A6),D5	;add hit from ring
 
 L00990:
-	TST.L	-$518C(A4)	;check for _cur_ring_2
+	MOVE.L	-$518C(A4),D0	;get _cur_ring_2
 	BEQ.B	L00992
 
-	MOVEA.L	-$518C(A4),A6	;get _cur_ring_2
+	MOVEA.L	D0,A6		;get _cur_ring_2
 	CMPI.W	#R_ADDDAM,$0020(A6)
 	BNE.B	L00991
 
