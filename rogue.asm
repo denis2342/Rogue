@@ -1996,20 +1996,15 @@ L004E5:
 	RTS
 
 _getrc:
-	LINK	A5,#-$0000
-	MOVE.L	A2,-(A7)
-
 	MOVEQ	#$00,D3
 	MOVE.B	-$7066(A4),D3	;_c_row
-	MOVEA.L	$0008(A5),A2
-	MOVE.W	D3,(A2)
+	MOVEA.L	$0004(A7),A0
+	MOVE.W	D3,(A0)
 ;	MOVEQ	#$00,D3
 	MOVE.B	-$7065(A4),D3	;_c_col
-	MOVEA.L	$000C(A5),A2
-	MOVE.W	D3,(A2)
+	MOVEA.L	$0008(A7),A0
+	MOVE.W	D3,(A0)
 
-	MOVE.L	(A7)+,A2
-	UNLK	A5
 	RTS
 
 _initscr:
