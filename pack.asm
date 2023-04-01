@@ -28,7 +28,8 @@ L00295:
 	DBF	D3,L00295
 	MOVE.W	(A1)+,(A6)+
 
-	move.l	#$deadbad1,$0010(A2)	;so the enforcer can catch it maybe
+	; bugfix, clear old pack_string so it will not be double freed
+	clr.l	$0010(A2)
 
 	MOVE.W	#$0001,$001E(A2)	;new object has one item
 	MOVEA.L	$0008(A5),A6
