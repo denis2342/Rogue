@@ -287,12 +287,11 @@ L00689:
 
 	ADD.W	-$0054(A5),D0
 	CMP.W	#$0046,D0	;not longer than 70 chars
-	BGE.B	L0068A
+	BGE.B	L0068E
 
 	PEA	-$0050(A5)
 	JSR	_addstr
 	ADDQ.W	#4,A7
-L0068A:
 	BRA.B	L0068E
 L0068B:
 	MOVEA.L	$000A(A5),A6
