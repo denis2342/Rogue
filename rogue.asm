@@ -1244,7 +1244,7 @@ L00121:
 ;	ADDQ.W	#4,A7
 ;L00122:
 	MOVEM.L	(A7)+,D4/D5
-	UNLK	A5
+;	UNLK	A5
 	RTS
 
 _ScreenTitle:
