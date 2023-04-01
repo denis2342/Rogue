@@ -836,24 +836,24 @@ L0021B:	dc.b	"There is a fluttering behind you and suddenly your pack feels ligh
 _s_remove:
 ;	LINK	A5,#-$0000
 
-	TST.L	-$5294(A4)	;_cur_armor
+	MOVE.L	-$5294(A4),D0	;_cur_armor
 	BEQ.B	L0021C
-	MOVEA.L	-$5294(A4),A6	;_cur_armor
+	MOVEA.L	D0,A6		;_cur_armor
 	ANDI.W	#~O_ISCURSED,$0028(A6)	;clear ISCURSED bit
 L0021C:
-	TST.L	-$5298(A4)	;_cur_weapon
+	MOVE.L	-$5298(A4),D0	;_cur_weapon
 	BEQ.B	L0021D
-	MOVEA.L	-$5298(A4),A6	;_cur_weapon
+	MOVEA.L	D0,A6		;_cur_weapon
 	ANDI.W	#~O_ISCURSED,$0028(A6)
 L0021D:
-	TST.L	-$5190(A4)	;_cur_ring_1
+	MOVE.L	-$5190(A4),D0	;_cur_ring_1
 	BEQ.B	L0021E
-	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
+	MOVEA.L	D0,A6		;_cur_ring_1
 	ANDI.W	#~O_ISCURSED,$0028(A6)
 L0021E:
-	TST.L	-$518C(A4)	;_cur_ring_2
+	MOVE.L	-$518C(A4),D0	;_cur_ring_2
 	BEQ.B	L0021F
-	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
+	MOVEA.L	D0,A6		;_cur_ring_2
 	ANDI.W	#~O_ISCURSED,$0028(A6)
 L0021F:
 ;	UNLK	A5
