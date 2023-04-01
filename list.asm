@@ -68,21 +68,21 @@ L00468:
 
 __free_list:
 	LINK	A5,#-$0000
-	MOVEM.L	A2/A3,-(A7)
+	MOVE.L	A2,-(A7)
 
 	MOVEA.L	$0008(A5),A2
-L00469:
-	TST.L	(A2)
-	BEQ.B	L0046A
+	BRA.B	2$
 
-	MOVEA.L	(A2),A3
-	MOVE.L	(A3),(A2)
-	MOVE.L	A3,-(A7)
+1$	MOVEA.L	(A2),A0
+	MOVE.L	(A0),(A2)
+	MOVE.L	A0,-(A7)
 	JSR	_discard(PC)
 	ADDQ.W	#4,A7
-	BRA.B	L00469
-L0046A:
-	MOVEM.L	(A7)+,A2/A3
+
+2$	TST.L	(A2)
+	BNE.B	1$
+
+	MOVE.L	(A7)+,A2
 	UNLK	A5
 	RTS
 
