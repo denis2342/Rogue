@@ -982,10 +982,10 @@ L00161:
 	ADDQ.W	#6,A7
 	MOVE.W	-$60B2(A4),-$54E4(A4)	;_purse, last printed purse
 L00162:
-	TST.L	-$5294(A4)	;_cur_armor
+	MOVE.L	-$5294(A4),D0	;_cur_armor
 	BEQ.B	L00163
 
-	MOVEA.L	-$5294(A4),A6	;_cur_armor
+	MOVEA.L	D0,A6		;_cur_armor
 	MOVE.W	$0026(A6),D4
 	BRA.B	L00164
 L00163:
