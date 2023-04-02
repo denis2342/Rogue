@@ -167,7 +167,7 @@ _put_things:
 	LINK	A5,#-$0004
 	MOVEM.L	D4/D5/A2,-(A7)
 
-	MOVEQ	#$00,D4
+	MOVEQ	#9-1,D4		;create 9 items if we didnt saw the amulet yet
 	TST.B	-$66BC(A4)	;_saw_amulet
 	BEQ.B	L0018B
 
@@ -175,7 +175,7 @@ _put_things:
 	CMP.W	-$60BA(A4),D3	;_ntraps
 	BGE.B	L0018B
 
-	MOVEQ	#$08,D4
+	MOVEQ	#1-1,D4		;if we saw it then create only one item
 	BRA.W	L0018F
 L0018B:
 	CMPI.W	#26,-$60B4(A4)	;_level
@@ -239,8 +239,6 @@ L0018E:
 
 	JSR	_treas_room(PC)
 L0018F:
-	BRA.W	L00194
-L00190:
 	CMPI.W	#$0053,-$60A8(A4)	;83 objects _total
 	BGE.W	L00193
 
@@ -274,25 +272,23 @@ L00191:
 
 	MOVEA.L	-$519C(A4),A6	;__level
 	CMPI.B	#$002E,$00(A6,D0.W)	;'.' FLOOR
-	BEQ.B	L00192
+	BEQ.B	1$
+
 	CMPI.B	#$0023,$00(A6,D0.W)	;'#' PASSAGE
 	BNE.B	L00191
-L00192:
-	MOVE.W	-$0004(A5),d0
-	MOVE.W	-$0002(A5),d1
-	JSR	_INDEXquick
+1$
+;	MOVE.W	-$0004(A5),d0
+;	MOVE.W	-$0002(A5),d1
+;	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+;	MOVEA.L	-$519C(A4),A6	;__level
 	MOVE.B	$000B(A2),$00(A6,D0.W)
 	MOVEA.L	A2,A6
 	ADDA.L	#$0000000C,A6
 	LEA	-$0004(A5),A1
 	MOVE.L	(A1)+,(A6)+
 L00193:
-	ADDQ.W	#1,D4
-L00194:
-	CMP.W	#$0009,D4
-	BLT.W	L00190
+	DBRA	d4,L0018F
 
 	MOVEM.L	(A7)+,D4/D5/A2
 	UNLK	A5
@@ -434,12 +430,12 @@ L0019F:
 	BLT.B	L0019D
 L001A0:
 	CMPI.W	#$000A,-$0006(A5)
-	BEQ.B	L001A1
+	BEQ.B	L0019C
 
 	JSR	_new_item
 	MOVEA.L	D0,A2
 	TST.L	D0
-	BEQ.B	L001A1
+	BEQ.B	L0019C
 
 	PEA	-$000C(A5)
 	CLR.L	-(A7)
@@ -456,7 +452,6 @@ L001A0:
 	MOVE.L	A2,-(A7)
 	JSR	_give_pack
 	ADDQ.W	#4,A7
-L001A1:
 	BRA.W	L0019C
 L001A2:
 	SUBQ.W	#1,-$60B4(A4)	;_level
