@@ -861,12 +861,12 @@ L0021F:
 
 _s_enchant:
 ;	LINK	A5,#-$0000
-	MOVEA.L	-$5298(A4),A6	;_cur_weapon
 
-	ANDI.W	#~O_ISCURSED,$0028(A6)	;clear O_ISCURSED bit
 	MOVEq	#$0002,D0
 	JSR	_rnd
 	MOVEA.L	-$5298(A4),A6	;_cur_weapon
+	ANDI.W	#~O_ISCURSED,$0028(A6)	;clear O_ISCURSED bit
+
 	TST.W	D0
 	BNE.B	L00220
 
