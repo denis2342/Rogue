@@ -702,10 +702,10 @@ L0020A:
 L0020B:
 	JSR	_s_remove(PC)	;removes the curses of the used weapon/armor and rings
 
-	TST.L	-$5298(A4)	;_cur_weapon
+	MOVE.L	-$5298(A4),D0	;_cur_weapon
 	BEQ.B	L0020C
 
-	MOVEA.L	-$5298(A4),A6	;_cur_weapon
+	MOVEA.L	D0,A6		;_cur_weapon
 	CMPI.W	#$006D,$000A(A6)	;m weapon type
 	BNE.B	L0020C
 
@@ -714,12 +714,12 @@ L0020B:
 	JSR	_s_enchant(PC)
 	JSR	_s_enchant(PC)
 L0020C:
-	TST.L	-$5294(A4)	;_cur_armor
+	MOVE.L	-$5294(A4),D0	;_cur_armor
 	BEQ.B	L0020D
 
 	; increase armor class by two points
 
-	MOVEA.L	-$5294(A4),A6	;_cur_armor
+	MOVEA.L	D0,A6		;_cur_armor
 	SUBQ.W	#2,$0026(A6)
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	-$5294(A4),-(A7)	;_cur_armor
