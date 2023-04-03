@@ -6,10 +6,12 @@
 _read_scroll:
 	LINK	A5,#-$0006
 	MOVEM.L	D4-D7/A2/A3,-(A7)
+
 	MOVEA.L	$0008(A5),A2
 	CLR.B	-$0001(A5)
 	MOVE.L	A2,D3
 	BNE.B	L001A5
+
 	MOVE.W	#$003F,-(A7)	;'?' scroll type
 	PEA	L001E7(PC)	;"read"
 	JSR	_get_item
@@ -688,7 +690,7 @@ L00209:
 	ADDQ.W	#4,A7
 	BRA.W	L00216
 
-; falls 2-6 level
+; falls 4-6 level
 
 L0020A:
 	MOVEq	#$0003,D0
@@ -864,16 +866,17 @@ _s_enchant:
 
 	MOVEq	#$0002,D0
 	JSR	_rnd
+
 	MOVEA.L	-$5298(A4),A6	;_cur_weapon
 	ANDI.W	#~O_ISCURSED,$0028(A6)	;clear O_ISCURSED bit
 
 	TST.W	D0
 	BNE.B	L00220
 
-	ADDQ.W	#1,$0022(A6)
+	ADDQ.W	#1,$0022(A6)	;hplus +1
 	BRA.B	L00221
 L00220:
-	ADDQ.W	#1,$0024(A6)
+	ADDQ.W	#1,$0024(A6)	;dplus +1
 L00221:
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	A6,-(A7)	;_cur_weapon

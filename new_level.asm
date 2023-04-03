@@ -6,6 +6,7 @@
 _new_level:
 	LINK	A5,#-$0004
 	MOVEM.L	D4-D6/A2/A3,-(A7)
+
 	JSR	_NewRank(PC)
 	ANDI.W	#~C_ISHELD,-$52B4(A4)	;clear C_ISHELD ($80) _player + 22 (flags)
 	CLR.B	-$66FA(A4)	;_no_more_fears
@@ -318,6 +319,7 @@ _treas_room:
 	MOVE.W	D3,-$0006(A5)
 	CMPI.W	#$0008,-$0006(A5)
 	BLE.B	L00195
+
 	MOVE.W	#$0008,-$0006(A5)
 L00195:
 	MOVE.W	-$0006(A5),D0
@@ -359,10 +361,12 @@ L00198:
 	ADDA.L	#$0000000C,A6
 	LEA	-$000C(A5),A1
 	MOVE.L	(A1)+,(A6)+
+
 	MOVE.L	A2,-(A7)
 	PEA	-$6CB0(A4)	;_lvl_obj
 	JSR	__attach
 	ADDQ.W	#8,A7
+
 	MOVE.W	-$0004(A5),D3
 	MOVEA.L	-$519C(A4),A6	;__level
 	MOVE.B	$000B(A2),$00(A6,D3.W)
@@ -371,11 +375,13 @@ L00199:
 	MOVE.W	-$0006(A5),D0
 	JSR	_rnd
 	ADDQ.W	#2,D0
+
 	MOVE.W	D0,-$0002(A5)
 	MOVE.W	-$0008(A5),D3
 	ADDQ.W	#2,D3
 	CMP.W	D3,D0
 	BGE.B	L0019A
+
 	MOVE.W	-$0008(A5),D3
 	ADDQ.W	#2,D3
 	MOVE.W	D3,-$0002(A5)
@@ -389,6 +395,7 @@ L0019A:
 	MOVE.W	-$0002(A5),D3
 	CMP.W	-$0006(A5),D3
 	BLE.B	L0019B
+
 	MOVE.W	-$0006(A5),-$0002(A5)
 L0019B:
 	ADDQ.W	#1,-$60B4(A4)	;_level
@@ -397,6 +404,7 @@ L0019C:
 	SUBQ.W	#1,-$0002(A5)
 	TST.W	D3
 	BEQ.W	L001A2
+
 	CLR.W	-$0006(A5)
 L0019D:
 	PEA	-$000C(A5)
@@ -454,6 +462,7 @@ L001A0:
 	BRA.W	L0019C
 L001A2:
 	SUBQ.W	#1,-$60B4(A4)	;_level
+
 	MOVEM.L	(A7)+,A2/A3
 	UNLK	A5
 	RTS

@@ -1195,6 +1195,7 @@ L0011B:	dc.b	"No Window",0
 _wclose:
 ;	LINK	A5,#-$0000
 	MOVEM.L	D4/D5,-(A7)
+
 	TST.L	-$5150(A4)	;_StdScr
 	BEQ.B	L0011C
 	JSR	_black_out
@@ -1379,6 +1380,7 @@ L00138:
 L00139:
 	BSR.B	_msg
 	LEA	$000E(A7),A7
+
 	UNLK	A5
 	RTS
 
@@ -2035,6 +2037,7 @@ _ready_to_go:
 
 _setup:
 	LINK	A5,#-$0030
+
 	CLR.B	-$66B2(A4)	;_terse
 	CLR.B	-$66AB(A4)	;_expert
 	MOVE.W	#22,-$60BC(A4)	;_maxrow
@@ -2564,6 +2567,7 @@ L0065A:	dc.b	"you are starting to get hungry",0
 _main:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
+
 	JSR	_init_ds
 	JSR	_initscr(PC)
 	JSR	_setup(PC)	;bugfix, now process can return from -s option
@@ -2664,6 +2668,7 @@ L00661:
 	CLR.W	-(A7)
 	JSR	_playit(PC)
 	ADDQ.W	#2,A7
+
 	MOVEA.L	(A7)+,A2
 	UNLK	A5
 	RTS
@@ -2763,6 +2768,7 @@ _roll:
 
 _playit:
 ;	LINK	A5,#-$0000
+
 	MOVE.W	-$52C0(A4),-$6090(A4)	;_player + 10
 	MOVE.W	-$52BE(A4),-$608E(A4)	;_player + 12
 	PEA	-$52C0(A4)	;_player + 10
@@ -2772,10 +2778,12 @@ _playit:
 L0066A:
 	TST.B	-$66B7(A4)	;_playing
 	BEQ.B	L0066B
+
 	JSR	_command(PC)
 	BRA.B	L0066A
 L0066B:
 	JSR	_endit(PC)
+
 ;	UNLK	A5
 	RTS
 
@@ -2846,6 +2854,7 @@ L00670:	dc.b	"You quit with %d gold pieces",0
 
 _fatal:
 	LINK	A5,#-$0000
+
 	JSR	_endwin(PC)
 	MOVE.L	$000C(A5),-(A7)
 	MOVE.L	$0008(A5),-(A7)
@@ -2857,6 +2866,7 @@ _fatal:
 	CLR.W	-(A7)
 	JSR	_exit
 	ADDQ.W	#2,A7
+
 	UNLK	A5
 	RTS
 

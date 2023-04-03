@@ -41,7 +41,7 @@ L0012B:
 	JSR	_typeof
 	ADDQ.W	#4,A7
 
-	CMP.W	#$0061,D0
+	CMP.W	#$0061,D0	;'a' armor type
 	BEQ.B	L0012C
 
 	PEA	L00131(PC)	;"you can't wear that"
@@ -92,9 +92,11 @@ L00132:	dc.b	"you are now wearing %s",0
 _take_off:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
+
 	MOVEA.L	-$5294(A4),A2	;_cur_armor
 	MOVE.L	A2,D3
 	BNE.B	L00134
+
 	CLR.B	-$66F9(A4)	;_after
 	PEA	L00136(PC)	;"you aren't wearing any armor"
 	JSR	_msg
@@ -116,14 +118,17 @@ L00134:
 	MOVE.L	A2,-(A7)
 	JSR	_nameof
 	ADDQ.W	#6,A7
+
 	MOVE.L	D0,-(A7)
 	MOVE.L	A2,-(A7)
 	JSR	_pack_char(PC)
 	ADDQ.W	#4,A7
+
 	MOVE.W	D0,-(A7)
 	PEA	L00137(PC)	;"you used to be wearing %c) %s"
 	JSR	_msg
 	LEA	$000A(A7),A7
+
 	BRA.B	L00133
 
 L00136:	dc.b	"you aren't wearing any armor",0

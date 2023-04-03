@@ -77,7 +77,7 @@ L0081B:
 	JSR	_mvinch(PC)
 	ADDQ.W	#4,A7
 	MOVE.B	D0,D6
-	CMP.B	#$2E,D0		;'.'
+	CMP.B	#$2E,D0		;'.' FLOOR
 	BNE.B	L0081D
 
 	MOVE.L	-$48C0(A4),-(A7)	;_oldrp
@@ -91,7 +91,7 @@ L0081B:
 	AND.W	#$0002,D3
 	BNE.B	L0081C
 
-	MOVE.W	#$0020,-(A7)	;' '
+	MOVE.W	#$0020,-(A7)	;' ' SPACE
 	JSR	_addch
 	ADDQ.W	#2,A7
 L0081C:
@@ -707,6 +707,7 @@ L00985:
 	PEA	L00987(PC)	;'and achieve the rank of "%s"'
 	JSR	_msg
 	ADDQ.W	#8,A7
+
 	MOVE.W	D4,D3
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
