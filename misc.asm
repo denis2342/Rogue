@@ -665,7 +665,7 @@ _check_level:
 ;	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
 
-	MOVEQ	#$00,D4
+	MOVEQ	#$01,D4
 	MOVEA.L	-$51AC(A4),A6	;_e_levels
 	MOVE.L	-$52B0(A4),D3
 	BRA.B	L00983
@@ -678,7 +678,6 @@ L00983:
 	MOVE.L	(A6)+,D2
 	BNE.B	L00982
 L00984:
-	ADDQ.W	#1,D4		;level of the player
 	MOVE.W	-$52AC(A4),D0	;_player + 30 (rank)
 	MOVE.W	D4,-$52AC(A4)	;_player + 30 (rank)
 	CMP.W	D0,D4		;compare old with new
