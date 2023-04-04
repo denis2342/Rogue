@@ -51,18 +51,11 @@ L0039D:
 L0039E:
 	MOVEQ	#$00,D5
 L0039F:
-	MOVE.W	D5,D3
-;	EXT.L	D3
-	ASL.w	#2,D3
-	LEA	-$5190(A4),A6	;_cur_ring_1
-	TST.L	$00(A6,D3.w)
+	LEA	-$5190(A4),A6	;_cur_ring_x
+	MOVE.L	$00(A6,D5.w),D0
 	BEQ.B	L003A4
 
-	MOVE.W	D5,D3
-;	EXT.L	D3
-	ASL.w	#2,D3
-;	LEA	-$5190(A4),A6	;_cur_ring_1
-	MOVEA.L	$00(A6,D3.w),A1
+	MOVEA.L	D0,A1
 	MOVE.W	$0020(A1),D0
 ;	EXT.L	D0
 	BRA.B	L003A3
@@ -83,8 +76,8 @@ L003A3:
 	SUBQ.w	#8,D0	; ring of teleportation
 	BEQ.B	L003A1
 L003A4:
-	ADDQ.W	#1,D5
-	CMP.W	#$0001,D5
+	ADDQ.W	#4,D5
+	CMP.W	#$0004,D5
 	BLE.B	L0039F
 
 	BRA.W	L0039B
