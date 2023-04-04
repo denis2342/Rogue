@@ -752,7 +752,7 @@ _chg_str:
 	CMP.W	-$6CC2(A4),D3	;_max_stats + 0 (max strength)
 	BLS.B	L00862
 
-	MOVE.W	-$0002(A5),-$6CC2(A4)	;_max_stats + 0 (max strength)
+	MOVE.W	D3,-$6CC2(A4)	;_max_stats + 0 (max strength)
 L00862:
 	UNLK	A5
 	RTS
