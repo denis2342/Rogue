@@ -595,11 +595,12 @@ L00269:
 
 _start_run:
 	LINK	A5,#-$0000
-	MOVEM.L	A2/A3,-(A7)
-	MOVEA.L	$0008(A5),A2
+	MOVE.L	A3,-(A7)
 
-	MOVE.W	(A2),d1
-	MOVE.W	$0002(A2),d0
+	MOVEA.L	$0008(A5),A0
+
+	MOVE.W	(A0)+,d1
+	MOVE.W	(A0),d0
 	JSR	_moatquick
 
 	TST.L	D0
@@ -613,7 +614,7 @@ _start_run:
 	ADDQ.W	#4,A7
 	MOVE.L	D0,$0012(A3)
 1$
-	MOVEM.L	(A7)+,A2/A3
+	MOVE.L	(A7)+,A3
 	UNLK	A5
 	RTS
 
