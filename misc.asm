@@ -703,17 +703,13 @@ L00985:
 ;	EXT.L	D3
 	ASL.w	#2,D3
 	LEA	-$6D28(A4),A6	;_he_man
-	MOVE.L	$00(A6,D3.w),-(A7)
+	MOVE.L	$00(A6,D3.w),D4
+	MOVE.L	D4,-(A7)
 	PEA	L00987(PC)	;'and achieve the rank of "%s"'
 	JSR	_msg
 	ADDQ.W	#8,A7
 
-	MOVE.W	D4,D3
-	SUBQ.W	#1,D3
-;	EXT.L	D3
-	ASL.w	#2,D3
-	LEA	-$6D28(A4),A6	;_he_man
-	MOVE.L	$00(A6,D3.w),-(A7)
+	MOVE.L	D4,-(A7)
 	JSR	_NewRank(PC)
 	ADDQ.W	#4,A7
 L00986:
