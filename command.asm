@@ -38,13 +38,12 @@ L0039B:
 	BEQ.B	L0039D
 	SUBQ.W	#1,-$60AC(A4)	;_no_command
 	CMPI.W	#$0000,-$60AC(A4)	;_no_command
-	BGT.B	L0039C
+	BGT.B	L0039E
 
 	PEA	L003A6(PC)	;"you can move again"
 	JSR	_msg
 	ADDQ.W	#4,A7
 	CLR.W	-$60AC(A4)	;_no_command
-L0039C:
 	BRA.B	L0039E
 L0039D:
 	JSR	_execcom(PC)
@@ -66,9 +65,9 @@ L003A1:
 	MOVEq	#50,D0
 	JSR	_rnd
 	CMP.W	#17,D0
-	BNE.B	L003A2
+	BNE.B	L003A4
+
 	JSR	_teleport
-L003A2:
 	BRA.B	L003A4
 L003A3:
 	SUBQ.w	#3,D0	; ring of searching
