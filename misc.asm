@@ -1043,70 +1043,60 @@ L00883:	dc.b	$00
 L00884:	dc.b	$00
 
 _find_dir:
-	LINK	A5,#-$0002
+	MOVE.B	$0005(A7),D0
+	MOVEA.L	$0006(A7),A6
 
-	MOVE.B	#$01,-$0001(A5)
-	MOVEQ	#$00,D0
-	MOVE.B	$0009(A5),D0
-	MOVEA.L	$000A(A5),A6
-	BRA.W	L0088E
-L00885:
-	MOVE.W	#$FFFF,(A6)+
-	CLR.W	(A6)
-	BRA.W	L0088F
-L00886:
-	CLR.W	(A6)+
-	MOVE.W	#$0001,(A6)
-	BRA.W	L0088F
-L00887:
-	CLR.W	(A6)+
-	MOVE.W	#$FFFF,(A6)
-	BRA.W	L0088F
-L00888:
-	MOVE.W	#$0001,(A6)+
-	CLR.W	(A6)
-	BRA.W	L0088F
-L00889:
-	MOVE.W	#$FFFF,(A6)+
-	MOVE.W	#$FFFF,(A6)
-	BRA.W	L0088F
-L0088A:
-	MOVE.W	#$0001,(A6)+
-	MOVE.W	#$FFFF,(A6)
-	BRA.W	L0088F
-L0088B:
-	MOVE.W	#$FFFF,(A6)+
-	MOVE.W	#$0001,(A6)
-	BRA.B	L0088F
-L0088C:
-	MOVE.W	#$0001,(A6)+
-	MOVE.W	#$0001,(A6)
-	BRA.B	L0088F
-L0088E:
+	clr.l	(a6)
+
 	bclr	#5,d0	;easy way to make all uppercase
 
-	SUB.w	#$0042,D0	;'B'
+	SUB.b	#$0042,D0	;'B'
 	BEQ.B	L0088B
-	SUBQ.w	#6,D0		;'H'
-	BEQ.W	L00885
-	SUBQ.w	#2,D0		;'J'
-	BEQ.W	L00886
-	SUBQ.w	#1,D0		;'K'
-	BEQ.W	L00887
-	SUBQ.w	#1,D0		;'L'
-	BEQ.W	L00888
-	SUBQ.w	#2,D0		;'N'
-	BEQ.B	L0088C
-	SUBQ.w	#7,D0		;'U'
-	BEQ.B	L0088A
-	SUBQ.w	#4,D0		;'Y'
-	BEQ.W	L00889
+	SUBQ.b	#6,D0		;'H'
+	BEQ.b	L00885
+	SUBQ.b	#2,D0		;'J'
+	BEQ.b	L00886
+	SUBQ.b	#1,D0		;'K'
+	BEQ.b	L00887
+	SUBQ.b	#1,D0		;'L'
+	BEQ.b	L00888
+	SUBQ.b	#2,D0		;'N'
+	BEQ.b	L0088C
+	SUBQ.b	#7,D0		;'U'
+	BEQ.b	L0088A
+	SUBQ.b	#4,D0		;'Y'
+	BEQ.b	L00889
 
-	CLR.B	-$0001(A5)
+	MOVEQ	#0,D0
+	bra	L0088Fb
+
+L00886:
+	addq.W	#1,2(A6)	;J
+	BRA.W	L0088F
+L00887:
+	subq.W	#1,2(A6)	;K
+	BRA.W	L0088F
+L00889:
+	subq.W	#1,(A6)+	;Y
+L00885:
+	subq.W	#1,(A6)		;H
+	BRA.W	L0088F
+L0088A:
+	addq.W	#1,(A6)+	;U
+	subq.W	#1,(A6)
+	BRA.W	L0088F
+L0088B:
+	subq.W	#1,(A6)+	;B
+	addq.W	#1,(A6)
+	BRA.B	L0088F
+L0088C:
+	addq.W	#1,(A6)+	;N
+L00888:
+	addq.W	#1,(A6)		;L
+;	BRA.B	L0088F
 L0088F:
-	MOVEQ	#$00,D0
-	MOVE.B	-$0001(A5),D0
-	UNLK	A5
+	MOVEQ	#1,D0
+L0088Fb:
 	RTS
 
 ;/*
