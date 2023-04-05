@@ -505,7 +505,7 @@ L00082:
 	MOVE.W	D4,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$5254(A4),A6	;_r_stones
+	LEA	_r_stones-BASE(A4),A6	;_r_stones
 	MOVE.W	D5,D2
 	MULU.W	#$0006,D2
 	LEA	_stones-BASE(A4),A1	;_stones

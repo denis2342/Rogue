@@ -499,7 +499,7 @@ L00B53:
 	CMPA.L	A6,A2
 	BCS.B	L00B4F
 
-	LEA	-$5254(A4),A6	;_r_stones
+	LEA	_r_stones-BASE(A4),A6	;_r_stones
 	MOVEA.L	A6,A2
 L00B54:
 	TST.W	-$532E(A4)
@@ -538,7 +538,7 @@ L00B57:
 	LEA	_stones-BASE(A4),A6	;_stones
 	MOVE.L	$00(A6,D3.L),(A2)
 	MOVE.L	A2,D3
-	LEA	-$5254(A4),A6	;_r_stones
+	LEA	_r_stones-BASE(A4),A6	;_r_stones
 	SUB.L	A6,D3
 	LSR.L	#2,D3
 	ASL.L	#3,D3

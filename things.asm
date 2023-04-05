@@ -481,7 +481,7 @@ L00AE1:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$5254(A4),A6	;_r_stones
+	LEA	_r_stones-BASE(A4),A6	;_r_stones
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	D5,D3
 ;	EXT.L	D3
@@ -517,7 +517,7 @@ L00AE4:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$5254(A4),A6	;_r_stones
+	LEA	_r_stones-BASE(A4),A6	;_r_stones
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	D5,D3
 	MULU.W	#21,D3
@@ -537,7 +537,7 @@ L00AE8:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$5254(A4),A6	;_r_stones
+	LEA	_r_stones-BASE(A4),A6	;_r_stones
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L00B0C(PC)	;"%s ring"
 	PEA	-$0050(A5)
