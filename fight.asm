@@ -801,7 +801,7 @@ L0098C:
 	ASL.w	#2,D3
 	LEA	_w_names-BASE(A4),A6	;_w_names
 	MOVE.L	$00(A6,D3.w),-(A7)
-	MOVE.L	-$69C2(A4),-(A7)	;_flash
+	MOVE.L	_flash-BASE(A4),-(A7)	;_flash
 	JSR	_msg
 	LEA	$000C(A7),A7
 
