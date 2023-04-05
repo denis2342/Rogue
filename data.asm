@@ -1669,7 +1669,12 @@ _num_storage:	ds.l	1
 r_score_fd:
 	ds.w	2
 
-	ds.w	117
+	ds.b	142
+
+_restore_bool:
+	dc.w	0	;bool
+
+	ds.b	90
 
 __things:
 	dc.l	$00000000

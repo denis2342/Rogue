@@ -93,7 +93,7 @@ L00B2C:
 	ADDQ.W	#8,A7
 	BRA.W	L00B27
 L00B2D:
-	MOVE.W	#$0001,-$532E(A4)
+	MOVE.W	#$0001,_restore_bool-BASE(A4)
 	JSR	_xfer_all(PC)
 	PEA	-$0050(A5)
 	PEA	L00B36(PC)
@@ -181,7 +181,7 @@ L00B39:
 	ADDQ.W	#8,A7
 	BRA.B	L00B37
 L00B3A:
-	CLR.W	-$532E(A4)
+	CLR.W	_restore_bool-BASE(A4)
 	JSR	_xfer_all(PC)
 	PEA	-$0050(A5)
 	JSR	_unlink(PC)
@@ -289,7 +289,7 @@ _xfer_all:
 	PEA	_cur_ring_2-BASE(A4)	;_cur_ring_2
 	JSR	_xfer_pthing
 	ADDQ.W	#8,A7
-	TST.W	-$532E(A4)
+	TST.W	_restore_bool-BASE(A4)
 	BNE.B	L00B44
 	MOVE.W	#$0032,-(A7)
 	PEA	_player-BASE(A4)	;_player + 0
@@ -355,7 +355,7 @@ _xfer:
 	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
 	MOVE.W	$000C(A5),_count-BASE(A4)	;_count
-	TST.W	-$532E(A4)
+	TST.W	_restore_bool-BASE(A4)
 	BEQ.B	L00B45
 
 	MOVE.W	$000C(A5),-(A7)
@@ -393,7 +393,7 @@ _xfer_strs:
 	MOVEQ	#$00,D4
 	BRA.W	L00B4E
 L00B49:
-	TST.W	-$532E(A4)
+	TST.W	_restore_bool-BASE(A4)
 	BEQ.B	L00B4B
 
 	MOVE.W	D4,D3
@@ -459,7 +459,7 @@ _xfer_choice:
 	LEA	_p_colors-BASE(A4),A6	;_p_colors
 	MOVEA.L	A6,A2
 L00B4F:
-	TST.W	-$532E(A4)
+	TST.W	_restore_bool-BASE(A4)
 	BEQ.B	L00B52
 
 	LEA	_rainbow-BASE(A4),A6	;_rainbow
@@ -485,7 +485,7 @@ L00B52:
 	PEA	-$0002(A5)
 	JSR	_xfer
 	ADDQ.W	#6,A7
-	TST.W	-$532E(A4)
+	TST.W	_restore_bool-BASE(A4)
 	BNE.B	L00B53
 
 	MOVE.W	-$0002(A5),D3
@@ -502,7 +502,7 @@ L00B53:
 	LEA	_r_stones-BASE(A4),A6	;_r_stones
 	MOVEA.L	A6,A2
 L00B54:
-	TST.W	-$532E(A4)
+	TST.W	_restore_bool-BASE(A4)
 	BEQ.B	L00B57
 
 	LEA	_stones-BASE(A4),A6	;_stones
@@ -530,7 +530,7 @@ L00B57:
 	PEA	-$0002(A5)
 	JSR	_xfer
 	ADDQ.W	#6,A7
-	TST.W	-$532E(A4)
+	TST.W	_restore_bool-BASE(A4)
 	BNE.B	L00B58
 
 	MOVE.W	-$0002(A5),D3
@@ -560,7 +560,7 @@ L00B58:
 	MOVEA.L	A6,A2
 	BRA.W	L00B65
 L00B59:
-	TST.W	-$532E(A4)
+	TST.W	_restore_bool-BASE(A4)
 	BEQ.B	L00B60
 
 	MOVEA.L	D4,A6
@@ -611,7 +611,7 @@ L00B5F:
 	JSR	_xfer
 	ADDQ.W	#6,A7
 L00B60:
-	TST.W	-$532E(A4)
+	TST.W	_restore_bool-BASE(A4)
 	BNE.B	L00B64
 	MOVE.W	#$0002,-(A7)
 	PEA	-$0004(A5)
@@ -661,7 +661,7 @@ _xfer_proom:
 	LINK	A5,#-$0002
 
 	CLR.W	-$0002(A5)
-	TST.W	-$532E(A4)
+	TST.W	_restore_bool-BASE(A4)
 	BEQ.B	L00B6A
 
 	MOVEA.L	$0008(A5),A6
@@ -762,7 +762,7 @@ L00B6F:
 _xfer_pthing:
 	LINK	A5,#-$0002
 	CLR.W	-$0002(A5)
-	TST.W	-$532E(A4)
+	TST.W	_restore_bool-BASE(A4)
 	BEQ.B	L00B73
 
 	MOVEA.L	$0008(A5),A6
@@ -839,7 +839,7 @@ L00B78:
 	MULS.W	#$0032,D3
 	MOVEA.L	D3,A2
 	ADDA.L	__things-BASE(A4),A2	;__things
-	TST.W	-$532E(A4)
+	TST.W	_restore_bool-BASE(A4)
 	BNE.B	L00B79
 
 	MOVE.W	#$0032,-(A7)
@@ -872,7 +872,7 @@ _xfer_monster:
 	MOVE.L	A2,-(A7)
 
 	MOVEA.L	$0008(A5),A2
-	TST.W	-$532E(A4)
+	TST.W	_restore_bool-BASE(A4)
 	BNE.W	L00B84
 
 	LEA	_player-BASE(A4),A6	;_player + 0
@@ -958,7 +958,7 @@ L00B84:
 	PEA	$002A(A2)
 	JSR	_xfer_proom(PC)
 	ADDQ.W	#6,A7
-	TST.W	-$532E(A4)
+	TST.W	_restore_bool-BASE(A4)
 	BEQ.W	L00B89
 
 	LEA	-$52C0(A4),A6	;_player + 10
@@ -1023,7 +1023,7 @@ L00B89:
 
 _xfer_object:
 	LINK	A5,#-$0000
-	TST.W	-$532E(A4)
+	TST.W	_restore_bool-BASE(A4)
 	BNE.B	L00B8D
 
 	MOVEA.L	$0008(A5),A6
@@ -1064,7 +1064,7 @@ L00B8D:
 	JSR	_xfer_pthing
 	ADDQ.W	#6,A7
 
-	TST.W	-$532E(A4)
+	TST.W	_restore_bool-BASE(A4)
 	BEQ.B	3$
 
 	MOVEA.L	$0008(A5),A6
