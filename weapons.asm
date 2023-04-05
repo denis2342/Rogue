@@ -223,7 +223,7 @@ L0060A:
 _fall:
 	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
-	PEA	-$53D2(A4)
+	PEA	_fall_pos-BASE(A4)
 	MOVE.L	$0008(A5),-(A7)
 	JSR	_fallpos(PC)
 	ADDQ.W	#8,A7
@@ -240,10 +240,10 @@ L0060B:
 	MOVE.B	$000B(A1),$00(A6,D4.W)
 	MOVEA.L	$0008(A5),A6
 	ADDA.L	#$0000000C,A6
-	LEA	-$53D2(A4),A1
+	LEA	_fall_pos-BASE(A4),A1
 	MOVE.L	(A1)+,(A6)+
-	MOVE.W	-$53D2(A4),-(A7)
-	MOVE.W	-$53D0(A4),-(A7)
+	MOVE.W	_fall_posx-BASE(A4),-(A7)
+	MOVE.W	_fall_posy-BASE(A4),-(A7)
 	JSR	_cansee
 	ADDQ.W	#4,A7
 	TST.W	D0
@@ -276,14 +276,14 @@ L0060C:
 L0060D:
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	$000A(A6),d2
-	MOVE.W	-$53D2(A4),d1
-	MOVE.W	-$53D0(A4),d0
+	MOVE.W	_fall_posx-BASE(A4),d1
+	MOVE.W	_fall_posy-BASE(A4),d0
 	JSR	_mvaddchquick
 
 	JSR	_standend
 
-	MOVE.W	-$53D2(A4),d1
-	MOVE.W	-$53D0(A4),d0
+	MOVE.W	_fall_posx-BASE(A4),d1
+	MOVE.W	_fall_posy-BASE(A4),d0
 	JSR	_moatquick
 
 	TST.L	D0
@@ -399,14 +399,14 @@ _hit_monster:
 	BEQ.B	L00618
 
 	MOVEA.L	D0,A2
-	MOVE.W	D4,-$53CC(A4)
-	MOVE.W	D5,-$53CE(A4)
+	MOVE.W	D4,monster_posy-BASE(A4)
+	MOVE.W	D5,monster_posx-BASE(A4)
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	$000C(A5),-(A7)
 	MOVE.B	$000F(A2),D3
 	EXT.W	D3
 	MOVE.W	D3,-(A7)
-	PEA	-$53CE(A4)
+	PEA	monster_pos-BASE(A4)
 	JSR	_fight
 	LEA	$000C(A7),A7
 L00618:

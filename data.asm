@@ -297,6 +297,7 @@ _hungry_state_texts:
 	dc.l	L0051E		;"Weak"
 	dc.l	L0051F		;"Faint"
 
+dm_callbacks:
 	dc.l	_dm_null
 	dc.l	_foolish
 	dc.l	_lose_vision
@@ -1615,7 +1616,20 @@ _ctp_:	dc.b	$20,$20,$20,$20
 
 __Dend:
 
-__Uorg:	ds.b	628
+__Uorg:		ds.b	252
+
+dm_list:	ds.b	120
+dm_list_end:
+
+_fall_pos:
+_fall_posx:	ds.w	1	;used by _fall() and _fallpos
+_fall_posy:	ds.w	1	;used by _fall() and _fallpos
+
+monster_pos:
+monster_posx:	ds.w	1	;used by _hit_monster
+monster_posy:	ds.w	1
+
+	ds.w	124
 
 __things:
 	dc.l	$00000000
