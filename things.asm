@@ -307,7 +307,7 @@ L00AD3:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$6F30(A4),A6		;_a_names
+	LEA	_a_names-BASE(A4),A6		;_a_names
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	#$0061,-(A7)	;a armor type
 	CLR.W	-(A7)
@@ -341,7 +341,7 @@ L00AD5:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$6F30(A4),A6		;_a_names
+	LEA	_a_names-BASE(A4),A6		;_a_names
 	MOVE.L	$00(A6,D3.w),-(A7)
 	JSR	_nmadd
 	ADDQ.W	#4,A7
