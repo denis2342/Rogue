@@ -87,11 +87,11 @@ _swander:
 
 _rollwand:
 ;	LINK	A5,#-$0000
-	ADDQ.W	#1,-$6F62(A4)	;_between
+	ADDQ.W	#1,_between-BASE(A4)	;_between
 	MOVEq	#$0003,D0
 	JSR	_rnd
 	ADDQ.W	#3,D0
-	MOVE.W	-$6F62(A4),D3	;_between
+	MOVE.W	_between-BASE(A4),D3	;_between
 	CMP.W	D0,D3
 	BLT.B	L00647
 
@@ -116,7 +116,7 @@ _rollwand:
 	JSR	_fuse(PC)
 	ADDQ.W	#8,A7
 L00646:
-	CLR.W	-$6F62(A4)	;_between
+	CLR.W	_between-BASE(A4)	;_between
 L00647:
 ;	UNLK	A5
 	RTS
