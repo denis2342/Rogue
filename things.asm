@@ -486,7 +486,7 @@ L00AE1:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#3,D3
-	LEA	-$6E08(A4),A6
+	LEA	_r_magic-BASE(A4),A6
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	D4,D3
 	AND.W	#$0008,D3
@@ -1049,7 +1049,7 @@ L00555:
 L00556:
 	MOVE.W	#$003D,$000A(A2)	;'='
 	MOVE.W	#14,-(A7)
-	PEA	-$6E08(A4)
+	PEA	_r_magic-BASE(A4)
 	JSR	_pick_one(PC)
 	ADDQ.W	#6,A7
 	MOVE.W	D0,$0020(A2)
