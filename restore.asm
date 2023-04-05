@@ -565,7 +565,7 @@ L00B59:
 
 	MOVEA.L	D4,A6
 	MOVEA.L	(A6),A1
-	CMPA.L	-$7A4E(A4),A1	;_ws_wand
+	CMPA.L	_ws_wand-BASE(A4),A1	;_ws_wand
 	SEQ	D3
 	AND.W	#$0001,D3
 	MOVE.W	D3,-$0004(A5)
@@ -620,7 +620,7 @@ L00B60:
 	MOVEA.L	D4,A6
 	TST.W	-$0004(A5)
 	BEQ.B	L00B61
-	MOVE.L	-$7A4E(A4),(A6)	;_ws_wand
+	MOVE.L	_ws_wand-BASE(A4),(A6)	;_ws_wand
 	BRA.B	L00B62
 L00B61:
 	MOVE.L	-$7A4A(A4),(A6)	;_ws_staff
