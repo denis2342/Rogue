@@ -799,7 +799,7 @@ L0098C:
 	MOVE.W	$0020(A6),D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$6F5C(A4),A6	;_w_names
+	LEA	_w_names-BASE(A4),A6	;_w_names
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.L	-$69C2(A4),-(A7)	;_flash
 	JSR	_msg
@@ -1125,7 +1125,7 @@ _thunk:
 	MOVE.W	$0020(A2),D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$6F5C(A4),A6	;_w_names
+	LEA	_w_names-BASE(A4),A6	;_w_names
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L009ED(PC)	;"the %s %s "
 	JSR	_addmsg

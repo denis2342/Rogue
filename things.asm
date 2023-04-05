@@ -221,7 +221,7 @@ L00ACD:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$6F5C(A4),A6	;_w_names
+	LEA	_w_names-BASE(A4),A6	;_w_names
 	MOVE.L	$00(A6,D3.w),-(A7)
 	JSR	_vowelstr(PC)
 	ADDQ.W	#4,A7
@@ -265,7 +265,7 @@ L00AD1:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$6F5C(A4),A6	;_w_names
+	LEA	_w_names-BASE(A4),A6	;_w_names
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L00AFF(PC)	;"%s%s"
 	JSR	_nmadd

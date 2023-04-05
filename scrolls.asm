@@ -382,7 +382,7 @@ L001CC:
 	MOVE.W	$0020(A6),D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$6F5C(A4),A6	;_w_names
+	LEA	_w_names-BASE(A4),A6	;_w_names
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L001F8(PC)	;"your %s glows blue for a moment"
 	JSR	_msg
@@ -484,7 +484,7 @@ L001DC:
 
 	MOVE.W	$0020(A6),D3
 	ASL.w	#2,D3
-	LEA	-$6F5C(A4),A6	;_w_names
+	LEA	_w_names-BASE(A4),A6	;_w_names
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L00200(PC)	;"your %s vanishes in a puff of smoke"
 	JSR	_msg
@@ -522,7 +522,7 @@ L001E0:
 	MOVE.W	$0020(A6),D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$6F5C(A4),A6	;_w_names
+	LEA	_w_names-BASE(A4),A6	;_w_names
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.L	-$69C2(A4),-(A7)	;_flash
 	JSR	_msg
