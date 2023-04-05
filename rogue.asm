@@ -12,6 +12,8 @@
 
  include 'rogue.i'
 
+BASE equ _MathTransBase+$46d4
+
 	SECTION "",CODE       ;000 084512
 
 __Corg:

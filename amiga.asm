@@ -406,7 +406,7 @@ begin:
 ;	ADDA.L	#$00008002,A4
 
 ;	lea	__Dorg+$7FFE,a4
-	lea	_MathTransBase+$46d4,a4
+	lea	BASE,a4
 
 	LEA	-$5546(A4),A1	;__Uorg
 	LEA	-$5546(A4),A2	;__Uorg
