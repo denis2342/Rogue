@@ -52,7 +52,7 @@ L00185:
 	JSR	_clear
 	JSR	_status
 	JSR	_do_passages(PC)
-	ADDQ.W	#1,-$60A6(A4)	;_no_food
+	ADDQ.W	#1,_no_food-BASE(A4)	;_no_food
 	JSR	_put_things(PC)
 	PEA	-$0004(A5)
 	JSR	_blank_spot

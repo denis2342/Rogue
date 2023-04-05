@@ -903,7 +903,7 @@ L00545:
 	CLR.W	$002C(A2)		;no group
 	CLR.W	$0028(A2)		;flags like cursed and so on
 	CLR.B	$002A(A2)		;not a monster slayer
-	CMPI.W	#$0003,-$60A6(A4)	;_no_food
+	CMPI.W	#$0003,_no_food-BASE(A4)	;_no_food
 	BLE.B	L00546
 
 	MOVEQ	#$02,D0
@@ -942,7 +942,7 @@ L00549:
 ; food
 
 L0054A:
-	CLR.W	-$60A6(A4)	;_no_food
+	CLR.W	_no_food-BASE(A4)	;_no_food
 	MOVE.W	#$003A,$000A(A2)	;':'
 	MOVEq	#10,D0
 	JSR	_rnd
