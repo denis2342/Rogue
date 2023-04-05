@@ -409,7 +409,7 @@ L001D2:
 	MOVE.L	_in_dist-BASE(A4),D3	;_in_dist
 L001D3:
 	MOVE.L	D3,-(A7)
-	MOVE.L	-$77B8(A4),-(A7)	;_laugh
+	MOVE.L	_laugh-BASE(A4),-(A7)	;_laugh
 	JSR	_msg
 	ADDQ.W	#8,A7
 	BRA.W	L001E6
@@ -470,7 +470,7 @@ L001DA:
 	MOVE.L	_in_dist-BASE(A4),D3	;_in_dist
 L001DB:
 	MOVE.L	D3,-(A7)
-	MOVE.L	-$77B8(A4),-(A7)	;_laugh "you hear maniacal laughter%s."
+	MOVE.L	_laugh-BASE(A4),-(A7)	;_laugh "you hear maniacal laughter%s."
 	JSR	_msg
 	ADDQ.W	#8,A7
 	BRA.W	L001E1
