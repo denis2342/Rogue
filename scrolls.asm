@@ -406,7 +406,7 @@ L001D1:
 	MOVE.L	A6,D3
 	BRA.B	L001D3
 L001D2:
-	MOVE.L	-$77B4(A4),D3	;_in_dist
+	MOVE.L	_in_dist-BASE(A4),D3	;_in_dist
 L001D3:
 	MOVE.L	D3,-(A7)
 	MOVE.L	-$77B8(A4),-(A7)	;_laugh
@@ -467,7 +467,7 @@ L001D9:
 	BRA.B	L001DB
 
 L001DA:
-	MOVE.L	-$77B4(A4),D3	;_in_dist
+	MOVE.L	_in_dist-BASE(A4),D3	;_in_dist
 L001DB:
 	MOVE.L	D3,-(A7)
 	MOVE.L	-$77B8(A4),-(A7)	;_laugh "you hear maniacal laughter%s."
