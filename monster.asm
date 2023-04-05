@@ -286,7 +286,7 @@ _wanderer:
 	LINK	A5,#-$0004
 	MOVEM.L	D4/A2/A3,-(A7)
 
-	TST.B	-$66FA(A4)	;_no_more_fears
+	TST.B	_no_more_fears-BASE(A4)	;_no_more_fears
 	BNE.B	L00A2B
 
 	JSR	_new_item

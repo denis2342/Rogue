@@ -9,7 +9,7 @@ _new_level:
 
 	JSR	_NewRank(PC)
 	ANDI.W	#~C_ISHELD,-$52B4(A4)	;clear C_ISHELD ($80) _player + 22 (flags)
-	CLR.B	-$66FA(A4)	;_no_more_fears
+	CLR.B	_no_more_fears-BASE(A4)	;_no_more_fears
 	MOVE.W	-$60B4(A4),D3	;_level
 	CMP.W	-$60BA(A4),D3	;_ntraps
 	BLE.B	L00183

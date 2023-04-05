@@ -656,7 +656,7 @@ L00205:
 	PEA	L00217(PC)	;"You hear a series of loud thunderclaps rolling through the passages"
 	JSR	_msg
 	ADDQ.W	#4,A7
-	ST	-$66FA(A4)	;_no_more_fears
+	ST	_no_more_fears-BASE(A4)	;_no_more_fears
 	BRA.W	L00216
 
 ; overwhelmed
