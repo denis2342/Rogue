@@ -1187,16 +1187,16 @@ _charge_str:
 	AND.W	#O_ISKNOW,D3
 	BNE.B	L00395
 
-	CLR.B	-$54DA(A4)
+	CLR.B	charge_string-BASE(A4)
 	BRA.B	L00396
 L00395:
 	MOVE.W	$0026(A2),-(A7)
 	PEA	L00397(PC)	;" [%d charges]"
-	PEA	-$54DA(A4)
+	PEA	charge_string-BASE(A4)
 	JSR	_sprintf
 	LEA	$000A(A7),A7
 L00396:
-	LEA	-$54DA(A4),A6
+	LEA	charge_string-BASE(A4),A6
 	MOVE.L	A6,D0
 
 	MOVEA.L	(A7)+,A2

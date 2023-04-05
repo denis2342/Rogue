@@ -1617,7 +1617,9 @@ _ctp_:	dc.b	$20,$20,$20,$20
 
 __Dend:
 
-__Uorg:		ds.b	252
+__Uorg:		ds.b	108
+
+charge_string:	ds.b	144
 
 dm_list:	ds.b	120
 dm_list_end:
