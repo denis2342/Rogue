@@ -757,7 +757,7 @@ _mouse_dir:
 	MOVE.W	-$52BE(A4),d0	;_player + 12
 	JSR	_movequick
 
-	MOVE.W	-$5152(A4),D4	;_p_col
+	MOVE.W	_p_col-BASE(A4),D4	;_p_col
 	ADDQ.W	#5,D4
 	MOVE.W	-$5154(A4),D5	;_p_row
 	ADDQ.W	#4,D5

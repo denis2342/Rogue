@@ -768,7 +768,7 @@ L000FD:
 L000FE:
 	MULU.W	$000A(A5),D3
 	ADD.W	-$77D0(A4),D3	;_Window2 + 50
-	MOVE.W	D3,-$5152(A4)	;_p_col
+	MOVE.W	D3,_p_col-BASE(A4)	;_p_col
 
 	MULU.W	#$0009,D4
 	ADD.W	-$77D2(A4),D4	;_Window2 + 48
@@ -887,7 +887,7 @@ L00104:
 	MOVEA.L	-$514C(A4),A6	;_StdWin
 	MOVEA.L	$0032(A6),A1
 	move.l	$0004(A1),a1	;dstbitmap
-	MOVE.W	-$5152(A4),D2	;_p_col ;dstx
+	MOVE.W	_p_col-BASE(A4),D2	;_p_col ;dstx
 	MOVE.W	-$5154(A4),D3	;_p_row = dsty
 
 	TST.B	-$7064(A4)	;_map_up
@@ -911,7 +911,7 @@ L00106:
 ;	PEA	$0009	;sizey
 ;	PEA	$000A	;sizex
 ;	MOVE.L	D6,-(A7)	;dsty
-;	MOVE.W	-$5152(A4),D3	;_p_col
+;	MOVE.W	_p_col-BASE(A4),D3	;_p_col
 ;	EXT.L	D3
 ;	MOVE.L	D3,-(A7)	;dstx
 ;	MOVEA.L	-$514C(A4),A6	;_StdWin
@@ -936,7 +936,7 @@ __addch:
 	MOVE.B	#$01,$0018(A1)
 	MOVE.L	A2,-$77C2(A4)	_addch_text + 12
 
-	MOVE.W	-$5152(A4),D0	;_p_col
+	MOVE.W	_p_col-BASE(A4),D0	;_p_col
 	MOVE.W	-$5154(A4),D1	;_p_row
 	lea	-$77CE(A4),a1	;_addch_text + 0
 	MOVE.L	$0032(A6),a0
@@ -947,7 +947,7 @@ __addch:
 ;	MOVE.W	-$5154(A4),D3	;_p_row
 ;	EXT.L	D3
 ;	MOVE.L	D3,-(A7)
-;	MOVE.W	-$5152(A4),D3	;_p_col
+;	MOVE.W	_p_col-BASE(A4),D3	;_p_col
 ;	EXT.L	D3
 ;	MOVE.L	D3,-(A7)
 ;	PEA	-$77CE(A4)	;_addch_text + 0
@@ -973,7 +973,7 @@ __clearbot:
 	MOVEA.L	D3,A6
 
 	PEA	$0006(A6)
-	MOVE.W	-$5152(A4),D3	;_p_col
+	MOVE.W	_p_col-BASE(A4),D3	;_p_col
 	EXT.L	D3
 	MOVE.L	D3,-(A7)
 	MOVEA.L	-$514C(A4),A6	;_StdWin
@@ -995,7 +995,7 @@ __clrtoeol:
 	EXT.L	D3
 	MOVEA.L	D3,A6
 	PEA	$0006(A6)
-	MOVE.W	-$5152(A4),D3	;_p_col
+	MOVE.W	_p_col-BASE(A4),D3	;_p_col
 	EXT.L	D3
 	MOVE.L	D3,-(A7)
 	MOVEA.L	-$514C(A4),A6	;_StdWin
@@ -1314,7 +1314,7 @@ __zapstr:
 	MOVE.B	#$01,$0018(A1)
 	MOVE.L	$0008(A5),-$77C2(A4)	;_addch_text + 12
 
-	MOVE.W	-$5152(A4),D0	;_p_col
+	MOVE.W	_p_col-BASE(A4),D0	;_p_col
 	MOVE.W	-$5154(A4),D1	;_p_row
 	lea	-$77CE(A4),a1	;_addch_text + 0
 	MOVE.L	$0032(A6),a0
@@ -1325,7 +1325,7 @@ __zapstr:
 ;	MOVE.W	-$5154(A4),D3	;_p_row
 ;	EXT.L	D3
 ;	MOVE.L	D3,-(A7)
-;	MOVE.W	-$5152(A4),D3	;_p_col
+;	MOVE.W	_p_col-BASE(A4),D3	;_p_col
 ;	EXT.L	D3
 ;	MOVE.L	D3,-(A7)
 ;	PEA	-$77CE(A4)
