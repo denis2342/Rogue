@@ -821,7 +821,7 @@ _wtext:
 	PEA	-$7802(A4)		;_Window2
 	JSR	_OpenWindow
 	ADDQ.W	#4,A7
-	MOVE.L	D0,-$5144(A4)	;_TextWin
+	MOVE.L	D0,_TextWin-BASE(A4)	;_TextWin
 ;	TST.L	D0
 	BNE.B	L000FF
 
@@ -830,7 +830,7 @@ _wtext:
 	ADDQ.W	#4,A7
 L000FF:
 	CLR.B	-$7064(A4)	;_map_up
-	MOVE.L	-$5144(A4),-$514C(A4)	;_TextWin,_StdWin
+	MOVE.L	_TextWin-BASE(A4),-$514C(A4)	;_TextWin,_StdWin
 	JSR	_intui_sync(PC)
 L00100:
 ;	UNLK	A5
@@ -844,13 +844,13 @@ _wmap:
 	TST.B	-$7064(A4)	;_map_up
 	BNE.B	L00102
 
-	TST.L	-$5144(A4)	;_TextWin
+	TST.L	_TextWin-BASE(A4)	;_TextWin
 	BEQ.B	L00102
 
-	MOVE.L	-$5144(A4),-(A7)	;_TextWin
+	MOVE.L	_TextWin-BASE(A4),-(A7)	;_TextWin
 	JSR	_CloseWindow
 	ADDQ.W	#4,A7
-	CLR.L	-$5144(A4)	;_TextWin
+	CLR.L	_TextWin-BASE(A4)	;_TextWin
 	ST	-$7064(A4)	;_map_up
 	MOVE.L	-$5148(A4),-$514C(A4)	;_RogueWin,_StdWin
 	JSR	_intui_sync(PC)
@@ -1202,12 +1202,12 @@ _wclose:
 	BEQ.B	L0011C
 	JSR	_black_out
 L0011C:
-	TST.L	-$5144(A4)	;_TextWin
+	TST.L	_TextWin-BASE(A4)	;_TextWin
 	BEQ.B	L0011D
-	MOVE.L	-$5144(A4),-(A7)	;_TextWin
+	MOVE.L	_TextWin-BASE(A4),-(A7)	;_TextWin
 	JSR	_ClearMenuStrip
 	ADDQ.W	#4,A7
-	MOVE.L	-$5144(A4),-(A7)	;_TextWin
+	MOVE.L	_TextWin-BASE(A4),-(A7)	;_TextWin
 	JSR	_CloseWindow
 	ADDQ.W	#4,A7
 L0011D:
@@ -2135,7 +2135,7 @@ _credits:
 	JSR	_black_out
 	JSR	_wtext
 	MOVE.W	#$0001,-(A7)
-	MOVE.L	-$5144(A4),-(A7)	;_TextWin
+	MOVE.L	_TextWin-BASE(A4),-(A7)	;_TextWin
 	PEA	L00513(PC)	; "Title.Screen"
 	st	-$47AA(A4)	;turn on _all_clear to reverse red/blue
 	JSR	_show_ilbm

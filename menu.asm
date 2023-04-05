@@ -702,7 +702,7 @@ _about_rogue:
 	JSR	_wtext
 	JSR	_black_out
 	CLR.L	-(A7)
-	MOVE.L	-$5144(A4),-(A7)	;_TextWin
+	MOVE.L	_TextWin-BASE(A4),-(A7)	;_TextWin
 	PEA	L00AAF(PC)	; "Credits"
 	JSR	_show_ilbm
 	LEA	$000C(A7),A7

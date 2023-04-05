@@ -208,7 +208,7 @@ _pr_scores:
 	JSR	_black_out
 
 	CLR.L	-(A7)
-	MOVE.L	-$5144(A4),-(A7)	;_TextWin
+	MOVE.L	_TextWin-BASE(A4),-(A7)	;_TextWin
 	PEA	L00690(PC)	;"Hall.of.Fame"
 	JSR	_show_ilbm
 	LEA	$000C(A7),A7
@@ -421,7 +421,7 @@ _death:
 	JSR	_black_out
 	JSR	_wtext
 	MOVE.W	#$0001,-(A7)
-	MOVE.L	-$5144(A4),-(A7)	;_TextWin
+	MOVE.L	_TextWin-BASE(A4),-(A7)	;_TextWin
 	PEA	L006A5(PC)	;"Tombstone"
 	JSR	_show_ilbm
 	LEA	$000A(A7),A7
@@ -547,7 +547,7 @@ _tomb_center:
 
 	MOVE.W	$0008(A5),D1
 
-	MOVEA.L	-$5144(A4),A6	;_TextWin
+	MOVEA.L	_TextWin-BASE(A4),A6	;_TextWin
 	lea	-$0014(A5),a1
 	MOVE.L	$0032(A6),a0
 
@@ -887,7 +887,7 @@ L006D9:
 	JSR	_wtext
 
 	CLR.L	-(A7)
-	MOVE.L	-$5144(A4),-(A7)	;_TextWin
+	MOVE.L	_TextWin-BASE(A4),-(A7)	;_TextWin
 	PEA	L006E3(PC)	;"Total.Winner"
 	JSR	_show_ilbm
 	LEA	$000C(A7),A7
