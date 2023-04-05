@@ -2573,7 +2573,7 @@ _main:
 	JSR	_init_ds
 	JSR	_initscr(PC)
 	JSR	_setup(PC)	;bugfix, now process can return from -s option
-	CLR.W	-$60B6(A4)	;_dnum
+	CLR.W	_dnum-BASE(A4)	;_dnum
 L0065B:
 	SUBQ.W	#1,$0008(A5)
 	TST.W	$0008(A5)
@@ -2617,12 +2617,12 @@ L0065E:
 L0065F:
 	BRA.B	L0065B
 L00660:
-	TST.W	-$60B6(A4)	;_dnum
+	TST.W	_dnum-BASE(A4)	;_dnum
 	BNE.B	L00661
 	JSR	_srand(PC)
-	MOVE.W	D0,-$60B6(A4)	;_dnum
+	MOVE.W	D0,_dnum-BASE(A4)	;_dnum
 L00661:
-	MOVE.W	-$60B6(A4),D3	;_dnum
+	MOVE.W	_dnum-BASE(A4),D3	;_dnum
 	EXT.L	D3
 	MOVE.L	D3,-$6094(A4)	;_seed
 	JSR	_credits
