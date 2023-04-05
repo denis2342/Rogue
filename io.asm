@@ -641,7 +641,7 @@ L004EF:
 	RTS
 
 L004F0:
-	LEA	-$48B2(A4),A6
+	LEA	_kb_buffer-BASE(A4),A6
 	MOVE.L	A6,_kb_tail-BASE(A4)	;_kb_tail
 	MOVE.L	A6,-$47B2(A4)
 L004F1:
