@@ -21,7 +21,7 @@ L00673:
 ;	CMP.W	#$0000,D0
 	BGE.B	L00677
 
-	TST.B	-$66F8(A4)	;_noscore
+	TST.B	_noscore-BASE(A4)	;_noscore
 	BNE.B	L00674
 
 	TST.W	$0008(A5)
@@ -64,7 +64,7 @@ L00677:
 
 	move.b	#-1,-$46d8(A4)	;normal is negativ, score color flag
 
-	tst.b	-$66F8(A4)	;_noscore
+	tst.b	_noscore-BASE(A4)	;_noscore
 	bne	L00679
 
 	;hiding strength, maxhp and experience points in the highscore

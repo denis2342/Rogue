@@ -2597,7 +2597,7 @@ L0065C:
 ;	EXT.L	D0
 	BRA.B	L0065E
 L0065D:
-	ST	-$66F8(A4)	;_noscore
+	ST	_noscore-BASE(A4)	;_noscore
 
 	CLR.W	-(A7)
 	CLR.W	-(A7)
