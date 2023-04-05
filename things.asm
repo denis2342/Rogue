@@ -118,7 +118,7 @@ L00AC1:
 L00AC2:
 	MOVE.W	D5,D3
 	MULU.W	#21,D3
-	LEA	-$642E(A4),A6	;_p_guess
+	LEA	_p_guess-BASE(A4),A6	;_p_guess
 	TST.B	$00(A6,D3.L)
 	BEQ.B	L00AC3
 
@@ -129,7 +129,7 @@ L00AC2:
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	D5,D3
 	MULU.W	#21,D3
-	LEA	-$642E(A4),A6	;_p_guess
+	LEA	_p_guess-BASE(A4),A6	;_p_guess
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 	PEA	L00AF8(PC)	;"called %s(%s)"
@@ -1175,7 +1175,7 @@ _discovered:
 	MOVEq	#$0021,D7	;'!' potions
 	MOVEQ	#14,D5
 	LEA	-$66E7(A4),A2	;_p_know
-	LEA	-$642E(A4),A3	;_p_guess
+	LEA	_p_guess-BASE(A4),A3	;_p_guess
 	BSR.B	_print_disc
 
 	PEA	L00567(PC)	;" ",0

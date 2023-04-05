@@ -1332,7 +1332,7 @@ L008DA:
 L008DB:
 	BRA.W	L008E4
 L008DC:
-	LEA	-$642E(A4),A6	;_p_guess
+	LEA	_p_guess-BASE(A4),A6	;_p_guess
 	MOVE.L	A6,-$0004(A5)
 	LEA	-$66E7(A4),A6	;_p_know
 	MOVEA.L	A6,A3

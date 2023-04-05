@@ -429,7 +429,7 @@ L004AD:
 
 	MOVE.W	$0020(A2),D3
 	MULU.W	#21,D3
-	LEA	-$642E(A4),A6	;_p_guess
+	LEA	_p_guess-BASE(A4),A6	;_p_guess
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 	MOVE.W	$0020(A2),D3

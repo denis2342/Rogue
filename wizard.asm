@@ -70,7 +70,7 @@ L007BA:
 	ST	$00(A6,D3.W)
 ;	MOVE.W	$0020(A2),D3
 	MULU.W	#21,D3
-	LEA	-$642E(A4),A6	;_p_guess
+	LEA	_p_guess-BASE(A4),A6	;_p_guess
 	CLR.B	$00(A6,D3.L)
 	BRA.W	L007BF
 
