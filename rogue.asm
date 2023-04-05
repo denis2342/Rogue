@@ -818,7 +818,7 @@ _wtext:
 	BEQ.B	L00100
 
 	MOVE.L	-$5150(A4),-$77E4(A4)	;_StdScr
-	PEA	-$7802(A4)		;_Window2
+	PEA	_Window2-BASE(A4)		;_Window2
 	JSR	_OpenWindow
 	ADDQ.W	#4,A7
 	MOVE.L	D0,_TextWin-BASE(A4)	;_TextWin
