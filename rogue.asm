@@ -880,7 +880,7 @@ L00103:
 	RTS
 
 L00104:
-	lea	-$517C(A4),a0	;_chbm = srcbitmap
+	lea	_chbm-BASE(A4),a0	;_chbm = srcbitmap
 
 	moveq	#0,d0
 
@@ -919,7 +919,7 @@ L00106:
 ;	MOVE.L	$0004(A1),-(A7)	;dstbitmap
 ;	CLR.L	-(A7)		;srcy
 ;	CLR.L	-(A7)		;srcx
-;	PEA	-$517C(A4)	;scrbitmap, _chbm
+;	PEA	_chbm-BASE(A4)	;scrbitmap, _chbm
 ;	JSR	_BltBitMap
 ;	LEA	$002C(A7),A7
 	BRA.W	L00103
@@ -1158,7 +1158,7 @@ L0010F:
 	PEA	9*72		;height
 	PEA	10		;width
 	PEA	$0004		;number of planes (bits per color)
-	PEA	-$517C(A4)	;_chbm
+	PEA	_chbm-BASE(A4)	;_chbm
 	JSR	_InitBitMap
 	LEA	$0010(A7),A7
 
