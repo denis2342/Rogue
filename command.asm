@@ -1387,7 +1387,7 @@ L008E0:
 	MOVE.W	$0020(A2),D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$51E4(A4),A6	;_ws_made
+	LEA	_ws_made-BASE(A4),A6	;_ws_made
 	MOVE.L	$00(A6,D3.w),-$0008(A5)
 L008E1:
 	BRA.B	L008E4

@@ -623,7 +623,7 @@ L0008C:
 	MOVE.W	D4,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$51E4(A4),A6	;_ws_made
+	LEA	_ws_made-BASE(A4),A6	;_ws_made
 	MOVE.L	A2,$00(A6,D3.w)
 	LEA	_ws_know-BASE(A4),A6	;_ws_know
 	CLR.B	$00(A6,D4.W)

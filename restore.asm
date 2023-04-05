@@ -556,7 +556,7 @@ L00B58:
 
 ;	LEA	_ws_type-BASE(A4),A6	;_ws_type
 	MOVE.L	A6,D4
-	LEA	-$51E4(A4),A6	;_ws_made
+	LEA	_ws_made-BASE(A4),A6	;_ws_made
 	MOVEA.L	A6,A2
 	BRA.W	L00B65
 L00B59:
@@ -648,7 +648,7 @@ L00B64:
 	ADDQ.L	#4,A2
 L00B65:
 	MOVE.L	A2,D3
-	LEA	-$51E4(A4),A6	;_ws_made
+	LEA	_ws_made-BASE(A4),A6	;_ws_made
 	SUB.L	A6,D3
 	LSR.L	#2,D3
 	CMP.W	#$000E,D3

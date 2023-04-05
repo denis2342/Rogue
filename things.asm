@@ -370,7 +370,7 @@ L00AD8:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$51E4(A4),A6	;_ws_made
+	LEA	_ws_made-BASE(A4),A6	;_ws_made
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	D5,D3
 ;	EXT.L	D3
@@ -397,7 +397,7 @@ L00AD9:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$51E4(A4),A6	;_ws_made
+	LEA	_ws_made-BASE(A4),A6	;_ws_made
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	D5,D3
 	MULU.W	#21,D3
@@ -432,7 +432,7 @@ L00ADD:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$51E4(A4),A6	;_ws_made
+	LEA	_ws_made-BASE(A4),A6	;_ws_made
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L00B08(PC)	;"%s %s"
 	PEA	-$0050(A5)
