@@ -2090,7 +2090,7 @@ _flush_type:
 
 	LEA	_kb_buffer-BASE(A4),A6
 	MOVE.L	A6,_kb_tail-BASE(A4)	;_kb_tail
-	MOVE.L	A6,-$47B2(A4)
+	MOVE.L	A6,_kb_head-BASE(A4)
 	TST.L	_StdWin-BASE(A4)	;_StdWin
 	BEQ.B	L004ED
 L004EB:

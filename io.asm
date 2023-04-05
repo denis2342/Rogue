@@ -627,7 +627,7 @@ _readchar:
 	MOVEM.L	D4-D7/A2/A3,-(A7)
 	CLR.W	-$001E(A5)
 L004EE:
-	MOVEA.L	-$47B2(A4),A6
+	MOVEA.L	_kb_head-BASE(A4),A6
 	CMPA.L	_kb_tail-BASE(A4),A6	;_kb_tail
 	BEQ.B	L004F0
 
@@ -643,7 +643,7 @@ L004EF:
 L004F0:
 	LEA	_kb_buffer-BASE(A4),A6
 	MOVE.L	A6,_kb_tail-BASE(A4)	;_kb_tail
-	MOVE.L	A6,-$47B2(A4)
+	MOVE.L	A6,_kb_head-BASE(A4)
 L004F1:
 	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
 	MOVE.L	$0056(A6),-(A7)
@@ -697,8 +697,8 @@ L004F3:
 L004F4:
 	BRA.B	L004F6
 L004F5:
-	MOVEA.L	-$47B2(A4),A6
-	ADDQ.L	#1,-$47B2(A4)
+	MOVEA.L	_kb_head-BASE(A4),A6
+	ADDQ.L	#1,_kb_head-BASE(A4)
 	MOVE.B	#$20,(A6)
 	MOVEA.L	-$0004(A5),A6
 	MOVE.W	#$0002,$0018(A6)
@@ -719,17 +719,17 @@ L004F8:
 	MOVE.W	D5,-$0014(A5)
 	MOVE.W	D6,-$0012(A5)
 	PEA	-$58B8(A4)
-	LEA	-$47B2(A4),A6
-	SUBA.L	-$47B2(A4),A6
+	LEA	_kb_head-BASE(A4),A6
+	SUBA.L	_kb_head-BASE(A4),A6
 	MOVE.L	A6,-(A7)
-	MOVE.L	-$47B2(A4),-(A7)
+	MOVE.L	_kb_head-BASE(A4),-(A7)
 	PEA	-$001A(A5)
 	JSR	_RawKeyConvert
 	LEA	$0010(A7),A7
 	MOVE.W	D0,-$001C(A5)
 	MOVE.W	-$001C(A5),D3
 	EXT.L	D3
-	ADD.L	D3,-$47B2(A4)
+	ADD.L	D3,_kb_head-BASE(A4)
 	BRA.W	L0050F
 L004F9:
 	JSR	_flush_type(PC)
@@ -742,8 +742,8 @@ L004F9:
 ;	TST.W	D0
 	BEQ.B	L004FA
 	MOVE.B	#$01,-$66B1(A4)	;_com_from_menu
-	MOVEA.L	-$47B2(A4),A6
-	ADDQ.L	#1,-$47B2(A4)
+	MOVEA.L	_kb_head-BASE(A4),A6
+	ADDQ.L	#1,_kb_head-BASE(A4)
 	MOVE.B	-$001B(A5),(A6)
 L004FA:
 	BRA.W	L0050F
@@ -771,16 +771,16 @@ L004FE:
 	AND.w	#$0003,D3
 	BEQ.B	L004FF
 
-	MOVEA.L	-$47B2(A4),A6
-	ADDQ.L	#1,-$47B2(A4)
+	MOVEA.L	_kb_head-BASE(A4),A6
+	ADDQ.L	#1,_kb_head-BASE(A4)
 	MOVE.B	#$2E,(A6)
 	BRA.B	L00500
 L004FF:
 	TST.B	-$48B8(A4)	;_menu_on
 	BEQ.B	L00500
 
-	MOVEA.L	-$47B2(A4),A6
-	ADDQ.L	#1,-$47B2(A4)
+	MOVEA.L	_kb_head-BASE(A4),A6
+	ADDQ.L	#1,_kb_head-BASE(A4)
 	MOVE.L	A6,-(A7)
 	MOVE.W	A2,-(A7)
 	MOVE.W	D7,-(A7)
@@ -814,8 +814,8 @@ L00503:
 	TST.b	D0
 	BEQ.B	L00504
 
-	MOVEA.L	-$47B2(A4),A6
-	ADDQ.L	#1,-$47B2(A4)
+	MOVEA.L	_kb_head-BASE(A4),A6
+	ADDQ.L	#1,_kb_head-BASE(A4)
 	MOVE.L	A6,-(A7)
 	MOVE.W	-$7060(A4),-(A7)
 	JSR	_sel_char
@@ -837,8 +837,8 @@ L00505:
 	AND.w	#$0003,D3
 	BEQ.B	L00506
 
-	MOVEA.L	-$47B2(A4),A6
-	ADDQ.L	#1,-$47B2(A4)
+	MOVEA.L	_kb_head-BASE(A4),A6
+	ADDQ.L	#1,_kb_head-BASE(A4)
 	MOVE.B	#$73,(A6)
 L00506:
 	BRA.B	L00508
@@ -852,30 +852,30 @@ L00507:
 L00508:
 	BRA.W	L0050F
 L00509:
-	MOVEA.L	-$47B2(A4),A6
+	MOVEA.L	_kb_head-BASE(A4),A6
 	MOVE.B	$0027(A3),(A6)
 	MOVE.W	D6,D3
 ;	EXT.L	D3
 	AND.w	#$0003,D3
 	BEQ.B	L0050D
-	MOVEA.L	-$47B2(A4),A6
+	MOVEA.L	_kb_head-BASE(A4),A6
 	MOVE.B	(A6),D0
 	EXT.W	D0
 ;	EXT.L	D0
 	BRA.B	L0050C
 L0050A:
 	PEA	L00510(PC)		;"10s"
-	MOVE.L	-$47B2(A4),-(A7)
+	MOVE.L	_kb_head-BASE(A4),-(A7)
 	JSR	_strcpy
 	ADDQ.W	#8,A7
-	ADDQ.L	#2,-$47B2(A4)
+	ADDQ.L	#2,_kb_head-BASE(A4)
 	BRA.B	L0050D
 L0050B:
 	PEA	L00511(PC)		;"10."
-	MOVE.L	-$47B2(A4),-(A7)
+	MOVE.L	_kb_head-BASE(A4),-(A7)
 	JSR	_strcpy
 	ADDQ.W	#8,A7
-	ADDQ.L	#2,-$47B2(A4)
+	ADDQ.L	#2,_kb_head-BASE(A4)
 	BRA.B	L0050D
 L0050C:
 	SUB.w	#$002E,D0
@@ -883,7 +883,7 @@ L0050C:
 	SUB.w	#$0045,D0
 	BEQ.B	L0050A
 L0050D:
-	ADDQ.L	#1,-$47B2(A4)
+	ADDQ.L	#1,_kb_head-BASE(A4)
 	BRA.B	L0050F
 L0050E:
 	SUBQ.w	#8,D0
