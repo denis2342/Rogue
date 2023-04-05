@@ -164,10 +164,10 @@ L00098:
 	ADDQ.W	#4,A7
 	BRA.W	L00090
 L00099:
-	TST.W	-$6096(A4)	;_fall_level
+	TST.W	_fall_level-BASE(A4)	;_fall_level
 	BEQ.B	L0009A
 
-	SUBQ.W	#1,-$6096(A4)	;_fall_level
+	SUBQ.W	#1,_fall_level-BASE(A4)	;_fall_level
 	PEA	L000C7(PC)	;"Wild magic pulls you through the floor"
 	JSR	_descend(PC)
 	ADDQ.W	#4,A7

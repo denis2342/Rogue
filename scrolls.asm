@@ -696,7 +696,7 @@ L0020A:
 	MOVEq	#$0003,D0
 	JSR	_rnd
 	ADDQ.W	#4,D0
-	MOVE.W	D0,-$6096(A4)	;_fall_level
+	MOVE.W	D0,_fall_level-BASE(A4)	;_fall_level
 	BRA.W	L00216
 
 ; surrounded by a blue glow
