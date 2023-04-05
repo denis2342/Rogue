@@ -495,7 +495,7 @@ _lseek:
 	TST.L	(A2)
 	BNE.B	L00C0A
 L00C08:
-	MOVE.W	#$0003,-$46E0(A4)	;_errno
+	MOVE.W	#$0003,_errno-BASE(A4)	;_errno
 	MOVEQ	#-$01,D0
 L00C09:
 	MOVEM.L	(A7)+,D4/D5/A2
@@ -516,7 +516,7 @@ L00C0A:
 	BNE.B	L00C0B
 
 	JSR	_IoErr(PC)
-	MOVE.W	D0,-$46E0(A4)	;_errno
+	MOVE.W	D0,_errno-BASE(A4)	;_errno
 	MOVEQ	#-$01,D0
 	BRA.B	L00C09
 L00C0B:
@@ -635,7 +635,7 @@ L00C11:
 	ADDQ.W	#4,A7
 	MOVEQ	#$05,D6
 L00C12:
-	MOVE.W	D6,-$46E0(A4)	;_errno
+	MOVE.W	D6,_errno-BASE(A4)	;_errno
 	MOVEQ	#-$01,D0
 L00C13:
 	MOVEM.L	(A7)+,D4-D6/A2/A3
@@ -683,7 +683,7 @@ _read:
 	TST.L	(A2)
 	BNE.B	L00C19
 L00C17:
-	MOVE.W	#$0003,-$46E0(A4)	;_errno
+	MOVE.W	#$0003,_errno-BASE(A4)	;_errno
 	MOVEQ	#-$01,D0
 L00C18:
 	MOVE.L	(A7)+,A2
@@ -696,7 +696,7 @@ L00C19:
 	CMP.W	#$0001,D3
 	BNE.B	L00C1A
 
-	MOVE.W	#$0006,-$46E0(A4)	;_errno
+	MOVE.W	#$0006,_errno-BASE(A4)	;_errno
 	MOVEQ	#-$01,D0
 	BRA.B	L00C18
 L00C1A:
@@ -712,7 +712,7 @@ L00C1A:
 	BNE.B	L00C18
 
 	JSR	_IoErr(PC)
-	MOVE.W	D0,-$46E0(A4)	;_errno
+	MOVE.W	D0,_errno-BASE(A4)	;_errno
 	MOVEQ	#-$01,D0
 	BRA.B	L00C18
 
@@ -1941,7 +1941,7 @@ _unlink:
 	BNE.B	L00C95
 
 	JSR	_IoErr(PC)
-	MOVE.W	D0,-$46E0(A4)	;_errno
+	MOVE.W	D0,_errno-BASE(A4)	;_errno
 	MOVEQ	#-$01,D0
 L00C94:
 ;	UNLK	A5
@@ -1969,7 +1969,7 @@ _write:
 	TST.L	(A2)
 	BNE.B	L00C98
 L00C96:
-	MOVE.W	#$0003,-$46E0(A4)	;_errno
+	MOVE.W	#$0003,_errno-BASE(A4)	;_errno
 L00C97b:
 	MOVEQ	#-$01,D0
 L00C97:
@@ -1982,7 +1982,7 @@ L00C98:
 	AND.W	#$0003,D3
 	BNE.B	L00C99
 
-	MOVE.W	#$0006,-$46E0(A4)	;_errno
+	MOVE.W	#$0006,_errno-BASE(A4)	;_errno
 	BRA.B	L00C97b
 L00C99:
 	MOVEQ	#$00,D3
@@ -1996,7 +1996,7 @@ L00C99:
 	BNE.B	L00C97
 
 	JSR	_IoErr(PC)
-	MOVE.W	D0,-$46E0(A4)	;_errno
+	MOVE.W	D0,_errno-BASE(A4)	;_errno
 	BRA.B	L00C97b
 
 _Chk_Abort:
@@ -2453,7 +2453,7 @@ _close:
 	TST.L	(A2)
 	BNE.B	L00CC3
 L00CC1:
-	MOVE.W	#$0003,-$46E0(A4)	;_errno
+	MOVE.W	#$0003,_errno-BASE(A4)	;_errno
 	MOVEQ	#-$01,D0
 L00CC2:
 	MOVEM.L	(A7)+,D4-D6/A2
