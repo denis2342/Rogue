@@ -359,6 +359,7 @@ _w_names:
 	dc.l	L006FF	; crossbow
 	dc.l	L00700	; crossbow bolt
 	dc.l	L00701	; flail
+missile_name:
 	dc.l	$00000000	;missile is the tenth weapon with dynamic name
 
 _a_names:

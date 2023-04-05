@@ -394,7 +394,7 @@ L0032C:
 	MOVE.B	$0021(A6),-$0024(A5)	;baseweapon
 L0032D:
 	LEA	L0034F(PC),A6	;"missile"
-	MOVE.L	A6,-$6F34(A4)
+	MOVE.L	A6,missile_name-BASE(A4)
 	MOVE.W	-$608C(A4),-(A7)	;_delta + 0
 	MOVE.W	-$608A(A4),-(A7)	;_delta + 2
 	PEA	-$0038(A5)
@@ -788,7 +788,7 @@ L00364:
 	MOVE.L	A6,-$006C(A5)		;wield damage
 	MOVE.W	#$001E,-$0060(A5)	;hplus 24
 	CLR.W	-$005E(A5)		;dplus 0
-	MOVE.L	$0010(A5),-$6F34(A4)
+	MOVE.L	$0010(A5),missile_name-BASE(A4)
 	MOVE.B	-$0077(A5),D4
 	LEA	-$0008(A5),A6
 	MOVEA.L	$0008(A5),A1
