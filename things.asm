@@ -1179,7 +1179,7 @@ _discovered:
 	BSR.B	_print_disc
 
 	PEA	L00567(PC)	;" ",0
-	PEA	-$69CC(A4)	;_nullstr
+	PEA	_nullstr-BASE(A4)	;_nullstr
 	JSR	_add_line(PC)
 	ADDQ.W	#8,A7
 
@@ -1190,7 +1190,7 @@ _discovered:
 	BSR.B	_print_disc
 
 	PEA	L00567(PC)	;" ",0
-	PEA	-$69CC(A4)	;_nullstr
+	PEA	_nullstr-BASE(A4)	;_nullstr
 	JSR	_add_line(PC)
 	ADDQ.W	#8,A7
 
@@ -1201,7 +1201,7 @@ _discovered:
 	BSR.B	_print_disc
 
 	PEA	L00567(PC)	;" ",0
-	PEA	-$69CC(A4)	;_nullstr
+	PEA	_nullstr-BASE(A4)	;_nullstr
 	JSR	_add_line(PC)
 	ADDQ.W	#8,A7
 
@@ -1211,7 +1211,7 @@ _discovered:
 	LEA	_ws_guess-BASE(A4),A3	;_ws_guess
 	BSR.B	_print_disc
 
-	PEA	-$69CC(A4)	;_nullstr
+	PEA	_nullstr-BASE(A4)	;_nullstr
 	JSR	_end_line(PC)
 	ADDQ.W	#4,A7
 
@@ -1255,7 +1255,7 @@ L00571:
 	ADDQ.W	#6,A7
 	MOVE.L	D0,-(A7)
 	PEA	L00575(PC)	;"%s"
-	PEA	-$69CC(A4)	;_nullstr
+	PEA	_nullstr-BASE(A4)	;_nullstr
 	JSR	_add_line(PC)
 	LEA	$000C(A7),A7
 	ADDQ.W	#1,D6		;increase discovery counter
@@ -1269,7 +1269,7 @@ L00572:
 	JSR	_nothing(PC)
 	ADDQ.W	#2,A7
 	MOVE.L	D0,-(A7)
-	PEA	-$69CC(A4)	;_nullstr
+	PEA	_nullstr-BASE(A4)	;_nullstr
 	JSR	_add_line(PC)
 	ADDQ.W	#8,A7
 L00574:

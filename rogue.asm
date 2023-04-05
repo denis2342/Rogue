@@ -1535,7 +1535,7 @@ _noterse:
 	TST.B	_expert-BASE(A4)	;_expert
 	BEQ.B	2$
 
-1$	LEA	-$69CC(A4),A0	;_nullstr
+1$	LEA	_nullstr-BASE(A4),A0	;_nullstr
 2$	MOVE.L	A0,D0
 	RTS
 
