@@ -11,7 +11,7 @@ _randmonster:
 	TST.B	$0009(A5)	;wandering sets one here
 	BEQ.B	L00A0F
 
-	MOVEA.L	-$6992(A4),A2	;normal monster list
+	MOVEA.L	_wnd_monster_ptr-BASE(A4),A2	;normal monster list
 	BRA.B	L00A10
 L00A0F:
 	MOVEA.L	_lvl_monster_ptr-BASE(A4),A2	;wandering monster list

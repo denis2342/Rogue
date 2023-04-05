@@ -3464,7 +3464,7 @@ _pick_mons:
 	BNE.B	5$
 
 	SUBA.L	_lvl_monster_ptr-BASE(A4),A2
-	ADDA.L	-$6992(A4),A2
+	ADDA.L	_wnd_monster_ptr-BASE(A4),A2
 
 5$	MOVE.B	(A2),D0
 ;	EXT.W	D0
