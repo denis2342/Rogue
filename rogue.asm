@@ -363,7 +363,7 @@ _getsyl:
 	bsr	_rchr
 	ADDQ.W	#6,A7
 
-	LEA	-$5546(A4),A3
+	LEA	__Uorg-BASE(A4),A3
 	MOVE.B	D0,(A3)
 
 	RTS

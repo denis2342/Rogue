@@ -408,8 +408,8 @@ begin:
 ;	lea	__Dorg+$7FFE,a4
 	lea	BASE,a4
 
-	LEA	-$5546(A4),A1	;__Uorg
-	LEA	-$5546(A4),A2	;__Uorg
+	LEA	__Uorg-BASE(A4),A1	;__Uorg
+	LEA	__Uorg-BASE(A4),A2	;__Uorg
 	CMPA.L	A1,A2
 	BNE.B	L00C00
 
