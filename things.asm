@@ -104,7 +104,7 @@ L00AC1:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$5290(A4),A6	;_p_colors
+	LEA	_p_colors-BASE(A4),A6	;_p_colors
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	D5,D3
 ;	EXT.L	D3
@@ -125,7 +125,7 @@ L00AC2:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$5290(A4),A6	;_p_colors
+	LEA	_p_colors-BASE(A4),A6	;_p_colors
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	D5,D3
 	MULU.W	#21,D3
@@ -146,7 +146,7 @@ L00AC4:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$5290(A4),A6	;_p_colors
+	LEA	_p_colors-BASE(A4),A6	;_p_colors
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L00AF9(PC)	;"%s potion"
 	PEA	-$0050(A5)

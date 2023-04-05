@@ -456,7 +456,7 @@ _xfer_choice:
 	LINK	A5,#-$0004
 	MOVEM.L	D4/D5/A2/A3,-(A7)
 
-	LEA	-$5290(A4),A6	;_p_colors
+	LEA	_p_colors-BASE(A4),A6	;_p_colors
 	MOVEA.L	A6,A2
 L00B4F:
 	TST.W	-$532E(A4)

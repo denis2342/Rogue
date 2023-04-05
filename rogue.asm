@@ -297,7 +297,7 @@ L00074:
 	MOVE.W	D4,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$5290(A4),A6	;_p_colors
+	LEA	_p_colors-BASE(A4),A6	;_p_colors
 	MOVE.W	D0,D2
 ;	EXT.L	D2
 	ASL.w	#2,D2

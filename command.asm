@@ -1347,7 +1347,7 @@ L008DC:
 	MOVE.W	$0020(A2),D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$5290(A4),A6	;_p_colors
+	LEA	_p_colors-BASE(A4),A6	;_p_colors
 	MOVE.L	$00(A6,D3.w),-$0008(A5)
 L008DD:
 	BRA.W	L008E4
