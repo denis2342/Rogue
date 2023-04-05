@@ -222,7 +222,7 @@ _door:
 	MOVEq	#10,D0
 	JSR	_rnd
 	ADDQ.W	#1,D0
-	CMP.W	-$60B4(A4),D0	;_level
+	CMP.W	_level-BASE(A4),D0	;_level
 	BGE.B	L00450
 
 	MOVEq	#5,D0

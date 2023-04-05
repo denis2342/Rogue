@@ -10,11 +10,11 @@ _new_level:
 	JSR	_NewRank(PC)
 	ANDI.W	#~C_ISHELD,-$52B4(A4)	;clear C_ISHELD ($80) _player + 22 (flags)
 	CLR.B	_no_more_fears-BASE(A4)	;_no_more_fears
-	MOVE.W	-$60B4(A4),D3	;_level
+	MOVE.W	_level-BASE(A4),D3	;_level
 	CMP.W	-$60BA(A4),D3	;_ntraps
 	BLE.B	L00183
 
-	MOVE.W	-$60B4(A4),-$60BA(A4)	;_level,_ntraps
+	MOVE.W	_level-BASE(A4),-$60BA(A4)	;_level,_ntraps
 L00183:
 	MOVEq	#$0020,d1
 	MOVE.W	#1760,d0
@@ -63,10 +63,10 @@ L00185:
 
 	MOVEq	#10,D0
 	JSR	_rnd
-	CMP.W	-$60B4(A4),D0	;_level
+	CMP.W	_level-BASE(A4),D0	;_level
 	BGE.B	L00188
 
-	MOVE.W	-$60B4(A4),D0	;_level
+	MOVE.W	_level-BASE(A4),D0	;_level
 	EXT.L	D0
 	DIVS.W	#$0004,D0
 	JSR	_rnd
@@ -173,14 +173,14 @@ _put_things:
 	BEQ.B	L0018B
 
 	MOVE.W	_level-BASE(A4),D3	;_level
-;	MOVE.W	-$60B4(A4),D3	;_level
+;	MOVE.W	_level-BASE(A4),D3	;_level
 	CMP.W	-$60BA(A4),D3	;_ntraps
 	BGE.B	L0018B
 
 	MOVEQ	#1-1,D4		;if we saw it then create only one item
 	BRA.W	L0018F
 L0018B:
-	CMPI.W	#26,-$60B4(A4)	;_level
+	CMPI.W	#26,_level-BASE(A4)	;_level
 	BLT.W	L0018E
 
 	TST.B	-$66BC(A4)	;_saw_amulet
@@ -399,7 +399,7 @@ L0019A:
 
 	MOVE.W	-$0006(A5),-$0002(A5)
 L0019B:
-	ADDQ.W	#1,-$60B4(A4)	;_level
+	ADDQ.W	#1,_level-BASE(A4)	;_level
 L0019C:
 	MOVE.W	-$0002(A5),D3
 	SUBQ.W	#1,-$0002(A5)
@@ -462,7 +462,7 @@ L001A0:
 	ADDQ.W	#4,A7
 	BRA.W	L0019C
 L001A2:
-	SUBQ.W	#1,-$60B4(A4)	;_level
+	SUBQ.W	#1,_level-BASE(A4)	;_level
 
 	MOVEM.L	(A7)+,A2/A3
 	UNLK	A5

@@ -361,7 +361,7 @@ _do_rooms:
 	MOVE.W	-$60BC(A4),D3	;_maxrow
 	ADDQ.W	#1,D3
 	MOVE.W	D3,-$0016(A5)
-	MOVE.W	-$60B4(A4),-$0014(A5)	;_level
+	MOVE.W	_level-BASE(A4),-$0014(A5)	;_level
 	MOVE.W	#$0014,-$000E(A5)
 	MOVE.W	-$0016(A5),D3
 	EXT.L	D3
@@ -404,12 +404,12 @@ L00902:
 	CMP.W	#$0006,D5
 	BGE.B	L00903
 
-	CMPI.W	#$000A,-$60B4(A4)	;_level
+	CMPI.W	#$000A,_level-BASE(A4)	;_level
 	BLE.B	L00903
 
 	MOVEq	#$0008,D0
 	JSR	_rnd
-	MOVE.W	-$60B4(A4),D3	;_level
+	MOVE.W	_level-BASE(A4),D3	;_level
 	SUB.W	#$0009,D3
 	CMP.W	D3,D0
 	BGE.B	L00903
@@ -493,7 +493,7 @@ L00907:
 L00908:
 	MOVEq	#$000A,D0
 	JSR	_rnd
-	MOVE.W	-$60B4(A4),D3	;_level
+	MOVE.W	_level-BASE(A4),D3	;_level
 	SUBQ.W	#1,D3
 	CMP.W	D3,D0
 	BGE.B	L00909
@@ -548,7 +548,7 @@ L00909:
 	TST.B	-$66BC(A4)	;_saw_amulet
 	BEQ.B	L0090A
 
-	MOVE.W	-$60B4(A4),D3	;_level
+	MOVE.W	_level-BASE(A4),D3	;_level
 	CMP.W	-$60BA(A4),D3	;_ntraps
 	BLT.W	L0090D
 L0090A:
@@ -557,7 +557,7 @@ L0090A:
 ;	TST.L	D0
 	BEQ.W	L0090D
 
-	MOVE.W	-$60B4(A4),D0	;_level
+	MOVE.W	_level-BASE(A4),D0	;_level
 	MULU.W	#$000A,D0
 	ADD.W	#$0032,D0
 	JSR	_rnd

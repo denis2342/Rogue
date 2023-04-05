@@ -814,7 +814,7 @@ L000EC:	dc.b	"a dart whizzes by your ear and vanishes",0
 _descend:
 	LINK	A5,#-$0000
 
-	ADDQ.W	#1,-$60B4(A4)	;_level
+	ADDQ.W	#1,_level-BASE(A4)	;_level
 	MOVEA.L	$0008(A5),A6
 	TST.B	(A6)
 	BNE.B	L000ED

@@ -803,10 +803,10 @@ L003FD:
 L003FE:
 	TST.B	_wizard-BASE(A4)	;_wizard
 	BEQ.W	L00409
-	ADDQ.W	#1,-$60B4(A4)	;_level
+	ADDQ.W	#1,_level-BASE(A4)	;_level
 	CMPI.W	#$0001,_count-BASE(A4)	;_count
 	BLE.B	L003FF
-	MOVE.W	_count-BASE(A4),-$60B4(A4)	;_count,_level
+	MOVE.W	_count-BASE(A4),_level-BASE(A4)	;_count,_level
 L003FF:
 	JSR	_new_level
 	MOVE.W	#$0001,-$54C6(A4)
@@ -860,12 +860,12 @@ L00404:
 	TST.B	_wizard-BASE(A4)	;_wizard
 	BEQ.B	L00405
 
-	MOVE.W	-$60B4(A4),D3	;_level
+	MOVE.W	_level-BASE(A4),D3	;_level
 	ADDQ.W	#1,D3
 	EXT.L	D3
 	DIVS.W	#$0002,D3
 	MOVE.W	D3,-$52AC(A4)	;_player + 30 (rank)
-	MOVE.W	-$60B4(A4),D3	;_level
+	MOVE.W	_level-BASE(A4),D3	;_level
 	MULU.W	#5,D3
 	MOVE.W	D3,-$52A2(A4)	;_player + 40 (max hp)
 	MOVE.W	D3,-$52A8(A4)	;_player + 34 (hp)
@@ -1230,7 +1230,7 @@ _d_level:
 	ADDQ.W	#4,A7
 	BRA.B	2$
 1$
-	ADDQ.W	#1,-$60B4(A4)	;_level
+	ADDQ.W	#1,_level-BASE(A4)	;_level
 	JSR	_new_level
 2$
 ;	UNLK	A5
@@ -1255,8 +1255,8 @@ _u_level:
 	TST.B	-$66BD(A4)	;_amulet, do we have it?
 	BEQ.B	L008D1
 
-	SUBQ.W	#1,-$60B4(A4)	;_level, are we already at level 1?
-;	TST.W	-$60B4(A4)	;_level
+	SUBQ.W	#1,_level-BASE(A4)	;_level, are we already at level 1?
+;	TST.W	_level-BASE(A4)	;_level
 	BNE.B	L008D0
 
 	JSR	_total_winner(PC)	;then we have reached the surface

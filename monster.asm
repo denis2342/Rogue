@@ -25,7 +25,7 @@ L00A10:
 
 	MOVE.W	(A7)+,D4
 	ADD.W	D0,D4		;0-4 + 0-5
-	ADD.W	-$60B4(A4),D4	;_level
+	ADD.W	_level-BASE(A4),D4	;_level
 	SUBQ.W	#5,D4
 	CMP.W	#$0001,D4
 	BGE.B	L00A11
@@ -68,7 +68,7 @@ _new_monster:
 
 	MOVEA.L	$0008(A5),A2
 	MOVE.B	#$01,$0008(A2)
-	MOVE.W	-$60B4(A4),D4	;dungeon _level
+	MOVE.W	_level-BASE(A4),D4	;dungeon _level
 	SUB.W	#26,D4
 ;	CMP.W	#$0000,D4
 	BGE.B	1$
@@ -161,7 +161,7 @@ L00A16:
 	BNE.W	L00A26
 
 	MOVEQ	#$08,D3
-	CMPI.W	#25,-$60B4(A4)	;_level
+	CMPI.W	#25,_level-BASE(A4)	;_level
 	BLE.B	L00A18
 
 	ADDQ.w	#$01,D3		;disguise as amulet only from level 25 onwards
