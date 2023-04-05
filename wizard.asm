@@ -213,7 +213,7 @@ L007C6:
 	RTS
 
 L007C7:
-	TST.B	-$66F7(A4)	;_again
+	TST.B	_again-BASE(A4)	;_again
 	BNE.B	1$
 
 	PEA	L007EE(PC)	;"type of item: "
@@ -271,7 +271,7 @@ L007D2:
 	PEA	L007EF(PC)	;"which %c do you want? (0-f)"
 	JSR	_msg
 	ADDQ.W	#6,A7
-	TST.B	-$66F7(A4)	;_again
+	TST.B	_again-BASE(A4)	;_again
 	BEQ.B	L007D3
 
 	MOVE.B	-$53A5(A4),-$53A8(A4)
@@ -322,7 +322,7 @@ L007D6:
 	CMPI.W	#$0061,$000A(A6)	; 'a' armor type
 	BNE.W	L007DF
 L007D7:
-	TST.B	-$66F7(A4)	;_again
+	TST.B	_again-BASE(A4)	;_again
 	BNE.B	L007D8
 
 	PEA	L007F1(PC)	;"blessing? (+,-,n)"
@@ -401,7 +401,7 @@ L007DF:
 ;	EXT.L	D0
 	BRA.W	L007E7
 L007E0:
-	TST.B	-$66F7(A4)	;_again
+	TST.B	_again-BASE(A4)	;_again
 	BNE.B	L007E1
 
 	PEA	L007F1(PC)	;"blessing? (+,-,n)"

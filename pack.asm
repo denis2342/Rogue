@@ -681,7 +681,7 @@ L002E1:
 L002E2:
 	MOVE.W	#$0001,-$0004(A5)
 L002E3:
-	MOVE.B	-$66F7(A4),-$0002(A5)	;_again
+	MOVE.B	_again-BASE(A4),-$0002(A5)	;_again
 	TST.L	-$529C(A4)	;_player + 46 (pack)
 	BNE.B	L002E4
 

@@ -191,7 +191,7 @@ _get_prefix:
 	CLR.B	-$66BB(A4)	;_door_stop
 L003B7:
 	ST	-$54C3(A4)	;_is_pickup
-	CLR.B	-$66F7(A4)	;_again
+	CLR.B	_again-BASE(A4)	;_again
 	SUBQ.W	#1,_count-BASE(A4)	;_count
 ;	CMPI.W	#$0000,_count-BASE(A4)	;_count
 	BLE.B	L003B8
@@ -257,7 +257,7 @@ L003C1:
 	MOVE.W	D3,D4
 	MOVE.W	-$54C6(A4),_count-BASE(A4)	;_count
 	MOVE.B	-$54C2(A4),-$54C3(A4)	;_is_pickup
-	ST	-$66F7(A4)	;_again
+	ST	_again-BASE(A4)	;_again
 	BRA.B	L003C6
 
 L003C3:

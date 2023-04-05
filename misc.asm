@@ -971,7 +971,7 @@ _get_dir:
 ;	LINK	A5,#-$0002
 	MOVEM.L	D4/A2,-(A7)
 
-	TST.B	-$66F7(A4)	;_again
+	TST.B	_again-BASE(A4)	;_again
 	BEQ.B	L0087D
 
 	MOVEQ	#$01,D0
