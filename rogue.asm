@@ -301,7 +301,7 @@ L00074:
 	MOVE.W	D0,D2
 ;	EXT.L	D2
 	ASL.w	#2,D2
-	LEA	-$7A46(A4),A1	;_rainbow
+	LEA	_rainbow-BASE(A4),A1	;_rainbow
 	MOVE.L	$00(A1,D2.w),$00(A6,D3.w)
 	LEA	_p_know-BASE(A4),A6	;_p_know
 	CLR.B	$00(A6,D4.W)

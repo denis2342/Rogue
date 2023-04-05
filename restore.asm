@@ -462,7 +462,7 @@ L00B4F:
 	TST.W	-$532E(A4)
 	BEQ.B	L00B52
 
-	LEA	-$7A46(A4),A6	;_rainbow
+	LEA	_rainbow-BASE(A4),A6	;_rainbow
 	MOVEA.L	A6,A3
 	BRA.B	L00B51
 L00B50:
@@ -476,7 +476,7 @@ L00B51:
 	BNE.B	L00B50
 
 	MOVE.L	A3,D3
-	LEA	-$7A46(A4),A6	;_rainbow
+	LEA	_rainbow-BASE(A4),A6	;_rainbow
 	SUB.L	A6,D3
 	LSR.L	#2,D3
 	MOVE.W	D3,-$0002(A5)
@@ -491,7 +491,7 @@ L00B52:
 	MOVE.W	-$0002(A5),D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$7A46(A4),A6	;_rainbow
+	LEA	_rainbow-BASE(A4),A6	;_rainbow
 	MOVE.L	$00(A6,D3.w),(A2)
 L00B53:
 	ADDQ.L	#4,A2
