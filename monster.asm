@@ -97,7 +97,7 @@ _new_monster:
 	EXT.W	D3
 	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
-	LEA	-$6CA8(A4),A3	;_monsters
+	LEA	_monsters-BASE(A4),A3	;_monsters
 	ADDA.L	D3,A3
 	MOVE.W	$000E(A3),D3	; number for xd8 HP
 	ADD.W	D4,D3
@@ -339,7 +339,7 @@ L00A2D:
 	EXT.W	D3
 	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
-	LEA	-$6CA8(A4),A6	;_monsters
+	LEA	_monsters-BASE(A4),A6	;_monsters
 	MOVE.L	$00(A6,D3.L),-(A7)
 	PEA	L00A2F(PC)	;"started a wandering %s"
 	JSR	_msg
@@ -533,7 +533,7 @@ _give_pack:
 	EXT.W	D3
 	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
-	LEA	-$6CA8(A4),A6	;_monsters
+	LEA	_monsters-BASE(A4),A6	;_monsters
 	CMP.W	$04(A6,D3.L),D0	;compare with monster treasure chance
 	BGE.B	L00A3D
 

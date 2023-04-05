@@ -955,7 +955,7 @@ L006EA:
 	BGT.B	L006EB
 	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
-	LEA	-$6CA8(A4),A6	;_monsters
+	LEA	_monsters-BASE(A4),A6	;_monsters
 	MOVEA.L	$00(A6,D3.L),A2
 	BRA.B	L006EE
 L006EB:

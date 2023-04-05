@@ -1025,7 +1025,7 @@ _find_dest:
 	EXT.W	D3
 	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
-	LEA	-$6CA8(A4),A6	;_monsters
+	LEA	_monsters-BASE(A4),A6	;_monsters
 	TST.W	$04(A6,D3.L)
 	BLE.B	L0028B		;does the monster carry?
 

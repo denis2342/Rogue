@@ -98,7 +98,7 @@ L00937:
 	EXT.W	D3
 	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
-	LEA	-$6CA8(A4),A6	;_monsters
+	LEA	_monsters-BASE(A4),A6	;_monsters
 	MOVE.L	$00(A6,D3.L),D5
 
 	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
@@ -264,7 +264,7 @@ _attack:
 	EXT.W	D3
 	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
-	LEA	-$6CA8(A4),A6	;_monsters
+	LEA	_monsters-BASE(A4),A6	;_monsters
 	MOVEA.L	$00(A6,D3.L),A2
 	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
@@ -1598,7 +1598,7 @@ L00A09:
 	EXT.W	D3
 	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
-	LEA	-$6CA8(A4),A6	;_monsters
+	LEA	_monsters-BASE(A4),A6	;_monsters
 	MOVE.L	$00(A6,D3.L),-(A7)
 	PEA	L00A0C(PC)	;"the %s"
 	JSR	_msg

@@ -985,7 +985,7 @@ L00376:
 	MOVE.B	D5,D3
 	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
-	LEA	-$6CA8(A4),A6	;_monsters
+	LEA	_monsters-BASE(A4),A6	;_monsters
 	MOVE.L	$00(A6,D3.L),-(A7)
 	MOVE.L	$0010(A5),-(A7)
 	PEA	L00390(PC)	;"the %s whizzes past the %s"
