@@ -95,7 +95,7 @@ _com_char:
 	MOVE.B	_fastmode-BASE(A4),D3	;_fastmode
 	CMP.B	_faststate-BASE(A4),D3	;_faststate
 	SEQ	D4
-	ST	-$48B8(A4)	;_menu_on
+	ST	_menu_on-BASE(A4)	;_menu_on
 L003A7:
 	JSR	_readchar
 	MOVE.W	D0,D5
@@ -109,7 +109,7 @@ L003A7:
 	ADDQ.W	#2,A7
 	BRA.B	L003A7
 L003A8:
-	CLR.B	-$48B8(A4)	;_menu_on
+	CLR.B	_menu_on-BASE(A4)	;_menu_on
 	TST.W	D4
 	BEQ.B	L003A9
 

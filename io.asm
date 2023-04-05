@@ -675,7 +675,7 @@ L004F2:
 	CMP.w	#$0001,D3
 	BNE.B	L004F6
 
-	TST.B	-$48B8(A4)	;_menu_on
+	TST.B	_menu_on-BASE(A4)	;_menu_on
 	BEQ.B	L004F5
 
 	TST.B	_map_up-BASE(A4)	;_map_up
@@ -776,7 +776,7 @@ L004FE:
 	MOVE.B	#$2E,(A6)
 	BRA.B	L00500
 L004FF:
-	TST.B	-$48B8(A4)	;_menu_on
+	TST.B	_menu_on-BASE(A4)	;_menu_on
 	BEQ.B	L00500
 
 	MOVEA.L	_kb_head-BASE(A4),A6
