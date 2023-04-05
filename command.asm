@@ -831,14 +831,14 @@ L00401:
 	BEQ.B	L00402
 
 	PEA	L00417(PC)	;"The Grand Beeking"
-	PEA	-$672B(A4)	;_whoami
+	PEA	_whoami-BASE(A4)	;_whoami
 	JSR	_strcmp
 	ADDQ.W	#8,A7
 	TST.W	D0
 	BEQ.B	L00406
 
 	PEA	L00418(PC)	;"Mr. Mctesq"
-	PEA	-$672B(A4)	;_whoami
+	PEA	_whoami-BASE(A4)	;_whoami
 	JSR	_strcmp
 	ADDQ.W	#8,A7
 	TST.W	D0
@@ -886,7 +886,7 @@ L00406:
 
 	JSR	_raise_level
 
-	PEA	-$672B(A4)	;_whoami
+	PEA	_whoami-BASE(A4)	;_whoami
 	PEA	L0041C(PC)	;"%s, You are one macho dude!"
 	JSR	_msg
 	ADDQ.W	#8,A7

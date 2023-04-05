@@ -1,7 +1,7 @@
 _save_game:
 	LINK	A5,#-$0056
 
-	PEA	-$672B(A4)	;_whoami
+	PEA	_whoami-BASE(A4)	;_whoami
 	PEA	L00B2E(PC)
 	MOVE.L	-$5258(A4),-(A7)	;_prbuf
 	JSR	_sprintf
@@ -37,7 +37,7 @@ L00B28:
 	EXT.W	D3
 ;	TST.W	D3
 	BNE.B	L00B29
-	PEA	-$672B(A4)	;_whoami
+	PEA	_whoami-BASE(A4)	;_whoami
 	PEA	L00B30(PC)
 	PEA	-$0050(A5)
 	JSR	_sprintf
@@ -116,7 +116,7 @@ _restore_game:
 	LINK	A5,#-$0050
 	MOVE.L	A2,-(A7)
 
-	PEA	-$672B(A4)	;_whoami
+	PEA	_whoami-BASE(A4)	;_whoami
 	PEA	L00B3D(PC)
 	MOVE.L	-$5258(A4),-(A7)	;_prbuf
 	JSR	_sprintf
@@ -153,7 +153,7 @@ L00B38:
 	EXT.W	D3
 ;	TST.W	D3
 	BNE.B	L00B39
-	PEA	-$672B(A4)	;_whoami
+	PEA	_whoami-BASE(A4)	;_whoami
 	PEA	L00B3F(PC)
 	PEA	-$0050(A5)
 	JSR	_sprintf
@@ -194,7 +194,7 @@ L00B3A:
 	JSR	_msg
 	ADDQ.W	#4,A7
 	JSR	_InitGadgets
-	PEA	-$672B(A4)	;_whoami
+	PEA	_whoami-BASE(A4)	;_whoami
 	PEA	L00B43(PC)
 	JSR	_msg
 	ADDQ.W	#8,A7
@@ -230,7 +230,7 @@ _xfer_all:
 	MOVEM.L	D4/D5/A2/A3,-(A7)
 
 	MOVE.W	#$0050,-(A7)
-	PEA	-$672B(A4)	;_whoami
+	PEA	_whoami-BASE(A4)	;_whoami
 	JSR	_xfer
 	ADDQ.W	#6,A7
 	LEA	-$5ADC(A4),A6	;_SV_END

@@ -72,7 +72,7 @@ L00677:
 	move.b	-$52B1(A4),-$000A(A5)	;_player + 24 strength
 	move.b	-$52A1(A4),-$0009(A5)	;_player + 40 (max HP)
 
-	PEA	-$672B(A4)	;_whoami
+	PEA	_whoami-BASE(A4)	;_whoami
 	PEA	-$002E(A5)
 	JSR	_strcpy
 	ADDQ.W	#8,A7
@@ -425,7 +425,7 @@ _death:
 	PEA	L006A5(PC)	;"Tombstone"
 	JSR	_show_ilbm
 	LEA	$000A(A7),A7
-	LEA	-$672B(A4),A6	;_whoami
+	LEA	_whoami-BASE(A4),A6	;_whoami
 	MOVE.L	A6,D3
 ;	BRA.B	L006A2
 L006A1:

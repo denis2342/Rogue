@@ -2174,7 +2174,7 @@ _credits:
 	BEQ.B	L00512
 
 	PEA	-$001B(A5)
-	PEA	-$672B(A4)	;_whoami
+	PEA	_whoami-BASE(A4)	;_whoami
 	JSR	_strcpy
 	ADDQ.W	#8,A7
 L00512:
@@ -2276,7 +2276,7 @@ L0051B:
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	_level-BASE(A4),-(A7)	;_level
 	PEA	-$0078(A5)
-	PEA	-$672B(A4)	;_whoami
+	PEA	_whoami-BASE(A4)	;_whoami
 	PEA	L00521(PC)	;"Rogue: %s%s on level %d  %s"
 	PEA	-$0050(A5)
 	JSR	_sprintf
@@ -2662,7 +2662,7 @@ L00661:
 	JSR	_noterse
 
 	MOVE.L	D0,-(A7)
-	PEA	-$672B(A4)	;_whoami
+	PEA	_whoami-BASE(A4)	;_whoami
 	PEA	L00663(PC)	; Hello...
 	JSR	_msg
 	LEA	$000C(A7),A7
