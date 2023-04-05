@@ -887,7 +887,7 @@ L00B7C:
 	CMP.W	#$0046,D3
 	BNE.B	L00B7D
 
-	LEA	-$6735(A4),A6	;_f_damage
+	LEA	_f_damage-BASE(A4),A6	;_f_damage
 	MOVE.L	A6,$0024(A2)
 	BRA.B	L00B7E
 L00B7D:

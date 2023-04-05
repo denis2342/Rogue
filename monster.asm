@@ -154,7 +154,7 @@ L00A16:
 	CMP.b	#$46,D3		; 'F' flytrap
 	BNE.B	1$
 
-	LEA	-$6735(A4),A6	;_f_damage
+	LEA	_f_damage-BASE(A4),A6	;_f_damage
 	MOVE.L	A6,$0024(A2)
 
 1$	CMP.b	#$58,D3		; 'X' xerox
@@ -230,7 +230,7 @@ _f_restor:
 	CLR.W	-$60A2(A4)	;_fung_hit
 	LEA	-$6C26(A4),A2	;venus flytrap struct
 	MOVE.L	$0014(A2),-(A7)	;"%%%d0"
-	PEA	-$6735(A4)	;_f_damage
+	PEA	_f_damage-BASE(A4)	;_f_damage
 	JSR	_strcpy
 	ADDQ.W	#8,A7
 	MOVEA.L	(A7)+,A2
