@@ -270,23 +270,23 @@ _xfer_all:
 	JSR	_xfer_pthing
 	ADDQ.W	#8,A7
 	CLR.L	-(A7)
-	PEA	-$6CAC(A4)	;_mlist
+	PEA	_mlist-BASE(A4)	;_mlist
 	JSR	_xfer_pthing
 	ADDQ.W	#8,A7
 	CLR.L	-(A7)
-	PEA	-$5298(A4)	;_cur_weapon
+	PEA	_cur_weapon-BASE(A4)	;_cur_weapon
 	JSR	_xfer_pthing
 	ADDQ.W	#8,A7
 	CLR.L	-(A7)
-	PEA	-$5294(A4)	;_cur_armor
+	PEA	_cur_armor-BASE(A4)	;_cur_armor
 	JSR	_xfer_pthing
 	ADDQ.W	#8,A7
 	CLR.L	-(A7)
-	PEA	-$5190(A4)	;_cur_ring_1
+	PEA	_cur_ring_1-BASE(A4)	;_cur_ring_1
 	JSR	_xfer_pthing
 	ADDQ.W	#8,A7
 	CLR.L	-(A7)
-	PEA	-$518C(A4)	;_cur_ring_2
+	PEA	_cur_ring_2-BASE(A4)	;_cur_ring_2
 	JSR	_xfer_pthing
 	ADDQ.W	#8,A7
 	TST.W	-$532E(A4)
@@ -300,16 +300,16 @@ L00B44:
 	JSR	_xfer_monster(PC)
 	ADDQ.W	#4,A7
 	MOVE.W	#$00A6,-(A7)
-	MOVE.L	-$52CE(A4),-(A7)	;__t_alloc
+	MOVE.L	__t_alloc-BASE(A4),-(A7)	;__t_alloc
 	BSR.B	_xfer
 	ADDQ.W	#6,A7
 	JSR	_xfer_things(PC)
 	MOVE.W	#$04EC,-(A7)
-	MOVE.L	-$519C(A4),-(A7)	;__level
+	MOVE.L	__level-BASE(A4),-(A7)	;__level
 	BSR.B	_xfer
 	ADDQ.W	#6,A7
 	MOVE.W	#$04EC,-(A7)
-	MOVE.L	-$5198(A4),-(A7)	;__flags
+	MOVE.L	__flags-BASE(A4),-(A7)	;__flags
 	BSR.B	_xfer
 	ADDQ.W	#6,A7
 	LEA	-$7062(A4),A6
@@ -339,7 +339,7 @@ L00B95:
 	MOVE.W	D4,D3
 	EXT.L	D3
 	ASL.L	#2,D3
-	MOVEA.L	-$5898(A4),A6	;_FuncKeys
+	MOVEA.L	_FuncKeys-BASE(A4),A6	;_FuncKeys
 	MOVE.L	$00(A6,D3.L),-(A7)
 	JSR	_xfer
 	ADDQ.W	#6,A7
@@ -354,7 +354,7 @@ L00B95:
 _xfer:
 	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
-	MOVE.W	$000C(A5),-$60A4(A4)	;_count
+	MOVE.W	$000C(A5),_count-BASE(A4)	;_count
 	TST.W	-$532E(A4)
 	BEQ.B	L00B45
 
@@ -675,7 +675,7 @@ _xfer_proom:
 	BCS.B	L00B66
 
 	MOVEA.L	$0008(A5),A6
-	LEA	-$5E36(A4),A1	;_passages
+	LEA	_passages-BASE(A4),A1	;_passages
 	MOVEA.L	(A6),A0
 	CMPA.L	A1,A0
 	BCC.B	L00B66
@@ -692,7 +692,7 @@ _xfer_proom:
 L00B66:
 	MOVEA.L	$0008(A5),A6
 	MOVE.L	(A6),D0
-	LEA	-$5E36(A4),A6	;_passages
+	LEA	_passages-BASE(A4),A6	;_passages
 	SUB.L	A6,D0
 	MOVEQ	#$42,D1
 	JSR	_divu
@@ -735,7 +735,7 @@ L00B6C:
 	MOVE.W	-$0002(A5),D3
 	AND.W	#$0FFF,D3
 	MULU.W	#66,D3
-	LEA	-$5E36(A4),A1	;_passages
+	LEA	_passages-BASE(A4),A1	;_passages
 	ADD.L	A1,D3
 	MOVE.L	D3,(A6)
 	BRA.B	L00B6F
@@ -771,7 +771,7 @@ _xfer_pthing:
 
 	MOVEA.L	$0008(A5),A6
 	MOVE.L	(A6),D0
-	SUB.L	-$52D2(A4),D0
+	SUB.L	__things-BASE(A4),D0	;__things
 	MOVEQ	#$32,D1
 	JSR	_divu
 	ADD.W	#$1000,D0
@@ -813,7 +813,7 @@ L00B75:
 	MOVE.W	-$0002(A5),D3
 	AND.W	#$0FFF,D3
 	MULU.W	#$0032,D3
-	ADD.L	-$52D2(A4),D3
+	ADD.L	__things-BASE(A4),D3	;__things
 	MOVE.L	D3,(A6)
 	BRA.B	L00B77
 L00B76:
@@ -831,14 +831,14 @@ L00B78:
 	MOVE.W	D4,D3
 	EXT.L	D3
 	ASL.L	#1,D3
-	MOVEA.L	-$52CE(A4),A6	;__t_alloc
+	MOVEA.L	__t_alloc-BASE(A4),A6	;__t_alloc
 	TST.W	$00(A6,D3.L)
 	BEQ.B	L00B7B
 
 	MOVE.W	D4,D3
 	MULS.W	#$0032,D3
 	MOVEA.L	D3,A2
-	ADDA.L	-$52D2(A4),A2
+	ADDA.L	__things-BASE(A4),A2	;__things
 	TST.W	-$532E(A4)
 	BNE.B	L00B79
 
@@ -912,7 +912,7 @@ L00B80:
 	MOVE.W	-$0002(A5),D3
 	AND.W	#$0FFF,D3
 	MULU.W	#$0032,D3
-	ADD.L	-$52D2(A4),D3
+	ADD.L	__things-BASE(A4),D3	;__things
 	ADD.L	#$0000000C,D3
 	MOVE.L	D3,$0012(A2)
 	BRA.B	L00B84
@@ -970,7 +970,7 @@ L00B84:
 	BRA.W	L00B88
 L00B85:
 	MOVE.L	$0012(A2),D0
-	SUB.L	-$52D2(A4),D0
+	SUB.L	__things-BASE(A4),D0	;__things
 	MOVEQ	#$32,D1
 	JSR	_divu
 	CMP.L	#$00000000,D0
@@ -999,7 +999,7 @@ L00B86:
 	BRA.B	L00B88
 L00B87:
 	MOVE.L	$0012(A2),D0
-	LEA	-$5E36(A4),A6	;_passages
+	LEA	_passages-BASE(A4),A6	;_passages
 	SUB.L	A6,D0
 	MOVEQ	#66,D1
 	JSR	_divu

@@ -578,7 +578,7 @@ L00AA1:
 	ADDQ.W	#4,A7
 	BRA.B	L00AAA
 L00AA2:
-	CMPA.L	-$5294(A4),A2	;_cur_armor
+	CMPA.L	_cur_armor-BASE(A4),A2	;_cur_armor
 	BNE.B	L00AA3
 	JSR	_take_off
 	BRA.B	L00AA4
@@ -589,11 +589,11 @@ L00AA3:
 L00AA4:
 	BRA.B	L00AAA
 L00AA5:
-	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
+	MOVEA.L	_cur_ring_1-BASE(A4),A6	;_cur_ring_1
 	CMPA.L	A2,A6
 	BEQ.B	L00AA6
 
-	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
+	MOVEA.L	_cur_ring_2-BASE(A4),A6	;_cur_ring_2
 	CMPA.L	A2,A6
 	BNE.B	L00AA7
 L00AA6:
@@ -919,7 +919,7 @@ _one_step:
 	MOVE.W	$0008(A5),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	MOVE.W	D3,-(A7)

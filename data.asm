@@ -1629,7 +1629,9 @@ monster_pos:
 monster_posx:	ds.w	1	;used by _hit_monster
 monster_posy:	ds.w	1
 
-	ds.w	124
+_num_storage:	ds.l	1
+
+	ds.w	122
 
 __things:
 	dc.l	$00000000
@@ -1683,7 +1685,9 @@ __flags:
 _nh:
 	dc.l	$00000000
 
-_cur_ring:	ds.l	2
+_cur_ring:
+_cur_ring_1:	ds.l	1
+_cur_ring_2:	ds.l	1
 
 _IntuitionBase:	ds.l	1
 _GfxBase:	ds.l	1

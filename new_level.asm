@@ -18,15 +18,15 @@ _new_level:
 L00183:
 	MOVEq	#$0020,d1
 	MOVE.W	#1760,d0
-	MOVE.L	-$519C(A4),a0	;__level
+	MOVE.L	__level-BASE(A4),a0	;__level
 	JSR	_memset
 
 	MOVEq	#F_REAL,d1	;what you see is what you get
 	MOVE.W	#1760,d0
-	MOVE.L	-$5198(A4),a0	;__flags
+	MOVE.L	__flags-BASE(A4),a0	;__flags
 	JSR	_memset
 
-	MOVEA.L	-$6CAC(A4),A2	;_mlist
+	MOVEA.L	_mlist-BASE(A4),A2	;_mlist
 	BRA.B	L00185
 L00184:
 	PEA	$002E(A2)
@@ -37,7 +37,7 @@ L00185:
 	MOVE.L	A2,D3
 	BNE.B	L00184
 
-	PEA	-$6CAC(A4)	;_mlist
+	PEA	_mlist-BASE(A4)	;_mlist
 	JSR	__free_list(PC)
 	ADDQ.W	#4,A7
 
@@ -58,7 +58,7 @@ L00185:
 	JSR	_blank_spot
 	ADDQ.W	#4,A7
 	MOVE.W	D0,D6
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	#$25,$00(A6,D6.W)	;'%' STAIRS
 
 	MOVEq	#10,D0
@@ -92,7 +92,7 @@ L00187:
 	MOVE.W	D6,D3
 	EXT.L	D3
 	MOVEA.L	D3,A3
-	ADDA.L	-$5198(A4),A3	;__flags
+	ADDA.L	__flags-BASE(A4),A3	;__flags
 	ANDI.B	#~F_REAL,(A3)	;clear F_REAL
 
 	MOVEq	#$0006,D0
@@ -106,7 +106,7 @@ L00188:
 	ADDQ.W	#4,A7
 
 	MOVE.W	D0,D6
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 	MOVE.B	$00(A6,D6.W),D3
 	AND.B	#F_REAL,D3	;F_REAL
 	BEQ.B	L00188
@@ -118,7 +118,7 @@ L00188:
 	TST.L	D0
 	BNE.B	L00188
 
-	CLR.W	-$60B0(A4)	;_mpos
+	CLR.W	_mpos-BASE(A4)	;_mpos
 	PEA	-$52C0(A4)	;_player + 10
 	JSR	_enter_room
 	ADDQ.W	#4,A7
@@ -172,7 +172,8 @@ _put_things:
 	TST.B	-$66BC(A4)	;_saw_amulet
 	BEQ.B	L0018B
 
-	MOVE.W	-$60B4(A4),D3	;_level
+	MOVE.W	_level-BASE(A4),D3	;_level
+;	MOVE.W	-$60B4(A4),D3	;_level
 	CMP.W	-$60BA(A4),D3	;_ntraps
 	BGE.B	L0018B
 
@@ -226,7 +227,7 @@ L0018D:
 	MOVE.W	-$0002(A5),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	#$2C,$00(A6,D0.W)	;"," amulet of yendor
 	MOVEA.L	A2,A6
 	ADDA.L	#$0000000C,A6
@@ -271,7 +272,7 @@ L00191:
 	MOVE.W	-$0002(A5),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	CMPI.B	#$002E,$00(A6,D0.W)	;'.' FLOOR
 	BEQ.B	1$
 
@@ -282,7 +283,7 @@ L00191:
 ;	MOVE.W	-$0002(A5),d1
 ;	JSR	_INDEXquick
 
-;	MOVEA.L	-$519C(A4),A6	;__level
+;	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	$000B(A2),$00(A6,D0.W)
 	MOVEA.L	A2,A6
 	ADDA.L	#$0000000C,A6
@@ -347,7 +348,7 @@ L00197:
 
 	MOVE.W	D0,-$0004(A5)
 	MOVE.W	-$0004(A5),D3
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 
 	MOVE.B	$00(A6,D3.W),D2
 	CMP.B	#$2E,D2		;'.' FLOOR
@@ -368,7 +369,7 @@ L00198:
 	ADDQ.W	#8,A7
 
 	MOVE.W	-$0004(A5),D3
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	$000B(A2),$00(A6,D3.W)
 	BRA.W	L00196
 L00199:
@@ -417,7 +418,7 @@ L0019D:
 	JSR	_INDEXquick
 
 	MOVE.W	D0,-$0004(A5)
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 
 	MOVE.B	$00(A6,D0.W),D2
 	CMP.B	#$2E,D2		;'.' FLOOR

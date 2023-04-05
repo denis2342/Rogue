@@ -572,21 +572,21 @@ L00AEB:
 	AND.W	#$0001,D3	;should we print the wearing/worn text?
 	BEQ.B	L00AEF
 
-	CMPA.L	-$5294(A4),A2	;_cur_armor
+	CMPA.L	_cur_armor-BASE(A4),A2	;_cur_armor
 	BNE.B	L00AEC
 
 	PEA	L00B0D(PC)	;"(being worn)"
 	JSR	_nmadd
 	ADDQ.W	#4,A7
 L00AEC:
-	CMPA.L	-$5298(A4),A2	;_cur_weapon
+	CMPA.L	_cur_weapon-BASE(A4),A2	;_cur_weapon
 	BNE.B	L00AED
 
 	PEA	L00B0E(PC)	;"(weapon in hand)"
 	JSR	_nmadd
 	ADDQ.W	#4,A7
 L00AED:
-	CMPA.L	-$5190(A4),A2	;_cur_ring_1
+	CMPA.L	_cur_ring_1-BASE(A4),A2	;_cur_ring_1
 	BNE.B	L00AEE
 
 	PEA	L00B0F(PC)	;"(on left hand)"
@@ -594,7 +594,7 @@ L00AED:
 	ADDQ.W	#4,A7
 	BRA.B	L00AEF
 L00AEE:
-	CMPA.L	-$518C(A4),A2	;_cur_ring_2
+	CMPA.L	_cur_ring_2-BASE(A4),A2	;_cur_ring_2
 	BNE.B	L00AEF
 
 	PEA	L00B10(PC)	;"(on right hand)"
@@ -692,7 +692,7 @@ _drop:
 
 	JSR	_INDEXplayer
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	$00(A6,D0.W),D4
 	CMP.b	#$2E,D4		;'.'
 	BEQ.B	L0052D
@@ -753,7 +753,7 @@ L00533:
 
 	JSR	_INDEXplayer
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	$000B(A3),$00(A6,D0.W)
 	MOVEA.L	A3,A6
 	ADDA.L	#$0000000C,A6
@@ -799,13 +799,13 @@ L00538:
 	RTS
 
 L00539:
-	CMPA.L	-$5294(A4),A2	;_cur_armor
+	CMPA.L	_cur_armor-BASE(A4),A2	;_cur_armor
 	BEQ.B	L0053A
-	CMPA.L	-$5298(A4),A2	;_cur_weapon
+	CMPA.L	_cur_weapon-BASE(A4),A2	;_cur_weapon
 	BEQ.B	L0053A
-	CMPA.L	-$5190(A4),A2	;_cur_ring_1
+	CMPA.L	_cur_ring_1-BASE(A4),A2	;_cur_ring_1
 	BEQ.B	L0053A
-	CMPA.L	-$518C(A4),A2	;_cur_ring_2
+	CMPA.L	_cur_ring_2-BASE(A4),A2	;_cur_ring_2
 	BNE.B	L00538b
 L0053A:
 	MOVE.W	$0028(A2),D3
@@ -818,26 +818,26 @@ L0053A:
 	MOVEQ	#$00,D0
 	BRA.B	L00538
 L0053B:
-	CMPA.L	-$5298(A4),A2	;_cur_weapon
+	CMPA.L	_cur_weapon-BASE(A4),A2	;_cur_weapon
 	BNE.B	L0053C
-	CLR.L	-$5298(A4)	;_cur_weapon
+	CLR.L	_cur_weapon-BASE(A4)	;_cur_weapon
 	BRA.B	L00542
 L0053C:
-	CMPA.L	-$5294(A4),A2	;_cur_armor
+	CMPA.L	_cur_armor-BASE(A4),A2	;_cur_armor
 	BNE.B	L0053D
 	JSR	_waste_time
-	CLR.L	-$5294(A4)	;_cur_armor
+	CLR.L	_cur_armor-BASE(A4)	;_cur_armor
 	BRA.B	L00542
 L0053D:
 	MOVEQ	#$00,D3
-	LEA	-$5190(A4),A6	;_cur_ring_x
+	LEA	_cur_ring_1-BASE(A4),A6	;_cur_ring_x
 	CMPA.L	$00(A6,D3.w),A2	;ring slot 0
 	BEQ.B	L0053E
 	MOVEQ	#$04,D3
 	CMPA.L	$00(A6,D3.w),A2	;ring slot 1
 	BNE.B	L00538b
 L0053E:
-;	LEA	-$5190(A4),A6	;_cur_ring_x
+;	LEA	_cur_ring_1-BASE(A4),A6	;_cur_ring_x
 	CLR.L	$00(A6,D3.w)
 	MOVE.W	$0020(A2),D0	;ring id
 ;	EXT.L	D0
@@ -1492,7 +1492,7 @@ _nothing:
 	JSR	_sprintf
 	ADDQ.W	#8,A7
 
-	TST.B	-$66B2(A4)	;_terse
+	TST.B	_terse-BASE(A4)	;_terse
 	BEQ.B	L00586
 
 	PEA	L0058E(PC)	;"Nothing"

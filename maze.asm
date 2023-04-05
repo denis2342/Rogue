@@ -75,7 +75,7 @@ L0079D:
 	MOVE.W	D4,d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	CMP.B	#$23,$00(A6,D0.W)
 	BNE.B	L0079E
 
@@ -94,7 +94,7 @@ L0079F:
 	MOVE.W	-$0194(A5),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	CMP.B	#$23,$00(A6,D0.W)
 	BEQ.W	L0079C
 
@@ -160,7 +160,7 @@ _add_frnt:
 	MOVE.W	$0008(A5),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	CMP.B	#$20,$00(A6,D0.W)
 	BNE.B	L007A0
 
@@ -168,7 +168,7 @@ _add_frnt:
 ;	MOVE.W	$0008(A5),d1
 ;	JSR	_INDEXquick
 
-;	MOVEA.L	-$519C(A4),A6	;__level
+;	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	#$46,$00(A6,D0.W)
 	MOVE.W	-$53BE(A4),D3
 	EXT.L	D3
@@ -359,7 +359,7 @@ _maze_at:
 	MOVE.W	$0008(A5),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 ;	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	CMP.B	#$23,D3
@@ -378,14 +378,14 @@ _splat:
 	MOVE.W	$0008(A5),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	#$23,$00(A6,D0.W)
 
 ;	MOVE.W	$000A(A5),d0
 ;	MOVE.W	$0008(A5),d1
 ;	JSR	_INDEXquick
 
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 	MOVE.B	#$30,$00(A6,D0.W)
 	MOVE.W	$000A(A5),D3
 	CMP.W	-$53B4(A4),D3

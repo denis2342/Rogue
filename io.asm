@@ -14,7 +14,7 @@ _msg:
 	JSR	_movequick
 
 	JSR	_clrtoeol
-	CLR.W	-$60B0(A4)	;_mpos
+	CLR.W	_mpos-BASE(A4)	;_mpos
 L0013A:
 	UNLK	A5
 	RTS
@@ -57,20 +57,20 @@ _addmsg:
 
 _endmsg:
 ;	LINK	A5,#-$0000
-	TST.B	-$66B5(A4)	;_save_msg
+	TST.B	_save_msg-BASE(A4)	;_save_msg
 	BEQ.B	L0013C
-	MOVE.L	-$51A4(A4),-(A7)	;_msgbuf
-	PEA	-$4940(A4)	;_huh
+	MOVE.L	_msgbuf-BASE(A4),-(A7)	;_msgbuf
+	PEA	_huh-BASE(A4)	;_huh
 	JSR	_strcpy
 	ADDQ.W	#8,A7
 L0013C:
-	TST.W	-$60B0(A4)	;_mpos
+	TST.W	_mpos-BASE(A4)	;_mpos
 	BEQ.B	L0013D
 	CLR.L	-(A7)
 	JSR	_look
 	ADDQ.W	#4,A7
 
-	MOVE.W	-$60B0(A4),d1	;_mpos
+	MOVE.W	_mpos-BASE(A4),d1	;_mpos
 	moveq	#0,d0
 	JSR	_movequick
 
@@ -78,20 +78,20 @@ L0013C:
 	BSR.B	_more
 	ADDQ.W	#4,A7
 L0013D:
-	MOVEA.L	-$51A4(A4),A6	;_msgbuf
+	MOVEA.L	_msgbuf-BASE(A4),A6	;_msgbuf
 	MOVE.B	(A6),D0
 	JSR	_islower
 
 	TST.W	D0
 	BEQ.B	L0013E
-	MOVEA.L	-$51A4(A4),A6	;_msgbuf
+	MOVEA.L	_msgbuf-BASE(A4),A6	;_msgbuf
 	MOVE.B	$0001(A6),D3
 	EXT.W	D3
 	CMP.W	#$0029,D3
 	BEQ.B	L0013E
-	MOVEA.L	-$51A4(A4),A6	;_msgbuf
+	MOVEA.L	_msgbuf-BASE(A4),A6	;_msgbuf
 	MOVE.L	A6,-(A7)
-	MOVEA.L	-$51A4(A4),A6	;_msgbuf
+	MOVEA.L	_msgbuf-BASE(A4),A6	;_msgbuf
 	MOVE.B	(A6),D3
 	MOVE.W	D3,-(A7)
 	JSR	_toupper
@@ -99,11 +99,11 @@ L0013D:
 	MOVEA.L	(A7)+,A6
 	MOVE.B	D0,(A6)
 L0013E:
-	MOVE.L	-$51A4(A4),-(A7)	;_msgbuf
+	MOVE.L	_msgbuf-BASE(A4),-(A7)	;_msgbuf
 	CLR.W	-(A7)
 	JSR	_putmsg(PC)
 	ADDQ.W	#6,A7
-	MOVE.W	-$77BA(A4),-$60B0(A4)	;_mpos
+	MOVE.W	-$77BA(A4),_mpos-BASE(A4)	;_mpos
 	CLR.W	-$77BA(A4)
 ;	UNLK	A5
 	RTS
@@ -246,12 +246,12 @@ _doadd:
 	MOVE.L	$0008(A5),-(A7)
 	MOVE.W	-$77BA(A4),D3		;_addch_text + $14
 	EXT.L	D3
-	ADD.L	-$51A4(A4),D3		;_msgbuf
+	ADD.L	_msgbuf-BASE(A4),D3		;_msgbuf
 	MOVE.L	D3,-(A7)
 	JSR	_sprintf
 	LEA	$001C(A7),A7
 
-	MOVE.L	-$51A4(A4),A0	;_msgbuf
+	MOVE.L	_msgbuf-BASE(A4),A0	;_msgbuf
 	JSR	_strlenquick
 
 	MOVE.W	D0,-$77BA(A4)		;_addch_text + $14
@@ -348,7 +348,7 @@ L008A8:
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	MOVEA.L	-$51AC(A4),A6	;_e_levels
+	MOVEA.L	_e_levels-BASE(A4),A6	;_e_levels
 	TST.L	$00(A6,D3.w)
 	BNE.B	L008A9
 
@@ -973,20 +973,20 @@ L00160:
 	BNE.B	L00161
 
 	MOVE.W	-$54E4(A4),D3	;last printed purse
-	CMP.W	-$60B2(A4),D3	;_purse
+	CMP.W	_purse-BASE(A4),D3	;_purse
 	BEQ.B	L00162
 L00161:
 	MOVEq	#$001C,d1
 	MOVEq	#$0014,d0
 	JSR	_movequick
 
-	MOVE.W	-$60B2(A4),-(A7)	;_purse
+	MOVE.W	_purse-BASE(A4),-(A7)	;_purse
 	PEA	L0016B(PC)	;"Gold:%-5.5u"
 	JSR	_printw
 	ADDQ.W	#6,A7
-	MOVE.W	-$60B2(A4),-$54E4(A4)	;_purse, last printed purse
+	MOVE.W	_purse-BASE(A4),-$54E4(A4)	;_purse, last printed purse
 L00162:
-	MOVE.L	-$5294(A4),D0	;_cur_armor
+	MOVE.L	_cur_armor-BASE(A4),D0	;_cur_armor
 	BEQ.B	L00163
 
 	MOVEA.L	D0,A6		;_cur_armor
@@ -995,7 +995,7 @@ L00162:
 L00163:
 	MOVE.W	-$52AA(A4),D4	;_player + 32 (AC)
 L00164:
-	MOVE.L	-$5190(A4),D0	;_cur_ring_1
+	MOVE.L	_cur_ring_1-BASE(A4),D0	;_cur_ring_1
 	BEQ.B	L00165
 
 	MOVEA.L	D0,A6		;_cur_ring_1
@@ -1004,7 +1004,7 @@ L00164:
 
 	SUB.W	$0026(A6),D4
 L00165:
-	MOVE.L	-$518C(A4),D0	;_cur_ring_2
+	MOVE.L	_cur_ring_2-BASE(A4),D0	;_cur_ring_2
 	BEQ.B	L00166
 
 	MOVEA.L	D0,A6		;_cur_ring_2

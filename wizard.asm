@@ -40,7 +40,7 @@ L007B5:
 	PEA	L007C5(PC)	;" "
 	JSR	_msg
 	ADDQ.W	#4,A7
-	CLR.W	-$60B0(A4)	;_mpos
+	CLR.W	_mpos-BASE(A4)	;_mpos
 	BRA.B	L007B5
 
 L007B6:
@@ -265,7 +265,7 @@ L007C9:
 ;	BRA.B	L007D2
 
 L007D2:
-	CLR.W	-$60B0(A4)	;_mpos
+	CLR.W	_mpos-BASE(A4)	;_mpos
 	MOVEA.L	-$0004(A5),A6
 	MOVE.W	$000A(A6),-(A7)
 	PEA	L007EF(PC)	;"which %c do you want? (0-f)"
@@ -313,7 +313,7 @@ L007D6:
 	LEA	L007F0(PC),A1	;"0d0"
 	MOVE.L	A1,$001A(A6)
 	MOVE.L	$001A(A6),$0016(A6)
-	CLR.W	-$60B0(A4)	;_mpos
+	CLR.W	_mpos-BASE(A4)	;_mpos
 ;	MOVEA.L	-$0004(A5),A6
 	CMPI.W	#$006D,$000A(A6)	; 'm' weapon type
 	BEQ.B	L007D7
@@ -330,7 +330,7 @@ L007D7:
 	ADDQ.W	#4,A7
 	JSR	_readchar
 	MOVE.B	D0,-$53A7(A4)
-	CLR.W	-$60B0(A4)	;_mpos
+	CLR.W	_mpos-BASE(A4)	;_mpos
 L007D8:
 	CMP.B	#$2D,-$53A7(A4)	; '-'
 	BNE.B	L007D9
@@ -409,7 +409,7 @@ L007E0:
 	ADDQ.W	#4,A7
 	JSR	_readchar
 	MOVE.B	D0,-$53A7(A4)
-	CLR.W	-$60B0(A4)	;_mpos
+	CLR.W	_mpos-BASE(A4)	;_mpos
 L007E1:
 	CMP.B	#$2D,-$53A7(A4)	; '-'
 	BNE.B	L007E3
@@ -464,7 +464,7 @@ L007EB:
 	CMPI.W	#$002A,$000A(A6)	; '*'
 	BNE.B	L007EC
 
-	CLR.W	-$60B0(A4)	;_mpos
+	CLR.W	_mpos-BASE(A4)	;_mpos
 	PEA	L007F3(PC)	;"how much? "
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -474,7 +474,7 @@ L007EB:
 	JSR	_get_num(PC)
 	ADDQ.W	#4,A7
 
-	CLR.W	-$60B0(A4)	;_mpos
+	CLR.W	_mpos-BASE(A4)	;_mpos
 
 	MOVEA.L	-$0004(A5),A6
 	move.w	$0026(A6),-(a7)
@@ -509,7 +509,7 @@ _teleport:
 
 	JSR	_INDEXplayer
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 
 	MOVE.B	$00(A6,D0.W),D2
 	MOVE.W	-$52C0(A4),d1	;_player + 10
@@ -580,11 +580,11 @@ L007F6:
 	JSR	_f_restor
 L007F7:
 	CLR.W	-$60AE(A4)	;_no_move
-	CLR.W	-$60A4(A4)	;_count
+	CLR.W	_count-BASE(A4)	;_count
 	CLR.B	-$66B6(A4)	;_running
 	JSR	_flush_type
 
-	TST.B	-$66AE(A4)	;_wizard
+	TST.B	_wizard-BASE(A4)	;_wizard
 	BNE.B	L007FA
 
 	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
@@ -635,7 +635,7 @@ L007FC:
 	MOVE.W	D4,d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 	MOVE.B	$00(A6,D0.W),D6
 	AND.W	#F_REAL,D6
 	TST.W	D6
@@ -646,7 +646,7 @@ L007FD:
 	MOVE.W	D5,d0
 	MOVE.W	D4,d1
 	JSR	_INDEXquick
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 
 	MOVE.B	$00(A6,D0.W),D2
 	MOVE.W	D5,d1

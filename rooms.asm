@@ -80,7 +80,7 @@ L00424:
 	MOVE.W	-$0020(A5),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	CMP.B	#$20,$00(A6,D0.W)	;' ' SPACE
 	BEQ.B	L00424
 
@@ -114,7 +114,7 @@ L00427:
 	MOVE.W	-$0024(A5),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	CMP.B	#$20,$00(A6,D0.W)	;' ' SPACE
 	BEQ.B	L00427
 	BRA.B	L00429
@@ -186,7 +186,7 @@ L0042E:
 	MOVE.W	-$0020(A5),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	CMP.B	#$20,$00(A6,D0.W)	;' ' SPACE
 	BEQ.B	L0042E
 
@@ -220,7 +220,7 @@ L00431:
 	MOVE.W	-$0024(A5),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	CMP.B	#$20,$00(A6,D0.W)	;' ' SPACE
 	BEQ.B	L00431
 
@@ -375,7 +375,7 @@ L00901:
 	CLR.W	$0010(A6)
 	CLR.W	$000C(A6)
 	ADDI.L	#$00000042,-$0004(A5)
-	LEA	-$5E36(A4),A6	;_passages
+	LEA	_passages-BASE(A4),A6	;_passages
 	MOVEA.L	-$0004(A5),A1
 	CMPA.L	A6,A1
 	BCS.B	L00901
@@ -580,7 +580,7 @@ L0090B:
 	MOVE.W	$000A(A6),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	$00(A6,D0.W),-$001B(A5)
 	MOVE.B	-$001B(A5),D3
 	CMP.b	#'.',D3		;FLOOR
@@ -611,7 +611,7 @@ L0090C:
 	MOVE.W	$000A(A6),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	#'*',$00(A6,D0.W)
 L0090D:
 	MOVEq	#$0064,D0
@@ -717,7 +717,7 @@ _draw_room:
 	MOVE.W	$0002(A6),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	#'<',$00(A6,D0.W)
 	MOVEA.L	$0008(A5),A6
 
@@ -727,7 +727,7 @@ _draw_room:
 	MOVE.W	$0002(A6),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	#'>',$00(A6,D0.W)
 	MOVEA.L	$0008(A5),A6
 
@@ -737,7 +737,7 @@ _draw_room:
 	SUBQ.W	#1,D1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	#'{',$00(A6,D0.W)
 	MOVEA.L	$0008(A5),A6
 
@@ -749,7 +749,7 @@ _draw_room:
 	SUBQ.W	#1,D1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	#'}',$00(A6,D0.W)
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	$0002(A6),D4
@@ -765,7 +765,7 @@ L00915:
 	MOVE.W	D4,d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	#'.',$00(A6,D0.W)
 	ADDQ.W	#1,D5
 L00916:
@@ -808,7 +808,7 @@ L00918:
 	MOVE.W	D5,d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	#'|',$00(A6,D0.W)
 	ADDQ.W	#1,D5
 L00919:
@@ -839,7 +839,7 @@ L0091A:
 	MOVE.W	$000C(A5),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	#'-',$00(A6,D0.W)
 	ADDQ.W	#1,D4
 L0091B:
@@ -961,7 +961,7 @@ L00920:
 	MOVE.W	D4,d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	MOVE.W	D3,-(A7)
@@ -975,7 +975,7 @@ L00921:
 	MOVE.W	D4,d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVEA.L	(A7)+,A1
 	MOVE.B	$00(A6,D0.W),$0011(A1)
 	MOVEA.L	D6,A6
@@ -1017,12 +1017,12 @@ _leave_room:
 	MOVE.W	$0002(A2),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 ;	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	AND.W	#F_PNUM,D3	;F_PNUM passage number mask
 	MULU.W	#66,D3
-	LEA	-$5E36(A4),A6	;_passages
+	LEA	_passages-BASE(A4),A6	;_passages
 	ADD.L	A6,D3
 	MOVE.L	D3,-$52A0(A4)	;_player + 42 (proom)
 

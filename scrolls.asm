@@ -49,10 +49,10 @@ L001A9:
 	JSR	_ifterse(PC)
 	ADDQ.W	#8,A7
 
-	CMPA.L	-$5298(A4),A2	;scroll is _cur_weapon?
+	CMPA.L	_cur_weapon-BASE(A4),A2	;scroll is _cur_weapon?
 	BNE.B	L001AA
 
-	CLR.L	-$5298(A4)	;clear _cur_weapon
+	CLR.L	_cur_weapon-BASE(A4)	;clear _cur_weapon
 L001AA:
 	MOVE.W	$0020(A2),D0
 ;	EXT.L	D0
@@ -70,14 +70,14 @@ L001AB:
 ; enchant armor scroll
 
 L001AC:
-	TST.L	-$5294(A4)	;_cur_armor
+	TST.L	_cur_armor-BASE(A4)	;_cur_armor
 	BEQ.B	L001AD
-	MOVEA.L	-$5294(A4),A6	;_cur_armor
+	MOVEA.L	_cur_armor-BASE(A4),A6	;_cur_armor
 	SUBQ.W	#1,$0026(A6)
-;	MOVEA.L	-$5294(A4),A6	;_cur_armor
+;	MOVEA.L	_cur_armor-BASE(A4),A6	;_cur_armor
 	ANDI.W	#~O_ISCURSED,$0028(A6)	;clear O_ISCURSED bit
 	MOVE.W	#$0001,-(A7)
-	MOVE.L	-$5294(A4),-(A7)	;_cur_armor
+	MOVE.L	_cur_armor-BASE(A4),-(A7)	;_cur_armor
 	JSR	_pack_name
 	ADDQ.W	#6,A7
 	PEA	L001ED(PC)	;"your armor glows faintly for a moment"
@@ -144,7 +144,7 @@ L001B5:
 	JSR	_rnd
 	ADDQ.W	#4,D0
 
-	ADD.W	D0,-$60AC(A4)	;_no_command
+	ADD.W	D0,_no_command-BASE(A4)	;_no_command
 
 	ANDI.W	#~C_ISRUN,-$52B4(A4)	;clear C_ISRUN, _player + 22 (flags)
 	PEA	L001EE(PC)	;"you fall asleep"
@@ -222,21 +222,21 @@ L001BD:
 	JSR	_INDEXquick
 
 	MOVE.W	D0,D7
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	$00(A6,D7.W),D6
 	MOVEQ	#$00,D0
 	MOVE.B	D6,D0
 	BRA.B	L001C2
 L001BE:
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 	MOVE.B	$00(A6,D7.W),D3
 	AND.W	#F_REAL,D3
 	BNE.B	L001BF
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVEQ	#$2B,D6		;'+' DOOR
 	MOVE.B	D6,$00(A6,D7.W)
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 	ANDI.B	#~F_REAL,$00(A6,D7.W)
 L001BF:
 	MOVE.W	D5,d1
@@ -368,17 +368,17 @@ L001CA:
 ; enchant weapon
 
 L001CC:
-	TST.L	-$5298(A4)	;_cur_weapon
+	TST.L	_cur_weapon-BASE(A4)	;_cur_weapon
 	BEQ.B	L001CD
 
-	MOVE.L	-$5298(A4),-(A7)	;_cur_weapon
+	MOVE.L	_cur_weapon-BASE(A4),-(A7)	;_cur_weapon
 	JSR	_typeof
 	ADDQ.W	#4,A7
 	CMP.W	#$006D,D0	;'m' weapon type
 	BNE.B	L001CD
 
 	JSR	_s_enchant(PC)
-	MOVEA.L	-$5298(A4),A6	;_cur_weapon
+	MOVEA.L	_cur_weapon-BASE(A4),A6	;_cur_weapon
 	MOVE.W	$0020(A6),D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
@@ -397,9 +397,9 @@ L001CD:
 ; scare monster scroll
 
 L001D0:
-	TST.B	-$66B2(A4)	;_terse
+	TST.B	_terse-BASE(A4)	;_terse
 	BNE.B	L001D1
-	TST.B	-$66AB(A4)	;_expert
+	TST.B	_expert-BASE(A4)	;_expert
 	BEQ.B	L001D2
 L001D1:
 	LEA	L001F9(PC),A6	; $0
@@ -448,18 +448,18 @@ L001D6:
 ; vorpalize weapon scroll
 
 L001D7:
-	TST.L	-$5298(A4)	;_cur_weapon
+	TST.L	_cur_weapon-BASE(A4)	;_cur_weapon
 	BEQ.B	L001D8
 
-	MOVE.L	-$5298(A4),-(A7)	;_cur_weapon
+	MOVE.L	_cur_weapon-BASE(A4),-(A7)	;_cur_weapon
 	JSR	_typeof
 	ADDQ.W	#4,A7
 	CMP.W	#$006D,D0	;'m' weapon type
 	BEQ.B	L001DC
 L001D8:
-	TST.B	-$66B2(A4)	;_terse
+	TST.B	_terse-BASE(A4)	;_terse
 	BNE.B	L001D9
-	TST.B	-$66AB(A4)	;_expert
+	TST.B	_expert-BASE(A4)	;_expert
 	BEQ.B	L001DA
 L001D9:
 	LEA	L001F9(PC),A6	; $0
@@ -478,7 +478,7 @@ L001DB:
 ; vorpalize weapon
 
 L001DC:
-	MOVEA.L	-$5298(A4),A6	;_cur_weapon
+	MOVEA.L	_cur_weapon-BASE(A4),A6	;_cur_weapon
 	TST.B	$002A(A6)	;already vorpalized
 	BEQ.B	L001DD
 
@@ -490,25 +490,25 @@ L001DC:
 	JSR	_msg
 	ADDQ.W	#8,A7
 	CLR.L	-(A7)
-	MOVE.L	-$5298(A4),-(A7)	;_cur_weapon
+	MOVE.L	_cur_weapon-BASE(A4),-(A7)	;_cur_weapon
 	JSR	_unpack
 	ADDQ.W	#8,A7
-	MOVE.L	-$5298(A4),-(A7)	;_cur_weapon
+	MOVE.L	_cur_weapon-BASE(A4),-(A7)	;_cur_weapon
 	JSR	_discard
 	ADDQ.W	#4,A7
-	CLR.L	-$5298(A4)	;_cur_weapon
+	CLR.L	_cur_weapon-BASE(A4)	;_cur_weapon
 	BRA.B	L001E1
 L001DD:
 	JSR	_pick_mons
-	MOVEA.L	-$5298(A4),A6	;_cur_weapon
+	MOVEA.L	_cur_weapon-BASE(A4),A6	;_cur_weapon
 	MOVE.B	D0,$002A(A6)	;set the monster which we can slay now
 	ADDQ.W	#1,$0022(A6)	;hplus + 1
 	ADDQ.W	#1,$0024(A6)	;dplus + 1
 	MOVE.W	#$0001,$0026(A6)	;number of charges
-	TST.B	-$66B2(A4)	;_terse
+	TST.B	_terse-BASE(A4)	;_terse
 	BNE.B	L001DE
 
-	TST.B	-$66AB(A4)	;_expert
+	TST.B	_expert-BASE(A4)	;_expert
 	BEQ.B	L001DF
 L001DE:
 	LEA	L001F9(PC),A6
@@ -518,7 +518,7 @@ L001DF:
 	MOVE.L	-$69C6(A4),D3	;_intense
 L001E0:
 	MOVE.L	D3,-(A7)
-	MOVEA.L	-$5298(A4),A6	;_cur_weapon
+	MOVEA.L	_cur_weapon-BASE(A4),A6	;_cur_weapon
 	MOVE.W	$0020(A6),D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
@@ -528,7 +528,7 @@ L001E0:
 	JSR	_msg
 	LEA	$000C(A7),A7
 	MOVE.W	#$0001,-(A7)
-	MOVE.L	-$5298(A4),-(A7)	;_cur_weapon
+	MOVE.L	_cur_weapon-BASE(A4),-(A7)	;_cur_weapon
 	JSR	_pack_name
 	ADDQ.W	#6,A7
 L001E1:
@@ -639,7 +639,7 @@ _wild_magic:
 ; thunderclaps, removes all monster from the level, also there will be no new ones in this level
 
 L00203:
-	MOVEA.L	-$6CAC(A4),A3	;_mlist
+	MOVEA.L	_mlist-BASE(A4),A3	;_mlist
 	BRA.B	L00205
 L00204:
 	MOVE.L	(A3),D4
@@ -704,7 +704,7 @@ L0020A:
 L0020B:
 	JSR	_s_remove(PC)	;removes the curses of the used weapon/armor and rings
 
-	MOVE.L	-$5298(A4),D0	;_cur_weapon
+	MOVE.L	_cur_weapon-BASE(A4),D0	;_cur_weapon
 	BEQ.B	L0020C
 
 	MOVEA.L	D0,A6		;_cur_weapon
@@ -716,7 +716,7 @@ L0020B:
 	JSR	_s_enchant(PC)
 	JSR	_s_enchant(PC)
 L0020C:
-	MOVE.L	-$5294(A4),D0	;_cur_armor
+	MOVE.L	_cur_armor-BASE(A4),D0	;_cur_armor
 	BEQ.B	L0020D
 
 	; increase armor class by two points
@@ -724,7 +724,7 @@ L0020C:
 	MOVEA.L	D0,A6		;_cur_armor
 	SUBQ.W	#2,$0026(A6)
 	MOVE.W	#$0001,-(A7)
-	MOVE.L	-$5294(A4),-(A7)	;_cur_armor
+	MOVE.L	_cur_armor-BASE(A4),-(A7)	;_cur_armor
 	JSR	_pack_name
 	ADDQ.W	#6,A7
 L0020D:
@@ -757,7 +757,7 @@ L00210:
 	ADDQ.W	#4,A7
 
 	MOVE.W	D0,D5
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D5.W),D3
 	AND.W	#F_REAL,D3
@@ -785,7 +785,7 @@ L00210:
 	ADDA.L	#$0000000C,A6
 	LEA	-$0004(A5),A1
 	MOVE.L	(A1)+,(A6)+
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	$000B(A3),$00(A6,D5.W)
 	MOVE.W	-$0004(A5),-(A7)
 	MOVE.W	-$0002(A5),-(A7)
@@ -795,7 +795,7 @@ L00210:
 	TST.W	D0
 	BEQ.B	L00211
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 
 	MOVE.B	$00(A6,D5.W),D2
 	MOVE.W	-$0004(A5),d1
@@ -838,22 +838,22 @@ L0021B:	dc.b	"There is a fluttering behind you and suddenly your pack feels ligh
 _s_remove:
 ;	LINK	A5,#-$0000
 
-	MOVE.L	-$5294(A4),D0	;_cur_armor
+	MOVE.L	_cur_armor-BASE(A4),D0	;_cur_armor
 	BEQ.B	L0021C
 	MOVEA.L	D0,A6		;_cur_armor
 	ANDI.W	#~O_ISCURSED,$0028(A6)	;clear ISCURSED bit
 L0021C:
-	MOVE.L	-$5298(A4),D0	;_cur_weapon
+	MOVE.L	_cur_weapon-BASE(A4),D0	;_cur_weapon
 	BEQ.B	L0021D
 	MOVEA.L	D0,A6		;_cur_weapon
 	ANDI.W	#~O_ISCURSED,$0028(A6)
 L0021D:
-	MOVE.L	-$5190(A4),D0	;_cur_ring_1
+	MOVE.L	_cur_ring_1-BASE(A4),D0	;_cur_ring_1
 	BEQ.B	L0021E
 	MOVEA.L	D0,A6		;_cur_ring_1
 	ANDI.W	#~O_ISCURSED,$0028(A6)
 L0021E:
-	MOVE.L	-$518C(A4),D0	;_cur_ring_2
+	MOVE.L	_cur_ring_2-BASE(A4),D0	;_cur_ring_2
 	BEQ.B	L0021F
 	MOVEA.L	D0,A6		;_cur_ring_2
 	ANDI.W	#~O_ISCURSED,$0028(A6)
@@ -867,7 +867,7 @@ _s_enchant:
 	MOVEq	#$0002,D0
 	JSR	_rnd
 
-	MOVEA.L	-$5298(A4),A6	;_cur_weapon
+	MOVEA.L	_cur_weapon-BASE(A4),A6	;_cur_weapon
 	ANDI.W	#~O_ISCURSED,$0028(A6)	;clear O_ISCURSED bit
 
 	TST.W	D0

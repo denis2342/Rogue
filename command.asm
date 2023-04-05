@@ -9,12 +9,12 @@ _command:
 	TST.B	-$66B3(A4)	;_is_wizard
 	BEQ.B	L00398
 
-	MOVE.B	#$02,-$66AE(A4)	;_wizard
+	MOVE.B	#$02,_wizard-BASE(A4)	;_wizard
 	BRA.B	L00399
 L00398:
-	CMP.B	#2,-$66AE(A4)	;_wizard
+	CMP.B	#2,_wizard-BASE(A4)	;_wizard
 	BNE.B	L00399
-	CLR.B	-$66AE(A4)	;_wizard
+	CLR.B	_wizard-BASE(A4)	;_wizard
 L00399:
 	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISHASTE,D3	;C_ISHASTE
@@ -34,23 +34,24 @@ L0039B:
 	BEQ.W	L003A5
 
 	JSR	_status
-	TST.W	-$60AC(A4)	;_no_command
+	TST.W	_no_command-BASE(A4)	;_no_command
 	BEQ.B	L0039D
-	SUBQ.W	#1,-$60AC(A4)	;_no_command
-	CMPI.W	#$0000,-$60AC(A4)	;_no_command
+
+	SUBQ.W	#1,_no_command-BASE(A4)	;_no_command
+	CMPI.W	#$0000,_no_command-BASE(A4)	;_no_command
 	BGT.B	L0039E
 
 	PEA	L003A6(PC)	;"you can move again"
 	JSR	_msg
 	ADDQ.W	#4,A7
-	CLR.W	-$60AC(A4)	;_no_command
+	CLR.W	_no_command-BASE(A4)	;_no_command
 	BRA.B	L0039E
 L0039D:
 	JSR	_execcom(PC)
 L0039E:
 	MOVEQ	#$00,D5
 L0039F:
-	LEA	-$5190(A4),A6	;_cur_ring_x
+	LEA	_cur_ring_1-BASE(A4),A6	;_cur_ring_x
 	MOVE.L	$00(A6,D5.w),D0
 	BEQ.B	L003A4
 
@@ -91,7 +92,7 @@ L003A6:	dc.b	"you can move again",0,0
 _com_char:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/D5,-(A7)
-	MOVE.B	-$66BA(A4),D3	;_fastmode
+	MOVE.B	_fastmode-BASE(A4),D3	;_fastmode
 	CMP.B	-$66B9(A4),D3	;_faststate
 	SEQ	D4
 	ST	-$48B8(A4)	;_menu_on
@@ -112,11 +113,11 @@ L003A8:
 	TST.W	D4
 	BEQ.B	L003A9
 
-	MOVE.B	-$66B9(A4),-$66BA(A4)	;_faststate,_fastmode
+	MOVE.B	-$66B9(A4),_fastmode-BASE(A4)	;_faststate,_fastmode
 	BRA.B	L003AC
 L003A9:
 	TST.B	-$66B9(A4)	;_faststate
-	SEQ	-$66BA(A4)	;_fastmode
+	SEQ	_fastmode-BASE(A4)	;_fastmode
 L003AC:
 	MOVE.W	D5,D0
 ;	EXT.L	D0
@@ -129,8 +130,8 @@ L003AE:
 	BRA.B	L003B3
 L003AF:
 	ADD.W	#$0060,D5
-	TST.B	-$66BA(A4)	;_fastmode
-	SEQ	-$66BA(A4)	;_fastmode
+	TST.B	_fastmode-BASE(A4)	;_fastmode
+	SEQ	_fastmode-BASE(A4)	;_fastmode
 	BRA.B	L003B3
 L003B2:
 	SUBQ.w	#2,D0	;B
@@ -154,13 +155,13 @@ L003B2:
 	SUBQ.w	#2,D0		;m
 	BEQ.B	L003AE
 L003B3:
-	TST.W	-$60B0(A4)	;_mpos
+	TST.W	_mpos-BASE(A4)	;_mpos
 	BEQ.B	L003B5
 	TST.B	-$66B6(A4)	;_running
 	BNE.B	L003B5
 	CMP.W	#$007F,D5
 	BNE.B	L003B4
-	CLR.W	-$60B0(A4)	;_mpos
+	CLR.W	_mpos-BASE(A4)	;_mpos
 	BRA.B	L003B5
 L003B4:
 	PEA	L003B6(PC)
@@ -179,8 +180,8 @@ _get_prefix:
 ;	LINK	A5,#-$0000
 	MOVEM.L	D4-D6,-(A7)
 
-	ST	-$66F9(A4)	;_after
-	MOVE.B	-$66B9(A4),-$66BA(A4)	;_faststate,_fastmode
+	ST	_after-BASE(A4)	;_after
+	MOVE.B	-$66B9(A4),_fastmode-BASE(A4)	;_faststate,_fastmode
 	MOVE.W	#$0001,-(A7)
 	JSR	_look
 	ADDQ.W	#2,A7
@@ -191,18 +192,18 @@ _get_prefix:
 L003B7:
 	ST	-$54C3(A4)	;_is_pickup
 	CLR.B	-$66F7(A4)	;_again
-	SUBQ.W	#1,-$60A4(A4)	;_count
-;	CMPI.W	#$0000,-$60A4(A4)	;_count
+	SUBQ.W	#1,_count-BASE(A4)	;_count
+;	CMPI.W	#$0000,_count-BASE(A4)	;_count
 	BLE.B	L003B8
 
 	MOVE.B	-$54C2(A4),-$54C3(A4)	;_is_pickup
 	MOVEQ	#$00,D3
 	MOVE.B	-$54C4(A4),D3
 	MOVE.W	D3,D4
-	CLR.B	-$66BA(A4)	;_fastmode
+	CLR.B	_fastmode-BASE(A4)	;_fastmode
 	BRA.W	L003C7
 L003B8:
-	CLR.W	-$60A4(A4)	;_count
+	CLR.W	_count-BASE(A4)	;_count
 	TST.B	-$66B6(A4)	;_running
 	BEQ.B	L003B9
 
@@ -221,7 +222,7 @@ L003BA:
 ;	EXT.L	D0
 	BRA.B	L003C5
 L003BB:
-	MOVE.W	-$60A4(A4),D6	;_count
+	MOVE.W	_count-BASE(A4),D6	;_count
 	MULU.W	#10,D6
 ;	MOVE.W	D5,D3
 	SUB.W	#$0030,D5	;'0'
@@ -230,7 +231,7 @@ L003BB:
 	BLE.B	L003BC
 	CMP.W	#100,D6		;limit count to 100 (original was 10000)
 	BGE.B	L003BC
-	MOVE.W	D6,-$60A4(A4)	;_count
+	MOVE.W	D6,_count-BASE(A4)	;_count
 L003BC:
 	JSR	_show_count(PC)
 	BRA.W	L003C6
@@ -238,8 +239,8 @@ L003BC:
 ; toggle fastmode
 
 L003BD:
-	TST.B	-$66BA(A4)	;_fastmode
-	SEQ	-$66BA(A4)
+	TST.B	_fastmode-BASE(A4)	;_fastmode
+	SEQ	_fastmode-BASE(A4)
 	BRA.W	L003C6
 
 ; pressed g for dont pickup
@@ -254,14 +255,14 @@ L003C1:
 	MOVEQ	#$00,D3
 	MOVE.B	-$54C4(A4),D3
 	MOVE.W	D3,D4
-	MOVE.W	-$54C6(A4),-$60A4(A4)	;_count
+	MOVE.W	-$54C6(A4),_count-BASE(A4)	;_count
 	MOVE.B	-$54C2(A4),-$54C3(A4)	;_is_pickup
 	ST	-$66F7(A4)	;_again
 	BRA.B	L003C6
 
 L003C3:
 	CLR.B	-$66BB(A4)	;_door_stop
-	CLR.W	-$60A4(A4)	;_count
+	CLR.W	_count-BASE(A4)	;_count
 	JSR	_show_count(PC)
 	BRA.B	L003C6
 L003C4:
@@ -303,16 +304,16 @@ L003C6:
 	TST.W	D4
 	BEQ.W	L003BA
 L003C7:
-	TST.W	-$60A4(A4)	;_count
+	TST.W	_count-BASE(A4)	;_count
 	BEQ.B	L003C8
 
-	CLR.B	-$66BA(A4)	;_fastmode
+	CLR.B	_fastmode-BASE(A4)	;_fastmode
 L003C8:
 	MOVE.W	D4,D0
 ;	EXT.L	D0
 	BRA.B	L003CD
 L003C9:
-	TST.B	-$66BA(A4)	;_fastmode
+	TST.B	_fastmode-BASE(A4)	;_fastmode
 	BEQ.B	L003CE
 
 	TST.B	-$66B6(A4)	;_running
@@ -331,7 +332,7 @@ L003CA:
 	MOVE.W	D0,D4
 	BRA.B	L003CE
 L003CC:
-	CLR.W	-$60A4(A4)	;_count
+	CLR.W	_count-BASE(A4)	;_count
 	BRA.B	L003CE
 L003CD:
 	SUBQ.w	#4,D0
@@ -384,7 +385,7 @@ L003CD:
 	SUBQ.w	#1,D0		;'z'
 	BNE.B	L003CC
 L003CE:
-	TST.W	-$60A4(A4)	;_count
+	TST.W	_count-BASE(A4)	;_count
 	BNE.B	L003CF
 
 	TST.W	-$54C6(A4)
@@ -393,7 +394,7 @@ L003CF:
 	BSR.B	_show_count
 L003D0:
 	MOVE.B	D4,-$54C4(A4)
-	MOVE.W	-$60A4(A4),-$54C6(A4)	;_count
+	MOVE.W	_count-BASE(A4),-$54C6(A4)	;_count
 	MOVE.B	-$54C3(A4),-$54C2(A4)	;_is_pickup
 	MOVE.W	D4,D0
 	MOVEM.L	(A7)+,D4-D6
@@ -407,9 +408,9 @@ _show_count:
 	MOVEq	#$0014,d0
 	JSR	_movequick
 
-	TST.W	-$60A4(A4)	;_count
+	TST.W	_count-BASE(A4)	;_count
 	BEQ.B	L003D1
-	MOVE.W	-$60A4(A4),-(A7)	;_count
+	MOVE.W	_count-BASE(A4),-(A7)	;_count
 	PEA	L003D3(PC)
 	JSR	_printw
 	ADDQ.W	#6,A7
@@ -467,18 +468,18 @@ L003D8:
 	ADDQ.W	#4,A7
 	BRA.B	L003DA
 L003D9:
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 L003DA:
 	BRA.W	L00409
 L003DB:
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	JSR	_quit(PC)
 	BRA.W	L00409
 
 ; i inventory
 
 L003DC:
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	PEA	L0040F(PC)	;"",0
 	CLR.W	-(A7)
 	MOVE.L	-$529C(A4),-(A7)	;_player + 46 (pack)
@@ -554,35 +555,35 @@ L003E5:
 ; S save game
 
 L003E6:
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	JSR	_save_game
 	BRA.W	L00409
 
 ; c call item
 
 L003E7:
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	JSR	_call(PC)
 	BRA.W	L00409
 
 ; > go down one level
 
 L003E8:
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	JSR	_d_level(PC)
 	BRA.W	L00409
 
 ; < go up one level
 
 L003E9:
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	JSR	_u_level(PC)
 	BRA.W	L00409
 
 ; ? help
 
 L003EA:
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	JSR	_help
 	BRA.W	L00409
 
@@ -603,20 +604,20 @@ L003ED:
 	ADDQ.W	#4,A7
 	BRA.B	L003EF
 L003EE:
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 L003EF:
 	BRA.W	L00409
 L003F0:
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	JSR	_discovered
 	BRA.W	L00409
 
 ; CTRL-T
 
 L003F1:
-	CLR.B	-$66F9(A4)	;_after
-	EORI.B	#$01,-$66AB(A4)	;_expert
-	TST.B	-$66AB(A4)	;_expert
+	CLR.B	_after-BASE(A4)	;_after
+	EORI.B	#$01,_expert-BASE(A4)	;_expert
+	TST.B	_expert-BASE(A4)	;_expert
 	BEQ.B	L003F2
 	LEA	L00410(PC),A6	;"Ok, I'll be brief"
 	MOVE.L	A6,D3
@@ -633,7 +634,7 @@ L003F3:
 ; shift-F set macro
 
 L003F4:
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	MOVE.W	#$0029,-(A7)
 	PEA	-$674D(A4)	;_macro
 	JSR	_do_macro
@@ -643,10 +644,10 @@ L003F4:
 ; CTRL-A
 
 _show_map_check:
-	TST.B	-$66AE(A4)	;_wizard
+	TST.B	_wizard-BASE(A4)	;_wizard
 	BEQ.W	L00409
 
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 
 	bsr	_show_map
 	BRA.W	L00409
@@ -654,10 +655,10 @@ _show_map_check:
 ; CTRL-C bugfix
 
 _add_passages:
-	TST.B	-$66AE(A4)	;_wizard
+	TST.B	_wizard-BASE(A4)	;_wizard
 	BEQ.W	L00409
 
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 
 	bsr	_add_pass
 	BRA.W	L00409
@@ -665,10 +666,10 @@ _add_passages:
 ; $ show inpack bugfix
 
 show_inpack:
-	TST.B	-$66AE(A4)	;_wizard
+	TST.B	_wizard-BASE(A4)	;_wizard
 	BEQ.W	L00409
 
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 
 	move.w	-$60AA(A4),-(a7)	;_inpack
 	pea	inpacktext
@@ -682,12 +683,12 @@ inpacktext:	dc.b	"inpack = %d",0
 ; CTRL-E bugfix
 
 _foodleft:
-	TST.B	-$66AE(A4)	;_wizard
+	TST.B	_wizard-BASE(A4)	;_wizard
 	BEQ.W	L00409
 
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 
-	move.w	-$609E(A4),-(a7)	;_food_left
+	move.w	_food_left-BASE(A4),-(a7)	;_food_left
 	pea	foodlefttext
 	JSR	_msg
 	ADDQ.W	#6,A7
@@ -699,7 +700,7 @@ foodlefttext:	dc.b	"food left: %d",0
 ; ctrl-f macro
 
 L003F5:
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	LEA	-$674D(A4),A6	;_macro
 	MOVE.L	A6,-$69CA(A4)	;_typeahead
 	BRA.W	L00409
@@ -707,8 +708,8 @@ L003F5:
 ; ctrl-r show last message
 
 L003F6:
-	CLR.B	-$66F9(A4)	;_after
-	PEA	-$4940(A4)	;_huh
+	CLR.B	_after-BASE(A4)	;_after
+	PEA	_huh-BASE(A4)	;_huh
 	JSR	_msg
 	ADDQ.W	#4,A7
 	BRA.W	L00409
@@ -716,10 +717,10 @@ L003F6:
 ; v show version
 
 L003F7:
-	CLR.B	-$66F9(A4)		;_after
+	CLR.B	_after-BASE(A4)		;_after
 	move.w	#1,-(a7)		; new version extension
-	MOVE.W	-$6F5E(A4),-(A7)	;_verno
-	MOVE.W	-$6F60(A4),-(A7)	;_revno
+	MOVE.W	_verno-BASE(A4),-(A7)	;_verno
+	MOVE.W	_revno-BASE(A4),-(A7)	;_revno
 	PEA	L00412(PC)	;Rogue Version...
 	JSR	_msg
 	ADD.W	#10,A7
@@ -734,7 +735,7 @@ L003F8:
 ; ^ search for traps in one direction
 
 L003F9:
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	JSR	_get_dir(PC)
 	TST.W	D0
 	BEQ.B	L003FB
@@ -750,7 +751,7 @@ L003F9:
 	MOVE.W	-$0006(A5),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	$00(A6,D0.W),D0
 	JSR	_typech
 
@@ -766,7 +767,7 @@ L003FA:
 	MOVE.W	-$0006(A5),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 	MOVE.B	$00(A6,D0.W),D3
 	AND.W	#F_TMASK,D3
 	MOVE.W	D3,-(A7)
@@ -782,7 +783,7 @@ L003FB:
 ; o options
 
 L003FC:
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	PEA	L00415(PC)	;"i don't have any options, oh my!"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -791,7 +792,7 @@ L003FC:
 ; CTRL-l
 
 L003FD:
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	PEA	L00416(PC)	;"the screen looks fine to me (jll was here)"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -800,24 +801,24 @@ L003FD:
 ; CTRL-d
 
 L003FE:
-	TST.B	-$66AE(A4)	;_wizard
+	TST.B	_wizard-BASE(A4)	;_wizard
 	BEQ.W	L00409
 	ADDQ.W	#1,-$60B4(A4)	;_level
-	CMPI.W	#$0001,-$60A4(A4)	;_count
+	CMPI.W	#$0001,_count-BASE(A4)	;_count
 	BLE.B	L003FF
-	MOVE.W	-$60A4(A4),-$60B4(A4)	;_count,_level
+	MOVE.W	_count-BASE(A4),-$60B4(A4)	;_count,_level
 L003FF:
 	JSR	_new_level
 	MOVE.W	#$0001,-$54C6(A4)
-	CLR.W	-$60A4(A4)	;_count
+	CLR.W	_count-BASE(A4)	;_count
 	BRA.W	L00409
 
 ; shift-C
 
 L00400:
-	TST.B	-$66AE(A4)	;_wizard
+	TST.B	_wizard-BASE(A4)	;_wizard
 	BEQ.W	L00409
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	JSR	_create_obj(PC)
 	BRA.W	L00409
 
@@ -825,7 +826,7 @@ L00400:
 
 L00401:
 ;	MOVEQ	#$00,D3
-	MOVE.B	-$66AE(A4),D3	;_wizard
+	MOVE.B	_wizard-BASE(A4),D3	;_wizard
 	CMP.b	#1,D3
 	BEQ.B	L00402
 
@@ -843,7 +844,7 @@ L00401:
 	TST.W	D0
 	BEQ.B	L00406
 L00402:
-	TST.B	-$66AE(A4)	;_wizard
+	TST.B	_wizard-BASE(A4)	;_wizard
 	BEQ.B	L00403
 	LEA	L0041A(PC),A6	"now"
 	MOVE.L	A6,D3
@@ -856,7 +857,7 @@ L00404:
 	PEA	L00419(PC)	;"Sorry, You are %s a wimpy dude!"
 	JSR	_msg
 	ADDQ.W	#8,A7
-	TST.B	-$66AE(A4)	;_wizard
+	TST.B	_wizard-BASE(A4)	;_wizard
 	BEQ.B	L00405
 
 	MOVE.W	-$60B4(A4),D3	;_level
@@ -872,11 +873,11 @@ L00404:
 	MOVE.W	#$0010,-$52B2(A4)	;_player + 24 (strength)
 	JSR	_raise_level
 L00405:
-	CLR.B	-$66AE(A4)	;_wizard
+	CLR.B	_wizard-BASE(A4)	;_wizard
 	BRA.W	L00409
 
 L00406:
-	MOVE.B	#1,-$66AE(A4)		;_wizard
+	MOVE.B	#1,_wizard-BASE(A4)		;_wizard
 	MOVE.W	#15,-$52AC(A4)	;_player + 30 (rank)
 	MOVE.W	#200,-$52A2(A4)	;_player + 40 (max hp)
 	MOVE.W	#200,-$52A8(A4)	;_player + 34 (hp)
@@ -893,8 +894,8 @@ L00406:
 	BRA.W	L00409
 
 L00407:
-	CLR.B	-$66F9(A4)	;_after
-	CLR.B	-$66B5(A4)	;_save_msg
+	CLR.B	_after-BASE(A4)	;_after
+	CLR.B	_save_msg-BASE(A4)	;_save_msg
 	MOVE.W	D4,-(A7)
 	JSR	_unctrl(PC)
 	ADDQ.W	#2,A7
@@ -902,8 +903,8 @@ L00407:
 	PEA	L0041D(PC)	;"illegal command '%s'"
 	JSR	_msg
 	ADDQ.W	#8,A7
-	CLR.W	-$60A4(A4)	;_count
-	MOVE.B	#$01,-$66B5(A4)	;_save_msg
+	CLR.W	_count-BASE(A4)	;_count
+	MOVE.B	#$01,_save_msg-BASE(A4)	;_save_msg
 	BRA.W	L00409
 
 L00408:
@@ -1041,7 +1042,7 @@ L0040B:
 
 	JSR	_INDEXplayer
 
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 	MOVE.B	$00(A6,D0.W),D3
 	AND.W	#F_SEEN,D3
 	BNE.B	L0040C
@@ -1052,7 +1053,7 @@ L0040C:
 L0040D:
 	CLR.B	-$66AF(A4)	;_mouse_run
 L0040E:
-	TST.B	-$66F9(A4)	;_after
+	TST.B	_after-BASE(A4)	;_after
 	BEQ.W	L003D5
 
 	MOVE.L	(A7)+,D4
@@ -1119,7 +1120,7 @@ L008C5:
 
 ;	EXT.L	D0
 	MOVEA.w	D0,A2
-	ADDA.L	-$5198(A4),A2	;__flags
+	ADDA.L	__flags-BASE(A4),A2	;__flags
 	MOVE.B	(A2),D3
 	AND.W	#F_REAL,D3
 	BNE.W	L008C9
@@ -1128,7 +1129,7 @@ L008C5:
 	MOVE.W	D4,d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	$00(A6,D0.W),D3
 	BRA.W	L008C8
 L008C6:
@@ -1141,11 +1142,11 @@ L008C6:
 	MOVE.W	D4,d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	#$2B,$00(A6,D0.W)	;'+' DOOR
 	ORI.B	#$10,(A2)
 	CLR.B	-$66B6(A4)	;_running
-	CLR.W	-$60A4(A4)	;_count
+	CLR.W	_count-BASE(A4)	;_count
 	BRA.W	L008C9
 L008C7:
 	MOVEq	#$0002,D0	;50% chance to find something on the floor
@@ -1157,14 +1158,14 @@ L008C7:
 	MOVE.W	D4,d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	(A2),D3
 	AND.W	#$0007,D3
 	ADD.W	#$000E,D3
 	MOVE.B	D3,$00(A6,D0.W)
 	ORI.B	#$10,(A2)
 	CLR.B	-$66B6(A4)	;_running
-	CLR.W	-$60A4(A4)	;_count
+	CLR.W	_count-BASE(A4)	;_count
 	MOVE.B	(A2),D3
 	AND.W	#$0007,D3
 
@@ -1220,7 +1221,7 @@ _d_level:
 
 	JSR	_INDEXplayer
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	cmp.b	#'%',$00(A6,D0.W)	;'%'
 	BEQ.B	1$
 
@@ -1247,7 +1248,7 @@ _u_level:
 
 	JSR	_INDEXplayer
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	cmp.b	#'%',$00(A6,D0.W)	;'%'
 	BNE.B	L008D3
 

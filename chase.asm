@@ -7,7 +7,7 @@ _runners:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
 
-	MOVEA.L	-$6CAC(A4),A2	;_mlist
+	MOVEA.L	_mlist-BASE(A4),A2	;_mlist
 	BRA.W	L0023B
 L00234:
 	MOVE.W	$0016(A2),D3
@@ -129,7 +129,7 @@ L0023F:
 	MOVE.W	$000C(A6),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	cmp.b	#$2B,$00(A6,D0.W)	;'+' door
 	BNE.B	L00240
 
@@ -192,11 +192,11 @@ L00245:
 	MOVE.W	$000C(A6),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 	MOVE.B	$00(A6,D0.W),D3
 	AND.W	#F_PNUM,D3	;get the room number
 	MULU.W	#66,D3
-	LEA	-$5E36(A4),A6	;_passages
+	LEA	_passages-BASE(A4),A6	;_passages
 	MOVE.L	D3,D4
 	ADD.L	A6,D4
 	CLR.B	-$0002(A5)
@@ -351,7 +351,7 @@ L00252:
 	MOVE.W	$000E(A2),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVEA.L	$0008(A5),A1
 	MOVEA.L	$002A(A1),A0
 	MOVE.W	$000E(A0),D3
@@ -414,7 +414,7 @@ L00258:
 	MOVE.W	$000C(A6),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 
 	CMP.B	#$2E,$00(A6,D0.W)	;'.' FLOOR
 	BNE.B	L0025A
@@ -878,7 +878,7 @@ L0027E:
 
 	EXT.L	D0
 	MOVE.L	D0,D4
-	ADD.L	-$5198(A4),D4	;__flags
+	ADD.L	__flags-BASE(A4),D4	;__flags
 	MOVEA.L	D4,A6
 	MOVE.B	(A6),D3
 	AND.W	#F_SEEN,D3	;F_SEEN
@@ -889,7 +889,7 @@ L0027E:
 	MOVE.B	(A6),D0
 	AND.W	#F_PNUM,D0
 	MULU.W	#66,D0
-	LEA	-$5E36(A4),A6	;_passages
+	LEA	_passages-BASE(A4),A6	;_passages
 	ADD.L	A6,D0
 	BRA.B	L0027D
 L0027F:
@@ -934,7 +934,7 @@ L00283:
 	MOVE.W	$0002(A3),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	MOVE.W	D3,-(A7)
@@ -949,7 +949,7 @@ L00283:
 	MOVE.W	$0002(A2),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	MOVE.W	D3,-(A7)
@@ -1068,7 +1068,7 @@ L0028F:
 	CMP.W	D4,D0
 	BGE.B	L00293
 
-	MOVEA.L	-$6CAC(A4),A2	;_mlist
+	MOVEA.L	_mlist-BASE(A4),A2	;_mlist
 	BRA.B	L00291
 L00290:
 	MOVEA.L	A3,A6

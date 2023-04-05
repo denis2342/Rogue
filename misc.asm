@@ -15,10 +15,10 @@ _look:
 
 	MOVEA.W	D0,A2
 	MOVE.W	A2,D3
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 	MOVE.B	$00(A6,D3.W),-$000B(A5)
 	MOVE.W	A2,D3
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	$00(A6,D3.W),D7
 
 	PEA	-$52C0(A4)	;_player + 10
@@ -102,7 +102,7 @@ L0081D:
 	JSR	_INDEXquick
 
 	EXT.L	D0
-	ADD.L	-$5198(A4),D0	;__flags
+	ADD.L	__flags-BASE(A4),D0	;__flags
 	MOVE.L	D0,-$0010(A5)
 	MOVEA.L	D0,A6
 ;	MOVEQ	#$00,D3
@@ -218,10 +218,10 @@ L00829:
 	MOVEA.W	D0,A2
 	MOVE.W	A2,D3
 	EXT.L	D3
-	ADD.L	-$5198(A4),D3	;__flags
+	ADD.L	__flags-BASE(A4),D3	;__flags
 	MOVE.L	D3,-$0010(A5)
 	MOVE.W	A2,D3
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	$00(A6,D3.W),D6
 	MOVEQ	#$00,D3
 	MOVE.B	D7,D3
@@ -311,7 +311,7 @@ L0082F:
 	BNE.B	L00831
 L00830:
 	MOVE.W	A2,D3
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	$00(A6,D3.W),$0011(A3)
 L00831:
 	MOVE.L	A3,-(A7)
@@ -576,18 +576,18 @@ L00852:
 	JSR	_stuck(PC)
 	BRA.B	L00850
 L00853:
-	CMPI.W	#$0000,-$609E(A4)	;_food_left
+	CMPI.W	#$0000,_food_left-BASE(A4)	;_food_left
 	BGE.B	L00854
 
-	CLR.W	-$609E(A4)	;_food_left
+	CLR.W	_food_left-BASE(A4)	;_food_left
 L00854:
-	CMPI.W	#1980,-$609E(A4)	;_food_left
+	CMPI.W	#1980,_food_left-BASE(A4)	;_food_left
 	BLE.B	L00855
 
 	MOVEq	#$0005,D0
 	JSR	_rnd
 	ADDQ.W	#2,D0
-	ADD.W	D0,-$60AC(A4)	;_no_command
+	ADD.W	D0,_no_command-BASE(A4)	;_no_command
 L00855:
 	MOVE.W	#1300,D0
 	JSR	_spread
@@ -600,15 +600,15 @@ L00855:
 	MOVE.W	(A7)+,D3
 	ADD.W	D0,D3
 	SUB.W	#200,D3
-	ADD.W	D3,-$609E(A4)	;_food_left
-	CMPI.W	#2000,-$609E(A4)	;_food_left
+	ADD.W	D3,_food_left-BASE(A4)	;_food_left
+	CMPI.W	#2000,_food_left-BASE(A4)	;_food_left
 	BLE.B	L00856
 
-	MOVE.W	#2000,-$609E(A4)	;_food_left
+	MOVE.W	#2000,_food_left-BASE(A4)	;_food_left
 L00856:
-	TST.W	-$609A(A4)	;_hungry_state
+	TST.W	_hungry_state-BASE(A4)	;_hungry_state
 	BEQ.B	L00857
-	CLR.W	-$609A(A4)	;_hungry_state
+	CLR.W	_hungry_state-BASE(A4)	;_hungry_state
 	JSR	_NewRank(PC)
 L00857:
 	CMPI.W	#$0001,$0020(A2)
@@ -637,7 +637,7 @@ L00859:
 	JSR	_msg
 	ADDQ.W	#4,A7
 L0085A:
-	TST.W	-$60AC(A4)	;_no_command
+	TST.W	_no_command-BASE(A4)	;_no_command
 	BEQ.B	L0085B
 
 	PEA	L00861(PC)	;"You feel bloated and fall asleep"
@@ -666,7 +666,7 @@ _check_level:
 	MOVE.L	D4,-(A7)
 
 	MOVEQ	#$01,D4
-	MOVEA.L	-$51AC(A4),A6	;_e_levels
+	MOVEA.L	_e_levels-BASE(A4),A6	;_e_levels
 	MOVE.L	-$52B0(A4),D3
 	BRA.B	L00983
 L00982:
@@ -738,10 +738,10 @@ _chg_str:
 
 	MOVE.W	-$52B2(A4),-$0002(A5)	;_player + 24 (strength)
 
-	MOVE.L	-$5190(A4),D0	;_cur_ring_1
+	MOVE.L	_cur_ring_1-BASE(A4),D0	;_cur_ring_1
 	bsr	L00864
 
-	MOVE.L	-$518C(A4),D0	;_cur_ring_2
+	MOVE.L	_cur_ring_2-BASE(A4),D0	;_cur_ring_2
 	bsr	L00864
 
 	MOVE.W	-$0002(A5),D3
@@ -810,7 +810,7 @@ _add_haste:
 
 	MOVEq	#$0008,D0
 	JSR	_rnd
-	ADD.W	D0,-$60AC(A4)	;_no_command
+	ADD.W	D0,_no_command-BASE(A4)	;_no_command
 
 	ANDI.W	#~C_ISRUN,-$52B4(A4)	;clear C_ISRUN, _player + 22 (flags)
 
@@ -859,7 +859,7 @@ _aggravate:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
 
-	MOVEA.L	-$6CAC(A4),A2	;_mlist
+	MOVEA.L	_mlist-BASE(A4),A2	;_mlist
 	BRA.B	L0086E
 L0086D:
 	PEA	$000A(A2)
@@ -930,13 +930,13 @@ __is_current:
 	MOVE.L	$0004(A7),D3
 	BEQ.B	2$
 
-	CMP.L	-$5294(A4),D3	;_cur_armor
+	CMP.L	_cur_armor-BASE(A4),D3	;_cur_armor
 	BEQ.B	1$
-	CMP.L	-$5298(A4),D3	;_cur_weapon
+	CMP.L	_cur_weapon-BASE(A4),D3	;_cur_weapon
 	BEQ.B	1$
-	CMP.L	-$5190(A4),D3	;_cur_ring_1
+	CMP.L	_cur_ring_1-BASE(A4),D3	;_cur_ring_1
 	BEQ.B	1$
-	CMP.L	-$518C(A4),D3	;_cur_ring_2
+	CMP.L	_cur_ring_2-BASE(A4),D3	;_cur_ring_2
 	BNE.B	2$
 
 1$	MOVEQ	#$01,D0

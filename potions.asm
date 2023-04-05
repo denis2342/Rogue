@@ -42,10 +42,10 @@ L00485:
 
 	BRA.B	L00483
 L00486:
-	CMPA.L	-$5298(A4),A2	;_cur_weapon
+	CMPA.L	_cur_weapon-BASE(A4),A2	;_cur_weapon
 	BNE.B	L00487
 
-	CLR.L	-$5298(A4)	;_cur_weapon
+	CLR.L	_cur_weapon-BASE(A4)	;_cur_weapon
 L00487:
 	MOVE.W	$0020(A2),D0
 ;	EXT.L	D0
@@ -69,14 +69,14 @@ L00489:
 	MOVE.L	A6,-$0004(A5)
 	ST	-$66E5(A4)	;_p_know + 2 (potion of poison)
 
-	MOVE.L	-$5190(A4),D0	;_cur_ring_1
+	MOVE.L	_cur_ring_1-BASE(A4),D0	;_cur_ring_1
 	BEQ.B	L0048A
 
 	MOVEA.L	D0,A6		;_cur_ring_1
 	CMPI.W	#R_SUSTSTR,$0020(A6)
 	BEQ.B	L0048C
 L0048A:
-	MOVE.L	-$518C(A4),D0	;_cur_ring_2
+	MOVE.L	_cur_ring_2-BASE(A4),D0	;_cur_ring_2
 	BEQ.B	L0048B
 
 	MOVEA.L	D0,A6		;_cur_ring_2
@@ -216,7 +216,7 @@ L00497:
 	MOVEq	#$0002,D0
 	JSR	_spread
 
-	MOVE.W	D0,-$60AC(A4)	;_no_command
+	MOVE.W	D0,_no_command-BASE(A4)	;_no_command
 	ANDI.W	#~C_ISRUN,-$52B4(A4)	;clear C_ISRUN, _player + 22 (flags)
 	PEA	L004B8(PC)	;"you can't move"
 	JSR	_msg
@@ -259,7 +259,7 @@ L0049A:
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	MOVEA.L	-$51AC(A4),A6	;_e_levels
+	MOVEA.L	_e_levels-BASE(A4),A6	;_e_levels
 	TST.L	$00(A6,D3.w)
 	BEQ.B	1$
 
@@ -311,7 +311,7 @@ L0049F:
 ; restore strength
 
 L004A1:
-	MOVE.L	-$5190(A4),D0	;_cur_ring_1
+	MOVE.L	_cur_ring_1-BASE(A4),D0	;_cur_ring_1
 	BEQ.B	L004A2
 
 	MOVEA.L	D0,A6		;_cur_ring_1
@@ -325,7 +325,7 @@ L004A1:
 	JSR	_add_str(PC)
 	ADDQ.W	#6,A7
 L004A2:
-	MOVE.L	-$518C(A4),D0	;_cur_ring_2
+	MOVE.L	_cur_ring_2-BASE(A4),D0	;_cur_ring_2
 	BEQ.B	L004A3
 
 	MOVEA.L	D0,A6		;_cur_ring_2
@@ -345,7 +345,7 @@ L004A3:
 
 	MOVE.W	-$6CC2(A4),-$52B2(A4)	;_max_stats + 0 (max strength),_player + 24 (strength)
 L004A4:
-	MOVE.L	-$5190(A4),D0	;_cur_ring_1
+	MOVE.L	_cur_ring_1-BASE(A4),D0	;_cur_ring_1
 	BEQ.B	L004A5
 
 	MOVEA.L	D0,A6		;_cur_ring_1
@@ -357,7 +357,7 @@ L004A4:
 	JSR	_add_str(PC)
 	ADDQ.W	#6,A7
 L004A5:
-	MOVE.L	-$518C(A4),D0	;_cur_ring_2
+	MOVE.L	_cur_ring_2-BASE(A4),D0	;_cur_ring_2
 	BEQ.B	L004A6
 
 	MOVEA.L	D0,A6		;_cur_ring_2
@@ -545,7 +545,7 @@ _invis_on:
 
 	ORI.W	#C_CANSEE,-$52B4(A4)	;_player + 22 (flags)
 
-	MOVEA.L	-$6CAC(A4),A2	;_mlist
+	MOVEA.L	_mlist-BASE(A4),A2	;_mlist
 	BRA.B	3$
 
 1$	MOVE.W	$0016(A2),D3
@@ -731,7 +731,7 @@ _raise_level:
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	MOVEA.L	-$51AC(A4),A6	;_e_levels
+	MOVEA.L	_e_levels-BASE(A4),A6	;_e_levels
 	MOVE.L	$00(A6,D3.w),D2
 	ADDQ.L	#1,D2
 	MOVE.L	D2,-$52B0(A4)	;_player + 26 (EXP)

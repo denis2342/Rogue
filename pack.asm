@@ -234,7 +234,7 @@ L002AD:
 
 	JSR	_INDEXplayer
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	D7,$00(A6,D0.W)
 L002AE:
 	MOVE.L	A2,-(A7)
@@ -279,7 +279,7 @@ L002B2:
 
 	JSR	_INDEXplayer
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	D7,$00(A6,D0.W)
 
 	LEA	L002CE(PC),a0	;" as you pick it up"
@@ -310,7 +310,7 @@ L002B4:
 
 	JSR	_INDEXplayer
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	D7,$00(A6,D0.W)
 L002B5:
 	MOVEQ	#$00,D5
@@ -425,7 +425,7 @@ L002C5:
 	MOVE.L	A3,(A2)
 	MOVE.L	A2,$0004(A3)
 L002C6:
-	MOVEA.L	-$6CAC(A4),A3	;_mlist
+	MOVEA.L	_mlist-BASE(A4),A3	;_mlist
 	BRA.B	L002C9
 L002C7:
 	MOVEA.L	A2,A6
@@ -710,10 +710,10 @@ L002E6:
 	MOVEQ	#$2A,D4		;'*'
 	BRA.B	L002E9
 L002E7:
-	TST.B	-$66B2(A4)	;_terse
+	TST.B	_terse-BASE(A4)	;_terse
 	BNE.B	L002E8
 
-	TST.B	-$66AB(A4)	;_expert
+	TST.B	_expert-BASE(A4)	;_expert
 	BNE.B	L002E8
 
 	PEA	L002F5(PC)	;"which object do you want to "
@@ -729,7 +729,7 @@ L002E8:
 	MOVE.B	D0,D4
 	CLR.B	-$66B0(A4)	;_want_click
 L002E9:
-	CLR.W	-$60B0(A4)	;_mpos
+	CLR.W	_mpos-BASE(A4)	;_mpos
 	CLR.B	-$0002(A5)
 	CLR.W	-$0004(A5)
 	CMP.B	#$2A,D4		;'*'
@@ -744,7 +744,7 @@ L002E9:
 	TST.B	D0
 	BNE.B	L002EB
 
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	MOVEQ	#$00,D0
 L002EA:
 	MOVEM.L	(A7)+,D4/A2
@@ -760,7 +760,7 @@ L002EC:
 	CMP.B	#$1B,D4		;escape
 	BNE.B	L002ED
 
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	PEA	L002F7(PC)
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -868,11 +868,11 @@ _money:
 
 	JSR	_INDEXplayer
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	D5,$00(A6,D0.W)
 
 	MOVE.W	$0008(A5),D3
-	ADD.W	D3,-$60B2(A4)	;_purse
+	ADD.W	D3,_purse-BASE(A4)	;_purse
 	CMP.W	#$0000,D3	;no gold?
 	BLE.B	3$
 

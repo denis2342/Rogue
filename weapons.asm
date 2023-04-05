@@ -195,7 +195,7 @@ L00605:
 	MOVE.W	$000E(A6),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	$00(A6,D0.W),D6
 
 	MOVEA.L	$0008(A5),A6
@@ -235,7 +235,7 @@ L0060B:
 	JSR	_INDEXquick
 
 	MOVE.W	D0,D4
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVEA.L	$0008(A5),A1
 	MOVE.B	$000B(A1),$00(A6,D4.W)
 	MOVEA.L	$0008(A5),A6
@@ -255,7 +255,7 @@ L0060B:
 	MOVE.W	$000E(A6),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 ;	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	AND.B	#F_SEEN,D3	;have seen this spot before
@@ -266,7 +266,7 @@ L0060B:
 ;	MOVE.W	$000E(A6),d1
 ;	JSR	_INDEXquick
 
-;	MOVEA.L	-$5198(A4),A6	;__flags
+;	MOVEA.L	__flags-BASE(A4),A6	;__flags
 ;	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	AND.B	#F_DROPPED,D3	;object was dropped here
@@ -431,7 +431,7 @@ _num:
 	PEA	L00621(PC)	;"+"
 2$
 	PEA	L0061F(PC)	;"%s%d"
-	PEA	-$53CA(A4)
+	PEA	_num_storage-BASE(A4)
 	JSR	_sprintf
 	LEA	$000E(A7),A7
 
@@ -447,16 +447,16 @@ _num:
 3$	PEA	L00621(PC)	;"+"
 
 4$	PEA	L00622(PC)	;",%s%d"
-	LEA	-$53CA(A4),A0
+	LEA	_num_storage-BASE(A4),A0
 	JSR	_strlenquick
 
-	LEA	-$53CA(A4),A6
+	LEA	_num_storage-BASE(A4),A6
 	ADD.W	D0,A6
 	MOVE.L	A6,-(A7)
 	JSR	_sprintf
 	LEA	$000E(A7),A7
 L0061E:
-	LEA	-$53CA(A4),A6
+	LEA	_num_storage-BASE(A4),A6
 	MOVE.L	A6,D0
 
 	UNLK	A5
@@ -475,13 +475,13 @@ _wield:
 	LINK	A5,#-$0000
 	MOVEM.L	A2/A3,-(A7)
 	MOVEA.L	$0008(A5),A2
-	MOVEA.L	-$5298(A4),A3		;_cur_weapon
+	MOVEA.L	_cur_weapon-BASE(A4),A3		;_cur_weapon
 	MOVE.L	A3,-(A7)		;_cur_weapon
 	JSR	_can_drop(PC)
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BNE.B	L00626
-	MOVE.L	A3,-$5298(A4)	;_cur_weapon
+	MOVE.L	A3,_cur_weapon-BASE(A4)	;_cur_weapon
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	A3,-(A7)	;_cur_weapon
 	JSR	_pack_name
@@ -493,7 +493,7 @@ L00625:
 
 L00626:
 	MOVE.W	#$0001,-(A7)
-	MOVE.L	A3,-$5298(A4)	;_cur_weapon
+	MOVE.L	A3,_cur_weapon-BASE(A4)	;_cur_weapon
 	MOVE.L	A3,-(A7)
 	JSR	_pack_name
 	ADDQ.W	#6,A7
@@ -508,7 +508,7 @@ L00626:
 	TST.L	D0
 	BNE.B	L00628
 L00627:
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	BRA.B	L00625
 L00628:
 	MOVE.L	A2,-(A7)
@@ -534,7 +534,7 @@ L00629:
 	TST.W	D0
 	BNE.B	L00625
 
-	MOVE.L	A2,-$5298(A4)	;_cur_weapon
+	MOVE.L	A2,_cur_weapon-BASE(A4)	;_cur_weapon
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	A3,-(A7)
 	JSR	_pack_name
@@ -599,7 +599,7 @@ L00630:
 	MOVE.W	D4,d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	MOVE.W	D3,D7

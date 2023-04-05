@@ -112,7 +112,7 @@ L00310:
 	PEA	L00348(PC)	;"you can't zap with that!"
 	JSR	_msg
 	ADDQ.W	#4,A7
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	BRA.B	L0030F
 L00311:
 	MOVEA.L	$0008(A5),A6
@@ -225,7 +225,7 @@ L0031D:
 	MOVEA.L	-$0004(A5),A6
 	MOVE.L	$002E(A6),-$000C(A5)
 	MOVE.L	-$0004(A5),-(A7)
-	PEA	-$6CAC(A4)	;_mlist
+	PEA	_mlist-BASE(A4)	;_mlist
 	JSR	__detach
 	ADDQ.W	#8,A7
 	MOVE.L	-$0004(A5),-(A7)
@@ -238,7 +238,7 @@ L0031D:
 	MOVE.W	D4,d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 
 	MOVE.B	$00(A6,D0.W),D2
 	MOVE.W	D5,d1
@@ -387,10 +387,10 @@ L0032C:
 	MOVE.W	#$0001,-$0014(A5)	;dplus 1
 	MOVE.W	#O_ISMISL,-$0010(A5)	;flags of object
 
-	TST.L	-$5298(A4)	;_cur_weapon
+	TST.L	_cur_weapon-BASE(A4)	;_cur_weapon
 	BEQ.B	L0032D
 
-	MOVEA.L	-$5298(A4),A6	;_cur_weapon
+	MOVEA.L	_cur_weapon-BASE(A4),A6	;_cur_weapon
 	MOVE.B	$0021(A6),-$0024(A5)	;baseweapon
 L0032D:
 	LEA	L0034F(PC),A6	;"missile"
@@ -627,17 +627,17 @@ _drain:
 
 	JSR	_INDEXplayer
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	CMP.b	#$2B,$00(A6,D0.W)	;'+'?
 	BNE.B	L00356
 
 ;	JSR	_INDEXplayer
 
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 	MOVE.B	$00(A6,D0.W),D3
 	AND.W	#F_PNUM,D3	;passage number mask
 	MULU.W	#66,D3
-	LEA	-$5E36(A4),A6	;_passages
+	LEA	_passages-BASE(A4),A6	;_passages
 	MOVEA.L	D3,A2
 	ADDA.L	A6,A2
 	BRA.B	L00357
@@ -650,7 +650,7 @@ L00357:
 	MOVE.B	D3,D5
 	LEA	-$00A4(A5),A6
 	MOVEA.L	A6,A3
-	MOVE.L	-$6CAC(A4),-$0004(A5)	;_mlist
+	MOVE.L	_mlist-BASE(A4),-$0004(A5)	;_mlist
 	BRA.W	L0035B
 L00358:
 	MOVEA.L	-$0004(A5),A6
@@ -671,7 +671,7 @@ L00358:
 	MOVE.W	$000C(A6),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	CMP.b	#$2B,$00(A6,D0.W)	;'+'?
 	BNE.B	L0035A
 
@@ -680,11 +680,11 @@ L00358:
 ;	MOVE.W	$000C(A6),d1
 ;	JSR	_INDEXquick
 
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 	MOVE.B	$00(A6,D0.W),D3
 	AND.W	#F_PNUM,D3	;passage number mask
 	MULU.W	#66,D3
-	LEA	-$5E36(A4),A6	;_passages
+	LEA	_passages-BASE(A4),A6	;_passages
 	ADD.L	A6,D3
 	CMP.L	-$52A0(A4),D3	;_player + 42 (proom)
 	BNE.B	L0035A
@@ -903,7 +903,7 @@ L0036F:
 	MOVE.W	-$0006(A5),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	$00(A6,D0.W),$0011(A2)
 L00370:
 	MOVE.L	A2,-(A7)
@@ -1030,13 +1030,13 @@ L0037A:
 	PEA	L00391(PC)	;"You are frozen by a blast of frost%s."
 	JSR	_msg
 	ADDQ.W	#8,A7
-	CMPI.W	#$0014,-$60AC(A4)	;_no_command
+	CMPI.W	#$0014,_no_command-BASE(A4)	;_no_command
 	BGE.B	L0037B
 
 	MOVEq	#$0007,D0
 	JSR	_spread
 
-	ADD.W	D0,-$60AC(A4)	;_no_command
+	ADD.W	D0,_no_command-BASE(A4)	;_no_command
 L0037B:
 	BRA.B	L0037E
 L0037C:

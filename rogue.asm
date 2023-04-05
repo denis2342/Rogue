@@ -40,16 +40,16 @@ _init_player:
 
 	MOVE.W	#$0514,D0	; we get 1300 food +-10%
 	JSR	_spread
-	MOVE.W	D0,-$609E(A4)	;_food_left
+	MOVE.W	D0,_food_left-BASE(A4)	;_food_left
 
 	CLR.W	d1
 	MOVE.W	#$1036,d0	;4150
-	MOVE.L	-$52D2(A4),a0	;__things
+	MOVE.L	__things-BASE(A4),a0	;__things
 	JSR	_memset
 
 	CLR.W	d1
 	MOVE.W	#$00A6,d0	;166
-	MOVE.L	-$52CE(A4),a0	;__t_alloc
+	MOVE.L	__t_alloc-BASE(A4),a0	;__t_alloc
 	JSR	_memset
 
 	JSR	_new_item
@@ -66,7 +66,7 @@ _init_player:
 	MOVE.L	A2,-(A7)
 	JSR	_add_pack
 	ADDQ.W	#6,A7
-	MOVE.L	A2,-$5298(A4)	;_cur_weapon
+	MOVE.L	A2,_cur_weapon-BASE(A4)	;_cur_weapon
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	A2,-(A7)
 	JSR	_pack_name
@@ -115,7 +115,7 @@ _init_player:
 	ORI.W	#O_ISKNOW,$0028(A2)
 	MOVE.W	#$0001,$001E(A2)	;one armor
 	CLR.W	$002C(A2)	;group 0
-	MOVE.L	A2,-$5294(A4)	;_cur_armor
+	MOVE.L	A2,_cur_armor-BASE(A4)	;_cur_armor
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	A2,-(A7)
 	JSR	_add_pack
@@ -379,7 +379,7 @@ _init_names:
 	CLR.W	-$0004(A5)
 L00076:
 	MOVEA.L	-$5258(A4),A2	;_prbuf
-	TST.B	-$66B2(A4)	;_terse
+	TST.B	_terse-BASE(A4)	;_terse
 	BEQ.B	L00077
 	MOVEQ	#$03,D3
 	BRA.B	L00078
@@ -657,22 +657,22 @@ _init_ds:
 	MOVE.W	#1760,-(A7)
 	JSR	_newmem
 	ADDQ.W	#2,A7
-	MOVE.L	D0,-$5198(A4)	;__flags
+	MOVE.L	D0,__flags-BASE(A4)	;__flags
 
 	MOVE.W	#$06E0,-(A7)	;1760
 	JSR	_newmem
 	ADDQ.W	#2,A7
-	MOVE.L	D0,-$519C(A4)	;__level
+	MOVE.L	D0,__level-BASE(A4)	;__level
 
 	MOVE.W	#$1036,-(A7)	;4150
 	JSR	_newmem
 	ADDQ.W	#2,A7
-	MOVE.L	D0,-$52D2(A4)	;__things
+	MOVE.L	D0,__things-BASE(A4)	;__things
 
 	MOVE.W	#$00A6,-(A7)
 	JSR	_newmem
 	ADDQ.W	#2,A7
-	MOVE.L	D0,-$52CE(A4)	;__t_alloc
+	MOVE.L	D0,__t_alloc-BASE(A4)	;__t_alloc
 
 	MOVE.W	#$0050,-(A7)
 	JSR	_newmem
@@ -682,7 +682,7 @@ _init_ds:
 	MOVE.W	#$0080,-(A7)
 	JSR	_newmem
 	ADDQ.W	#2,A7
-	MOVE.L	D0,-$51A4(A4)	;_msgbuf
+	MOVE.L	D0,_msgbuf-BASE(A4)	;_msgbuf
 
 	MOVE.W	#$0050,-(A7)
 	JSR	_newmem
@@ -700,7 +700,7 @@ _init_ds:
 	MOVE.W	D3,-(A7)
 	JSR	_newmem
 	ADDQ.W	#2,A7
-	MOVE.L	D0,-$51AC(A4)	;_e_levels
+	MOVE.L	D0,_e_levels-BASE(A4)	;_e_levels
 	MOVEA.L	D0,A2
 
 ;	MOVE.L	#$000000A,(A2)+	; start with 10 xp
@@ -723,7 +723,7 @@ _init_ds:
 ;	MOVE.W	-$6CCC(A4),D3	;_nlevels 23
 ;	ASL.w	#2,D3
 ;	EXT.L	D3
-;	ADD.L	-$51AC(A4),D3	;_e_levels
+;	ADD.L	_e_levels-BASE(A4),D3	;_e_levels
 ;	add.l	d0,d3
 ;	CMPA.L	D3,A2
 ;	BCS.B	L0008E
@@ -1370,7 +1370,7 @@ _ifterse:
 	MOVE.W	$0012(A5),-(A7)
 	MOVE.W	$0010(A5),-(A7)
 
-	TST.B	-$66AB(A4)	;_expert
+	TST.B	_expert-BASE(A4)	;_expert
 	BEQ.B	L00138
 
 	MOVE.L	$0008(A5),-(A7)	; expert string
@@ -1529,10 +1529,10 @@ L0017C:
 	RTS
 
 _noterse:
-	TST.B	-$66B2(A4)	;_terse
+	TST.B	_terse-BASE(A4)	;_terse
 	BNE.B	1$
 
-	TST.B	-$66AB(A4)	;_expert
+	TST.B	_expert-BASE(A4)	;_expert
 	BEQ.B	2$
 
 1$	LEA	-$69CC(A4),A0	;_nullstr
@@ -2040,8 +2040,8 @@ _ready_to_go:
 _setup:
 	LINK	A5,#-$0030
 
-	CLR.B	-$66B2(A4)	;_terse
-	CLR.B	-$66AB(A4)	;_expert
+	CLR.B	_terse-BASE(A4)	;_terse
+	CLR.B	_expert-BASE(A4)	;_expert
 	MOVE.W	#22,-$60BC(A4)	;_maxrow
 
 	CLR.L	-(A7)
@@ -2262,14 +2262,14 @@ L00519:
 	CMPI.W	#$0002,-$52AC(A4)	;_player + 30 (rank)
 	BGE.B	L0051B
 
-	TST.W	-$609A(A4)	;_hungry_state
+	TST.W	_hungry_state-BASE(A4)	;_hungry_state
 	BNE.B	L0051B
 L0051A:
 	UNLK	A5
 	RTS
 
 L0051B:
-	MOVE.W	-$609A(A4),D3	;_hungry_state
+	MOVE.W	_hungry_state-BASE(A4),D3	;_hungry_state
 ;	EXT.L	D3
 	ASL.w	#2,D3
 	LEA	-$701E(A4),A6	;_hungry_state_texts
@@ -2478,7 +2478,7 @@ _stuck:
 	PEA	L0052A(PC)	;"%sit appears to be stuck in your pack!"
 	JSR	_msg
 	ADDQ.W	#8,A7
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	MOVEQ	#$00,D0
 ;	UNLK	A5
 	RTS
@@ -2806,10 +2806,10 @@ _quit:
 
 	CLR.W	-(A7)			;killed by
 	MOVE.W	#$0001,-(A7)
-	MOVE.W	-$60B2(A4),-(A7)	;_purse
+	MOVE.W	_purse-BASE(A4),-(A7)	;_purse
 	JSR	_score(PC)
 	ADDQ.W	#6,A7
-	MOVE.W	-$60B2(A4),-(A7)	;_purse
+	MOVE.W	_purse-BASE(A4),-(A7)	;_purse
 	PEA	L00670(PC)	;"You quit with %d gold pieces"
 	JSR	_fatal(PC)
 	ADDQ.W	#6,A7
@@ -3286,7 +3286,7 @@ L008C0:
 	MOVE.W	$0008(A5),d1
 	BSR.B	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	MOVE.W	D3,D0
@@ -3396,12 +3396,12 @@ L008FE:
 	MOVEQ	#$00,D4
 	JSR	_srand(PC)
 L008FF:
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	$00(A6,D5.W),D3
 	CMP.b	#'.',D3		:FLOOR
 	BEQ.B	L00900
 
-;	MOVEA.L	-$519C(A4),A6	;__level
+;	MOVEA.L	__level-BASE(A4),A6	;__level
 ;	MOVE.B	$00(A6,D5.W),D3
 	CMP.b	#'#',D3		;PASSAGE
 	BNE.B	L008FE
@@ -3473,7 +3473,7 @@ _pick_mons:
 _moatquick:
 	MOVE.L	A2,-(A7)
 
-	MOVEA.L	-$6CAC(A4),A2	;_mlist
+	MOVEA.L	_mlist-BASE(A4),A2	;_mlist
 	BRA.B	L00A46
 L00A43:
 	MOVE.W	$000A(A2),D3	;moster x pos

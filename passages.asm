@@ -232,7 +232,7 @@ _door:
 
 	; 20% chance for a secret door
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVEA.L	$000C(A5),A1
 	MOVEA.L	$0008(A5),A0
 
@@ -252,11 +252,11 @@ L0044E:
 	MOVEQ	#$7C,D3		;'|'
 L0044F:
 	MOVE.B	D3,$00(A6,D4.W)
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 	ANDI.B	#~F_REAL,$00(A6,D4.W)	;clear F_REAL
 	BRA.B	L00451
 L00450:
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	#$2B,$00(A6,D4.W)	;'+'
 L00451:
 	MOVEA.L	$0008(A5),A6
@@ -292,7 +292,7 @@ L00453:
 	MOVE.W	D4,d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 
 	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
@@ -332,7 +332,7 @@ _passnum:
 	MOVEM.L	D4/A2,-(A7)
 	CLR.W	-$54C0(A4)
 	CLR.B	-$54BE(A4)
-	LEA	-$5E36(A4),A2	;_passages
+	LEA	_passages-BASE(A4),A2	;_passages
 	LEA	-$5ADC(A4),A6	;_SV_END
 1$
 	CLR.W	$0010(A2)
@@ -361,7 +361,7 @@ L0045A:
 	CMP.W	$0010(A2),D4
 	BLT.B	L00459
 	ADDA.L	#$00000042,A2
-	LEA	-$5E36(A4),A6	;_passages
+	LEA	_passages-BASE(A4),A6	;_passages
 	CMPA.L	A6,A2
 	BCS.B	L00458
 
@@ -396,7 +396,7 @@ L0045C:
 
 ;	EXT.L	D0
 	MOVEA.w	D0,A2
-	ADDA.L	-$5198(A4),A2	;__flags
+	ADDA.L	__flags-BASE(A4),A2	;__flags
 	MOVEQ	#$00,D3
 	MOVE.B	(A2),D3
 	AND.W	#F_PNUM,D3
@@ -412,7 +412,7 @@ L0045E:
 	MOVE.W	$0008(A5),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	$00(A6,D0.W),D4
 
 	MOVE.B	D4,D3
@@ -429,7 +429,7 @@ L0045E:
 L0045F:
 	MOVE.W	-$54C0(A4),D3
 	MULU.W	#66,D3
-	LEA	-$5E36(A4),A6	;_passages
+	LEA	_passages-BASE(A4),A6	;_passages
 	MOVEA.L	D3,A3
 	ADDA.L	A6,A3
 	MOVE.W	$0010(A3),D3
@@ -486,10 +486,10 @@ _psplat:
 	MOVE.W	$0004(A7),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	#$23,$00(A6,D0.W)	;'#' PASSAGE
 
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 	ORI.B	#F_SEEN,$00(A6,D0.W)	;set F_SEEN
 
 	RTS

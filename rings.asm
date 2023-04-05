@@ -45,20 +45,20 @@ L005A9:
 	TST.W	D0
 	BNE.W	L005B3
 
-	TST.L	-$5190(A4)	;_cur_ring_1
+	TST.L	_cur_ring_1-BASE(A4)	;_cur_ring_1
 	BNE.B	L005AA
 
 	MOVEQ	#$00,D4
 L005AA:
-	TST.L	-$518C(A4)	;_cur_ring_2
+	TST.L	_cur_ring_2-BASE(A4)	;_cur_ring_2
 	BNE.B	L005AB
 
 	MOVEQ	#$01,D4
 L005AB:
-	TST.L	-$5190(A4)	;_cur_ring_1
+	TST.L	_cur_ring_1-BASE(A4)	;_cur_ring_1
 	BNE.B	L005AC
 
-	TST.L	-$518C(A4)	;_cur_ring_2
+	TST.L	_cur_ring_2-BASE(A4)	;_cur_ring_2
 	BNE.B	L005AC
 
 	JSR	_gethand(PC)
@@ -77,7 +77,7 @@ L005AD:
 	MOVE.W	D4,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$5190(A4),A6	;_cur_ring_x
+	LEA	_cur_ring_1-BASE(A4),A6	;_cur_ring_x
 	MOVE.L	A2,$00(A6,D3.w)
 
 	MOVE.W	#$0001,-(A7)
@@ -124,7 +124,7 @@ L005B2:
 	LEA	$000A(A7),A7
 	BRA.W	L005A8
 L005B3:
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	BRA.W	L005A8
 
 L005B4:	dc.b	"put on",0
@@ -142,28 +142,28 @@ _ring_off:
 	MOVE.L	A2,-(A7)
 	MOVEA.L	$0008(A5),A2
 
-	TST.L	-$5190(A4)	;_cur_ring_1
+	TST.L	_cur_ring_1-BASE(A4)	;_cur_ring_1
 	BNE.B	L005BA
 
-	TST.L	-$518C(A4)	;_cur_ring_2
+	TST.L	_cur_ring_2-BASE(A4)	;_cur_ring_2
 	BNE.B	L005B9
 
 	PEA	L005BF(PC)	;"you aren't wearing any rings"
 	JSR	_msg
 	ADDQ.W	#4,A7
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 L005B8:
 	MOVE.L	(A7)+,A2
 	UNLK	A5
 	RTS
 
 L005B9:
-	TST.L	-$5190(A4)	;_cur_ring_1
+	TST.L	_cur_ring_1-BASE(A4)	;_cur_ring_1
 	BNE.B	L005BA
 	MOVEQ	#$01,D0
 	BRA.B	L005BC
 L005BA:
-	TST.L	-$518C(A4)	;_cur_ring_2
+	TST.L	_cur_ring_2-BASE(A4)	;_cur_ring_2
 	BNE.B	L005BB
 	MOVEQ	#$00,D0
 	BRA.B	L005BC
@@ -175,9 +175,9 @@ L005BB:
 	BLT.B	L005B8
 L005BC:
 	ASL.w	#2,D0
-	LEA	-$5190(A4),A6	;_cur_ring_1
+	LEA	_cur_ring_1-BASE(A4),A6	;_cur_ring_1
 	MOVEA.L	$00(A6,D0.w),A2
-	CLR.W	-$60B0(A4)	;_mpos
+	CLR.W	_mpos-BASE(A4)	;_mpos
 	MOVE.L	A2,D3
 	BNE.B	L005BD
 
@@ -185,7 +185,7 @@ L005BC:
 	JSR	_msg
 	ADDQ.W	#4,A7
 
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	BRA.B	L005B8
 L005BD:
 	MOVE.L	A2,-(A7)
@@ -232,7 +232,7 @@ L005C2:
 	MOVE.W	D0,D4
 	CMP.W	#$001B,D0	;ESCAPE character
 	BNE.B	L005C4
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	MOVEQ	#-$01,D0
 L005C3:
 	MOVE.L	(A7)+,D4
@@ -240,7 +240,7 @@ L005C3:
 	RTS
 
 L005C4:
-	CLR.W	-$60B0(A4)	;_mpos
+	CLR.W	_mpos-BASE(A4)	;_mpos
 	CMP.W	#$006C,D4	; l
 	BEQ.B	L005C5
 	CMP.W	#$004C,D4	; L
@@ -276,7 +276,7 @@ _ring_eat:
 
 	MOVE.W	$0004(A7),D3
 	ASL.w	#2,D3
-	LEA	-$5190(A4),A6	;_cur_ring_1
+	LEA	_cur_ring_1-BASE(A4),A6	;_cur_ring_1
 	MOVE.L	$00(A6,D3.w),D0
 	BNE.B	L005CC
 L005D9:

@@ -63,7 +63,7 @@ L00934:
 
 L00935:
 	CLR.W	-$60A0(A4)	;_quiet
-	CLR.W	-$60A4(A4)	;_count
+	CLR.W	_count-BASE(A4)	;_count
 
 	MOVE.L	A2,-(A7)
 	JSR	_start_run	;attacked monster wakes up and will run to you
@@ -159,7 +159,7 @@ L0093B:
 	MOVE.L	D0,-(A7)
 	JSR	_discard
 	ADDQ.W	#4,A7
-	CLR.L	-$5298(A4)	;_cur_weapon
+	CLR.L	_cur_weapon-BASE(A4)	;_cur_weapon
 L0093C:
 	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_CANHUH,D3	;C_CANHUH
@@ -248,7 +248,7 @@ _attack:
 
 	CLR.B	-$66B6(A4)	;_running
 	CLR.W	-$60A0(A4)	;_quiet
-	CLR.W	-$60A4(A4)	;_count
+	CLR.W	_count-BASE(A4)	;_count
 
 	MOVEA.L	$0008(A5),A6
 	CMP.B	#$58,$000F(A6)	;'X' xerox
@@ -308,27 +308,27 @@ L0094D:
 ; aquator
 
 L0094E:
-	TST.L	-$5294(A4)	;_cur_armor
+	TST.L	_cur_armor-BASE(A4)	;_cur_armor
 	BEQ.B	L00952
 
-	MOVEA.L	-$5294(A4),A6	;_cur_armor
+	MOVEA.L	_cur_armor-BASE(A4),A6	;_cur_armor
 	CMPI.W	#$0009,$0026(A6)	;dont go lower than 2 (11-9)
 	BGE.B	L00952
 
 	CMP.W	#A_LEATHER,$0020(A6)
 	BEQ.B	L00952
 
-	TST.L	-$5190(A4)	;_cur_ring_1
+	TST.L	_cur_ring_1-BASE(A4)	;_cur_ring_1
 	BEQ.B	L0094F
 
-	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
+	MOVEA.L	_cur_ring_1-BASE(A4),A6	;_cur_ring_1
 	CMPI.W	#R_SUSTARM,$0020(A6)
 	BEQ.B	L00950
 L0094F:
-	TST.L	-$518C(A4)	;_cur_ring_2
+	TST.L	_cur_ring_2-BASE(A4)	;_cur_ring_2
 	BEQ.B	L00951
 
-	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
+	MOVEA.L	_cur_ring_2-BASE(A4),A6	;_cur_ring_2
 	CMPI.W	#R_SUSTARM,$0020(A6)
 	BNE.B	L00951
 L00950:
@@ -340,10 +340,10 @@ L00951:
 	PEA	L00978(PC)	;"your armor weakens, oh my!"
 	JSR	_msg
 	ADDQ.W	#4,A7
-	MOVEA.L	-$5294(A4),A6	;_cur_armor
+	MOVEA.L	_cur_armor-BASE(A4),A6	;_cur_armor
 	ADDQ.W	#1,$0026(A6)	;lower is better
 	MOVE.W	#$0001,-(A7)
-	MOVE.L	-$5294(A4),-(A7)	;_cur_armor
+	MOVE.L	_cur_armor-BASE(A4),-(A7)	;_cur_armor
 	JSR	_pack_name
 	ADDQ.W	#6,A7
 L00952:
@@ -352,10 +352,10 @@ L00952:
 ; ice monster
 
 L00953:
-	CMPI.W	#$0001,-$60AC(A4)	;_no_command
+	CMPI.W	#$0001,_no_command-BASE(A4)	;_no_command
 	BLE.B	L00954
 
-	SUBQ.W	#1,-$60AC(A4)	;_no_command
+	SUBQ.W	#1,_no_command-BASE(A4)	;_no_command
 L00954:
 	BRA.W	L00973
 
@@ -368,17 +368,17 @@ L00955:
 	TST.W	D0
 	BNE.B	L00959
 
-	TST.L	-$5190(A4)	;_cur_ring_1
+	TST.L	_cur_ring_1-BASE(A4)	;_cur_ring_1
 	BEQ.B	L00956
 
-	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
+	MOVEA.L	_cur_ring_1-BASE(A4),A6	;_cur_ring_1
 	CMPI.W	#R_SUSTSTR,$0020(A6)
 	BEQ.B	L00958
 L00956:
-	TST.L	-$518C(A4)	;_cur_ring_2
+	TST.L	_cur_ring_2-BASE(A4)	;_cur_ring_2
 	BEQ.B	L00957
 
-	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
+	MOVEA.L	_cur_ring_2-BASE(A4),A6	;_cur_ring_2
 	CMPI.W	#R_SUSTSTR,$0020(A6)
 	BEQ.B	L00958
 L00957:
@@ -448,7 +448,7 @@ L0095E:
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	MOVEA.L	-$51AC(A4),A6	;_e_levels
+	MOVEA.L	_e_levels-BASE(A4),A6	;_e_levels
 	MOVE.L	$00(A6,D3.w),D2
 	ADDQ.L	#1,D2
 	MOVE.L	D2,-$52B0(A4)	;_player + 26 (EXP)
@@ -508,7 +508,7 @@ L00965:
 ; leprechaun
 
 L00966:
-	move.w	-$60B2(A4),D4	;_purse
+	move.w	_purse-BASE(A4),D4	;_purse
 
 	bsr	goldcalc
 	sub.w	D0,D4
@@ -529,9 +529,9 @@ L00966:
 	sub.w	D0,D4
 
 L00967:
-;	tst.W	-$60B2(A4)	;_purse
+;	tst.W	_purse-BASE(A4)	;_purse
 ;	BGE.B	L00968
-;	CLR.W	-$60B2(A4)	;_purse
+;	CLR.W	_purse-BASE(A4)	;_purse
 
 	tst.w	D4
 	bge	L00968
@@ -545,11 +545,11 @@ L00968:
 	JSR	_remove(PC)	;removes monster from screen
 	LEA	$000C(A7),A7
 
-	MOVE.W	-$60B2(A4),D3	;_purse
+	MOVE.W	_purse-BASE(A4),D3	;_purse
 	CMP.w	D3,D4
 	BEQ.B	L00969
 
-	move.w	D4,-$60B2(A4)
+	move.w	D4,_purse-BASE(A4)
 	PEA	L0097E(PC)	;"your purse feels lighter"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -566,13 +566,13 @@ L0096A:
 	MOVEA.L	-$529C(A4),A3	;_player + 46 (pack)
 	BRA.B	L0096D
 L0096B:
-	CMPA.L	-$5294(A4),A3	;_cur_armor
+	CMPA.L	_cur_armor-BASE(A4),A3	;_cur_armor
 	BEQ.B	L0096C
-	CMPA.L	-$5298(A4),A3	;_cur_weapon
+	CMPA.L	_cur_weapon-BASE(A4),A3	;_cur_weapon
 	BEQ.B	L0096C
-	CMPA.L	-$5190(A4),A3	;_cur_ring_1
+	CMPA.L	_cur_ring_1-BASE(A4),A3	;_cur_ring_1
 	BEQ.B	L0096C
-	CMPA.L	-$518C(A4),A3	;_cur_ring_2
+	CMPA.L	_cur_ring_2-BASE(A4),A3	;_cur_ring_2
 	BEQ.B	L0096C
 
 	MOVE.L	A3,-(A7)
@@ -696,7 +696,7 @@ L00975:
 	ADDQ.W	#8,A7
 L00976:
 	JSR	_flush_type
-	CLR.W	-$60A4(A4)	;_count
+	CLR.W	_count-BASE(A4)	;_count
 	JSR	_status
 
 	MOVEM.L	(A7)+,D4/D5/A2/A3
@@ -783,9 +783,9 @@ L00989:
 	MOVEA.L	$0010(A5),A6
 	ORI.W	#O_SLAYERUSED,$0028(A6)	;mark as used
 
-	TST.B	-$66B2(A4)	;_terse
+	TST.B	_terse-BASE(A4)	;_terse
 	BNE.B	L0098A
-	TST.B	-$66AB(A4)	;_expert
+	TST.B	_expert-BASE(A4)	;_expert
 	BEQ.B	L0098B
 L0098A:
 	LEA	L0099F(PC),A6	; $0
@@ -813,10 +813,10 @@ L0098D:
 	ADDQ.W	#4,D6		;+4 damage
 L0098E:
 	MOVEA.L	$0010(A5),A6
-	CMPA.L	-$5298(A4),A6	;is the used weapon the _cur_weapon?
+	CMPA.L	_cur_weapon-BASE(A4),A6	;is the used weapon the _cur_weapon?
 	BNE.B	L00992
 
-	MOVE.L	-$5190(A4),D0	;get _cur_ring_1
+	MOVE.L	_cur_ring_1-BASE(A4),D0	;get _cur_ring_1
 	BEQ.B	L00990
 
 	MOVEA.L	D0,A6		;get _cur_ring_1
@@ -832,7 +832,7 @@ L0098F:
 	ADD.W	$0026(A6),D5	;add hit from ring
 
 L00990:
-	MOVE.L	-$518C(A4),D0	;get _cur_ring_2
+	MOVE.L	_cur_ring_2-BASE(A4),D0	;get _cur_ring_2
 	BEQ.B	L00992
 
 	MOVEA.L	D0,A6		;get _cur_ring_2
@@ -857,21 +857,21 @@ L00992:
 	AND.W	#O_ISMISL,D3	;O_ISMISL
 	BEQ.B	L00993
 
-	TST.L	-$5298(A4)	;check _cur_weapon
+	TST.L	_cur_weapon-BASE(A4)	;check _cur_weapon
 	BEQ.B	L00993
 
 ;	MOVEA.L	$0010(A5),A6
 	MOVE.B	$0014(A6),D3	;get baseweapon
 	EXT.W	D3
 
-	MOVEA.L	-$5298(A4),A6	;_cur_weapon
+	MOVEA.L	_cur_weapon-BASE(A4),A6	;_cur_weapon
 	CMP.W	$0020(A6),D3	;is it the corrct baseweapon?
 	BNE.B	L00993
 
 	MOVEA.L	$0010(A5),A6
 	MOVE.L	$001A(A6),-$0004(A5)	;get throw damage
 
-	MOVEA.L	-$5298(A4),A6	;_cur_weapon
+	MOVEA.L	_cur_weapon-BASE(A4),A6	;_cur_weapon
 	ADD.W	$0022(A6),D5	;hplus
 	ADD.W	$0024(A6),D6	;dplus
 L00993:
@@ -905,13 +905,13 @@ L00995:
 	CMPA.L	A6,A3
 	BNE.B	L00998
 
-	TST.L	-$5294(A4)	;_cur_armor
+	TST.L	_cur_armor-BASE(A4)	;_cur_armor
 	BEQ.B	L00996
 
-	MOVEA.L	-$5294(A4),A6	;_cur_armor
+	MOVEA.L	_cur_armor-BASE(A4),A6	;_cur_armor
 	MOVE.W	$0026(A6),-$000A(A5)
 L00996:
-	MOVE.L	-$5190(A4),D0	;_cur_ring_1
+	MOVE.L	_cur_ring_1-BASE(A4),D0	;_cur_ring_1
 	BEQ.B	L00997
 
 	MOVEA.L	D0,A6		;_cur_ring_1
@@ -921,7 +921,7 @@ L00996:
 	MOVE.W	$0026(A6),D3
 	SUB.W	D3,-$000A(A5)	;add extra armor from ring 1
 L00997:
-	MOVE.L	-$518C(A4),D0	;_cur_ring_2
+	MOVE.L	_cur_ring_2-BASE(A4),D0	;_cur_ring_2
 	BEQ.B	L00998
 
 	MOVEA.L	D0,A6		;_cur_ring_2
@@ -1180,10 +1180,10 @@ _hit:
 	JSR	_addmsg
 	ADDQ.W	#4,A7
 
-	TST.B	-$66B2(A4)	;_terse
+	TST.B	_terse-BASE(A4)	;_terse
 	BNE.B	L009A5
 
-	TST.B	-$66AB(A4)	;_expert
+	TST.B	_expert-BASE(A4)	;_expert
 	BEQ.B	L009A6
 L009A5:
 	MOVEQ	#$01,D0
@@ -1255,10 +1255,10 @@ _miss:
 	JSR	_addmsg
 	ADDQ.W	#4,A7
 
-	TST.B	-$66B2(A4)	;_terse
+	TST.B	_terse-BASE(A4)	;_terse
 	BNE.B	L009BB
 
-	TST.B	-$66AB(A4)	;_expert
+	TST.B	_expert-BASE(A4)	;_expert
 	BEQ.B	L009BC
 L009BB:
 	MOVEQ	#$01,D0
@@ -1351,7 +1351,7 @@ L00223:
 	MOVE.W	-$54DE(A4),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	$00(A6,D0.W),$0011(A2)
 
 	MOVEq	#$53,d2		;'S'
@@ -1507,7 +1507,7 @@ L009F5:
 	MOVE.W	$0002(A2),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	CMP.b	#'#',$00(A6,D0.W)
 	BNE.B	L009F6
 
@@ -1543,7 +1543,7 @@ L009F7:
 L009F8:
 ;	JSR	_standend
 	MOVE.L	$000C(A5),-(A7)
-	PEA	-$6CAC(A4)	;_mlist
+	PEA	_mlist-BASE(A4)	;_mlist
 	JSR	__detach
 	ADDQ.W	#8,A7
 	MOVE.L	$000C(A5),-(A7)

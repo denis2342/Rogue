@@ -33,7 +33,7 @@ L00640:	CMPI.W	#$0003,-$60A0(A4)	;_quiet
 	ADDQ.W	#1,D0
 	ADD.W	D0,-$52A8(A4)	;_player + 34 (hp)
 
-L00641:	MOVE.L	-$5190(A4),D3	;_cur_ring_1
+L00641:	MOVE.L	_cur_ring_1-BASE(A4),D3	;_cur_ring_1
 	BEQ.B	L00642
 
 	MOVEA.L	D3,A6
@@ -42,7 +42,7 @@ L00641:	MOVE.L	-$5190(A4),D3	;_cur_ring_1
 
 	ADDQ.W	#1,-$52A8(A4)	;_player + 34 (hp)
 
-L00642:	MOVE.L	-$518C(A4),D3	;_cur_ring_2
+L00642:	MOVE.L	_cur_ring_2-BASE(A4),D3	;_cur_ring_2
 	BEQ.B	L00643
 
 	MOVEA.L	D3,A6
@@ -145,7 +145,7 @@ L00648:	dc.b	"you feel less confused now",0,0
 _unsee:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
-	MOVEA.L	-$6CAC(A4),A2	;_mlist
+	MOVEA.L	_mlist-BASE(A4),A2	;_mlist
 	BRA.B	3$
 
 1$	MOVE.W	$0016(A2),D3
@@ -239,10 +239,10 @@ _stomach:
 ;	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
 
-	MOVE.W	-$609E(A4),D4	;_food_left
+	MOVE.W	_food_left-BASE(A4),D4	;_food_left
 	BGT.B	L00653
 
-	SUBQ.W	#1,-$609E(A4)	;_food_left
+	SUBQ.W	#1,_food_left-BASE(A4)	;_food_left
 	CMP.W	#$FCAE,D4	;-352
 	BGE.B	L00650
 
@@ -250,7 +250,7 @@ _stomach:
 	JSR	_death
 	ADDQ.W	#2,A7
 L00650:
-	TST.W	-$60AC(A4)	;_no_command
+	TST.W	_no_command-BASE(A4)	;_no_command
 	BNE	L00656
 
 	MOVEq	#$0005,D0	;20% chance
@@ -261,11 +261,11 @@ L00650:
 	MOVEq	#$0008,D0
 	JSR	_rnd
 	ADDQ.W	#4,D0
-	ADD.W	D0,-$60AC(A4)	;_no_command
+	ADD.W	D0,_no_command-BASE(A4)	;_no_command
 	ANDI.W	#~C_ISRUN,-$52B4(A4)	;clear C_ISRUN, _player + 22 (flags)
 	CLR.B	-$66B6(A4)	;_running
-	CLR.W	-$60A4(A4)	;_count
-	MOVE.W	#$0003,-$609A(A4)	;_hungry_state
+	CLR.W	_count-BASE(A4)	;_count
+	MOVE.W	#$0003,_hungry_state-BASE(A4)	;_hungry_state
 
 	LEA	L00658(PC),a0	;"you feel very weak. "
 	JSR	_noterse
@@ -291,33 +291,33 @@ L00653:
 	ADD.W	D0,D3
 	ADDQ.W	#1,D3
 
-	TST.B	-$66B2(A4)	;_terse
+	TST.B	_terse-BASE(A4)	;_terse
 	BEQ.B	1$
 
 	MULU.W	#$0002,D3
 
-1$	SUB.W	D3,-$609E(A4)	;_food_left
+1$	SUB.W	D3,_food_left-BASE(A4)	;_food_left
 
-	CMPI.W	#150,-$609E(A4)	;_food_left
+	CMPI.W	#150,_food_left-BASE(A4)	;_food_left
 	BGE.B	2$
 
 	CMP.W	#150,D4
 	BLT.B	2$
 
-	MOVE.W	#$0002,-$609A(A4)	;_hungry_state
+	MOVE.W	#$0002,_hungry_state-BASE(A4)	;_hungry_state
 	JSR	_NewRank(PC)
 	PEA	L00659(PC)	;"you are starting to feel weak"
 	JSR	_msg
 	ADDQ.W	#4,A7
 	BRA.B	L00656
 
-2$	CMPI.W	#300,-$609E(A4)	;_food_left
+2$	CMPI.W	#300,_food_left-BASE(A4)	;_food_left
 	BGE.B	L00656
 
 	CMP.W	#300,D4
 	BLT.B	L00656
 
-	MOVE.W	#$0001,-$609A(A4)	;_hungry_state
+	MOVE.W	#$0001,_hungry_state-BASE(A4)	;_hungry_state
 	JSR	_NewRank(PC)
 	PEA	L0065A(PC)	;"you are starting to get hungry"
 	JSR	_msg

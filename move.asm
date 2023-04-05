@@ -6,7 +6,7 @@
 _do_run:
 ;	LINK	A5,#-$0000
 	ST	-$66B6(A4)	;_running
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	MOVE.B	$0005(A7),-$66A8(A4)	;_runch
 ;	UNLK	A5
 	RTS
@@ -84,7 +84,7 @@ L00094:
 	TST.W	D0
 	BNE.B	L00095
 
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	CLR.B	-$66B6(A4)	;_running
 	BRA.W	L00090
 L00095:
@@ -99,13 +99,13 @@ L00095:
 	BEQ.B	L00096
 
 	CLR.B	-$66B6(A4)	;_running
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 L00096:
 	MOVE.W	-$5194(A4),d0	;_nh
 	MOVE.W	-$5192(A4),d1	;_nh + 2
 	JSR	_INDEXquick
 
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	MOVE.W	D3,D5
@@ -117,7 +117,7 @@ L00096:
 
 	JSR	_INDEXplayer
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	CMP.B	#$2B,$00(A6,D0.W)	;'+' DOOR
 	BNE.B	L00097
 
@@ -137,7 +137,7 @@ L00097:
 	MOVE.W	-$5192(A4),d1	;_nh + 2
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.W	D5,D3
 	AND.W	#F_TMASK,D3
 	ADD.W	#$000E,D3
@@ -148,7 +148,7 @@ L00097:
 	MOVE.W	-$5192(A4),d1	;_nh + 2
 	JSR	_INDEXquick
 
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 	ORI.B	#F_REAL,$00(A6,D0.W)
 	BRA.B	L00099
 L00098:
@@ -207,7 +207,7 @@ L0009C:
 	JSR	_INDEXplayer
 	SUBQ.W	#1,D0
 
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 ;	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	AND.W	#F_SEEN,D3	;F_SEEN have seen this spot before
@@ -216,7 +216,7 @@ L0009C:
 	JSR	_INDEXplayer
 	SUBQ.W	#1,D0
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	CMP.B	#$2B,$00(A6,D0.W)	;'+'
 	BNE.B	L0009E
 L0009D:
@@ -235,7 +235,7 @@ L0009F:
 	JSR	_INDEXplayer
 	ADDQ.W	#1,D0
 
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 ;	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	AND.W	#F_SEEN,D3	;F_SEEN have seen this spot before
@@ -244,7 +244,7 @@ L0009F:
 	JSR	_INDEXplayer
 	ADDQ.W	#1,D0
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	CMP.B	#$2B,$00(A6,D0.W)	;'+'
 	BNE.B	L000A1
 L000A0:
@@ -278,7 +278,7 @@ L000A5:
 	MOVE.W	-$52BE(A4),d1	;_player + 12
 	JSR	_INDEXquick
 
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 	MOVE.B	$00(A6,D0.W),D3
 	AND.B	#F_SEEN,D3	;F_SEEN have seen this spot before
 	BNE.B	L000A6
@@ -288,7 +288,7 @@ L000A5:
 ;	MOVE.W	-$52BE(A4),d1	;_player + 12
 ;	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	CMP.B	#$2B,$00(A6,D0.W)	;'+'
 	BNE.B	L000A7
 L000A6:
@@ -306,7 +306,7 @@ L000A8:
 	MOVE.W	-$52BE(A4),d1	;_player + 12
 	JSR	_INDEXquick
 
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 ;	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	AND.W	#F_SEEN,D3	;F_SEEN have seen this spot before
@@ -317,7 +317,7 @@ L000A8:
 ;	MOVE.W	-$52BE(A4),d1	;_player + 12
 ;	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	CMP.B	#$002B,$00(A6,D0.W)
 	BNE.B	L000AA
 L000A9:
@@ -358,14 +358,14 @@ L000AF:
 L000B0:	JMP	L000B0(PC,D0.W)
 L000B1:
 	CLR.B	-$66B6(A4)	;_running
-	CLR.B	-$66F9(A4)	;_after
+	CLR.B	_after-BASE(A4)	;_after
 	BRA.W	L00090
 L000B2:
 	CLR.B	-$66B6(A4)	;_running
 
 	JSR	_INDEXplayer
 
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	AND.W	#F_SEEN,D3	;F_SEEN have seen this spot before
@@ -414,7 +414,7 @@ L000B9:
 	BEQ.B	L000BB
 L000BA:
 	CLR.L	-(A7)
-	MOVE.L	-$5298(A4),-(A7)	;_cur_weapon
+	MOVE.L	_cur_weapon-BASE(A4),-(A7)	;_cur_weapon
 	MOVEQ	#$00,D3
 	MOVE.B	D4,D3
 	MOVE.W	D3,-(A7)
@@ -431,7 +431,7 @@ L000BB:
 L000BC:
 	JSR	_INDEXplayer
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 
 	MOVE.B	$00(A6,D0.W),D2
 	MOVE.W	-$52C0(A4),d1	;_player + 10
@@ -446,7 +446,7 @@ L000BC:
 	MOVE.W	-$608E(A4),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	CMP.B	#$2B,$00(A6,D0.W)
 	BEQ.B	L000BD
 
@@ -454,7 +454,7 @@ L000BC:
 ;	MOVE.W	-$608E(A4),d1
 ;	JSR	_INDEXquick
 
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 	MOVE.B	$00(A6,D0.W),D3
 	AND.B	#F_DROPPED,D3	;F_DROPPED object was dropped here
 	BEQ.B	L000BE
@@ -471,7 +471,7 @@ L000BE:
 	MOVE.W	-$608E(A4),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 	MOVE.B	$00(A6,D0.W),D3
 	AND.B	#F_DROPPED,D3		;F_DROPPED object was dropped here
 	BNE.B	L000BF
@@ -574,7 +574,7 @@ L000C9:
 	MOVE.W	D4,d1
 	JSR	_INDEXquick
 
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	$00(A6,D0.W),$0011(A2)
 L000CA:
 	ADDQ.W	#1,D5
@@ -607,18 +607,18 @@ _be_trapped:
 	MOVEM.L	D4/D5/A2,-(A7)
 	MOVEA.L	$0008(A5),A2
 	CLR.B	-$66B6(A4)	;_running
-	CLR.W	-$60A4(A4)	;_count
+	CLR.W	_count-BASE(A4)	;_count
 
 	MOVE.W	(A2),d0
 	MOVE.W	$0002(A2),d1
 	JSR	_INDEXquick
 
 	MOVE.W	D0,D5
-	MOVEA.L	-$5198(A4),A6	;__flags
+	MOVEA.L	__flags-BASE(A4),A6	;__flags
 	MOVE.B	$00(A6,D5.W),D3
 	AND.B	#F_TMASK,D3	;trap number mask
 	MOVE.B	D3,D4
-	MOVEA.L	-$519C(A4),A6	;__level
+	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	D4,D3
 	ADD.B	#$0E,D3
 	MOVE.B	D3,$00(A6,D5.W)
@@ -644,7 +644,7 @@ L000D0:
 	MOVEq	#$0005,D0
 	JSR	_spread
 
-	ADD.W	D0,-$60AC(A4)	;_no_command
+	ADD.W	D0,_no_command-BASE(A4)	;_no_command
 	ANDI.W	#~C_ISRUN,-$52B4(A4)	;clear C_ISRUN, _player + 22 (flags)
 
 	LEA	L000E6(PC),a0	;"strange white "
@@ -748,13 +748,13 @@ L000D8:
 	JSR	_death
 	ADDQ.W	#2,A7
 L000D9:
-	MOVE.L	-$5190(A4),D0	;_cur_ring_1
+	MOVE.L	_cur_ring_1-BASE(A4),D0	;_cur_ring_1
 	BEQ.B	L000DA
 	MOVEA.L	D0,A6		;_cur_ring_1
 	CMPI.W	#R_SUSTSTR,$0020(A6)	;ring of sustain strength
 	BEQ.B	L000DC
 L000DA:
-	MOVE.L	-$518C(A4),D0	;_cur_ring_2
+	MOVE.L	_cur_ring_2-BASE(A4),D0	;_cur_ring_2
 	BEQ.B	L000DB
 	MOVEA.L	D0,A6		;_cur_ring_2
 	CMPI.W	#R_SUSTSTR,$0020(A6)	;ring of sustain strength

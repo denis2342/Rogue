@@ -406,10 +406,10 @@ _death:
 	MOVEM.L	D4/A2,-(A7)
 	MOVE.B	$0009(A5),D4
 
-	MOVE.W	-$60B2(A4),D3	;_purse
+	MOVE.W	_purse-BASE(A4),D3	;_purse
 	EXT.L	D3
 	DIVS.W	#10,D3
-	SUB.W	D3,-$60B2(A4)	;_purse
+	SUB.W	D3,_purse-BASE(A4)	;_purse
 
 	PEA	-$0054(A5)
 	JSR	_time
@@ -436,7 +436,7 @@ L006A2:
 	MOVE.W	#$0062,-(A7)
 	JSR	_tomb_center(PC)
 	ADDQ.W	#6,A7
-	MOVE.W	-$60B2(A4),-(A7)	;_purse
+	MOVE.W	_purse-BASE(A4),-(A7)	;_purse
 	PEA	L006A7(PC)		;"%u Au"
 	PEA	-$0050(A5)
 	JSR	_sprintf
@@ -484,7 +484,7 @@ L006A2:
 	EXT.W	D3
 	MOVE.W	D3,-(A7)		;killed by
 	CLR.W	-(A7)
-	MOVE.W	-$60B2(A4),-(A7)	;_purse
+	MOVE.W	_purse-BASE(A4),-(A7)	;_purse
 	JSR	_score(PC)
 	ADDQ.W	#6,A7
 	PEA	L006AB(PC)
@@ -616,7 +616,7 @@ _total_winner:
 	JSR	_mvaddstr
 	ADDQ.W	#8,A7
 
-	MOVE.W	-$60B2(A4),D6	;_purse
+	MOVE.W	_purse-BASE(A4),D6	;_purse
 	MOVEQ	#$61,D5
 	MOVEA.L	-$529C(A4),A2	;_player + 46 (pack)
 	BRA.W	L006D9
@@ -853,7 +853,7 @@ L006D8:
 	PEA	L006E0(PC)	;"%c) %5d  %s"
 	JSR	_printw
 	LEA	$000C(A7),A7
-	ADD.W	D4,-$60B2(A4)	;_purse
+	ADD.W	D4,_purse-BASE(A4)	;_purse
 	ADDQ.B	#1,D5
 	MOVEA.L	(A2),A2
 L006D9:
@@ -879,7 +879,7 @@ L006D9:
 	JSR	_readchar
 
 	MOVE.W	#$0002,-(A7)
-	MOVE.W	-$60B2(A4),-(A7)	;_purse
+	MOVE.W	_purse-BASE(A4),-(A7)	;_purse
 	JSR	_score(PC)
 	ADDQ.W	#4,A7
 

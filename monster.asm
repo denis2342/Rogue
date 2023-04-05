@@ -76,7 +76,7 @@ _new_monster:
 	MOVEQ	#$00,D4
 
 1$	MOVE.L	A2,-(A7)
-	PEA	-$6CAC(A4)	;_mlist
+	PEA	_mlist-BASE(A4)	;_mlist
 	JSR	__attach
 	ADDQ.W	#8,A7
 
@@ -132,17 +132,17 @@ _new_monster:
 	MOVE.B	#$01,$000E(A2)
 	CLR.L	$002E(A2)	;start with empty pack
 
-	TST.L	-$5190(A4)	;_cur_ring_1
+	TST.L	_cur_ring_1-BASE(A4)	;_cur_ring_1
 	BEQ.B	L00A14
 
-	MOVEA.L	-$5190(A4),A6	;_cur_ring_1
+	MOVEA.L	_cur_ring_1-BASE(A4),A6	;_cur_ring_1
 	CMPI.W	#R_AGGR,$0020(A6)	;aggravate monster
 	BEQ.B	L00A15
 L00A14:
-	TST.L	-$518C(A4)	;_cur_ring_2
+	TST.L	_cur_ring_2-BASE(A4)	;_cur_ring_2
 	BEQ.B	L00A16
 
-	MOVEA.L	-$518C(A4),A6	;_cur_ring_2
+	MOVEA.L	_cur_ring_2-BASE(A4),A6	;_cur_ring_2
 	CMPI.W	#R_AGGR,$0020(A6)	;aggravate monster
 	BNE.B	L00A16
 L00A15:
@@ -332,7 +332,7 @@ L00A2D:
 	MOVE.L	A3,-(A7)
 	JSR	_new_monster(PC)
 	LEA	$000A(A7),A7
-	TST.B	-$66AE(A4)	;_wizard
+	TST.B	_wizard-BASE(A4)	;_wizard
 	BEQ.B	L00A2E
 
 	MOVE.B	$000F(A3),D3
@@ -394,14 +394,14 @@ L00A31:
 	AND.W	#C_ISHELD,D3	;C_ISHELD
 	BNE.B	L00A34
 
-	MOVE.L	-$5190(A4),D0	;_cur_ring_1
+	MOVE.L	_cur_ring_1-BASE(A4),D0	;_cur_ring_1
 	BEQ.B	L00A32
 
 	MOVEA.L	D0,A6		;_cur_ring_1
 	CMPI.W	#R_STEALTH,$0020(A6)	; ring of stealth
 	BEQ.B	L00A34
 L00A32:
-	MOVE.L	-$518C(A4),D0	;_cur_ring_2
+	MOVE.L	_cur_ring_2-BASE(A4),D0	;_cur_ring_2
 	BEQ.B	L00A33
 
 	MOVEA.L	D0,A6		;_cur_ring_2
@@ -595,14 +595,14 @@ _save:
 	CMP.W	#VS_MAGIC,D4	;VS_MAGIC
 	BNE.B	L009DA
 
-	MOVE.L	-$5190(A4),D0	;_cur_ring_1
+	MOVE.L	_cur_ring_1-BASE(A4),D0	;_cur_ring_1
 	BEQ.B	L009D9
 	MOVEA.L	D0,A6		;_cur_ring_1
 	CMP.W	#R_PROTECT,$0020(A6)
 	BNE.B	L009D9
 	SUB.W	$0026(A6),D4
 L009D9:
-	MOVE.L	-$518C(A4),D0	;_cur_ring_2
+	MOVE.L	_cur_ring_2-BASE(A4),D0	;_cur_ring_2
 	BEQ.B	L009DA
 	MOVEA.L	D0,A6		;_cur_ring_2
 	CMP.W	#R_PROTECT,$0020(A6)

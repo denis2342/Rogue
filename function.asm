@@ -10,7 +10,7 @@ _BuildFuncTable:
 	MOVE.W	-$0002(A5),D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	MOVEA.L	-$5898(A4),A6	;_FuncKeys
+	MOVEA.L	_FuncKeys-BASE(A4),A6	;_FuncKeys
 
 ; macro bugfix
 
@@ -38,7 +38,7 @@ _NewFuncString:
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	MOVEA.L	-$5898(A4),A6	;_FuncKeys
+	MOVEA.L	_FuncKeys-BASE(A4),A6	;_FuncKeys
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	$0008(A5),-(A7)
 	BSR.B	_CopyFuncString
@@ -120,7 +120,7 @@ L00B97:
 	SUBQ.W	#1,D3
 	EXT.L	D3
 	ASL.L	#2,D3
-	MOVEA.L	-$5898(A4),A6	;_FuncKeys
+	MOVEA.L	_FuncKeys-BASE(A4),A6	;_FuncKeys
 
 	MOVE.L	$00(A6,D3.L),-(A7)
 	PEA	-$001F(A5)
