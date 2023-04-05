@@ -1178,15 +1178,15 @@ L00894:
 	JSR	_msg
 	ADDQ.W	#8,A7
 	MOVE.W	#$0014,-(A7)
-	MOVE.L	-$5258(A4),-(A7)	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),-(A7)	;_prbuf
 	JSR	_getinfo
 	ADDQ.W	#6,A7
-	MOVEA.L	-$5258(A4),A6	;_prbuf
+	MOVEA.L	_prbuf-BASE(A4),A6	;_prbuf
 	MOVE.B	(A6),D3
 ;	EXT.W	D3
 	CMP.b	#$1B,D3		;escape
 	BEQ.B	L00895
-	MOVE.L	-$5258(A4),-(A7)	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),-(A7)	;_prbuf
 	MOVE.L	$000A(A5),-(A7)
 	JSR	_strcpy
 	ADDQ.W	#8,A7

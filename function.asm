@@ -167,7 +167,7 @@ _do_macro:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
 
-	MOVEA.L	-$5258(A4),A2	;_prbuf
+	MOVEA.L	_prbuf-BASE(A4),A2	;_prbuf
 	MOVE.L	$0008(A5),-(A7)	;show old macro content
 	PEA	L008F1(PC)	;"F9 was %s, enter new macro: "
 	JSR	_msg
@@ -177,7 +177,7 @@ _do_macro:
 	SUBQ.W	#1,D3
 
 	MOVE.W	D3,-(A7)
-	MOVE.L	-$5258(A4),-(A7)	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),-(A7)	;_prbuf
 	JSR	_getinfo
 	ADDQ.W	#6,A7
 

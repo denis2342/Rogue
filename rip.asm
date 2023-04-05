@@ -924,7 +924,7 @@ _killname:
 	MOVEM.L	D4/D5/A2,-(A7)
 
 	MOVE.B	$0009(A5),D4
-	MOVEA.L	-$5258(A4),A2	;_prbuf
+	MOVEA.L	_prbuf-BASE(A4),A2	;_prbuf
 	MOVEQ	#$01,D5
 	MOVE.B	D4,D0
 	EXT.W	D0
@@ -984,19 +984,19 @@ L006EE:
 	ADDQ.W	#4,A7
 	MOVE.L	D0,-(A7)
 	PEA	L006F7(PC)
-	MOVE.L	-$5258(A4),-(A7)	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),-(A7)	;_prbuf
 	JSR	_sprintf
 	LEA	$000C(A7),A7
 	BRA.B	L006F0
 L006EF:
-	MOVEA.L	-$5258(A4),A6	;_prbuf
+	MOVEA.L	_prbuf-BASE(A4),A6	;_prbuf
 	CLR.B	(A6)
 L006F0:
 	MOVE.L	A2,-(A7)
-	MOVE.L	-$5258(A4),-(A7)	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),-(A7)	;_prbuf
 	JSR	_strcat
 	ADDQ.W	#8,A7
-	MOVE.L	-$5258(A4),D0	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),D0	;_prbuf
 
 	MOVEM.L	(A7)+,D4/D5/A2
 	UNLK	A5

@@ -13,7 +13,7 @@ _nameof:
 	MOVE.W	$000C(A5),D4
 	MOVE.W	$0020(A2),D5
 	MOVEQ	#$00,D6
-	MOVE.L	-$5258(A4),-$5336(A4)	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),-$5336(A4)	;_prbuf
 
 	MOVE.L	A2,-(A7)
 	JSR	_typeof
@@ -142,7 +142,7 @@ L00AC4:
 	TST.W	D6
 	BEQ.B	L00AC5
 
-	MOVE.L	-$5258(A4),-$5336(A4)	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),-$5336(A4)	;_prbuf
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
@@ -605,16 +605,16 @@ L00AEF:
 	AND.W	#$0020,D3	;should we capitalize the word
 	BNE.B	L00AF0
 
-	MOVEA.L	-$5258(A4),A6	;_prbuf
+	MOVEA.L	_prbuf-BASE(A4),A6	;_prbuf
 	MOVE.B	(A6),D0
 	JSR	_isupper
 
 	TST.W	D0
 	BEQ.B	L00AF0
 
-	MOVEA.L	-$5258(A4),A6	;_prbuf
+	MOVEA.L	_prbuf-BASE(A4),A6	;_prbuf
 	MOVE.L	A6,-(A7)
-	MOVEA.L	-$5258(A4),A6	;_prbuf
+	MOVEA.L	_prbuf-BASE(A4),A6	;_prbuf
 	MOVE.B	(A6),D3
 	MOVE.W	D3,-(A7)
 	JSR	_tolower
@@ -627,16 +627,16 @@ L00AF0:
 	AND.W	#$0020,D3	;should we capitalize the word
 	BEQ.B	L00AF1
 
-	MOVEA.L	-$5258(A4),A6	;_prbuf
+	MOVEA.L	_prbuf-BASE(A4),A6	;_prbuf
 	MOVE.B	(A6),D0
 	JSR	_islower
 
 	TST.W	D0
 	BEQ.B	L00AF1
 
-	MOVEA.L	-$5258(A4),A6	;_prbuf
+	MOVEA.L	_prbuf-BASE(A4),A6	;_prbuf
 	MOVE.L	A6,-(A7)
-	MOVEA.L	-$5258(A4),A6	;_prbuf
+	MOVEA.L	_prbuf-BASE(A4),A6	;_prbuf
 	MOVE.B	(A6),D3
 	MOVE.W	D3,-(A7)
 	JSR	_toupper
@@ -645,7 +645,7 @@ L00AF0:
 	MOVEA.L	(A7)+,A6
 	MOVE.B	D0,(A6)
 L00AF1:
-	MOVE.L	-$5258(A4),D0	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),D0	;_prbuf
 	MOVEM.L	(A7)+,D4-D6/A2
 	UNLK	A5
 	RTS
@@ -1488,7 +1488,7 @@ _nothing:
 
 	MOVE.B	$0009(A5),D4
 	PEA	L0058D(PC)	;"Haven't discovered anything"
-	MOVE.L	-$5258(A4),-(A7)	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),-(A7)	;_prbuf
 	JSR	_sprintf
 	ADDQ.W	#8,A7
 
@@ -1496,16 +1496,16 @@ _nothing:
 	BEQ.B	L00586
 
 	PEA	L0058E(PC)	;"Nothing"
-	MOVE.L	-$5258(A4),-(A7)	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),-(A7)	;_prbuf
 	JSR	_sprintf
 	ADDQ.W	#8,A7
 L00586:
-	MOVE.L	-$5258(A4),A0	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),A0	;_prbuf
 	JSR	_strlenquick
 
 	EXT.L	D0
 	MOVEA.L	D0,A2
-	ADDA.L	-$5258(A4),A2	;_prbuf
+	ADDA.L	_prbuf-BASE(A4),A2	;_prbuf
 	MOVEQ	#$00,D0
 	MOVE.B	D4,D0
 	BRA.B	L0058B
@@ -1537,7 +1537,7 @@ L0058C:
 
 	JSR	_sprintf
 	LEA	$000C(A7),A7
-	MOVE.L	-$5258(A4),D0	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),D0	;_prbuf
 
 	MOVEM.L	(A7)+,D4/A2/A3
 	UNLK	A5
@@ -1555,7 +1555,7 @@ _nmadd:
 	LINK	A5,#-$0000
 
 	MOVEA.L	-$5336(A4),A6
-	CMPA.L	-$5258(A4),A6	;_prbuf
+	CMPA.L	_prbuf-BASE(A4),A6	;_prbuf
 	BEQ.B	L00B11
 
 	MOVEA.L	-$5336(A4),A6

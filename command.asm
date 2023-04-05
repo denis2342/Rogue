@@ -1432,20 +1432,20 @@ L008E6:
 	JSR	_msg
 	ADDQ.W	#4,A7
 	MOVE.W	#$0014,-(A7)
-	MOVE.L	-$5258(A4),-(A7)	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),-(A7)	;_prbuf
 	JSR	_getinfo
 	ADDQ.W	#6,A7
-	MOVEA.L	-$5258(A4),A6	;_prbuf
+	MOVEA.L	_prbuf-BASE(A4),A6	;_prbuf
 	TST.B	(A6)
 	BEQ.B	L008E7
 
-	MOVEA.L	-$5258(A4),A6	;_prbuf
+	MOVEA.L	_prbuf-BASE(A4),A6	;_prbuf
 	MOVE.B	(A6),D3
 ;	EXT.W	D3
 	CMP.b	#$1B,D3		;escape
 	BEQ.B	L008E7
 
-	MOVE.L	-$5258(A4),-(A7)	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),-(A7)	;_prbuf
 	MOVE.W	$0020(A2),D3
 	MULU.W	#21,D3
 	ADD.L	-$0004(A5),D3

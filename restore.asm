@@ -3,16 +3,16 @@ _save_game:
 
 	PEA	_whoami-BASE(A4)	;_whoami
 	PEA	L00B2E(PC)
-	MOVE.L	-$5258(A4),-(A7)	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),-(A7)	;_prbuf
 	JSR	_sprintf
 	LEA	$000C(A7),A7
-	MOVE.L	-$5258(A4),-(A7)	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),-(A7)	;_prbuf
 	CLR.W	-(A7)
 	CLR.W	-(A7)
 	JSR	_mvaddstr
 	ADDQ.W	#8,A7
 	JSR	_clrtoeol
-	MOVE.L	-$5258(A4),A0	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),A0	;_prbuf
 	JSR	_strlenquick
 
 	MOVEQ	#$50,D3
@@ -60,12 +60,12 @@ L00B29:
 	JSR	_WBenchToBack(PC)
 	PEA	-$0050(A5)
 	PEA	L00B32(PC)
-	MOVE.L	-$5258(A4),-(A7)	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),-(A7)	;_prbuf
 	JSR	_sprintf
 	LEA	$000C(A7),A7
 	PEA	L00B34(PC)
 	PEA	L00B33(PC)
-	MOVE.L	-$5258(A4),-(A7)	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),-(A7)	;_prbuf
 	JSR	_ask_him
 	LEA	$000C(A7),A7
 	TST.W	D0
@@ -118,16 +118,16 @@ _restore_game:
 
 	PEA	_whoami-BASE(A4)	;_whoami
 	PEA	L00B3D(PC)
-	MOVE.L	-$5258(A4),-(A7)	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),-(A7)	;_prbuf
 	JSR	_sprintf
 	LEA	$000C(A7),A7
-	MOVE.L	-$5258(A4),-(A7)	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),-(A7)	;_prbuf
 	CLR.W	-(A7)
 	CLR.W	-(A7)
 	JSR	_mvaddstr
 	ADDQ.W	#8,A7
 	JSR	_clrtoeol
-	MOVE.L	-$5258(A4),A0	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),A0	;_prbuf
 	JSR	_strlenquick
 
 	MOVEQ	#$50,D3
@@ -495,7 +495,7 @@ L00B52:
 	MOVE.L	$00(A6,D3.w),(A2)
 L00B53:
 	ADDQ.L	#4,A2
-	LEA	-$5258(A4),A6	;_prbuf
+	LEA	_prbuf-BASE(A4),A6	;_prbuf
 	CMPA.L	A6,A2
 	BCS.B	L00B4F
 

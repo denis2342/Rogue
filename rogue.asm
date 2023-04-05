@@ -378,7 +378,7 @@ _init_names:
 	MOVEM.L	A2/A3,-(A7)
 	CLR.W	-$0004(A5)
 L00076:
-	MOVEA.L	-$5258(A4),A2	;_prbuf
+	MOVEA.L	_prbuf-BASE(A4),A2	;_prbuf
 	TST.B	_terse-BASE(A4)	;_terse
 	BEQ.B	L00077
 	MOVEQ	#$03,D3
@@ -414,7 +414,7 @@ L0007A:
 	moveq	#3,d0
 
 	ADD.L	A2,D0
-	MOVEA.L	-$5258(A4),A6	;_prbuf
+	MOVEA.L	_prbuf-BASE(A4),A6	;_prbuf
 	ADDA.L	#$00000013,A6
 	CMP.L	A6,D0
 	BLS.B	L0007B
@@ -437,14 +437,14 @@ L0007E:
 	bne	1$
 	clr.b	(a2)
 
-1$	MOVEA.L	-$5258(A4),A6	;_prbuf
+1$	MOVEA.L	_prbuf-BASE(A4),A6	;_prbuf
 	CLR.B	$0014(A6)
 	MOVE.W	-$0004(A5),D3
 
 	LEA	-$66F6(A4),A6	;_s_know
 	CLR.B	$00(A6,D3.W)	;mark as unknown
 
-	MOVE.L	-$5258(A4),-(A7)	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),-(A7)	;_prbuf
 
 	MOVE.W	-$0004(A5),D3
 	MULU.W	#21,D3
@@ -687,7 +687,7 @@ _init_ds:
 	MOVE.W	#$0050,-(A7)
 	JSR	_newmem
 	ADDQ.W	#2,A7
-	MOVE.L	D0,-$5258(A4)	_prbuf
+	MOVE.L	D0,_prbuf-BASE(A4)	_prbuf
 
 	MOVE.W	#$0006,-(A7)
 	JSR	_newmem
