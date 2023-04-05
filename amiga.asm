@@ -421,7 +421,7 @@ begin:
 L00C00:
 	MOVE.L	A7,-$4760(A4)		;__savsp
 	MOVEA.L	$0004,A6
-	MOVE.L	A6,-$475C(A4)		;_SysBase
+	MOVE.L	A6,_SysBase-BASE(A4)		;_SysBase
 
 	MOVEM.L	D0/A0,-(A7)
 	JSR	__main(PC)
@@ -2534,17 +2534,17 @@ _Write:
 _Alert:
 	MOVEM.L	D7/A5,-(A7)
 	MOVEM.L	$000C(A7),D7/A5
-	MOVEA.L	-$475C(A4),A6		;_SysBase
+	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
 	JSR	_LVOAlert(A6)
 	MOVEM.L	(A7)+,D7/A5
 	RTS
 _CloseDevice:
 	MOVEA.L	$0004(A7),A1
-	MOVEA.L	-$475C(A4),A6		;_SysBase
+	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
 	JMP	_LVOCloseDevice(A6)
 _CloseLibrary:
 	MOVEA.L	$0004(A7),A1
-	MOVEA.L	-$475C(A4),A6		;_SysBase
+	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
 	JMP	_LVOCloseLibrary(A6)
 
 _CreatePort:
@@ -2626,39 +2626,39 @@ L00CCA:
 
 _AddPort:
 	MOVEA.L	$0004(A7),A1
-	MOVEA.L	-$475C(A4),A6		;_SysBase
+	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
 	JMP	_LVOAddPort(A6)
 _AllocSignal:
 	MOVE.L	$0004(A7),D0
-	MOVEA.L	-$475C(A4),A6		;_SysBase
+	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
 	JMP	_LVOAllocSignal(A6)
 _AllocMem:
 	MOVEM.L	$0004(A7),D0/D1
-	MOVEA.L	-$475C(A4),A6		;_SysBase
+	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
 	JMP	_LVOAllocMem(A6)
 _DoIO:
 	MOVEA.L	$0004(A7),A1
-	MOVEA.L	-$475C(A4),A6		;_SysBase
+	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
 	JMP	_LVODoIO(A6)
 _FindTask:
 	MOVEA.L	$0004(A7),A1
-	MOVEA.L	-$475C(A4),A6		;_SysBase
+	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
 	JMP	_LVOFindTask(A6)
 _Forbid:
-	MOVEA.L	-$475C(A4),A6		;_SysBase
+	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
 	JMP	_LVOForbid(A6)
 _FreeMem:
 	MOVEA.L	$0004(A7),A1
 	MOVE.L	$0008(A7),D0
-	MOVEA.L	-$475C(A4),A6		;_SysBase
+	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
 	JMP	_LVOFreeMem(A6)
 _FreeSignal:
 	MOVE.L	$0004(A7),D0
-	MOVEA.L	-$475C(A4),A6		;_SysBase
+	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
 	JMP	_LVOFreeSignal(A6)
 _GetMsg:
 	MOVEA.L	$0004(A7),A0
-	MOVEA.L	-$475C(A4),A6		;_SysBase
+	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
 	JMP	_LVOGetMsg(A6)
 
 _NewList:
@@ -2673,35 +2673,35 @@ _OpenDevice:
 	MOVEA.L	$0004(A7),A0
 	MOVEM.L	$0008(A7),D0/A1
 	MOVE.L	$0010(A7),D1
-	MOVEA.L	-$475C(A4),A6		;_SysBase
+	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
 	JMP	_LVOOpenDevice(A6)
 _OpenLibrary:
-	MOVEA.L	-$475C(A4),A6		;_SysBase
+	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
 	MOVEA.L	$0004(A7),A1
 	MOVE.L	$0008(A7),D0
 	JMP	_LVOOpenLibrary(A6)
 _Permit:
-	MOVEA.L	-$475C(A4),A6		;_SysBase
+	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
 	JMP	_LVOPermit(A6)
 _Remove:
 	MOVEA.L	$0004(A7),A1
-	MOVEA.L	-$475C(A4),A6		;_SysBase
+	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
 	JMP	_LVORemove(A6)
 _RemPort:
 	MOVEA.L	$0004(A7),A1
-	MOVEA.L	-$475C(A4),A6		;_SysBase
+	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
 	JMP	_LVORemPort(A6)
 _ReplyMsg:
 	MOVEA.L	$0004(A7),A1
-	MOVEA.L	-$475C(A4),A6		;_SysBase
+	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
 	JMP	_LVOReplyMsg(A6)
 _SetSignal:
 	MOVEM.L	$0004(A7),D0/D1
-	MOVEA.L	-$475C(A4),A6		;_SysBase
+	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
 	JMP	_LVOSetSignal(A6)
 _WaitPort:
 	MOVEA.L	$0004(A7),A0
-	MOVEA.L	-$475C(A4),A6		;_SysBase
+	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
 	JMP	_LVOWaitPort(A6)
 
 ;_BltBitMap:
