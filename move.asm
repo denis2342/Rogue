@@ -57,7 +57,7 @@ L00092:
 	TST.W	D0
 	BEQ.B	L00093
 
-	PEA	-$5194(A4)	;_nh
+	PEA	_nh-BASE(A4)	;_nh
 	PEA	_player-BASE(A4)	;_player + 0
 	JSR	_rndmove(PC)
 	ADDQ.W	#8,A7
@@ -68,16 +68,16 @@ L00093:
 	MOVE.W	D3,-$5192(A4)	;_nh + 2
 	MOVE.W	-$52C0(A4),D3	;_player + 10
 	ADD.W	$000A(A5),D3
-	MOVE.W	D3,-$5194(A4)	;_nh
+	MOVE.W	D3,_nh-BASE(A4)	;_nh
 L00094:
-	MOVE.W	-$5194(A4),-(A7)	;_nh
+	MOVE.W	_nh-BASE(A4),-(A7)	;_nh
 	MOVE.W	-$5192(A4),-(A7)	;_nh + 2
 	JSR	_offmap
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BNE.W	L0009B
 
-	PEA	-$5194(A4)	;_nh
+	PEA	_nh-BASE(A4)	;_nh
 	PEA	-$52C0(A4)	;_player + 10
 	JSR	_diag_ok
 	ADDQ.W	#8,A7
@@ -91,7 +91,7 @@ L00095:
 	TST.B	_running-BASE(A4)	;_running
 	BEQ.B	L00096
 
-	PEA	-$5194(A4)	;_nh
+	PEA	_nh-BASE(A4)	;_nh
 	PEA	-$52C0(A4)	;_player + 10
 	JSR	__ce
 	ADDQ.W	#8,A7
@@ -101,7 +101,7 @@ L00095:
 	CLR.B	_running-BASE(A4)	;_running
 	CLR.B	_after-BASE(A4)	;_after
 L00096:
-	MOVE.W	-$5194(A4),d0	;_nh
+	MOVE.W	_nh-BASE(A4),d0	;_nh
 	MOVE.W	-$5192(A4),d1	;_nh + 2
 	JSR	_INDEXquick
 
@@ -109,7 +109,7 @@ L00096:
 	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	MOVE.W	D3,D5
-	MOVE.W	-$5194(A4),-(A7)	;_nh
+	MOVE.W	_nh-BASE(A4),-(A7)	;_nh
 	MOVE.W	-$5192(A4),-(A7)	;_nh + 2
 	JSR	_winat
 	ADDQ.W	#4,A7
@@ -133,7 +133,7 @@ L00097:
 	CMP.B	#$2E,D4		;'.' FLOOR
 	BNE.B	L00098
 
-	MOVE.W	-$5194(A4),d0	;_nh
+	MOVE.W	_nh-BASE(A4),d0	;_nh
 	MOVE.W	-$5192(A4),d1	;_nh + 2
 	JSR	_INDEXquick
 
@@ -144,7 +144,7 @@ L00097:
 	MOVE.B	D3,D4
 	MOVE.B	D3,$00(A6,D0.W)
 
-	MOVE.W	-$5194(A4),d0	;_nh
+	MOVE.W	_nh-BASE(A4),d0	;_nh
 	MOVE.W	-$5192(A4),d1	;_nh + 2
 	JSR	_INDEXquick
 
@@ -371,13 +371,13 @@ L000B2:
 	AND.W	#F_SEEN,D3	;F_SEEN have seen this spot before
 	BEQ.B	L000B3
 
-	PEA	-$5194(A4)	;_nh
+	PEA	_nh-BASE(A4)	;_nh
 	JSR	_enter_room
 	ADDQ.W	#4,A7
 L000B3:
 	BRA.W	L000BC
 L000B4:
-	PEA	-$5194(A4)	;_nh
+	PEA	_nh-BASE(A4)	;_nh
 	JSR	_be_trapped(PC)
 	ADDQ.W	#4,A7
 	MOVE.B	D0,D4
@@ -406,7 +406,7 @@ L000B9:
 	TST.W	D0
 	BNE.B	L000BA
 
-	MOVE.W	-$5194(A4),d1	;_nh
+	MOVE.W	_nh-BASE(A4),d1	;_nh
 	MOVE.W	-$5192(A4),d0	;_nh +2
 	JSR	_moatquick
 
@@ -418,7 +418,7 @@ L000BA:
 	MOVEQ	#$00,D3
 	MOVE.B	D4,D3
 	MOVE.W	D3,-(A7)
-	PEA	-$5194(A4)	;_nh
+	PEA	_nh-BASE(A4)	;_nh
 	JSR	_fight
 	LEA	$000E(A7),A7
 	BRA.W	L00090
@@ -459,7 +459,7 @@ L000BC:
 	AND.B	#F_DROPPED,D3	;F_DROPPED object was dropped here
 	BEQ.B	L000BE
 L000BD:
-	PEA	-$5194(A4)	;_nh
+	PEA	_nh-BASE(A4)	;_nh
 	JSR	_leave_room
 	ADDQ.W	#4,A7
 L000BE:
@@ -476,12 +476,12 @@ L000BE:
 	AND.B	#F_DROPPED,D3		;F_DROPPED object was dropped here
 	BNE.B	L000BF
 
-	PEA	-$5194(A4)	;_nh
+	PEA	_nh-BASE(A4)	;_nh
 	JSR	_enter_room
 	ADDQ.W	#4,A7
 L000BF:
 	LEA	-$52C0(A4),A6	;_player + 10
-	LEA	-$5194(A4),A1	;_nh
+	LEA	_nh-BASE(A4),A1	;_nh
 	MOVE.L	(A1)+,(A6)+
 	BRA.B	L00090
 L000C1:
