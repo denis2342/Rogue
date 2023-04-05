@@ -589,7 +589,7 @@ L00088:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$78B2(A4),A6	;_wood
+	LEA	_metal-BASE(A4),A6	;_metal
 	MOVEA.L	$00(A6,D3.w),A2
 	LEA	-$0016(A5),A6
 	ST	$00(A6,D5.W)
