@@ -2709,58 +2709,58 @@ _WaitPort:
 ;	MOVEA.L	$0018(A7),A0
 ;	MOVEM.L	$001C(A7),D0/D1/A1
 ;	MOVEM.L	$0028(A7),D2-D7/A2
-;	MOVEA.L	-$5184(A4),A6	;_GfxBase
+;	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
 ;	JSR	_LVOBltBitMap(A6)
 ;	MOVEM.L	(A7)+,D4-D7/A2
 ;	RTS
 _ClearEOL:
 	MOVEA.L	$0004(A7),A1
-	MOVEA.L	-$5184(A4),A6	;_GfxBase
+	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
 	JMP	_LVOClearEOL(A6)
 _ClearScreen:
 	MOVEA.L	$0004(A7),A1
-	MOVEA.L	-$5184(A4),A6	;_GfxBase
+	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
 	JMP	_LVOClearScreen(A6)
 _InitBitMap:
 	MOVEA.L	$0004(A7),A0
 	MOVEM.L	$0008(A7),D0-D2
-	MOVEA.L	-$5184(A4),A6	;_GfxBase
+	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
 	JMP	_LVOInitBitMap(A6)
 _GfxMove:
 	MOVEA.L	$0004(A7),A1
 	MOVEM.L	$0008(A7),D0/D1
-	MOVEA.L	-$5184(A4),A6	;_GfxBase
+	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
 	JMP	_LVOMove(A6)
 
 _RectFill:
 	MOVEA.L	$0004(A7),A1
 	MOVEM.L	$0008(A7),D0-D3
-	MOVEA.L	-$5184(A4),A6	;_GfxBase
+	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
 	JMP	_LVORectFill(A6)
 
 _SetAPen:
 	MOVEA.L	$0004(A7),A1
 	MOVE.L	$0008(A7),D0
-	MOVEA.L	-$5184(A4),A6	;_GfxBase
+	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
 	JMP	_LVOSetAPen(A6)
 
 _SetDrMd:
 	MOVEA.L	$0004(A7),A1
 	MOVE.L	$0008(A7),D0
-	MOVEA.L	-$5184(A4),A6	;_GfxBase
+	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
 	JMP	_LVOSetDrMd(A6)
 
 _SetRGB4:
 ;	MOVEA.L	$0004(A7),A0
 ;	MOVEM.L	$0008(A7),D0-D3
-;	MOVEA.L	-$5184(A4),A6	;_GfxBase
+;	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
 ;	JMP	_LVOSetRGB4(A6)
 
 _TextLength:
 	MOVEA.L	$0004(A7),A1
 	MOVEA.L	$0008(A7),A0
 	MOVE.L	$000C(A7),D0
-	MOVEA.L	-$5184(A4),A6	;_GfxBase
+	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
 	JMP	_LVOTextLength(A6)
 
 _AddGadget:

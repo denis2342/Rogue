@@ -902,7 +902,7 @@ L00106:
 	moveq	#-1,d7		;we need $ff, mask
 	sub.l	a2,a2		;tempA
 
-	MOVEA.L	-$5184(A4),A6	;_GfxBase
+	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
 	JSR	_LVOBltBitMap(A6)
 
 ;	CLR.L	-(A7)	;tempA
@@ -1018,8 +1018,8 @@ _winit:
 	PEA	L00111(PC)	;"graphics.library"
 	JSR	_OpenLibrary
 	ADDQ.W	#8,A7
-	MOVE.L	D0,-$5184(A4)	;_GfxBase
-;	TST.L	-$5184(A4)
+	MOVE.L	D0,_GfxBase-BASE(A4)	;_GfxBase
+;	TST.L	_GfxBase-BASE(A4)
 	BNE.B	L00108
 
 	PEA	L00112(PC)
@@ -1228,9 +1228,9 @@ L0011E:
 	JSR	_CloseScreen
 	ADDQ.W	#4,A7
 L0011F:
-	TST.L	-$5184(A4)	;_GfxBase
+	TST.L	_GfxBase-BASE(A4)	;_GfxBase
 	BEQ.B	L00120
-	MOVE.L	-$5184(A4),-(A7)	;_GfxBase
+	MOVE.L	_GfxBase-BASE(A4),-(A7)	;_GfxBase
 	JSR	_CloseLibrary
 	ADDQ.W	#4,A7
 L00120:

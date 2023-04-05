@@ -207,7 +207,7 @@ _black_out:
 	MOVE.W	D4,D0
 	MOVEA.L	_StdScr-BASE(A4),A6	;_StdScr
 	LEA	$002C(A6),a0
-	MOVEA.L	-$5184(A4),A6	;_GfxBase
+	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
 	JSR	_LVOSetRGB4(A6)
 
 	DBRA	D4,1$
@@ -229,7 +229,7 @@ _setRGB4colors:
 	MOVEA.L	_StdScr-BASE(A4),A1	;_StdScr
 	LEA	$002C(A1),a0
 
-	MOVEA.L	-$5184(A4),A6	;_GfxBase
+	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
 	JSR	_LVOSetRGB4(A6)
 
 	rts
