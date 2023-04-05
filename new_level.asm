@@ -131,7 +131,7 @@ L00188:
 	LEA	-$6090(A4),A6
 	LEA	-$52C0(A4),A1	;_player + 10
 	MOVE.L	(A1)+,(A6)+
-	MOVE.L	-$52A0(A4),-$48C0(A4)	;_player + 42 (proom),_oldrp
+	MOVE.L	-$52A0(A4),_oldrp-BASE(A4)	;_player + 42 (proom),_oldrp
 	JSR	_InitGadgets
 
 	MOVEM.L	(A7)+,D4-D6/A2/A3

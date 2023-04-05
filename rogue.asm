@@ -2776,7 +2776,7 @@ _playit:
 	PEA	-$52C0(A4)	;_player + 10
 	JSR	_roomin
 	ADDQ.W	#4,A7
-	MOVE.L	D0,-$48C0(A4)	;_oldrp
+	MOVE.L	D0,_oldrp-BASE(A4)	;_oldrp
 L0066A:
 	TST.B	-$66B7(A4)	;_playing
 	BEQ.B	L0066B

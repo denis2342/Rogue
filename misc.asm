@@ -80,13 +80,13 @@ L0081B:
 	CMP.B	#$2E,D0		;'.' FLOOR
 	BNE.B	L0081D
 
-	MOVE.L	-$48C0(A4),-(A7)	;_oldrp
+	MOVE.L	_oldrp-BASE(A4),-(A7)	;_oldrp
 	JSR	_is_dark(PC)
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BEQ.B	L0081C
 
-	MOVEA.L	-$48C0(A4),A6	;_oldrp
+	MOVEA.L	_oldrp-BASE(A4),A6	;_oldrp
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3
 	BNE.B	L0081C
@@ -148,7 +148,7 @@ L00822:
 	LEA	-$6090(A4),A6
 	LEA	-$52C0(A4),A1	;_player + 10
 	MOVE.L	(A1)+,(A6)+
-	MOVE.L	-$0004(A5),-$48C0(A4)	;_oldrp
+	MOVE.L	-$0004(A5),_oldrp-BASE(A4)	;_oldrp
 L00823:
 	MOVE.W	-$52BE(A4),D3	;_player + 12
 	ADDQ.W	#1,D3

@@ -262,7 +262,7 @@ _xfer_all:
 	ADDQ.W	#6,A7
 	JSR	_xfer_choice(PC)
 	CLR.L	-(A7)
-	PEA	-$48C0(A4)	;_oldrp
+	PEA	_oldrp-BASE(A4)	;_oldrp
 	JSR	_xfer_proom(PC)
 	ADDQ.W	#8,A7
 	CLR.L	-(A7)
