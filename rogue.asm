@@ -1708,7 +1708,7 @@ _clrtoeol:
 	MOVE.B	_c_col-BASE(A4),D3	;_c_col
 
 	MOVEQ	#$00,D2
-	MOVE.B	-$7066(A4),D2	;_c_row
+	MOVE.B	_c_row-BASE(A4),D2	;_c_row
 
 	MOVEQ	#80,D0
 	mulu.w	D0,d2
@@ -1774,7 +1774,7 @@ _inch:
 ;	LINK	A5,#-$0000
 
 	MOVEQ	#$00,D0
-	MOVE.B	-$7066(A4),D0	;_c_row
+	MOVE.B	_c_row-BASE(A4),D0	;_c_row
 
 ;	MOVEQ	#80,D1
 ;	JSR	_mulu
@@ -1799,7 +1799,7 @@ _addch:
 	BRA.W	L004E2
 L004DA:
 	MOVEQ	#$00,D1
-	MOVE.B	-$7066(A4),D0	;_c_row
+	MOVE.B	_c_row-BASE(A4),D0	;_c_row
 	JSR	_movequick
 
 L004DB:
@@ -1809,7 +1809,7 @@ L004DB:
 
 L004DC:
 	MOVEQ	#$00,D1
-	MOVE.B	-$7066(A4),D0	;_c_row
+	MOVE.B	_c_row-BASE(A4),D0	;_c_row
 	ADDQ.W	#1,D0
 	JSR	_movequick
 
@@ -1824,7 +1824,7 @@ L004DD:
 	BRA.W	L004E1
 L004DE:
 	MOVEQ	#$00,D0
-	MOVE.B	-$7066(A4),D0	;_c_row
+	MOVE.B	_c_row-BASE(A4),D0	;_c_row
 
 ;	MOVEQ	#80,D1
 ;	JSR	_mulu
@@ -1838,10 +1838,10 @@ L004DE:
 	CMP.B	D2,D4
 	BEQ.B	L004E1
 
-	TST.B	-$7066(A4)	;_c_row
+	TST.B	_c_row-BASE(A4)	;_c_row
 	BLS.B	L004DF
 
-	MOVE.B	-$7066(A4),D3	;_c_row
+	MOVE.B	_c_row-BASE(A4),D3	;_c_row
 	CMP.B	#$14,D3
 	BCC.B	L004DF
 
@@ -1862,7 +1862,7 @@ L004E0:
 	BCC.B	L004E1
 
 	MOVEQ	#$00,D0
-	MOVE.B	-$7066(A4),D0	;_c_row
+	MOVE.B	_c_row-BASE(A4),D0	;_c_row
 
 ;	MOVEQ	#80,D1
 ;	JSR	_mulu
@@ -1884,7 +1884,7 @@ L004E2:
 L004E3:
 	MOVE.B	_c_col-BASE(A4),D1	;_c_col
 	ADDQ.W	#1,D1
-	MOVE.B	-$7066(A4),D0	;_c_row
+	MOVE.B	_c_row-BASE(A4),D0	;_c_row
 	JSR	_movequick
 
 	BRA.W	L004DB
@@ -1903,7 +1903,7 @@ _addstr:
 
 	MOVE.B	_c_col-BASE(A4),D1	;_c_col
 	ADD.B	D0,D1
-	MOVE.B	-$7066(A4),D0	;_c_row
+	MOVE.B	_c_row-BASE(A4),D0	;_c_row
 	JSR	_movequick
 
 	MOVE.B	-$0001(A5),_graphics_disabled-BASE(A4)	;_graphics_disabled
@@ -1983,7 +1983,7 @@ L004E4:
 
 	MOVEQ	#20,D0		;20 is max
 L004E5:
-	MOVE.B	D0,-$7066(A4)	;_c_row
+	MOVE.B	D0,_c_row-BASE(A4)	;_c_row
 	MOVE.B	D1,_c_col-BASE(A4)	;_c_col
 
 	MOVEQ	#$00,D3
@@ -2001,7 +2001,7 @@ L004E5:
 
 _getrc:
 	MOVEQ	#$00,D3
-	MOVE.B	-$7066(A4),D3	;_c_row
+	MOVE.B	_c_row-BASE(A4),D3	;_c_row
 	MOVEA.L	$0004(A7),A0
 	MOVE.W	D3,(A0)
 ;	MOVEQ	#$00,D3
