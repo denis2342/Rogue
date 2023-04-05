@@ -353,7 +353,7 @@ _init_weapon:
 
 	mulu.w	#12,d0
 
-	LEA	-$6FDA(A4),A6		;_w_magic
+	LEA	_w_magic-BASE(A4),A6		;_w_magic
 	MOVE.L	$00(A6,D0.w),$0016(A2)	;wield damage
 	MOVE.L	$04(A6,D0.w),$001A(A2)	;throw damage
 	MOVE.B	$08(A6,D0.w),$0014(A2)	;weapon needed for better throw

@@ -1092,7 +1092,7 @@ L00B8D:
 _iw_setdam:
 	MOVE.W	$0020(A2),D3
 	MULU.W	#12,D3
-	LEA	-$6FDA(A4),A6	;_w_magic
+	LEA	_w_magic-BASE(A4),A6	;_w_magic
 ;	MOVEA.L	D3,A3
 ;	ADDA.L	A6,A3
 	MOVE.L	$00(A6,D3.w),$0016(A2)	; wield damage
