@@ -375,7 +375,7 @@ L00AD8:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#3,D3
-	LEA	-$6D98(A4),A6	;_ws_magic
+	LEA	_ws_magic-BASE(A4),A6	;_ws_magic
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	D5,D3
 ;	EXT.L	D3
@@ -1097,7 +1097,7 @@ L0055D:
 L0055E:
 	MOVE.W	#$002F,$000A(A2)	;'/' wand/staff type
 	MOVE.W	#$000E,-(A7)
-	PEA	-$6D98(A4)	;_ws_magic
+	PEA	_ws_magic-BASE(A4)	;_ws_magic
 	BSR.B	_pick_one
 	ADDQ.W	#6,A7
 	MOVE.W	D0,$0020(A2)
