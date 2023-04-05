@@ -900,7 +900,7 @@ _enter_room:
 	ADDQ.W	#4,A7
 	MOVE.L	D0,-$52A0(A4)	;_player + 42 (proom)
 	MOVEA.L	D0,A3
-	TST.B	-$66AD(A4)	;_bailout
+	TST.B	_bailout-BASE(A4)	;_bailout
 	BNE.B	L0091C
 
 	MOVE.W	$000E(A3),D3

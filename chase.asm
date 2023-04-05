@@ -893,7 +893,7 @@ L0027E:
 	ADD.L	A6,D0
 	BRA.B	L0027D
 L0027F:
-	ADDQ.B	#1,-$66AD(A4)	;_bailout
+	ADDQ.B	#1,_bailout-BASE(A4)	;_bailout
 	MOVE.W	(A2),-(A7)
 	MOVE.W	$0002(A2),-(A7)
 	PEA	L00280(PC)	;"Roomin bailout, in some bizzare place %d,%d"

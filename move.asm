@@ -22,10 +22,10 @@ _do_move:
 	MOVEM.L	D4-D7,-(A7)
 
 	CLR.B	_firstmove-BASE(A4)	;_firstmove
-	TST.B	-$66AD(A4)	;_bailout
+	TST.B	_bailout-BASE(A4)	;_bailout
 	BEQ.B	L00091
 
-	CLR.B	-$66AD(A4)	;_bailout
+	CLR.B	_bailout-BASE(A4)	;_bailout
 	PEA	L000C3(PC)	;"the crack widens ... "
 	JSR	_msg
 	ADDQ.W	#4,A7
