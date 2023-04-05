@@ -41,7 +41,7 @@ L00ABB:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#3,D3
-	LEA	-$6EF0(A4),A6	;_s_magic
+	LEA	_s_magic-BASE(A4),A6	;_s_magic
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L00AF3(PC)	;"of %s"
 	JSR	_nmadd
@@ -933,7 +933,7 @@ L00548:
 L00549:
 	MOVE.W	#$003F,$000A(A2)	;'?'
 	MOVE.W	#15,-(A7)
-	PEA	-$6EF0(A4)
+	PEA	_s_magic-BASE(A4)
 	JSR	_pick_one(PC)
 	ADDQ.W	#6,A7
 	MOVE.W	D0,$0020(A2)
