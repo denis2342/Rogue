@@ -1018,19 +1018,19 @@ L00408:
 L00409:
 	CLR.B	-$66B1(A4)	;_com_from_menu
 
-	TST.B	-$66A9(A4)	;_take
+	TST.B	_take-BASE(A4)	;_take
 	BEQ.B	L0040A
 
 	TST.B	_is_pickup-BASE(A4)	;_is_pickup
 	BEQ.B	L0040A
 
-	MOVE.B	-$66A9(A4),D3	;_take
+	MOVE.B	_take-BASE(A4),D3	;_take
 	EXT.W	D3
 	MOVE.W	D3,-(A7)
 	JSR	_pick_up(PC)
 	ADDQ.W	#2,A7
 L0040A:
-	CLR.B	-$66A9(A4)	;_take
+	CLR.B	_take-BASE(A4)	;_take
 	TST.B	_running-BASE(A4)	;_running
 	BNE.B	L0040B
 	CLR.B	_door_stop-BASE(A4)	;_door_stop

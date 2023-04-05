@@ -427,7 +427,7 @@ L000BB:
 	CMP.B	#$25,D4
 	BEQ.B	L000BC
 
-	MOVE.B	D4,-$66A9(A4)	;_take
+	MOVE.B	D4,_take-BASE(A4)	;_take
 L000BC:
 	JSR	_INDEXplayer
 
