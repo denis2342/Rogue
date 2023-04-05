@@ -763,7 +763,7 @@ L00533:
 	CMPI.W	#$002C,$000A(A3)	;',' amulet of yendor
 	BNE.B	L00534
 
-	CLR.B	-$66BD(A4)	;_amulet
+	CLR.B	_amulet-BASE(A4)	;_amulet
 L00534:
 	MOVE.W	#$001E,-(A7)
 	MOVE.L	A3,-(A7)

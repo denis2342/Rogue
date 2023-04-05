@@ -83,7 +83,7 @@ L0029F:
 	CMPI.W	#$002C,$000A(A6)	;did we unpack the amulet?
 	BNE.B	L002A0
 
-	CLR.B	-$66BD(A4)	;_amulet
+	CLR.B	_amulet-BASE(A4)	;_amulet
 L002A0:
 	MOVE.L	$0008(A5),D0
 	BRA.B	L00297
@@ -444,7 +444,7 @@ L002C9:
 	CMPI.W	#$002C,$000A(A2)	;',' amulet of yendor
 	BNE.B	L002CA
 
-	ST	-$66BD(A4)	;_amulet
+	ST	_amulet-BASE(A4)	;_amulet
 	ST	-$66BC(A4)	;_saw_amulet
 L002CA:
 	MOVE.W	#$0001,-(A7)

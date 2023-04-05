@@ -1252,7 +1252,7 @@ _u_level:
 	cmp.b	#'%',$00(A6,D0.W)	;'%'
 	BNE.B	L008D3
 
-	TST.B	-$66BD(A4)	;_amulet, do we have it?
+	TST.B	_amulet-BASE(A4)	;_amulet, do we have it?
 	BEQ.B	L008D1
 
 	SUBQ.W	#1,_level-BASE(A4)	;_level, are we already at level 1?
