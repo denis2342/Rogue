@@ -43,7 +43,7 @@ L00185:
 
 	JSR	_f_restor
 
-	PEA	-$6CB0(A4)	;_lvl_obj
+	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
 	JSR	__free_list(PC)
 	ADDQ.W	#4,A7
 
@@ -192,7 +192,7 @@ L0018B:
 	BEQ.W	L0018E
 
 	MOVE.L	A2,-(A7)
-	PEA	-$6CB0(A4)	;_lvl_obj
+	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
 	JSR	__attach
 	ADDQ.W	#8,A7
 	CLR.W	$0024(A2)
@@ -253,7 +253,7 @@ L0018F:
 	JSR	_new_thing
 	MOVEA.L	D0,A2
 	MOVE.L	A2,-(A7)
-	PEA	-$6CB0(A4)	;_lvl_obj
+	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
 	JSR	__attach
 	ADDQ.W	#8,A7
 L00191:
@@ -364,7 +364,7 @@ L00198:
 	MOVE.L	(A1)+,(A6)+
 
 	MOVE.L	A2,-(A7)
-	PEA	-$6CB0(A4)	;_lvl_obj
+	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
 	JSR	__attach
 	ADDQ.W	#8,A7
 

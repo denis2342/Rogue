@@ -943,7 +943,7 @@ L000F3:
 	CMP.B	#$3F,D6
 	BNE.B	L000F8
 
-	MOVEA.L	-$6CB0(A4),A2	;_lvl_obj
+	MOVEA.L	_lvl_obj-BASE(A4),A2	;_lvl_obj
 	BRA.B	L000F6
 L000F4:
 	CMP.W	$000E(A2),D5

@@ -747,7 +747,7 @@ L00532:
 	BRA.B	L0052C
 L00533:
 	MOVE.L	A3,-(A7)
-	PEA	-$6CB0(A4)	;_lvl_obj
+	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
 	JSR	__attach
 	ADDQ.W	#8,A7
 

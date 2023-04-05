@@ -602,7 +602,7 @@ L0090C:
 	MOVE.W	#$002A,$000A(A6)
 
 	MOVE.L	-$001A(A5),-(A7)
-	PEA	-$6CB0(A4)	;_lvl_obj
+	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
 	JSR	__attach
 	ADDQ.W	#8,A7
 	MOVEA.L	-$0004(A5),A6

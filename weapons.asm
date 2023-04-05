@@ -294,7 +294,7 @@ L0060D:
 	MOVE.B	$000B(A1),$0011(A6)
 L0060E:
 	MOVE.L	$0008(A5),-(A7)
-	PEA	-$6CB0(A4)	;_lvl_obj
+	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
 	JSR	__attach
 	ADDQ.W	#8,A7
 L0060F:

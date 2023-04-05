@@ -327,7 +327,7 @@ L00251:
 	TST.W	D0
 	BEQ.W	L00258
 
-	MOVEA.L	-$6CB0(A4),A2	;_lvl_obj
+	MOVEA.L	_lvl_obj-BASE(A4),A2	;_lvl_obj
 	BRA.W	L00257
 L00252:
 	MOVEA.L	$0008(A5),A6
@@ -338,7 +338,7 @@ L00252:
 	BNE.W	L00256
 
 	MOVE.L	A2,-(A7)
-	PEA	-$6CB0(A4)	;_lvl_obj
+	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
 	JSR	__detach
 	ADDQ.W	#8,A7
 	MOVE.L	A2,-(A7)
@@ -757,7 +757,7 @@ L00271:
 	CMP.b	#$3F,D3		;'?' scrolls
 	BNE.B	L00276
 
-	MOVEA.L	-$6CB0(A4),A2	;_lvl_obj
+	MOVEA.L	_lvl_obj-BASE(A4),A2	;_lvl_obj
 	BRA.B	L00274
 L00272:
 	CMP.W	$000E(A2),D5
@@ -1048,7 +1048,7 @@ L0028C:
 
 L0028D:
 	MOVE.L	$002A(A2),D5
-	MOVEA.L	-$6CB0(A4),A3	;_lvl_obj
+	MOVEA.L	_lvl_obj-BASE(A4),A3	;_lvl_obj
 	BRA.B	L00294
 L0028E:
 	CMPI.W	#$003F,$000A(A3)	;'?' scroll

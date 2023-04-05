@@ -223,7 +223,7 @@ L002AD:
 	BEQ.B	L002AE
 
 	MOVE.L	A2,-(A7)
-	PEA	-$6CB0(A4)	;_lvl_obj
+	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
 	JSR	__detach
 	ADDQ.W	#8,A7
 
@@ -268,7 +268,7 @@ L002B2:
 	BEQ.B	L002B3
 
 	MOVE.L	A2,-(A7)
-	PEA	-$6CB0(A4)	;_lvl_obj
+	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
 	JSR	__detach
 	ADDQ.W	#8,A7
 
@@ -299,7 +299,7 @@ L002B4:
 	BEQ.B	L002B5
 
 	MOVE.L	A2,-(A7)
-	PEA	-$6CB0(A4)	;_lvl_obj
+	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
 	JSR	__detach
 	ADDQ.W	#8,A7
 
@@ -625,7 +625,7 @@ _pick_up:
 	ADDQ.W	#2,A7
 
 	MOVE.L	A2,-(A7)
-	PEA	-$6CB0(A4)	;_lvl_obj
+	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
 	JSR	__detach
 	ADDQ.W	#8,A7
 

@@ -266,7 +266,7 @@ _xfer_all:
 	JSR	_xfer_proom(PC)
 	ADDQ.W	#8,A7
 	CLR.L	-(A7)
-	PEA	-$6CB0(A4)	;_lvl_obj
+	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
 	JSR	_xfer_pthing
 	ADDQ.W	#8,A7
 	CLR.L	-(A7)

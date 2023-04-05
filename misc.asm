@@ -505,7 +505,7 @@ _find_obj:
 	MOVE.W	$0008(A5),D4
 	MOVE.W	$000A(A5),D5
 
-	MOVEA.L	-$6CB0(A4),A2	;_lvl_obj
+	MOVEA.L	_lvl_obj-BASE(A4),A2	;_lvl_obj
 	BRA.B	L0084F
 L0084C:
 	CMP.W	$000E(A2),D4
