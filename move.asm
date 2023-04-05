@@ -7,7 +7,7 @@ _do_run:
 ;	LINK	A5,#-$0000
 	ST	_running-BASE(A4)	;_running
 	CLR.B	_after-BASE(A4)	;_after
-	MOVE.B	$0005(A7),-$66A8(A4)	;_runch
+	MOVE.B	$0005(A7),_runch-BASE(A4)	;_runch
 ;	UNLK	A5
 	RTS
 
@@ -196,7 +196,7 @@ L0009B:
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BNE.W	L000B1
 
-	MOVE.B	-$66A8(A4),D0	;_runch
+	MOVE.B	_runch-BASE(A4),D0	;_runch
 	EXT.W	D0
 ;	EXT.L	D0
 	BRA.W	L000AF
@@ -260,11 +260,11 @@ L000A2:
 	TST.B	D6
 	BEQ.B	L000A3
 
-	MOVE.B	#$6B,-$66A8(A4)	;'k', _runch
+	MOVE.B	#$6B,_runch-BASE(A4)	;'k', _runch
 	MOVE.W	#$FFFF,$0008(A5)
 	BRA.B	L000A4
 L000A3:
-	MOVE.B	#$6A,-$66A8(A4)	;'j',_runch
+	MOVE.B	#$6A,_runch-BASE(A4)	;'j',_runch
 	MOVE.W	#$0001,$0008(A5)
 L000A4:
 	CLR.W	$000A(A5)
@@ -333,11 +333,11 @@ L000AB:
 	TST.B	D6
 	BEQ.B	L000AC
 
-	MOVE.B	#$68,-$66A8(A4)	;'h',_runch
+	MOVE.B	#$68,_runch-BASE(A4)	;'h',_runch
 	MOVE.W	#$FFFF,$000A(A5)
 	BRA.B	L000AD
 L000AC:
-	MOVE.B	#$6C,-$66A8(A4)	;'l',_runch
+	MOVE.B	#$6C,_runch-BASE(A4)	;'l',_runch
 	MOVE.W	#$0001,$000A(A5)
 L000AD:
 	CLR.W	$0008(A5)

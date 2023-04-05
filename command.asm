@@ -209,7 +209,7 @@ L003B8:
 
 	JSR	_one_tick	;slow down the fast mode
 
-	MOVE.B	-$66A8(A4),D3	;_runch
+	MOVE.B	_runch-BASE(A4),D3	;_runch
 	EXT.W	D3
 	MOVE.W	D3,D4
 	MOVE.B	_is_pickup_tmp-BASE(A4),_is_pickup-BASE(A4)	;_is_pickup
@@ -1047,7 +1047,7 @@ L0040B:
 	AND.W	#F_SEEN,D3
 	BNE.B	L0040C
 	JSR	_mouse_adjust
-	MOVE.B	D0,-$66A8(A4)	;_runch
+	MOVE.B	D0,_runch-BASE(A4)	;_runch
 L0040C:
 	BRA.B	L0040E
 L0040D:

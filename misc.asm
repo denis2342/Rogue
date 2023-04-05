@@ -343,7 +343,7 @@ L00832:
 	TST.B	_running-BASE(A4)	;_running
 	BEQ.W	L00846
 
-	MOVE.B	-$66A8(A4),D0	;_runch
+	MOVE.B	_runch-BASE(A4),D0	;_runch
 	EXT.W	D0
 ;	EXT.L	D0
 	BRA.B	L0083B
