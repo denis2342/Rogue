@@ -1632,7 +1632,7 @@ _clear:
 
 	MOVEq	#$0020,d1
 	MOVE.W	#1680,d0
-	lea	-$76F6(A4),a0	;_screen_map
+	lea	_screen_map-BASE(A4),a0	;_screen_map
 	JSR	_memset
 
 L004D5:
@@ -1663,7 +1663,7 @@ L004D7:
 	MULU.W	#$0050,D3
 	ADD.w	D5,D3
 
-	LEA	-$76F6(A4),A6	;_screen_map
+	LEA	_screen_map-BASE(A4),A6	;_screen_map
 	MOVEQ	#$00,D6
 	MOVE.B	$00(A6,D3.w),D6
 	CMP.W	#$0020,D6
@@ -1715,7 +1715,7 @@ _clrtoeol:
 	SUB.W	D3,D0
 
 	ADD.L	D3,D2
-	LEA	-$76F6(A4),A0	;_screen_map
+	LEA	_screen_map-BASE(A4),A0	;_screen_map
 	ADD.L	D2,A0
 	JSR	_memset
 
@@ -1762,7 +1762,7 @@ _mvinch:
 	MOVE.W	D5,D2
 	EXT.L	D2
 	ADD.L	D2,D3
-	LEA	-$76F6(A4),A6	;_screen_map
+	LEA	_screen_map-BASE(A4),A6	;_screen_map
 	MOVEQ	#$00,D0
 	MOVE.B	$00(A6,D3.L),D0
 
@@ -1783,7 +1783,7 @@ _inch:
 	MOVEQ	#$00,D3
 	MOVE.B	-$7065(A4),D3	;_c_col
 	ADD.L	D0,D3
-	LEA	-$76F6(A4),A6	;_screen_map
+	LEA	_screen_map-BASE(A4),A6	;_screen_map
 	MOVEQ	#$00,D0
 	MOVE.B	$00(A6,D3.L),D3
 
@@ -1833,7 +1833,7 @@ L004DE:
 	MOVEQ	#$00,D2
 	MOVE.B	-$7065(A4),D2	;_c_col
 	ADD.L	D2,D0
-	LEA	-$76F6(A4),A6	;_screen_map
+	LEA	_screen_map-BASE(A4),A6	;_screen_map
 	MOVE.B	$00(A6,D0.L),D2
 	CMP.B	D2,D4
 	BEQ.B	L004E1
@@ -1871,7 +1871,7 @@ L004E0:
 	MOVEQ	#$00,D3
 	MOVE.B	-$7065(A4),D3	;_c_col
 	ADD.L	D3,D0
-	LEA	-$76F6(A4),A6	;_screen_map
+	LEA	_screen_map-BASE(A4),A6	;_screen_map
 	MOVE.B	D4,$00(A6,D0.L)
 L004E1:
 	BRA.B	L004E3
