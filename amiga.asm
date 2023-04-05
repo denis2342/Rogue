@@ -486,7 +486,7 @@ _lseek:
 	BLT.B	L00C08
 
 	MULS.W	#$0006,D3
-	LEA	-$4758(A4),A2		;__devtab
+	LEA	__devtab-BASE(A4),A2		;__devtab
 	ADDA.L	D3,A2
 
 	CMP.W	#$0013,D4
@@ -545,7 +545,7 @@ _open:
 
 	MOVEA.L	$0008(A5),A2
 	JSR	_Chk_Abort(PC)
-	LEA	-$4758(A4),A3		;__devtab
+	LEA	__devtab-BASE(A4),A3		;__devtab
 	MOVEQ	#$00,D5
 L00C0C:
 	MOVE.W	D5,D3
@@ -675,7 +675,7 @@ _read:
 	BLT.B	L00C17
 
 	MULS.W	#$0006,D3
-	LEA	-$4758(A4),A2		;__devtab
+	LEA	__devtab-BASE(A4),A2		;__devtab
 	ADDA.L	D3,A2
 
 	CMP.W	#$0013,D2
@@ -1918,7 +1918,7 @@ _isatty:
 	LINK	A5,#-$0000
 	MOVE.W	$0008(A5),D3
 	MULS.W	#$0006,D3
-	LEA	-$4758(A4),A6		;__devtab
+	LEA	__devtab-BASE(A4),A6		;__devtab
 	MOVE.L	$00(A6,D3.L),-(A7)
 	JSR	_IsInteractive(PC)
 	ADDQ.W	#4,A7
@@ -1960,7 +1960,7 @@ _write:
 	BLT.B	L00C96
 
 	MULS.W	#$0006,D3
-	LEA	-$4758(A4),A2		;__devtab
+	LEA	__devtab-BASE(A4),A2		;__devtab
 	ADDA.L	D3,A2
 
 	CMP.W	#$0013,D4
@@ -2221,7 +2221,7 @@ L00CAA:
 	MOVEA.L	-$52DE(A4),A6
 	CLR.L	$00(A6,D3.L)
 	JSR	_Input
-	MOVE.L	D0,-$4758(A4)		;__devtab
+	MOVE.L	D0,__devtab-BASE(A4)		;__devtab
 	MOVE.W	#$8000,-$4754(A4)
 	JSR	_Output(PC)
 	MOVE.L	D0,-$4752(A4)
@@ -2265,7 +2265,7 @@ L00CAC:
 	MOVE.L	$0020(A6),-(A7)
 	JSR	_Open
 	ADDQ.W	#8,A7
-	MOVE.L	D0,-$4758(A4)		;__devtab
+	MOVE.L	D0,__devtab-BASE(A4)		;__devtab
 ;	TST.L	D0
 	BEQ.B	L00CAD
 
@@ -2444,7 +2444,7 @@ _close:
 	BLT.B	L00CC1
 
 	MULS.W	#$0006,D3
-	LEA	-$4758(A4),A2		;__devtab
+	LEA	__devtab-BASE(A4),A2		;__devtab
 	ADDA.L	D3,A2
 
 	CMP.W	#$0013,D4
