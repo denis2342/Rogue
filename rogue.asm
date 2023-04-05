@@ -1143,7 +1143,7 @@ L0010E:
 	ADDQ.W	#2,A7
 readCharEnd:
 
-	PEA	-$7852(A4)	;_NewScreen
+	PEA	_NewScreen-BASE(A4)	;_NewScreen
 	JSR	_OpenScreen
 	ADDQ.W	#4,A7
 
