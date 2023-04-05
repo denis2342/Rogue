@@ -636,7 +636,7 @@ L003F3:
 L003F4:
 	CLR.B	_after-BASE(A4)	;_after
 	MOVE.W	#$0029,-(A7)
-	PEA	-$674D(A4)	;_macro
+	PEA	_macro-BASE(A4)	;_macro
 	JSR	_do_macro
 	ADDQ.W	#6,A7
 	BRA.W	L00409
@@ -701,7 +701,7 @@ foodlefttext:	dc.b	"food left: %d",0
 
 L003F5:
 	CLR.B	_after-BASE(A4)	;_after
-	LEA	-$674D(A4),A6	;_macro
+	LEA	_macro-BASE(A4),A6	;_macro
 	MOVE.L	A6,-$69CA(A4)	;_typeahead
 	BRA.W	L00409
 

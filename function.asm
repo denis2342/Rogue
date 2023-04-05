@@ -16,7 +16,7 @@ _BuildFuncTable:
 
 	MOVE.L	D0,$00(A6,D3.w)
 ;	PEA	L00B94(PC)	;"v"
-	PEA	-$674D(A4)	;_macro
+	PEA	_macro-BASE(A4)	;_macro
 	ADDQ.W	#1,-$0002(A5)
 	MOVE.W	-$0002(A5),D3
 
