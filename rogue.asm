@@ -1705,7 +1705,7 @@ _clrtoeol:
 	MOVEq	#32,d1		;space for memset
 
 	MOVEQ	#$00,D3
-	MOVE.B	-$7065(A4),D3	;_c_col
+	MOVE.B	_c_col-BASE(A4),D3	;_c_col
 
 	MOVEQ	#$00,D2
 	MOVE.B	-$7066(A4),D2	;_c_row
@@ -1781,7 +1781,7 @@ _inch:
 	mulu.w	#80,d0
 
 	MOVEQ	#$00,D3
-	MOVE.B	-$7065(A4),D3	;_c_col
+	MOVE.B	_c_col-BASE(A4),D3	;_c_col
 	ADD.L	D0,D3
 	LEA	_screen_map-BASE(A4),A6	;_screen_map
 	MOVEQ	#$00,D0
@@ -1831,7 +1831,7 @@ L004DE:
 	mulu.w	#80,d0
 
 	MOVEQ	#$00,D2
-	MOVE.B	-$7065(A4),D2	;_c_col
+	MOVE.B	_c_col-BASE(A4),D2	;_c_col
 	ADD.L	D2,D0
 	LEA	_screen_map-BASE(A4),A6	;_screen_map
 	MOVE.B	$00(A6,D0.L),D2
@@ -1857,7 +1857,7 @@ L004DF:
 	JSR	__addch
 	ADDQ.W	#2,A7
 L004E0:
-	MOVE.B	-$7065(A4),D3	;_c_col
+	MOVE.B	_c_col-BASE(A4),D3	;_c_col
 	CMP.B	#$3C,D3
 	BCC.B	L004E1
 
@@ -1869,7 +1869,7 @@ L004E0:
 	mulu.w	#80,d0
 
 	MOVEQ	#$00,D3
-	MOVE.B	-$7065(A4),D3	;_c_col
+	MOVE.B	_c_col-BASE(A4),D3	;_c_col
 	ADD.L	D3,D0
 	LEA	_screen_map-BASE(A4),A6	;_screen_map
 	MOVE.B	D4,$00(A6,D0.L)
@@ -1882,7 +1882,7 @@ L004E2:
 	BEQ.W	L004DA
 	BRA.W	L004DD
 L004E3:
-	MOVE.B	-$7065(A4),D1	;_c_col
+	MOVE.B	_c_col-BASE(A4),D1	;_c_col
 	ADDQ.W	#1,D1
 	MOVE.B	-$7066(A4),D0	;_c_row
 	JSR	_movequick
@@ -1901,7 +1901,7 @@ _addstr:
 	MOVE.L	$0008(A5),A0
 	JSR	_strlenquick
 
-	MOVE.B	-$7065(A4),D1	;_c_col
+	MOVE.B	_c_col-BASE(A4),D1	;_c_col
 	ADD.B	D0,D1
 	MOVE.B	-$7066(A4),D0	;_c_row
 	JSR	_movequick
@@ -1984,7 +1984,7 @@ L004E4:
 	MOVEQ	#20,D0		;20 is max
 L004E5:
 	MOVE.B	D0,-$7066(A4)	;_c_row
-	MOVE.B	D1,-$7065(A4)	;_c_col
+	MOVE.B	D1,_c_col-BASE(A4)	;_c_col
 
 	MOVEQ	#$00,D3
 	MOVE.B	_graphics_disabled-BASE(A4),D3	;_graphics_disabled
@@ -2005,7 +2005,7 @@ _getrc:
 	MOVEA.L	$0004(A7),A0
 	MOVE.W	D3,(A0)
 ;	MOVEQ	#$00,D3
-	MOVE.B	-$7065(A4),D3	;_c_col
+	MOVE.B	_c_col-BASE(A4),D3	;_c_col
 	MOVEA.L	$0008(A7),A0
 	MOVE.W	D3,(A0)
 
