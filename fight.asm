@@ -246,7 +246,7 @@ _attack:
 	LINK	A5,#-$0004
 	MOVEM.L	D4/D5/A2/A3,-(A7)
 
-	CLR.B	-$66B6(A4)	;_running
+	CLR.B	_running-BASE(A4)	;_running
 	CLR.W	-$60A0(A4)	;_quiet
 	CLR.W	_count-BASE(A4)	;_count
 

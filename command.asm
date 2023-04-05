@@ -157,7 +157,7 @@ L003B2:
 L003B3:
 	TST.W	_mpos-BASE(A4)	;_mpos
 	BEQ.B	L003B5
-	TST.B	-$66B6(A4)	;_running
+	TST.B	_running-BASE(A4)	;_running
 	BNE.B	L003B5
 	CMP.W	#$007F,D5
 	BNE.B	L003B4
@@ -185,7 +185,7 @@ _get_prefix:
 	MOVE.W	#$0001,-(A7)
 	JSR	_look
 	ADDQ.W	#2,A7
-	TST.B	-$66B6(A4)	;_running
+	TST.B	_running-BASE(A4)	;_running
 	BNE.B	L003B7
 
 	CLR.B	-$66BB(A4)	;_door_stop
@@ -204,7 +204,7 @@ L003B7:
 	BRA.W	L003C7
 L003B8:
 	CLR.W	_count-BASE(A4)	;_count
-	TST.B	-$66B6(A4)	;_running
+	TST.B	_running-BASE(A4)	;_running
 	BEQ.B	L003B9
 
 	JSR	_one_tick	;slow down the fast mode
@@ -316,7 +316,7 @@ L003C9:
 	TST.B	_fastmode-BASE(A4)	;_fastmode
 	BEQ.B	L003CE
 
-	TST.B	-$66B6(A4)	;_running
+	TST.B	_running-BASE(A4)	;_running
 	BNE.B	L003CE
 
 	moveq	#C_ISBLIND,D3	;C_ISBLIND
@@ -1031,13 +1031,13 @@ L00409:
 	ADDQ.W	#2,A7
 L0040A:
 	CLR.B	-$66A9(A4)	;_take
-	TST.B	-$66B6(A4)	;_running
+	TST.B	_running-BASE(A4)	;_running
 	BNE.B	L0040B
 	CLR.B	-$66BB(A4)	;_door_stop
 L0040B:
 	TST.B	-$66AF(A4)	;_mouse_run
 	BEQ.B	L0040E
-	TST.B	-$66B6(A4)	;_running
+	TST.B	_running-BASE(A4)	;_running
 	BEQ.B	L0040D
 
 	JSR	_INDEXplayer
@@ -1145,7 +1145,7 @@ L008C6:
 	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	#$2B,$00(A6,D0.W)	;'+' DOOR
 	ORI.B	#$10,(A2)
-	CLR.B	-$66B6(A4)	;_running
+	CLR.B	_running-BASE(A4)	;_running
 	CLR.W	_count-BASE(A4)	;_count
 	BRA.W	L008C9
 L008C7:
@@ -1164,7 +1164,7 @@ L008C7:
 	ADD.W	#$000E,D3
 	MOVE.B	D3,$00(A6,D0.W)
 	ORI.B	#$10,(A2)
-	CLR.B	-$66B6(A4)	;_running
+	CLR.B	_running-BASE(A4)	;_running
 	CLR.W	_count-BASE(A4)	;_count
 	MOVE.B	(A2),D3
 	AND.W	#$0007,D3

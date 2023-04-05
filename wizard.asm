@@ -581,7 +581,7 @@ L007F6:
 L007F7:
 	CLR.W	-$60AE(A4)	;_no_move
 	CLR.W	_count-BASE(A4)	;_count
-	CLR.B	-$66B6(A4)	;_running
+	CLR.B	_running-BASE(A4)	;_running
 	JSR	_flush_type
 
 	TST.B	_wizard-BASE(A4)	;_wizard

@@ -739,7 +739,7 @@ _mouse_adjust:
 	MOVE.W	-$533E(A4),D3
 	CMP.W	-$52BE(A4),D3	;_player + 12
 	BNE.B	L00AB0
-	CLR.B	-$66B6(A4)	;_running
+	CLR.B	_running-BASE(A4)	;_running
 	CLR.B	-$66AF(A4)	;_mouse_run
 L00AB0:
 	MOVE.W	-$5338(A4),-(A7)

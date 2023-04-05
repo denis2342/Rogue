@@ -5,7 +5,7 @@
 
 _do_run:
 ;	LINK	A5,#-$0000
-	ST	-$66B6(A4)	;_running
+	ST	_running-BASE(A4)	;_running
 	CLR.B	_after-BASE(A4)	;_after
 	MOVE.B	$0005(A7),-$66A8(A4)	;_runch
 ;	UNLK	A5
@@ -85,10 +85,10 @@ L00094:
 	BNE.B	L00095
 
 	CLR.B	_after-BASE(A4)	;_after
-	CLR.B	-$66B6(A4)	;_running
+	CLR.B	_running-BASE(A4)	;_running
 	BRA.W	L00090
 L00095:
-	TST.B	-$66B6(A4)	;_running
+	TST.B	_running-BASE(A4)	;_running
 	BEQ.B	L00096
 
 	PEA	-$5194(A4)	;_nh
@@ -98,7 +98,7 @@ L00095:
 	TST.W	D0
 	BEQ.B	L00096
 
-	CLR.B	-$66B6(A4)	;_running
+	CLR.B	_running-BASE(A4)	;_running
 	CLR.B	_after-BASE(A4)	;_after
 L00096:
 	MOVE.W	-$5194(A4),d0	;_nh
@@ -124,7 +124,7 @@ L00096:
 	CMP.B	#$2E,D4		;'.' FLOOR
 	BNE.B	L00097
 
-	CLR.B	-$66B6(A4)	;_running
+	CLR.B	_running-BASE(A4)	;_running
 L00097:
 	MOVE.W	D5,D3
 	AND.W	#F_REAL,D3
@@ -171,7 +171,7 @@ L00099:
 	PEA	L000C7(PC)	;"Wild magic pulls you through the floor"
 	JSR	_descend(PC)
 	ADDQ.W	#4,A7
-	CLR.B	-$66B6(A4)	;_running
+	CLR.B	_running-BASE(A4)	;_running
 	BRA.W	L00090
 L0009A:
 	MOVE.W	D4,D0
@@ -180,7 +180,7 @@ L0009A:
 ;	EXT.L	D0
 	BRA.W	L000C1
 L0009B:
-	TST.B	-$66B6(A4)	;_running
+	TST.B	_running-BASE(A4)	;_running
 	BEQ.W	L000B1
 
 	MOVEA.L	-$52A0(A4),A6	;_player + 42 (proom)
@@ -357,11 +357,11 @@ L000AF:
 	MOVE.W	L000AE(PC,D0.W),D0
 L000B0:	JMP	L000B0(PC,D0.W)
 L000B1:
-	CLR.B	-$66B6(A4)	;_running
+	CLR.B	_running-BASE(A4)	;_running
 	CLR.B	_after-BASE(A4)	;_after
 	BRA.W	L00090
 L000B2:
-	CLR.B	-$66B6(A4)	;_running
+	CLR.B	_running-BASE(A4)	;_running
 
 	JSR	_INDEXplayer
 
@@ -399,7 +399,7 @@ L000B7:
 L000B8:
 	BRA.B	L000BC
 L000B9:
-	CLR.B	-$66B6(A4)	;_running
+	CLR.B	_running-BASE(A4)	;_running
 	MOVE.W	D4,d0
 	JSR	_isupper
 
@@ -423,7 +423,7 @@ L000BA:
 	LEA	$000E(A7),A7
 	BRA.W	L00090
 L000BB:
-	CLR.B	-$66B6(A4)	;_running
+	CLR.B	_running-BASE(A4)	;_running
 	CMP.B	#$25,D4
 	BEQ.B	L000BC
 
@@ -606,7 +606,7 @@ _be_trapped:
 	LINK	A5,#-$0004
 	MOVEM.L	D4/D5/A2,-(A7)
 	MOVEA.L	$0008(A5),A2
-	CLR.B	-$66B6(A4)	;_running
+	CLR.B	_running-BASE(A4)	;_running
 	CLR.W	_count-BASE(A4)	;_count
 
 	MOVE.W	(A2),d0

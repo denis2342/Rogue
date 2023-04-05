@@ -271,7 +271,7 @@ L0024D:
 	TST.W	D0		; 20% chance to get flame/frost
 	BNE.B	L00250
 
-	CLR.B	-$66B6(A4)	;_running
+	CLR.B	_running-BASE(A4)	;_running
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	-$52BE(A4),D3	;_player + 12
 	SUB.W	$000C(A6),D3

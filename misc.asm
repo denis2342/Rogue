@@ -166,7 +166,7 @@ L00823:
 	BEQ.B	L00824
 	TST.B	-$66B8(A4)	;_firstmove
 	BNE.B	L00824
-	TST.B	-$66B6(A4)	;_running
+	TST.B	_running-BASE(A4)	;_running
 	BEQ.B	L00824
 	MOVE.W	-$52BE(A4),D3	;_player + 12
 	ADD.W	-$52C0(A4),D3	;_player + 10
@@ -285,7 +285,7 @@ L0082C:
 	TST.B	-$66B8(A4)	;_firstmove
 	BNE.B	L0082D
 
-	CLR.B	-$66B6(A4)	;_running
+	CLR.B	_running-BASE(A4)	;_running
 L0082D:
 	BRA.B	L00832
 L0082E:
@@ -340,7 +340,7 @@ L00832:
 	TST.B	-$66B8(A4)	;_firstmove
 	BNE.W	L00846
 
-	TST.B	-$66B6(A4)	;_running
+	TST.B	_running-BASE(A4)	;_running
 	BEQ.W	L00846
 
 	MOVE.B	-$66A8(A4),D0	;_runch
@@ -418,7 +418,7 @@ L0083D:
 	CMP.W	-$52BE(A4),D5	;_player + 12
 	BNE.B	L0083F
 L0083E:
-	CLR.B	-$66B6(A4)	;_running
+	CLR.B	_running-BASE(A4)	;_running
 L0083F:
 	BRA.B	L00846
 L00840:
@@ -430,7 +430,7 @@ L00841:
 	ADDQ.W	#1,-$000A(A5)
 	BRA.B	L00846
 L00844:
-	CLR.B	-$66B6(A4)	;_running
+	CLR.B	_running-BASE(A4)	;_running
 	BRA.B	L00846
 L00845:
 	SUB.w	#$0020,D0	;' '	SPACE
@@ -474,7 +474,7 @@ L00849:
 	CMPI.W	#$0001,-$000A(A5)
 	BLE.B	L0084A
 
-	CLR.B	-$66B6(A4)	;_running
+	CLR.B	_running-BASE(A4)	;_running
 L0084A:
 	MOVEq	#$0040,d2	;'@' PLAYER
 	MOVE.W	-$52C0(A4),d1	;_player + 10

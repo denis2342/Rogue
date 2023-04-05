@@ -263,7 +263,7 @@ L00650:
 	ADDQ.W	#4,D0
 	ADD.W	D0,_no_command-BASE(A4)	;_no_command
 	ANDI.W	#~C_ISRUN,-$52B4(A4)	;clear C_ISRUN, _player + 22 (flags)
-	CLR.B	-$66B6(A4)	;_running
+	CLR.B	_running-BASE(A4)	;_running
 	CLR.W	_count-BASE(A4)	;_count
 	MOVE.W	#$0003,_hungry_state-BASE(A4)	;_hungry_state
 
