@@ -48,7 +48,7 @@ L00185:
 	ADDQ.W	#4,A7
 
 	JSR	_do_rooms
-	ST	-$66FB(A4)	;_new_stats
+	ST	_new_stats-BASE(A4)	;_new_stats
 	JSR	_clear
 	JSR	_status
 	JSR	_do_passages(PC)

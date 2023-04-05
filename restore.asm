@@ -188,7 +188,7 @@ L00B3A:
 	ADDQ.W	#4,A7
 	JSR	_WBenchToBack(PC)
 	JSR	_redraw
-	ST	-$66FB(A4)	;_new_stats
+	ST	_new_stats-BASE(A4)	;_new_stats
 	JSR	_status
 	PEA	L00B42(PC)
 	JSR	_msg

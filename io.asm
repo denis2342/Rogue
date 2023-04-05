@@ -924,7 +924,7 @@ _status:
 	JSR	_getrc
 	ADDQ.W	#8,A7
 
-	TST.B	-$66FB(A4)	;_new_stats
+	TST.B	_new_stats-BASE(A4)	;_new_stats
 	BNE.B	L0015D
 
 	MOVE.W	-$54EC(A4),D3
@@ -947,7 +947,7 @@ L0015D:
 	MOVE.W	-$52A8(A4),-$54EC(A4)	;_player + 34 (hp)
 	MOVE.W	-$52A2(A4),-$54EA(A4)	;_player + 40 (max hp)
 L0015E:
-	TST.B	-$66FB(A4)	;_new_stats
+	TST.B	_new_stats-BASE(A4)	;_new_stats
 	BNE.B	L0015F
 
 	MOVE.W	-$54E8(A4),D3
@@ -969,7 +969,7 @@ L0015F:
 	MOVE.W	-$52B2(A4),-$54E8(A4)	;_player + 24 (strength)
 	MOVE.W	-$6CC2(A4),-$54E6(A4)	;_max_stats + 0 (max strength),
 L00160:
-	TST.B	-$66FB(A4)	;_new_stats
+	TST.B	_new_stats-BASE(A4)	;_new_stats
 	BNE.B	L00161
 
 	MOVE.W	-$54E4(A4),D3	;last printed purse
@@ -1013,7 +1013,7 @@ L00165:
 
 	SUB.W	$0026(A6),D4
 L00166:
-	TST.B	-$66FB(A4)	;_new_stats
+	TST.B	_new_stats-BASE(A4)	;_new_stats
 	BNE.B	L00167
 
 	CMP.W	-$54E2(A4),D4	;last printed armor class
@@ -1033,7 +1033,7 @@ L00167:
 	MOVE.W	D4,-$54E2(A4)	;last printed armor class
 
 L00168:
-	CLR.B	-$66FB(A4)	;_new_stats
+	CLR.B	_new_stats-BASE(A4)	;_new_stats
 
 	MOVE.w	-$0004(A5),d1
 	MOVE.w	-$0002(A5),d0
