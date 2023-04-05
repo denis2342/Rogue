@@ -570,7 +570,7 @@ L001E6:
 
 	MOVE.W	$0020(A2),D3
 	MULU.W	#21,D3
-	LEA	-$656A(A4),A6	;_s_guess
+	LEA	_s_guess-BASE(A4),A6	;_s_guess
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 

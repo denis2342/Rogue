@@ -50,13 +50,13 @@ L00ABB:
 L00ABC:
 	MOVE.W	D5,D3
 	MULU.W	#21,D3
-	LEA	-$656A(A4),A6	;_s_guess
+	LEA	_s_guess-BASE(A4),A6	;_s_guess
 	TST.B	$00(A6,D3.L)
 	BEQ.B	L00ABD
 
 	MOVE.W	D5,D3
 	MULU.W	#21,D3
-;	LEA	-$656A(A4),A6	;_s_guess
+;	LEA	_s_guess-BASE(A4),A6	;_s_guess
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 	PEA	L00AF4(PC)	;"called %s"
@@ -1186,7 +1186,7 @@ _discovered:
 	MOVEq	#$003F,D7	;'?' scrolls
 	MOVEQ	#15,D5
 	LEA	-$66F6(A4),A2	;_s_know
-	LEA	-$656A(A4),A3	;_s_guess
+	LEA	_s_guess-BASE(A4),A3	;_s_guess
 	BSR.B	_print_disc
 
 	PEA	L00567(PC)	;" ",0

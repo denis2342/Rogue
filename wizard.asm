@@ -58,7 +58,7 @@ L007B9:
 	ST	$00(A6,D3.W)
 ;	MOVE.W	$0020(A2),D3
 	MULU.W	#21,D3
-	LEA	-$656A(A4),A6	;_s_guess
+	LEA	_s_guess-BASE(A4),A6	;_s_guess
 	CLR.B	$00(A6,D3.L)
 	BRA.W	L007BF
 
