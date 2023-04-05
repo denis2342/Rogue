@@ -608,7 +608,7 @@ L0008A:
 ;	EXT.L	D3
 	ASL.w	#2,D3
 	LEA	_ws_type-BASE(A4),A6	;_ws_type
-	MOVE.L	-$7A4A(A4),$00(A6,D3.w)	;_ws_staff
+	MOVE.L	_ws_staff-BASE(A4),$00(A6,D3.w)	;_ws_staff
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3

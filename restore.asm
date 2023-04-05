@@ -623,7 +623,7 @@ L00B60:
 	MOVE.L	_ws_wand-BASE(A4),(A6)	;_ws_wand
 	BRA.B	L00B62
 L00B61:
-	MOVE.L	-$7A4A(A4),(A6)	;_ws_staff
+	MOVE.L	_ws_staff-BASE(A4),(A6)	;_ws_staff
 L00B62:
 	MOVE.W	#$0002,-(A7)
 	PEA	-$0002(A5)
