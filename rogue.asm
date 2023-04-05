@@ -510,7 +510,7 @@ L00082:
 	MULU.W	#$0006,D2
 	LEA	-$79D2(A4),A1	;_stones
 	MOVE.L	$00(A1,D2.L),$00(A6,D3.w)
-	LEA	-$66D9(A4),A6	;_r_know
+	LEA	_r_know-BASE(A4),A6	;_r_know
 	CLR.B	$00(A6,D4.W)
 	CMP.W	#$0000,D4
 	BLE.B	L00083

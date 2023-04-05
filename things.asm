@@ -474,7 +474,7 @@ L00AE1:
 	AND.W	#$0004,D3	;only the simple name?
 	BEQ.W	L00AE7
 
-	LEA	-$66D9(A4),A6	;_r_know
+	LEA	_r_know-BASE(A4),A6	;_r_know
 	TST.B	$00(A6,D5.W)
 	BEQ.B	L00AE4
 
@@ -1196,7 +1196,7 @@ _discovered:
 
 	MOVEq	#$003D,D7	;'=' rings
 	MOVEQ	#14,D5
-	LEA	-$66D9(A4),A2	;_r_know
+	LEA	_r_know-BASE(A4),A2	;_r_know
 	LEA	_r_guess-BASE(A4),A3	;_r_guess
 	BSR.B	_print_disc
 

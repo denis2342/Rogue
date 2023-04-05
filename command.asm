@@ -1314,7 +1314,7 @@ L008D9:
 L008DA:
 	LEA	_r_guess-BASE(A4),A6	;_r_guess
 	MOVE.L	A6,-$0004(A5)
-	LEA	-$66D9(A4),A6	;_r_know
+	LEA	_r_know-BASE(A4),A6	;_r_know
 	MOVEA.L	A6,A3
 	MOVE.W	$0020(A2),D3
 	MULU.W	#21,D3

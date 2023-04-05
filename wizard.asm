@@ -97,7 +97,7 @@ L007BC:
 
 L007BD:
 	MOVE.W	$0020(A2),D3
-	LEA	-$66D9(A4),A6	;_r_know
+	LEA	_r_know-BASE(A4),A6	;_r_know
 	ST	$00(A6,D3.W)
 	ORI.W	#O_ISKNOW,$0028(A2)
 	MOVE.W	$0020(A2),D3
