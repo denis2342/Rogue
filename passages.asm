@@ -7,7 +7,7 @@ _do_passages:
 	LINK	A5,#-$000A
 	MOVEM.L	D4/D5,-(A7)
 
-	LEA	-$77AC(A4),A6
+	LEA	_do_passages_tmp-BASE(A4),A6
 	MOVE.L	A6,-$0006(A5)
 L00440:
 	MOVEQ	#$00,D5
@@ -33,7 +33,7 @@ L00441:
 	MOVEq	#$0009,D0
 	JSR	_rnd
 	MULU.W	#$0014,D0
-	LEA	-$77AC(A4),A6
+	LEA	_do_passages_tmp-BASE(A4),A6
 	ADD.L	A6,D0
 	MOVE.L	D0,-$0006(A5)
 	MOVEA.L	-$0006(A5),A6
@@ -60,7 +60,7 @@ L00443:
 
 	MOVE.W	D4,D3
 	MULU.W	#$0014,D3
-	LEA	-$77AC(A4),A6
+	LEA	_do_passages_tmp-BASE(A4),A6
 	ADD.L	A6,D3
 	MOVE.L	D3,-$000A(A5)
 L00444:
@@ -74,7 +74,7 @@ L00445:
 	MOVEq	#$0009,D0
 	JSR	_rnd
 	MULU.W	#$0014,D0
-	LEA	-$77AC(A4),A6
+	LEA	_do_passages_tmp-BASE(A4),A6
 	ADD.L	A6,D0
 	MOVE.L	D0,-$0006(A5)
 	MOVEA.L	-$0006(A5),A6
@@ -86,14 +86,14 @@ L00446:
 	MOVEA.L	-$000A(A5),A6
 	MOVE.B	#$01,$0012(A6)
 
-	LEA	-$77AC(A4),A6
+	LEA	_do_passages_tmp-BASE(A4),A6
 	MOVE.L	-$0006(A5),D4
 	SUB.L	A6,D4
 
 	MOVEQ	#$14,d0
 	divu	D0,d4
 
-;	LEA	-$77AC(A4),A6
+;	LEA	_do_passages_tmp-BASE(A4),A6
 	MOVE.L	-$000A(A5),D5
 	SUB.L	A6,D5
 
@@ -128,7 +128,7 @@ L00448:
 	MOVEq	#$0009,D0
 	JSR	_rnd
 	MULU.W	#$0014,D0
-	LEA	-$77AC(A4),A6
+	LEA	_do_passages_tmp-BASE(A4),A6
 	ADD.L	A6,D0
 	MOVE.L	D0,-$0006(A5)
 	MOVEQ	#$00,D5
@@ -153,7 +153,7 @@ L00449:
 
 	MOVE.W	D4,D3
 	MULU.W	#$0014,D3
-	LEA	-$77AC(A4),A6
+	LEA	_do_passages_tmp-BASE(A4),A6
 	ADD.L	A6,D3
 	MOVE.L	D3,-$000A(A5)
 L0044A:
@@ -164,14 +164,14 @@ L0044A:
 	TST.W	D5
 	BEQ.B	L0044B
 
-	LEA	-$77AC(A4),A6
+	LEA	_do_passages_tmp-BASE(A4),A6
 	MOVE.L	-$0006(A5),D4
 	SUB.L	A6,D4
 
 	MOVEQ	#$14,d0
 	divu	D0,d4
 
-;	LEA	-$77AC(A4),A6
+;	LEA	_do_passages_tmp-BASE(A4),A6
 	MOVE.L	-$000A(A5),D5
 	SUB.L	A6,D5
 

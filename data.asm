@@ -212,6 +212,7 @@ _laugh:		dc.l	L001A3		;"you hear maniacal laughter%s."
 _in_dist:	dc.l	L001A4		;" in the distance"
 
 	dc.l	$00000000
+_do_passages_tmp:
 	dc.l	$00010001
 	dc.l	$00000000
 	dc.l	$00000000
