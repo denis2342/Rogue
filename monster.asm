@@ -14,7 +14,7 @@ _randmonster:
 	MOVEA.L	-$6992(A4),A2	;normal monster list
 	BRA.B	L00A10
 L00A0F:
-	MOVEA.L	-$6996(A4),A2	;wandering monster list
+	MOVEA.L	_lvl_monster_ptr-BASE(A4),A2	;wandering monster list
 L00A10:
 	MOVEq	#$0005,D0
 	JSR	_rnd

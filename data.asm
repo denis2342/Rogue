@@ -889,8 +889,10 @@ _hero_damage:
 	dc.l	$00000001
 	dc.l	$00010000
 	dc.l	$0000FFFF
-	dc.l	L00A0D
-	dc.l	L00A0E
+
+_lvl_monster_ptr:	dc.l	L00A0D
+_wnd_monster_ptr:	dc.l	L00A0E
+
 _commands:
 	dc.l	L00A47		; Go Down Stairs
 	dc.l	$00000000

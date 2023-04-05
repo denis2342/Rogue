@@ -3437,22 +3437,22 @@ _pick_mons:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
 
-	MOVE.L	-$6996(A4),A0	;lvl_mons[]
+	MOVE.L	_lvl_monster_ptr-BASE(A4),A0	;lvl_mons[]
 	JSR	_strlenquick
 
 	EXT.L	D0
 	MOVEA.L	D0,A2
-	ADDA.L	-$6996(A4),A2
+	ADDA.L	_lvl_monster_ptr-BASE(A4),A2
 
 1$	SUBQ.L	#1,A2
-	CMPA.L	-$6996(A4),A2
+	CMPA.L	_lvl_monster_ptr-BASE(A4),A2
 	BCS.B	2$
 	MOVEq	#10,D0		;10% chance monster, starting with the hardest
 	JSR	_rnd
 	TST.W	D0
 	BNE.B	1$
 
-2$	CMPA.L	-$6996(A4),A2	;not one match, it will be against a medusa
+2$	CMPA.L	_lvl_monster_ptr-BASE(A4),A2	;not one match, it will be against a medusa
 	BCC.B	4$
 	MOVEQ	#$4D,D0		;'M' medusa
 
@@ -3463,7 +3463,7 @@ _pick_mons:
 4$	CMP.b	#$20,(A2)	;' '
 	BNE.B	5$
 
-	SUBA.L	-$6996(A4),A2
+	SUBA.L	_lvl_monster_ptr-BASE(A4),A2
 	ADDA.L	-$6992(A4),A2
 
 5$	MOVE.B	(A2),D0
