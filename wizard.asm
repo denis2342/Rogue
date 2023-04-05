@@ -522,7 +522,7 @@ L007F4:
 	PEA	-$0004(A5)
 	MOVE.W	D4,D3
 	MULU.W	#66,D3
-	LEA	-$6088(A4),A6	;_rooms
+	LEA	_rooms-BASE(A4),A6	;_rooms
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 	JSR	_rnd_pos
@@ -542,7 +542,7 @@ L007F4:
 
 	MOVE.W	D4,D3
 	MULU.W	#66,D3
-	LEA	-$6088(A4),A6	;_rooms
+	LEA	_rooms-BASE(A4),A6	;_rooms
 	ADD.L	A6,D3
 	CMP.L	-$52A0(A4),D3	;_player + 42 (proom)
 	BEQ.B	L007F5

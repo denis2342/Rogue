@@ -669,7 +669,7 @@ _xfer_proom:
 	BEQ.B	L00B67
 
 	MOVEA.L	$0008(A5),A6
-	LEA	-$6088(A4),A1	;_rooms
+	LEA	_rooms-BASE(A4),A1	;_rooms
 	MOVEA.L	(A6),A0
 	CMPA.L	A1,A0
 	BCS.B	L00B66
@@ -682,7 +682,7 @@ _xfer_proom:
 
 	MOVEA.L	$0008(A5),A6
 	MOVE.L	(A6),D0
-	LEA	-$6088(A4),A6	;_rooms
+	LEA	_rooms-BASE(A4),A6	;_rooms
 	SUB.L	A6,D0
 	MOVEQ	#$42,D1
 	JSR	_divu
@@ -748,7 +748,7 @@ L00B6D:
 	MOVE.W	-$0002(A5),D3
 	AND.W	#$0FFF,D3
 	MULU.W	#66,D3
-	LEA	-$6088(A4),A1	;_rooms
+	LEA	_rooms-BASE(A4),A1	;_rooms
 	ADD.L	A1,D3
 	MOVE.L	D3,(A6)
 	BRA.B	L00B6F
@@ -984,7 +984,7 @@ L00B85:
 	BRA.B	L00B88
 L00B86:
 	MOVE.L	$0012(A2),D0
-	LEA	-$6088(A4),A6	;_rooms
+	LEA	_rooms-BASE(A4),A6	;_rooms
 	SUB.L	A6,D0
 	MOVEQ	#66,D1
 	JSR	_divu

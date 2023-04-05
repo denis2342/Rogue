@@ -838,7 +838,7 @@ _roomin:
 	MOVEM.L	D4/A2/A3,-(A7)
 
 	MOVEA.L	$0008(A5),A2
-	LEA	-$6088(A4),A6	;_rooms
+	LEA	_rooms-BASE(A4),A6	;_rooms
 	MOVEA.L	A6,A3
 L0027C:
 	MOVE.W	(A3),D3

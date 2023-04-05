@@ -207,7 +207,7 @@ L0018C:
 	PEA	-$0004(A5)
 	MOVE.W	D5,D3
 	MULU.W	#66,D3
-	LEA	-$6088(A4),A6	;_rooms
+	LEA	_rooms-BASE(A4),A6	;_rooms
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 	JSR	_rnd_pos
@@ -262,7 +262,7 @@ L00191:
 	PEA	-$0004(A5)
 	MOVE.W	D5,D3
 	MULU.W	#66,D3
-	LEA	-$6088(A4),A6	;_rooms
+	LEA	_rooms-BASE(A4),A6	;_rooms
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 	JSR	_rnd_pos
@@ -307,7 +307,7 @@ _treas_room:
 
 	JSR	_rnd_room(PC)
 	MULU.W	#$0042,D0
-	LEA	-$6088(A4),A6	;_rooms
+	LEA	_rooms-BASE(A4),A6	;_rooms
 
 	MOVEA.L	D0,A3
 	ADDA.L	A6,A3

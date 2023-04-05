@@ -36,7 +36,7 @@ L00421:
 L00422:
 	MOVE.W	D5,D3
 	MULS.W	#$0042,D3
-	LEA	-$6088(A4),A6	;_rooms
+	LEA	_rooms-BASE(A4),A6	;_rooms
 	ADD.L	A6,D3
 	MOVE.L	D3,-$0004(A5)
 	CMPI.W	#$0064,-$0012(A5)
@@ -46,7 +46,7 @@ L00422:
 	ADDQ.W	#3,D4
 	MOVE.W	D4,D3
 	MULS.W	#66,D3
-	LEA	-$6088(A4),A6	;_rooms
+	LEA	_rooms-BASE(A4),A6	;_rooms
 	ADD.L	A6,D3
 	MOVE.L	D3,-$0008(A5)
 	CLR.W	-$0016(A5)
@@ -152,7 +152,7 @@ L0042C:
 	ADDQ.W	#1,D4
 	MOVE.W	D4,D3
 	MULU.W	#66,D3
-	LEA	-$6088(A4),A6	;_rooms
+	LEA	_rooms-BASE(A4),A6	;_rooms
 	ADD.L	A6,D3
 	MOVE.L	D3,-$0008(A5)
 	MOVE.W	#$0001,-$0016(A5)
@@ -367,7 +367,7 @@ _do_rooms:
 	EXT.L	D3
 	DIVS.W	#$0003,D3
 	MOVE.W	D3,-$000C(A5)
-	LEA	-$6088(A4),A6	;_rooms
+	LEA	_rooms-BASE(A4),A6	;_rooms
 	MOVE.L	A6,-$0004(A5)
 L00901:
 	MOVEA.L	-$0004(A5),A6
@@ -388,7 +388,7 @@ L00902:
 	JSR	_rnd_room
 	MOVE.W	D0,D5
 	MULU.W	#$0042,D0
-	LEA	-$6088(A4),A6	;_rooms
+	LEA	_rooms-BASE(A4),A6	;_rooms
 	ADD.L	A6,D0
 	MOVE.L	D0,-$0004(A5)
 	MOVEA.L	-$0004(A5),A6
@@ -420,7 +420,7 @@ L00903:
 	DBRA	D4,L00902
 
 	MOVEQ	#$00,D4
-	LEA	-$6088(A4),A6	;_rooms
+	LEA	_rooms-BASE(A4),A6	;_rooms
 	MOVE.L	A6,-$0004(A5)
 	BRA.W	L00913
 L00905:

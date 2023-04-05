@@ -3377,7 +3377,7 @@ L008FE:
 	MOVE.L	A2,-(A7)
 	JSR	_rnd_room
 	MULU.W	#66,D0
-	LEA	-$6088(A4),A6	;_rooms
+	LEA	_rooms-BASE(A4),A6	;_rooms
 	ADD.L	A6,D0
 	MOVE.L	D0,-(A7)
 	JSR	_rnd_pos

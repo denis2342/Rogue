@@ -303,7 +303,7 @@ L00A2C:
 	MOVE.W	D0,D4
 	MOVE.W	D4,D3
 	MULU.W	#$0042,D3
-	LEA	-$6088(A4),A6	;_rooms
+	LEA	_rooms-BASE(A4),A6	;_rooms
 	MOVEA.L	D3,A2
 	ADDA.L	A6,A2
 	CMPA.L	-$52A0(A4),A2	;_player + 42 (proom)

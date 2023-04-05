@@ -340,7 +340,7 @@ _passnum:
 	CMPA.L	A6,A2
 	BCS.B	1$
 
-	LEA	-$6088(A4),A6	;_rooms
+	LEA	_rooms-BASE(A4),A6	;_rooms
 	MOVEA.L	A6,A2
 L00458:
 	MOVEQ	#$00,D4
