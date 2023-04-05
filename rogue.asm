@@ -2272,7 +2272,7 @@ L0051B:
 	MOVE.W	_hungry_state-BASE(A4),D3	;_hungry_state
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$701E(A4),A6	;_hungry_state_texts
+	LEA	_hungry_state_texts-BASE(A4),A6	;_hungry_state_texts
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	_level-BASE(A4),-(A7)	;_level
 	PEA	-$0078(A5)
