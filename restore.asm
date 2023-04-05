@@ -241,7 +241,7 @@ _xfer_all:
 	JSR	_xfer
 	ADDQ.W	#6,A7
 	MOVE.W	#$000F,-(A7)
-	PEA	-$66A6(A4)
+	PEA	_s_names-BASE(A4)
 	JSR	_xfer_strs(PC)
 	ADDQ.W	#6,A7
 	MOVE.W	#$000F,-(A7)
