@@ -292,11 +292,11 @@ _xfer_all:
 	TST.W	-$532E(A4)
 	BNE.B	L00B44
 	MOVE.W	#$0032,-(A7)
-	PEA	-$52CA(A4)	;_player + 0
+	PEA	_player-BASE(A4)	;_player + 0
 	BSR.B	_xfer
 	ADDQ.W	#6,A7
 L00B44:
-	PEA	-$52CA(A4)	;_player + 0
+	PEA	_player-BASE(A4)	;_player + 0
 	JSR	_xfer_monster(PC)
 	ADDQ.W	#4,A7
 	MOVE.W	#$00A6,-(A7)
@@ -875,7 +875,7 @@ _xfer_monster:
 	TST.W	-$532E(A4)
 	BNE.W	L00B84
 
-	LEA	-$52CA(A4),A6	;_player + 0
+	LEA	_player-BASE(A4),A6	;_player + 0
 	CMPA.L	A6,A2
 	BNE.B	L00B7C
 

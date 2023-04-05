@@ -609,7 +609,7 @@ L009D9:
 	BNE.B	L009DA
 	SUB.W	$0026(A6),D4
 L009DA:
-	PEA	-$52CA(A4)	;_player + 0
+	PEA	_player-BASE(A4)	;_player + 0
 	MOVE.W	D4,-(A7)
 	JSR	_save_throw(PC)
 	ADDQ.W	#6,A7

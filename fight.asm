@@ -112,7 +112,7 @@ L00938:
 	MOVE.W	D3,-(A7)
 	MOVE.L	A3,-(A7)
 	MOVE.L	D4,-(A7)
-	PEA	-$52CA(A4)	;_player + 0
+	PEA	_player-BASE(A4)	;_player + 0
 	JSR	_roll_em(PC)
 	LEA	$000E(A7),A7
 	TST.W	D0		;did we hit?
@@ -273,7 +273,7 @@ _attack:
 L0094C:
 	CLR.L	-(A7)
 	CLR.L	-(A7)
-	PEA	-$52CA(A4)	;_player + 0
+	PEA	_player-BASE(A4)	;_player + 0
 	MOVE.L	$0008(A5),-(A7)
 	JSR	_roll_em(PC)
 	LEA	$0010(A7),A7
@@ -994,7 +994,7 @@ L00998:
 	ADD.W	D6,D0
 	MOVE.W	D0,D7
 	ADD.W	-$000C(A5),D7
-	LEA	-$52CA(A4),A6	;_player + 0
+	LEA	_player-BASE(A4),A6	;_player + 0
 	CMPA.L	$000C(A5),A6	;same as creature who is fighting here?
 	BNE.B	L00999
 

@@ -58,7 +58,7 @@ L00092:
 	BEQ.B	L00093
 
 	PEA	-$5194(A4)	;_nh
-	PEA	-$52CA(A4)	;_player + 0
+	PEA	_player-BASE(A4)	;_player + 0
 	JSR	_rndmove(PC)
 	ADDQ.W	#8,A7
 	BRA.B	L00094
