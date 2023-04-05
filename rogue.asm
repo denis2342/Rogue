@@ -867,7 +867,7 @@ __graphch:
 	MOVEQ	#$00,D3
 	MOVE.B	D4,D3
 	ASL.w	#1,d3
-	LEA	-$5140(A4),A1	;_char_data
+	LEA	_char_data-BASE(A4),A1	;_char_data
 	move.w	0(a1,d3.w),d1
 	BPL	L00104
 
@@ -1066,7 +1066,7 @@ L00109:
 	BRA	readCharEnd
 
 L0010B2:
-	LEA	-$5140(A4),A0	;_char_data
+	LEA	_char_data-BASE(A4),A0	;_char_data
 	moveq	#-1,d1
 	move.w	#255,d0
 	jsr	_memset
@@ -1107,7 +1107,7 @@ L0010B:
 	MOVEQ	#$00,D6		;start with plane 0
 	MOVE.W	-$0002(A5),D3
 
-	LEA	-$5140(A4),A6	;_char_data
+	LEA	_char_data-BASE(A4),A6	;_char_data
 	asl.w	#1,d3
 
 	move.l	d4,d2
