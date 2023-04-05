@@ -197,7 +197,7 @@ L0018B:
 	ADDQ.W	#8,A7
 	CLR.W	$0024(A2)
 	CLR.W	$0022(A2)
-	MOVE.L	-$69AE(A4),$001A(A2)	;_no_damage
+	MOVE.L	_no_damage-BASE(A4),$001A(A2)	;_no_damage
 	MOVE.L	$001A(A2),$0016(A2)
 	MOVE.W	#$000B,$0026(A2)
 	MOVE.W	#$002C,$000A(A2)

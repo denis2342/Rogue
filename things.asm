@@ -896,7 +896,7 @@ L00544:
 L00545:
 	CLR.W	$0024(A2)		;zero damage
 	CLR.W	$0022(A2)		;zero hit
-	MOVE.L	-$69AE(A4),$001A(A2)	;_no_damage throw damage
+	MOVE.L	_no_damage-BASE(A4),$001A(A2)	;_no_damage throw damage
 	MOVE.L	$001A(A2),$0016(A2)	;wield damage
 	MOVE.W	#$000B,$0026(A2)	;armor class base value
 	MOVE.W	#$0001,$001E(A2)	;one item

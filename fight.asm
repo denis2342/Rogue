@@ -886,7 +886,7 @@ L00993:
 ;	CMPI.W	#$0000,$0026(A6)
 	BGE.B	L00994
 
-	MOVE.L	-$69AE(A4),$0016(A6)	;_no_damage
+	MOVE.L	_no_damage-BASE(A4),$0016(A6)	;_no_damage
 	MOVE.L	$0016(A6),-$0004(A5)
 
 	CLR.W	$0024(A6)	;0 hit

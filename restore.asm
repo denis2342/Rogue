@@ -1031,12 +1031,12 @@ _xfer_object:
 	TST.L	$0016(A6)
 	BNE.B	1$
 
-	MOVE.L	-$69AE(A4),$0016(A6)	;_no_damage
+	MOVE.L	_no_damage-BASE(A4),$0016(A6)	;_no_damage
 1$
 	TST.L	$001A(A6)
 	BNE.B	2$
 
-	MOVE.L	-$69AE(A4),$001A(A6)	;_no_damage
+	MOVE.L	_no_damage-BASE(A4),$001A(A6)	;_no_damage
 2$
 	CMPI.W	#$006D,$000A(A6)	;'m' weapon type
 	BNE.B	3$
@@ -1070,13 +1070,13 @@ L00B8D:
 	MOVEA.L	$0008(A5),A6
 
 	MOVEA.L	$0016(A6),A1
-	CMPA.L	-$69AE(A4),A1	;_no_damage
+	CMPA.L	_no_damage-BASE(A4),A1	;_no_damage
 	BNE.B	1$
 
 	CLR.L	$0016(A6)
 1$
 	MOVEA.L	$001A(A6),A1
-	CMPA.L	-$69AE(A4),A1	;_no_damage
+	CMPA.L	_no_damage-BASE(A4),A1	;_no_damage
 	BNE.B	2$
 
 	CLR.L	$001A(A6)
