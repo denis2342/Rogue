@@ -71,13 +71,13 @@ L00185:
 	DIVS.W	#$0004,D0
 	JSR	_rnd
 	ADDQ.W	#1,D0
-	MOVE.W	D0,-$60B8(A4)	;_dnum
+	MOVE.W	D0,_ntraps-BASE(A4)	;_ntraps
 	CMPI.W	#10,D0		;_dnum
 	BLE.B	L00186
 
-	MOVE.W	#$000A,-$60B8(A4)	;_dnum
+	MOVE.W	#$000A,_ntraps-BASE(A4)	;_ntraps
 L00186:
-	MOVE.W	-$60B8(A4),D5	;_dnum
+	MOVE.W	_ntraps-BASE(A4),D5	;_ntraps
 L00187:
 	MOVE.W	D5,D3
 	SUBQ.W	#1,D5
