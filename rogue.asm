@@ -1163,7 +1163,7 @@ L0010F:
 	LEA	$0010(A7),A7
 
 	MOVE.L	_StdScr-BASE(A4),-$7814(A4)	;_StdScr
-	PEA	-$7832(A4)		;_Window1
+	PEA	_Window1-BASE(A4)		;_Window1
 	JSR	_OpenWindow
 	ADDQ.W	#4,A7
 
