@@ -694,7 +694,7 @@ _init_ds:
 	ADDQ.W	#2,A7
 	MOVE.L	D0,_ring_buf-BASE(A4)	;_ring_buf
 
-	MOVE.W	-$6CCC(A4),D3	;_nlevels 23
+	MOVE.W	_nlevels-BASE(A4),D3	;_nlevels 23
 	ADDQ.W	#1,D3
 	ASL.W	#2,D3
 	MOVE.W	D3,-(A7)
@@ -707,7 +707,7 @@ _init_ds:
 ;	BRA.B	L0008F
 
 	moveq	#10,D0		; start with 10 xp
-	move.w	-$6CCC(A4),D3	;_nlevels 23 (means player ranks)
+	move.w	_nlevels-BASE(A4),D3	;_nlevels 23 (means player ranks)
 	subq	#1,d3
 
 1$	MOVE.L	D0,(A2)+
@@ -720,7 +720,7 @@ _init_ds:
 ;	MOVE.L	D3,(A2)+
 ;	ADDQ.L	#4,A2
 ;L0008F:
-;	MOVE.W	-$6CCC(A4),D3	;_nlevels 23
+;	MOVE.W	_nlevels-BASE(A4),D3	;_nlevels 23
 ;	ASL.w	#2,D3
 ;	EXT.L	D3
 ;	ADD.L	_e_levels-BASE(A4),D3	;_e_levels
