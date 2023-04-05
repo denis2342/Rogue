@@ -1334,7 +1334,7 @@ L008DB:
 L008DC:
 	LEA	_p_guess-BASE(A4),A6	;_p_guess
 	MOVE.L	A6,-$0004(A5)
-	LEA	-$66E7(A4),A6	;_p_know
+	LEA	_p_know-BASE(A4),A6	;_p_know
 	MOVEA.L	A6,A3
 	MOVE.W	$0020(A2),D3
 	MULU.W	#21,D3

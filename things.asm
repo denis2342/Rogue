@@ -97,7 +97,7 @@ L00AC1:
 	AND.W	#$0004,D3	;only the simple name?
 	BEQ.B	L00AC4
 
-	LEA	-$66E7(A4),A6	;_p_know
+	LEA	_p_know-BASE(A4),A6	;_p_know
 	TST.B	$00(A6,D5.W)
 	BEQ.B	L00AC2
 
@@ -1174,7 +1174,7 @@ _discovered:
 
 	MOVEq	#$0021,D7	;'!' potions
 	MOVEQ	#14,D5
-	LEA	-$66E7(A4),A2	;_p_know
+	LEA	_p_know-BASE(A4),A2	;_p_know
 	LEA	_p_guess-BASE(A4),A3	;_p_guess
 	BSR.B	_print_disc
 

@@ -54,7 +54,7 @@ L00487:
 ; potion of confusion
 
 L00488:
-	ST	-$66E7(A4)	;_p_know + 0 (potion of confusion)
+	ST	_p_know-BASE(A4)	;_p_know + 0 (potion of confusion)
 	JSR	_p_confuse(PC)
 	PEA	L004B0(PC)	;"wait, what's going on? Huh? What? Who?"
 	JSR	_msg
@@ -433,7 +433,7 @@ L004AD:
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 	MOVE.W	$0020(A2),D3
-	LEA	-$66E7(A4),A6	;_p_know
+	LEA	_p_know-BASE(A4),A6	;_p_know
 	MOVEQ	#$00,D2
 	MOVE.B	$00(A6,D3.W),D2
 	MOVE.W	D2,-(A7)
