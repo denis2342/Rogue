@@ -47,7 +47,7 @@ _ws_setdam:
 	MOVE.W	$0020(A2),D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$521C(A4),A6	;_ws_type
+	LEA	_ws_type-BASE(A4),A6	;_ws_type
 	MOVE.L	$00(A6,D3.w),-(A7)
 	JSR	_strcmp
 	ADDQ.W	#8,A7

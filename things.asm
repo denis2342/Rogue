@@ -380,7 +380,7 @@ L00AD8:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$521C(A4),A6	;_ws_type
+	LEA	_ws_type-BASE(A4),A6	;_ws_type
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L00B06(PC)	;"%s of %s(%s)"
 	PEA	-$0050(A5)
@@ -407,7 +407,7 @@ L00AD9:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$521C(A4),A6	;_ws_type
+	LEA	_ws_type-BASE(A4),A6	;_ws_type
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L00B07(PC)	;"%s called %s(%s)"
 	PEA	-$0050(A5)
@@ -427,7 +427,7 @@ L00ADD:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$521C(A4),A6	;_ws_type
+	LEA	_ws_type-BASE(A4),A6	;_ws_type
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	D5,D3
 ;	EXT.L	D3
@@ -443,7 +443,7 @@ L00ADE:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$521C(A4),A6	;_ws_type
+	LEA	_ws_type-BASE(A4),A6	;_ws_type
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	-$0050(A5)
 	JSR	_strcpy

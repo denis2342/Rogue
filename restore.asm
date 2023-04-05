@@ -550,11 +550,11 @@ L00B57:
 	ADD.W	D1,$00(A6,D3.L)
 L00B58:
 	ADDQ.L	#4,A2
-	LEA	-$521C(A4),A6	;_ws_type
+	LEA	_ws_type-BASE(A4),A6	;_ws_type
 	CMPA.L	A6,A2
 	BCS.W	L00B54
 
-;	LEA	-$521C(A4),A6	;_ws_type
+;	LEA	_ws_type-BASE(A4),A6	;_ws_type
 	MOVE.L	A6,D4
 	LEA	-$51E4(A4),A6	;_ws_made
 	MOVEA.L	A6,A2
