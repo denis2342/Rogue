@@ -102,7 +102,7 @@ L007BD:
 	ORI.W	#O_ISKNOW,$0028(A2)
 	MOVE.W	$0020(A2),D3
 	MULU.W	#21,D3
-	LEA	-$6308(A4),A6	;_r_guess
+	LEA	_r_guess-BASE(A4),A6	;_r_guess
 	CLR.B	$00(A6,D3.L)
 	BRA.B	L007BF
 L007BE:

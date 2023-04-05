@@ -1312,7 +1312,7 @@ L008D9:
 ;	EXT.L	D0
 	BRA.W	L008E3
 L008DA:
-	LEA	-$6308(A4),A6	;_r_guess
+	LEA	_r_guess-BASE(A4),A6	;_r_guess
 	MOVE.L	A6,-$0004(A5)
 	LEA	-$66D9(A4),A6	;_r_know
 	MOVEA.L	A6,A3

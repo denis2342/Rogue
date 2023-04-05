@@ -253,7 +253,7 @@ _xfer_all:
 	JSR	_xfer_strs(PC)
 	ADDQ.W	#6,A7
 	MOVE.W	#$000E,-(A7)
-	PEA	-$6308(A4)	;_r_guess
+	PEA	_r_guess-BASE(A4)	;_r_guess
 	JSR	_xfer_strs(PC)
 	ADDQ.W	#6,A7
 	MOVE.W	#$000E,-(A7)
