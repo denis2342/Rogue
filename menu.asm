@@ -316,7 +316,7 @@ L00A80:
 	MOVEQ	#$0B,D2
 	ASR.L	D2,D5
 	AND.B	#$1F,D5
-	MOVE.B	D5,-$66B9(A4)	;_faststate
+	MOVE.B	D5,_faststate-BASE(A4)	;_faststate
 	BRA.B	L00A8A
 L00A81:
 	MOVEQ	#$0B,D2
@@ -635,7 +635,7 @@ _fix_menu:
 	ADDQ.W	#4,A7
 
 	MOVEQ	#$00,D3
-	MOVE.B	-$66B9(A4),D3	;_faststate
+	MOVE.B	_faststate-BASE(A4),D3	;_faststate
 	MOVE.W	D3,-(A7)
 	CLR.W	-(A7)
 	MOVE.W	#$0001,-(A7)

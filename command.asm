@@ -93,7 +93,7 @@ _com_char:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/D5,-(A7)
 	MOVE.B	_fastmode-BASE(A4),D3	;_fastmode
-	CMP.B	-$66B9(A4),D3	;_faststate
+	CMP.B	_faststate-BASE(A4),D3	;_faststate
 	SEQ	D4
 	ST	-$48B8(A4)	;_menu_on
 L003A7:
@@ -113,10 +113,10 @@ L003A8:
 	TST.W	D4
 	BEQ.B	L003A9
 
-	MOVE.B	-$66B9(A4),_fastmode-BASE(A4)	;_faststate,_fastmode
+	MOVE.B	_faststate-BASE(A4),_fastmode-BASE(A4)	;_faststate,_fastmode
 	BRA.B	L003AC
 L003A9:
-	TST.B	-$66B9(A4)	;_faststate
+	TST.B	_faststate-BASE(A4)	;_faststate
 	SEQ	_fastmode-BASE(A4)	;_fastmode
 L003AC:
 	MOVE.W	D5,D0
@@ -181,7 +181,7 @@ _get_prefix:
 	MOVEM.L	D4-D6,-(A7)
 
 	ST	_after-BASE(A4)	;_after
-	MOVE.B	-$66B9(A4),_fastmode-BASE(A4)	;_faststate,_fastmode
+	MOVE.B	_faststate-BASE(A4),_fastmode-BASE(A4)	;_faststate,_fastmode
 	MOVE.W	#$0001,-(A7)
 	JSR	_look
 	ADDQ.W	#2,A7
