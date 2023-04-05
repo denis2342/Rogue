@@ -1042,8 +1042,8 @@ L00109:
 ;	PEA	L00115(PC)	;"layers.library"
 ;	JSR	_OpenLibrary
 ;	ADDQ.W	#8,A7
-;	MOVE.L	D0,-$5180(A4)	;_LayersBase
-;	TST.L	-$5180(A4)
+;	MOVE.L	D0,_LayersBase-BASE(A4)	;_LayersBase
+;	TST.L	_LayersBase-BASE(A4)
 ;	BNE.B	L0010A
 
 ;	PEA	L00116(PC)	;"No layers"
@@ -1240,9 +1240,9 @@ L00120:
 	JSR	_CloseLibrary
 	ADDQ.W	#4,A7
 L00121:
-;	TST.L	-$5180(A4)	;_LayersBase
+;	TST.L	_LayersBase-BASE(A4)	;_LayersBase
 ;	BEQ.B	L00122
-;	MOVE.L	-$5180(A4),-(A7)	;_LayersBase
+;	MOVE.L	_LayersBase-BASE(A4),-(A7)	;_LayersBase
 ;	JSR	_CloseLibrary
 ;	ADDQ.W	#4,A7
 ;L00122:
