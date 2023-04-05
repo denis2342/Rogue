@@ -515,7 +515,7 @@ L001DE:
 	MOVE.L	A6,D3
 	BRA.B	L001E0
 L001DF:
-	MOVE.L	-$69C6(A4),D3	;_intense
+	MOVE.L	_intense-BASE(A4),D3	;_intense
 L001E0:
 	MOVE.L	D3,-(A7)
 	MOVEA.L	_cur_weapon-BASE(A4),A6	;_cur_weapon

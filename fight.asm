@@ -792,7 +792,7 @@ L0098A:
 	MOVE.L	A6,D3
 	BRA.B	L0098C
 L0098B:
-	MOVE.L	-$69C6(A4),D3	;_intense
+	MOVE.L	_intense-BASE(A4),D3	;_intense
 L0098C:
 	MOVE.L	D3,-(A7)
 	MOVEA.L	$0010(A5),A6
