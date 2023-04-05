@@ -17,7 +17,7 @@ L00673:
 	JSR	_AmigaOpen(PC)
 	ADDQ.W	#6,A7
 
-	MOVE.W	D0,-$53C0(A4)	;rogue.score filehd
+	MOVE.W	D0,r_score_fd-BASE(A4)	;rogue.score filehd
 ;	CMP.W	#$0000,D0
 	BGE.B	L00677
 
@@ -94,7 +94,7 @@ L00678:
 	ADDQ.W	#8,A7
 	MOVE.W	D0,D5
 L00679:
-	MOVE.W	-$53C0(A4),-(A7)
+	MOVE.W	r_score_fd-BASE(A4),-(A7)
 	JSR	_AmigaClose(PC)
 	ADDQ.W	#2,A7
 
@@ -109,7 +109,7 @@ L00679:
 	JSR	_AmigaCreat(PC)
 	ADDQ.W	#6,A7
 
-	MOVE.W	D0,-$53C0(A4)	;rogue.score filehd
+	MOVE.W	D0,r_score_fd-BASE(A4)	;rogue.score filehd
 ;	CMP.W	#$0000,D0
 	BLT.B	L0067A
 
@@ -117,7 +117,7 @@ L00679:
 	JSR	_put_scores(PC)
 	ADDQ.W	#4,A7
 
-	MOVE.W	-$53C0(A4),-(A7)	;rogue.score filehd
+	MOVE.W	r_score_fd-BASE(A4),-(A7)	;rogue.score filehd
 	JSR	_AmigaClose(PC)
 	ADDQ.W	#2,A7
 L0067A:
@@ -152,7 +152,7 @@ L00681:
 
 	MOVE.W	#46,-(A7)		;read 46 bytes
 	MOVE.L	$0008(A5),-(A7)
-	MOVE.W	-$53C0(A4),-(A7)	;rogue.score filehd
+	MOVE.W	r_score_fd-BASE(A4),-(A7)	;rogue.score filehd
 	JSR	_read
 	ADDQ.W	#8,A7
 	MOVE.W	D0,D5
@@ -184,7 +184,7 @@ loop$	MOVEA.L	$0008(A5),A6
 
 	MOVE.W	#46,-(A7)	; 46 bytes per entry
 	MOVE.L	A6,-(A7)
-	MOVE.W	-$53C0(A4),-(A7)	;rogue.score filehd
+	MOVE.W	r_score_fd-BASE(A4),-(A7)	;rogue.score filehd
 	JSR	_write
 	ADDQ.W	#8,A7
 	CMP.W	#$0000,D0

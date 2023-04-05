@@ -1634,7 +1634,12 @@ monster_posy:	ds.w	1
 
 _num_storage:	ds.l	1
 
-	ds.w	122
+	ds.b	6
+
+r_score_fd:
+	ds.w	2
+
+	ds.w	117
 
 __things:
 	dc.l	$00000000
