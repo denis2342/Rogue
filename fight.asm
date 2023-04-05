@@ -62,7 +62,7 @@ L00934:
 	RTS
 
 L00935:
-	CLR.W	-$60A0(A4)	;_quiet
+	CLR.W	_quiet-BASE(A4)	;_quiet
 	CLR.W	_count-BASE(A4)	;_count
 
 	MOVE.L	A2,-(A7)
@@ -247,7 +247,7 @@ _attack:
 	MOVEM.L	D4/D5/A2/A3,-(A7)
 
 	CLR.B	_running-BASE(A4)	;_running
-	CLR.W	-$60A0(A4)	;_quiet
+	CLR.W	_quiet-BASE(A4)	;_quiet
 	CLR.W	_count-BASE(A4)	;_count
 
 	MOVEA.L	$0008(A5),A6

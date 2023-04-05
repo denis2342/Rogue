@@ -9,13 +9,13 @@ _doctor:
 
 	MOVE.W	-$52AC(A4),D4	;_player + 30 (rank)
 	MOVE.W	-$52A8(A4),D5	;_player + 34 (hp)
-	ADDQ.W	#1,-$60A0(A4)	;_quiet
+	ADDQ.W	#1,_quiet-BASE(A4)	;_quiet
 	CMP.W	#$0008,D4
 	BGE.B	L00640
 
 	MOVE.W	D4,D3
 	ASL.W	#1,D3
-	ADD.W	-$60A0(A4),D3	;_quiet
+	ADD.W	_quiet-BASE(A4),D3	;_quiet
 	CMP.W	#$0014,D3
 	BLE.B	L0063F
 
@@ -23,7 +23,7 @@ _doctor:
 L0063F:
 	BRA.B	L00641
 
-L00640:	CMPI.W	#$0003,-$60A0(A4)	;_quiet
+L00640:	CMPI.W	#$0003,_quiet-BASE(A4)	;_quiet
 	BLT.B	L00641
 
 	MOVE.W	D4,D3
@@ -60,7 +60,7 @@ L00643:	CMP.W	-$52A8(A4),D5	;_player + 34 (hp)
 
 	MOVE.W	-$52A2(A4),-$52A8(A4)	;_player + 40 (max hp),_player + 34 (hp)
 L00644:
-	CLR.W	-$60A0(A4)	;_quiet
+	CLR.W	_quiet-BASE(A4)	;_quiet
 L00645:
 	MOVEM.L	(A7)+,D4/D5
 ;	UNLK	A5
