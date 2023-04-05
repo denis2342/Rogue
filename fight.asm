@@ -998,7 +998,7 @@ L00998:
 	CMPA.L	$000C(A5),A6	;same as creature who is fighting here?
 	BNE.B	L00999
 
-	CMPI.W	#$0001,-$60BA(A4)	;_ntraps
+	CMPI.W	#$0001,_max_level-BASE(A4)	;_max_level
 	BNE.B	L00999
 
 	ADDQ.W	#1,D7		;divide damage by half, if level == 1

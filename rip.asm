@@ -86,7 +86,7 @@ L00677:
 
 	MOVE.W	$000A(A5),-$0004(A5)
 L00678:
-	MOVE.W	-$60BA(A4),-$0002(A5)	;_ntraps (deepest level)
+	MOVE.W	_max_level-BASE(A4),-$0002(A5)	;_max_level (deepest level)
 	MOVE.W	-$52AC(A4),-$0008(A5)	;_player + 30 (rank)
 	PEA	-$01FA(A5)	;506 (460 + 46)
 	PEA	-$002E(A5)

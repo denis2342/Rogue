@@ -549,7 +549,7 @@ L00909:
 	BEQ.B	L0090A
 
 	MOVE.W	_level-BASE(A4),D3	;_level
-	CMP.W	-$60BA(A4),D3	;_ntraps
+	CMP.W	_max_level-BASE(A4),D3	;_max_level
 	BLT.W	L0090D
 L0090A:
 	JSR	_new_item

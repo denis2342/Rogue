@@ -11,10 +11,10 @@ _new_level:
 	ANDI.W	#~C_ISHELD,-$52B4(A4)	;clear C_ISHELD ($80) _player + 22 (flags)
 	CLR.B	_no_more_fears-BASE(A4)	;_no_more_fears
 	MOVE.W	_level-BASE(A4),D3	;_level
-	CMP.W	-$60BA(A4),D3	;_ntraps
+	CMP.W	_max_level-BASE(A4),D3	;_max_level
 	BLE.B	L00183
 
-	MOVE.W	_level-BASE(A4),-$60BA(A4)	;_level,_ntraps
+	MOVE.W	_level-BASE(A4),_max_level-BASE(A4)	;_level,_max_level
 L00183:
 	MOVEq	#$0020,d1
 	MOVE.W	#1760,d0
@@ -174,7 +174,7 @@ _put_things:
 
 	MOVE.W	_level-BASE(A4),D3	;_level
 ;	MOVE.W	_level-BASE(A4),D3	;_level
-	CMP.W	-$60BA(A4),D3	;_ntraps
+	CMP.W	_max_level-BASE(A4),D3	;_max_level
 	BGE.B	L0018B
 
 	MOVEQ	#1-1,D4		;if we saw it then create only one item
