@@ -104,7 +104,7 @@ L001AF:
 L001B0:
 	CMP.W	#$0000,D4
 	BLE.B	L001B1
-	CMP.W	-$60BC(A4),D4	;_maxrow
+	CMP.W	_maxrow-BASE(A4),D4	;_maxrow
 	BGE.B	L001B1
 
 	MOVE.W	D5,d1
@@ -303,7 +303,7 @@ L001C5:
 
 	ADDQ.W	#1,D4
 L001C6:
-	CMP.W	-$60BC(A4),D4	;_maxrow
+	CMP.W	_maxrow-BASE(A4),D4	;_maxrow
 	BLT.W	L001BC
 
 	BRA.W	L001E6

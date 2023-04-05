@@ -408,7 +408,7 @@ _inrange:
 	CMP.W	-$53B8(A4),D3
 	BLT.B	L007B2
 
-	MOVE.W	-$60BC(A4),D3	;_maxrow
+	MOVE.W	_maxrow-BASE(A4),D3	;_maxrow
 	ADDQ.W	#1,D3
 	EXT.L	D3
 	DIVS.W	#$0003,D3

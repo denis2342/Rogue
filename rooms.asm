@@ -358,7 +358,7 @@ _do_rooms:
 	LINK	A5,#-$001C
 	MOVEM.L	D4/D5/A2,-(A7)
 
-	MOVE.W	-$60BC(A4),D3	;_maxrow
+	MOVE.W	_maxrow-BASE(A4),D3	;_maxrow
 	ADDQ.W	#1,D3
 	MOVE.W	D3,-$0016(A5)
 	MOVE.W	_level-BASE(A4),-$0014(A5)	;_level

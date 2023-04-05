@@ -315,7 +315,7 @@ L00455:
 
 	ADDQ.W	#1,D4
 L00456:
-	CMP.W	-$60BC(A4),D4	;_maxrow
+	CMP.W	_maxrow-BASE(A4),D4	;_maxrow
 	BLT.B	L00452
 
 	MOVEM.L	(A7)+,D4-D5

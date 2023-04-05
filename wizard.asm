@@ -664,7 +664,7 @@ L007FE:
 
 	ADDQ.W	#1,D4
 L007FF:
-	CMP.W	-$60BC(A4),D4	;_maxrow
+	CMP.W	_maxrow-BASE(A4),D4	;_maxrow
 	BLT.B	L007FB
 
 	MOVEM.L	(A7)+,D4-D6

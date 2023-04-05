@@ -186,7 +186,7 @@ L00825:
 	CMP.W	#$0000,D5
 	BLE.W	L00848
 
-	CMP.W	-$60BC(A4),D5	;_maxrow
+	CMP.W	_maxrow-BASE(A4),D5	;_maxrow
 	BGE.W	L00848
 
 	MOVE.W	-$0014(A5),D4

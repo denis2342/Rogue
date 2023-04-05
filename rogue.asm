@@ -2042,7 +2042,7 @@ _setup:
 
 	CLR.B	_terse-BASE(A4)	;_terse
 	CLR.B	_expert-BASE(A4)	;_expert
-	MOVE.W	#22,-$60BC(A4)	;_maxrow
+	MOVE.W	#22,_maxrow-BASE(A4)	;_maxrow
 
 	CLR.L	-(A7)
 	PEA	-$0030(A5)
@@ -3214,7 +3214,7 @@ L008BB:
 	RTS
 
 _INDEXplayer:
-	MOVE.W	-$60BC(A4),D0	;_maxrow
+	MOVE.W	_maxrow-BASE(A4),D0	;_maxrow
 	SUBQ.W	#1,D0
 	MULU.W	-$52C0(A4),D0
 	ADD.W	-$52BE(A4),D0
@@ -3222,7 +3222,7 @@ _INDEXplayer:
 	RTS
 
 _INDEXquick:
-	MOVE.W	-$60BC(A4),D2	;_maxrow
+	MOVE.W	_maxrow-BASE(A4),D2	;_maxrow
 	SUBQ.W	#1,D2
 	MULU.W	D2,D0
 	ADD.W	D1,D0
@@ -3232,7 +3232,7 @@ _INDEXquick:
 ;x_INDEX:
 ;	LINK	A5,#-$0000
 
-;	MOVE.W	-$60BC(A4),D0	;_maxrow
+;	MOVE.W	_maxrow-BASE(A4),D0	;_maxrow
 ;	SUBQ.W	#1,D0
 ;	MULU.W	$0006(A7),D0
 ;	ADD.W	$0004(A7),D0
@@ -3246,7 +3246,7 @@ _offmap:
 	BLT.B	L008BC
 
 	MOVE.W	$0004(A7),D3
-	CMP.W	-$60BC(A4),D3	;_maxrow
+	CMP.W	_maxrow-BASE(A4),D3	;_maxrow
 	BGE.B	L008BC
 
 	MOVE.W	$0006(A7),D3

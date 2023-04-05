@@ -226,7 +226,7 @@ L0009E:
 	CLR.W	D3
 L0009F:
 	MOVE.B	D3,D6
-	MOVE.W	-$60BC(A4),D3	;_maxrow
+	MOVE.W	_maxrow-BASE(A4),D3	;_maxrow
 	SUBQ.W	#1,D3
 	MOVE.W	-$52BE(A4),D2	;_player + 12
 	CMP.W	D3,D2
@@ -910,7 +910,7 @@ L000F3:
 	CMP.W	#$0001,D5
 	BLT.B	L000F9
 
-	CMP.W	-$60BC(A4),D5	;_maxrow
+	CMP.W	_maxrow-BASE(A4),D5	;_maxrow
 	BGE.B	L000F9
 
 	CMP.W	#$0000,D4
