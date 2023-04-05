@@ -2057,7 +2057,7 @@ __main:
 	PEA	L00CAF(PC)		; dos.library
 	JSR	_OpenLibrary(PC)
 	ADDQ.W	#8,A7
-	MOVE.L	D0,-$46DC(A4)		;_DOSBase
+	MOVE.L	D0,_DOSBase-BASE(A4)		;_DOSBase
 ;	TST.L	D0
 ;	BNE.B	L00CA1
 	bne	L00CA2		; no need for mathffp.library
@@ -2475,60 +2475,60 @@ L00CC4:
 
 _Close:
 	MOVE.L	$0004(A7),D1
-	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
 	JMP	_LVOClose(A6)
 _CurrentDir:
 	MOVE.L	$0004(A7),D1
-	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
 	JMP	_LVOCurrentDir(A6)
 _DateStamp:
 	MOVE.L	$0004(A7),D1
-	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
 	JMP	_LVODateStamp(A6)
 _DeleteFile:
 	MOVE.L	$0004(A7),D1
-	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
 	JMP	_LVODeleteFile(A6)
 _Exit:
 	MOVE.L	$0004(A7),D1
-	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
 	JMP	_LVOExit(A6)
 _Input:
-	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
 	JMP	_LVOInput(A6)
 _IoErr:
-	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
 	JMP	_LVOIoErr(A6)
 _IsInteractive:
 	MOVE.L	$0004(A7),D1
-	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
 	JMP	_LVOIsInteractive(A6)
 _Lock:
 	MOVEM.L	$0004(A7),D1/D2
-	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
 	JMP	_LVOLock(A6)
 _Open:
 	MOVEM.L	$0004(A7),D1/D2
-	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
 	JMP	_LVOOpen(A6)
 _Output:
-	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
 	JMP	_LVOOutput(A6)
 _Read:
 	MOVEM.L	$0004(A7),D1-D3
-	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
 	JMP	_LVORead(A6)
 _Seek:
 	MOVEM.L	$0004(A7),D1-D3
-	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
 	JMP	_LVOSeek(A6)
 _UnLock:
 	MOVE.L	$0004(A7),D1
-	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
 	JMP	_LVOUnLock(A6)
 _Write:
 	MOVEM.L	$0004(A7),D1-D3
-	MOVEA.L	-$46DC(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
 	JMP	_LVOWrite(A6)
 
 _Alert:
