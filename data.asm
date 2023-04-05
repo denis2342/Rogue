@@ -1625,7 +1625,14 @@ __Dend:
 
 __Uorg:		ds.b	108
 
-charge_string:	ds.b	30
+charge_string:	ds.b	20
+
+_again_num:	ds.w	1
+_is_again:	ds.b	1
+_is_pickup:	ds.b	1
+_is_pickup_tmp:	ds.b	1
+
+	ds.b	5
 
 add_line_tmp:	ds.w	1
 add_line_tmp2:	ds.b	2

@@ -190,15 +190,15 @@ _get_prefix:
 
 	CLR.B	_door_stop-BASE(A4)	;_door_stop
 L003B7:
-	ST	-$54C3(A4)	;_is_pickup
+	ST	_is_pickup-BASE(A4)	;_is_pickup
 	CLR.B	_again-BASE(A4)	;_again
 	SUBQ.W	#1,_count-BASE(A4)	;_count
 ;	CMPI.W	#$0000,_count-BASE(A4)	;_count
 	BLE.B	L003B8
 
-	MOVE.B	-$54C2(A4),-$54C3(A4)	;_is_pickup
+	MOVE.B	_is_pickup_tmp-BASE(A4),_is_pickup-BASE(A4)	;_is_pickup
 	MOVEQ	#$00,D3
-	MOVE.B	-$54C4(A4),D3
+	MOVE.B	_is_again-BASE(A4),D3
 	MOVE.W	D3,D4
 	CLR.B	_fastmode-BASE(A4)	;_fastmode
 	BRA.W	L003C7
@@ -212,7 +212,7 @@ L003B8:
 	MOVE.B	-$66A8(A4),D3	;_runch
 	EXT.W	D3
 	MOVE.W	D3,D4
-	MOVE.B	-$54C2(A4),-$54C3(A4)	;_is_pickup
+	MOVE.B	_is_pickup_tmp-BASE(A4),_is_pickup-BASE(A4)	;_is_pickup
 	BRA.W	L003C7
 L003B9:
 	MOVEQ	#$00,D4
@@ -246,17 +246,17 @@ L003BD:
 ; pressed g for dont pickup
 
 L003C0:
-	CLR.B	-$54C3(A4)	;_is_pickup
+	CLR.B	_is_pickup-BASE(A4)	;_is_pickup
 	BRA.W	L003C6
 
 ; pressed a for again
 
 L003C1:
 	MOVEQ	#$00,D3
-	MOVE.B	-$54C4(A4),D3
+	MOVE.B	_is_again-BASE(A4),D3
 	MOVE.W	D3,D4
-	MOVE.W	-$54C6(A4),_count-BASE(A4)	;_count
-	MOVE.B	-$54C2(A4),-$54C3(A4)	;_is_pickup
+	MOVE.W	_again_num-BASE(A4),_count-BASE(A4)	;_count
+	MOVE.B	_is_pickup_tmp-BASE(A4),_is_pickup-BASE(A4)	;_is_pickup
 	ST	_again-BASE(A4)	;_again
 	BRA.B	L003C6
 
@@ -388,14 +388,14 @@ L003CE:
 	TST.W	_count-BASE(A4)	;_count
 	BNE.B	L003CF
 
-	TST.W	-$54C6(A4)
+	TST.W	_again_num-BASE(A4)
 	BEQ.B	L003D0
 L003CF:
 	BSR.B	_show_count
 L003D0:
-	MOVE.B	D4,-$54C4(A4)
-	MOVE.W	_count-BASE(A4),-$54C6(A4)	;_count
-	MOVE.B	-$54C3(A4),-$54C2(A4)	;_is_pickup
+	MOVE.B	D4,_is_again-BASE(A4)
+	MOVE.W	_count-BASE(A4),_again_num-BASE(A4)	;_count
+	MOVE.B	_is_pickup-BASE(A4),_is_pickup_tmp-BASE(A4)	;_is_pickup
 	MOVE.W	D4,D0
 	MOVEM.L	(A7)+,D4-D6
 ;	UNLK	A5
@@ -809,7 +809,7 @@ L003FE:
 	MOVE.W	_count-BASE(A4),_level-BASE(A4)	;_count,_level
 L003FF:
 	JSR	_new_level
-	MOVE.W	#$0001,-$54C6(A4)
+	MOVE.W	#$0001,_again_num-BASE(A4)
 	CLR.W	_count-BASE(A4)	;_count
 	BRA.W	L00409
 
@@ -1021,7 +1021,7 @@ L00409:
 	TST.B	-$66A9(A4)	;_take
 	BEQ.B	L0040A
 
-	TST.B	-$54C3(A4)	;_is_pickup
+	TST.B	_is_pickup-BASE(A4)	;_is_pickup
 	BEQ.B	L0040A
 
 	MOVE.B	-$66A9(A4),D3	;_take
