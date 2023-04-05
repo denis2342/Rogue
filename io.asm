@@ -628,11 +628,11 @@ _readchar:
 	CLR.W	-$001E(A5)
 L004EE:
 	MOVEA.L	-$47B2(A4),A6
-	CMPA.L	-$47AE(A4),A6	;_kb_tail
+	CMPA.L	_kb_tail-BASE(A4),A6	;_kb_tail
 	BEQ.B	L004F0
 
-	MOVEA.L	-$47AE(A4),A6	;_kb_tail
-	ADDQ.L	#1,-$47AE(A4)	;_kb_tail
+	MOVEA.L	_kb_tail-BASE(A4),A6	;_kb_tail
+	ADDQ.L	#1,_kb_tail-BASE(A4)	;_kb_tail
 	MOVE.B	(A6),D0
 	EXT.W	D0
 L004EF:
@@ -642,7 +642,7 @@ L004EF:
 
 L004F0:
 	LEA	-$48B2(A4),A6
-	MOVE.L	A6,-$47AE(A4)	;_kb_tail
+	MOVE.L	A6,_kb_tail-BASE(A4)	;_kb_tail
 	MOVE.L	A6,-$47B2(A4)
 L004F1:
 	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
