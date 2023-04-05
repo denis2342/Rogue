@@ -308,7 +308,7 @@ L00250:
 	JSR	_chase(PC)
 	ADDQ.W	#8,A7
 	PEA	-$52C0(A4)	;_player + 10
-	PEA	-$48BC(A4)
+	PEA	_ch_ret-BASE(A4)
 	JSR	__ce
 	ADDQ.W	#8,A7
 	TST.W	D0
@@ -321,7 +321,7 @@ L00250:
 L00251:
 	MOVEA.L	$0008(A5),A6
 	MOVE.L	$0012(A6),-(A7)
-	PEA	-$48BC(A4)
+	PEA	_ch_ret-BASE(A4)
 	JSR	__ce
 	ADDQ.W	#8,A7
 	TST.W	D0
@@ -457,13 +457,13 @@ L0025C:
 	MOVEA.L	$0008(A5),A6
 	MOVEA.L	$002A(A6),A3
 	PEA	$000A(A6)
-	PEA	-$48BC(A4)
+	PEA	_ch_ret-BASE(A4)
 	JSR	__ce
 	ADDQ.W	#8,A7
 	TST.W	D0
 	BNE.B	L0025F
 
-	PEA	-$48BC(A4)
+	PEA	_ch_ret-BASE(A4)
 	JSR	_roomin(PC)
 	ADDQ.W	#4,A7
 
@@ -487,7 +487,7 @@ L0025C:
 L0025E:
 	MOVEA.L	$0008(A5),A6
 	ADDA.L	#$0000000A,A6
-	LEA	-$48BC(A4),A1
+	LEA	_ch_ret-BASE(A4),A1
 	MOVE.L	(A1)+,(A6)+
 L0025F:
 	MOVE.L	$0008(A5),-(A7)
@@ -496,7 +496,7 @@ L0025F:
 	TST.W	D0
 	BEQ.B	L00260
 
-	MOVE.W	-$48BC(A4),-(A7)
+	MOVE.W	_ch_ret-BASE(A4),-(A7)
 	MOVE.W	-$48BA(A4),-(A7)
 	JSR	_mvinch(PC)
 	ADDQ.W	#4,A7
@@ -505,7 +505,7 @@ L0025F:
 	MOVE.B	D0,$0011(A6)
 
 	MOVE.B	$0010(A6),D2
-	MOVE.W	-$48BC(A4),d1
+	MOVE.W	_ch_ret-BASE(A4),d1
 	MOVE.W	-$48BA(A4),d0
 	JSR	_mvaddchquick
 
@@ -666,7 +666,7 @@ L0026B:
 	TST.W	D0
 	BNE.B	L0026F
 L0026D:
-	PEA	-$48BC(A4)
+	PEA	_ch_ret-BASE(A4)
 	MOVE.L	$0008(A5),-(A7)
 	JSR	_rndmove(PC)
 	ADDQ.W	#8,A7
@@ -674,7 +674,7 @@ L0026D:
 	MOVE.W	(A6),-(A7)
 ;	MOVEA.L	$000C(A5),A6
 	MOVE.W	$0002(A6),-(A7)
-	MOVE.W	-$48BC(A4),-(A7)
+	MOVE.W	_ch_ret-BASE(A4),-(A7)
 	MOVE.W	-$48BA(A4),-(A7)
 	JSR	_DISTANCE
 	ADDQ.W	#8,A7
@@ -702,7 +702,7 @@ L0026F:
 	ADDQ.W	#8,A7
 
 	MOVE.W	D0,-$0002(A5)
-	LEA	-$48BC(A4),A6
+	LEA	_ch_ret-BASE(A4),A6
 	MOVEA.L	-$0008(A5),A1
 	MOVE.L	(A1)+,(A6)+
 	MOVEA.L	-$0008(A5),A6
@@ -792,7 +792,7 @@ L00276:
 	BGE.B	L00277
 
 	MOVE.W	#$0001,-$000C(A5)
-	LEA	-$48BC(A4),A6
+	LEA	_ch_ret-BASE(A4),A6
 	LEA	-$0010(A5),A1
 	MOVE.L	(A1)+,(A6)+
 	MOVE.W	-$0004(A5),-$0002(A5)
@@ -808,7 +808,7 @@ L00277:
 	TST.W	D0
 	BNE.B	L00278
 
-	LEA	-$48BC(A4),A6
+	LEA	_ch_ret-BASE(A4),A6
 	LEA	-$0010(A5),A1
 	MOVE.L	(A1)+,(A6)+
 	MOVE.W	-$0004(A5),-$0002(A5)
