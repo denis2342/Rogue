@@ -1625,7 +1625,9 @@ disc1:	ds.w	10		;used by _print_disc()
 disc2:	ds.w	1
 disc3:	ds.w	4
 disc4:	ds.w	5
-disc_table:	ds.w	26
+disc_table:	ds.w	15
+
+sel_chr_table:	ds.b	22
 
 dm_list:	ds.b	120
 dm_list_end:

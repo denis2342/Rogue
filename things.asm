@@ -1325,7 +1325,7 @@ L00579:
 _clr_sel_chr:
 	CLR.W	d1
 	MOVEq	#$0015,d0
-	LEA	-$5460(A4),a0
+	LEA	sel_chr_table-BASE(A4),a0
 	JSR	_memset
 
 	RTS
@@ -1333,7 +1333,7 @@ _clr_sel_chr:
 _sel_char:
 ;	LINK	A5,#-$0000
 	MOVE.W	$0004(A7),D3
-	LEA	-$5460(A4),A6
+	LEA	sel_chr_table-BASE(A4),A6
 	MOVE.B	$00(A6,D3.W),D0
 ;	EXT.W	D0
 ;	UNLK	A5
@@ -1421,7 +1421,7 @@ L00580:
 	JSR	_movequick
 
 	MOVE.W	-$54BC(A4),D3
-	LEA	-$5460(A4),A6
+	LEA	sel_chr_table-BASE(A4),A6
 	MOVEA.L	$000C(A5),A1
 	MOVE.B	(A1),$00(A6,D3.W)
 	MOVE.L	$0010(A5),-(A7)
