@@ -363,7 +363,7 @@ L00AD8:
 	AND.W	#$0004,D3	;only the simple name?
 	BEQ.W	L00ADC
 
-	LEA	-$66CB(A4),A6	;_ws_know
+	LEA	_ws_know-BASE(A4),A6	;_ws_know
 	TST.B	$00(A6,D5.W)
 	BEQ.B	L00AD9
 
@@ -1207,7 +1207,7 @@ _discovered:
 
 	MOVEq	#$002F,D7	;'/' sticks
 	MOVEQ	#14,D5
-	LEA	-$66CB(A4),A2	;_ws_know
+	LEA	_ws_know-BASE(A4),A2	;_ws_know
 	LEA	_ws_guess-BASE(A4),A3	;_ws_guess
 	BSR.B	_print_disc
 

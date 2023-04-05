@@ -625,7 +625,7 @@ L0008C:
 	ASL.w	#2,D3
 	LEA	-$51E4(A4),A6	;_ws_made
 	MOVE.L	A2,$00(A6,D3.w)
-	LEA	-$66CB(A4),A6	;_ws_know
+	LEA	_ws_know-BASE(A4),A6	;_ws_know
 	CLR.B	$00(A6,D4.W)
 	CMP.W	#$0000,D4
 	BLE.B	L0008D

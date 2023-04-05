@@ -140,7 +140,7 @@ L00313:
 	ADDQ.W	#4,A7
 	BRA.B	L00316
 L00314:
-	ST	-$66CB(A4)	;_ws_know
+	ST	_ws_know-BASE(A4)	;_ws_know
 	MOVEA.L	-$52A0(A4),A6	;_player + 42 (proom)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3	;check for room ISDARK
@@ -559,7 +559,7 @@ L00341:
 	JSR	_fire_bolt(PC)
 	LEA	$000C(A7),A7
 	MOVE.W	-$0006(A5),D3
-	LEA	-$66CB(A4),A6	;_ws_know
+	LEA	_ws_know-BASE(A4),A6	;_ws_know
 	ST	$00(A6,D3.W)
 	BRA.B	L00345
 L00342:

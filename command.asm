@@ -1374,7 +1374,7 @@ L008DF:
 L008E0:
 	LEA	_ws_guess-BASE(A4),A6	;_ws_guess
 	MOVE.L	A6,-$0004(A5)
-	LEA	-$66CB(A4),A6	;_ws_know
+	LEA	_ws_know-BASE(A4),A6	;_ws_know
 	MOVEA.L	A6,A3
 	MOVE.W	$0020(A2),D3
 	MULU.W	#21,D3
