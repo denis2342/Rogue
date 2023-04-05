@@ -612,7 +612,7 @@ L0008A:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$7936(A4),A6	;_wood
+	LEA	_wood-BASE(A4),A6	;_wood
 	MOVEA.L	$00(A6,D3.w),A2
 	LEA	-$0037(A5),A6
 	ST	$00(A6,D5.W)
