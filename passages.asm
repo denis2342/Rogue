@@ -333,7 +333,7 @@ _passnum:
 	CLR.W	-$54C0(A4)
 	CLR.B	-$54BE(A4)
 	LEA	_passages-BASE(A4),A2	;_passages
-	LEA	-$5ADC(A4),A6	;_SV_END
+	LEA	_SV_END-BASE(A4),A6	;_SV_END
 1$
 	CLR.W	$0010(A2)
 	ADDA.L	#$00000042,A2

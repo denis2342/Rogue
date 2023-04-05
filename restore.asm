@@ -233,7 +233,7 @@ _xfer_all:
 	PEA	_whoami-BASE(A4)	;_whoami
 	JSR	_xfer
 	ADDQ.W	#6,A7
-	LEA	-$5ADC(A4),A6	;_SV_END
+	LEA	_SV_END-BASE(A4),A6	;_SV_END
 	LEA	-$674E(A4),A1
 	SUBA.L	A1,A6
 	MOVE.W	A6,-(A7)
