@@ -1227,18 +1227,18 @@ L00567:	dc.b	" ",0
 
 _print_disc:
 	MOVE.W	D5,-(A7)
-	PEA	-$547E(A4)
+	PEA	disc_table-BASE(A4)
 	JSR	_set_order(PC)
 	ADDQ.W	#6,A7
 
-	MOVE.W	#$0001,-$5492(A4)
-	CLR.W	-$5488(A4)
+	MOVE.W	#$0001,disc2-BASE(A4)
+	CLR.W	disc4-BASE(A4)
 	MOVEQ	#$00,D6		;discovery counter
 	BRA.B	L00572
 L00570:
 	MOVE.W	D5,D3
 	ASL.w	#1,D3
-	LEA	-$547E(A4),A6
+	LEA	disc_table-BASE(A4),A6
 	MOVE.W	$00(A6,D3.w),D2
 	TST.B	$00(A2,D2.W)	;did we knew it?
 	BNE.B	L00571
@@ -1247,8 +1247,8 @@ L00570:
 	TST.B	$00(A3,D2.L)	;did we guessed it?
 	BEQ.B	L00572
 L00571:
-	MOVE.W	D7,-$54A6(A4)
-	MOVE.W	$00(A6,D3.w),-$5490(A4)
+	MOVE.W	D7,disc1-BASE(A4)
+	MOVE.W	$00(A6,D3.w),disc3-BASE(A4)
 	MOVE.W	#$0026,-(A7)
 	PEA	-$54B0(A4)
 	JSR	_nameof
