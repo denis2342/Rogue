@@ -2249,7 +2249,7 @@ _NewRank:
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$6D28(A4),A6	;_he_man
+	LEA	_he_man-BASE(A4),A6	;_he_man
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L00520(PC)	;' "%s"'
 	PEA	-$0078(A5)

@@ -702,7 +702,7 @@ L00985:
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$6D28(A4),A6	;_he_man
+	LEA	_he_man-BASE(A4),A6	;_he_man
 	MOVE.L	$00(A6,D3.w),D4
 	MOVE.L	D4,-(A7)
 	PEA	L00987(PC)	;'and achieve the rank of "%s"'

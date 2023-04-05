@@ -238,7 +238,7 @@ L00689:
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$6D28(A4),A6	;_he_man
+	LEA	_he_man-BASE(A4),A6	;_he_man
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.L	$000A(A5),-(A7)
 	MOVEA.L	$000A(A5),A6
