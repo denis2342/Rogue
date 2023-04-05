@@ -312,7 +312,7 @@ L00B44:
 	MOVE.L	__flags-BASE(A4),-(A7)	;__flags
 	BSR.B	_xfer
 	ADDQ.W	#6,A7
-	LEA	-$7062(A4),A6
+	LEA	_CURSES_END-BASE(A4),A6
 	LEA	-$76F8(A4),A1
 	SUBA.L	A1,A6
 	MOVE.W	A6,-(A7)
