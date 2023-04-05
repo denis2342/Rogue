@@ -1619,7 +1619,9 @@ __Dend:
 
 __Uorg:		ds.b	108
 
-charge_string:	ds.b	52
+charge_string:	ds.b	30
+
+add_line_tmp:	ds.b	22
 
 disc1:	ds.w	10		;used by _print_disc()
 disc2:	ds.w	1

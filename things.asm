@@ -1350,7 +1350,7 @@ _add_line:
 
 	MOVEQ	#$20,D4
 	JSR	_wtext
-	CMPI.W	#$0014,-$54BC(A4)
+	CMPI.W	#$0014,add_line_tmp-BASE(A4)
 	BGE.B	L0057A
 
 	TST.L	$000C(A5)
@@ -1392,13 +1392,13 @@ L0057D:
 L0057E:
 	CLR.B	-$66B0(A4)	;_want_click
 	MOVE.B	#$01,-$54BA(A4)
-	CLR.W	-$54BC(A4)
+	CLR.W	add_line_tmp-BASE(A4)
 	JSR	_clear
 L0057F:
 	TST.L	$000C(A5)
 	BEQ.B	L00582
 
-	TST.W	-$54BC(A4)
+	TST.W	add_line_tmp-BASE(A4)
 	BNE.B	L00580
 
 	MOVEA.L	$000C(A5),A6
@@ -1417,10 +1417,10 @@ L00580:
 	BNE.B	L00582
 
 	moveq	#0,d1
-	MOVE.W	-$54BC(A4),d0
+	MOVE.W	add_line_tmp-BASE(A4),d0
 	JSR	_movequick
 
-	MOVE.W	-$54BC(A4),D3
+	MOVE.W	add_line_tmp-BASE(A4),D3
 	LEA	sel_chr_table-BASE(A4),A6
 	MOVEA.L	$000C(A5),A1
 	MOVE.B	(A1),$00(A6,D3.W)
@@ -1437,12 +1437,12 @@ L00580:
 
 	MOVE.W	-$0004(A5),D3
 	ADDQ.W	#1,D3
-	MOVE.W	D3,-$54BC(A4)
+	MOVE.W	D3,add_line_tmp-BASE(A4)
 L00581:
 	MOVE.L	$000C(A5),-$54B8(A4)
 	MOVE.L	$0010(A5),-$54B4(A4)
 L00582:
-	TST.W	-$54BC(A4)
+	TST.W	add_line_tmp-BASE(A4)
 	BNE.B	L00583
 
 	JSR	_wmap
@@ -1469,7 +1469,7 @@ _end_line:
 	JSR	_add_line(PC)
 	ADDQ.W	#8,A7
 	MOVE.W	D0,D4
-	CLR.W	-$54BC(A4)
+	CLR.W	add_line_tmp-BASE(A4)
 	CLR.B	-$54BA(A4)
 	MOVE.W	D4,D0
 

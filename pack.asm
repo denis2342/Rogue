@@ -540,7 +540,7 @@ L002D2:
 	CMPI.W	#$0020,-$0056(A5)
 	BEQ.B	L002D4
 
-	CLR.W	-$54BC(A4)	;former function _end_add() inlined
+	CLR.W	add_line_tmp-BASE(A4)	;former function _end_add() inlined
 	CLR.B	-$54BA(A4)
 	JSR	_wmap
 
