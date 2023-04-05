@@ -579,7 +579,7 @@ L007F6:
 	ANDI.W	#~C_ISHELD,-$52B4(A4)	;clear C_ISHELD,_player + 22 (flags)
 	JSR	_f_restor
 L007F7:
-	CLR.W	-$60AE(A4)	;_no_move
+	CLR.W	_no_move-BASE(A4)	;_no_move
 	CLR.W	_count-BASE(A4)	;_count
 	CLR.B	_running-BASE(A4)	;_running
 	JSR	_flush_type

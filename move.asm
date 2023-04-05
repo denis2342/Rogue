@@ -39,10 +39,10 @@ L00090:
 	RTS
 
 L00091:
-	TST.W	-$60AE(A4)	;_no_move
+	TST.W	_no_move-BASE(A4)	;_no_move
 	BEQ.B	L00092
 
-	SUBQ.W	#1,-$60AE(A4)	;_no_move
+	SUBQ.W	#1,_no_move-BASE(A4)	;_no_move
 	PEA	L000C5(PC)	;"you are still stuck in the bear trap"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -635,7 +635,7 @@ L000CF:
 	MOVEq	#$0003,D0
 	JSR	_spread
 
-	ADD.W	D0,-$60AE(A4)	;_no_move
+	ADD.W	D0,_no_move-BASE(A4)	;_no_move
 	PEA	L000E4(PC)	;"you are caught in a bear trap"
 	JSR	_msg
 	ADDQ.W	#4,A7
