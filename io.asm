@@ -645,7 +645,7 @@ L004F0:
 	MOVE.L	A6,-$47AE(A4)	;_kb_tail
 	MOVE.L	A6,-$47B2(A4)
 L004F1:
-	MOVEA.L	-$514C(A4),A6	;_StdWin
+	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
 	MOVE.L	$0056(A6),-(A7)
 	JSR	_GetMsg
 	ADDQ.W	#4,A7
@@ -897,7 +897,7 @@ L0050E:
 	SUB.w	#$0300,D0
 	BEQ.W	L004F8
 L0050F:
-	MOVEA.L	-$514C(A4),A6	;_StdWin
+	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
 	MOVE.L	$0056(A6),-(A7)
 	JSR	_GetMsg
 	ADDQ.W	#4,A7

@@ -14,16 +14,16 @@ _WBprint:
 _OffVerify:
 	LINK	A5,#-$0008
 	JSR	_Forbid
-	TST.L	-$514C(A4)	;_StdWin
+	TST.L	_StdWin-BASE(A4)	;_StdWin
 	BEQ.B	L00127
 
 	MOVE.L	-$7828(A4),D3
 	AND.L	#$FFFFDFFF,D3
 	MOVE.L	D3,-(A7)
-	MOVE.L	-$514C(A4),-(A7)	;_StdWin
+	MOVE.L	_StdWin-BASE(A4),-(A7)	;_StdWin
 	JSR	_ModifyIDCMP
 	ADDQ.W	#8,A7
-	MOVEA.L	-$514C(A4),A6	;_StdWin
+	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
 	MOVEA.L	$0056(A6),A1
 	MOVE.L	$0014(A1),-$0004(A5)
 	BRA.B	L00126
@@ -54,10 +54,10 @@ L00127:
 
 _OnVerify:
 	LINK	A5,#-$0000
-	TST.L	-$514C(A4)	;_StdWin
+	TST.L	_StdWin-BASE(A4)	;_StdWin
 	BEQ.B	L00128
 	MOVE.L	-$7828(A4),-(A7)
-	MOVE.L	-$514C(A4),-(A7)	;_StdWin
+	MOVE.L	_StdWin-BASE(A4),-(A7)	;_StdWin
 	JSR	_ModifyIDCMP
 	ADDQ.W	#8,A7
 L00128:

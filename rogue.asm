@@ -830,7 +830,7 @@ _wtext:
 	ADDQ.W	#4,A7
 L000FF:
 	CLR.B	-$7064(A4)	;_map_up
-	MOVE.L	_TextWin-BASE(A4),-$514C(A4)	;_TextWin,_StdWin
+	MOVE.L	_TextWin-BASE(A4),_StdWin-BASE(A4)	;_TextWin,_StdWin
 	JSR	_intui_sync(PC)
 L00100:
 ;	UNLK	A5
@@ -852,7 +852,7 @@ _wmap:
 	ADDQ.W	#4,A7
 	CLR.L	_TextWin-BASE(A4)	;_TextWin
 	ST	-$7064(A4)	;_map_up
-	MOVE.L	-$5148(A4),-$514C(A4)	;_RogueWin,_StdWin
+	MOVE.L	-$5148(A4),_StdWin-BASE(A4)	;_RogueWin,_StdWin
 	JSR	_intui_sync(PC)
 L00102:
 ;	UNLK	A5
@@ -884,7 +884,7 @@ L00104:
 
 	moveq	#0,d0
 
-	MOVEA.L	-$514C(A4),A6	;_StdWin
+	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
 	MOVEA.L	$0032(A6),A1
 	move.l	$0004(A1),a1	;dstbitmap
 	MOVE.W	_p_col-BASE(A4),D2	;_p_col ;dstx
@@ -914,7 +914,7 @@ L00106:
 ;	MOVE.W	_p_col-BASE(A4),D3	;_p_col
 ;	EXT.L	D3
 ;	MOVE.L	D3,-(A7)	;dstx
-;	MOVEA.L	-$514C(A4),A6	;_StdWin
+;	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
 ;	MOVEA.L	$0032(A6),A1
 ;	MOVE.L	$0004(A1),-(A7)	;dstbitmap
 ;	CLR.L	-(A7)		;srcy
@@ -930,7 +930,7 @@ __addch:
 
 	LEA	L00107(PC),A2
 	MOVE.B	$0009(A5),(A2)
-	MOVEA.L	-$514C(A4),A6	;_StdWin
+	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
 	MOVEA.L	$0032(A6),A1
 	MOVE.B	$0018(A1),D4
 	MOVE.B	#$01,$0018(A1)
@@ -955,7 +955,7 @@ __addch:
 ;	JSR	_PrintIText
 ;	LEA	$0010(A7),A7
 
-	MOVEA.L	-$514C(A4),A6	;_StdWin
+	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
 	MOVEA.L	$0032(A6),A1
 	MOVE.B	D4,$0018(A1)
 
@@ -976,12 +976,12 @@ __clearbot:
 	MOVE.W	_p_col-BASE(A4),D3	;_p_col
 	EXT.L	D3
 	MOVE.L	D3,-(A7)
-	MOVEA.L	-$514C(A4),A6	;_StdWin
+	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_GfxMove
 	LEA	$000C(A7),A7
 
-	MOVEA.L	-$514C(A4),A6	;_StdWin
+	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_ClearScreen
 	ADDQ.W	#4,A7
@@ -998,12 +998,12 @@ __clrtoeol:
 	MOVE.W	_p_col-BASE(A4),D3	;_p_col
 	EXT.L	D3
 	MOVE.L	D3,-(A7)
-	MOVEA.L	-$514C(A4),A6	;_StdWin
+	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_GfxMove
 	LEA	$000C(A7),A7
 
-	MOVEA.L	-$514C(A4),A6	;_StdWin
+	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_ClearEOL
 	ADDQ.W	#4,A7
@@ -1168,7 +1168,7 @@ L0010F:
 	ADDQ.W	#4,A7
 
 	MOVE.L	D0,-$5148(A4)	;_RogueWin
-	MOVE.L	D0,-$514C(A4)	;_StdWin
+	MOVE.L	D0,_StdWin-BASE(A4)	;_StdWin
 ;	TST.L	D0
 	BNE.B	L00110
 
@@ -1277,12 +1277,12 @@ _invert_row:
 	EXT.L	D3
 	MOVE.L	D3,D4
 	PEA	$0002
-	MOVEA.L	-$514C(A4),A6	;_StdWin
+	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_SetDrMd
 	ADDQ.W	#8,A7
 	PEA	$000F
-	MOVEA.L	-$514C(A4),A6	;_StdWin
+	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_SetAPen
 	ADDQ.W	#8,A7
@@ -1291,12 +1291,12 @@ _invert_row:
 	PEA	$027F
 	MOVE.L	D4,-(A7)
 	CLR.L	-(A7)
-	MOVEA.L	-$514C(A4),A6	;_StdWin
+	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_RectFill
 	LEA	$0014(A7),A7
 	CLR.L	-(A7)
-	MOVEA.L	-$514C(A4),A6	;_StdWin
+	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_SetDrMd
 	ADDQ.W	#8,A7
@@ -1308,7 +1308,7 @@ __zapstr:
 	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
 
-	MOVEA.L	-$514C(A4),A6	;_StdWin
+	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
 	MOVEA.L	$0032(A6),A1
 	MOVE.B	$0018(A1),D4
 	MOVE.B	#$01,$0018(A1)
@@ -1329,12 +1329,12 @@ __zapstr:
 ;	EXT.L	D3
 ;	MOVE.L	D3,-(A7)
 ;	PEA	-$77CE(A4)
-;	MOVEA.L	-$514C(A4),A6	;_StdWin
+;	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
 ;	MOVE.L	$0032(A6),-(A7)
 ;	JSR	_PrintIText
 ;	LEA	$0010(A7),A7
 
-	MOVEA.L	-$514C(A4),A6	;_StdWin
+	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
 	MOVEA.L	$0032(A6),A1
 	MOVE.B	D4,$0018(A1)
 
@@ -2091,10 +2091,10 @@ _flush_type:
 	LEA	-$48B2(A4),A6
 	MOVE.L	A6,-$47AE(A4)	;_kb_tail
 	MOVE.L	A6,-$47B2(A4)
-	TST.L	-$514C(A4)	;_StdWin
+	TST.L	_StdWin-BASE(A4)	;_StdWin
 	BEQ.B	L004ED
 L004EB:
-	MOVEA.L	-$514C(A4),A6	;_StdWin
+	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
 	MOVE.L	$0056(A6),-(A7)
 	JSR	_GetMsg
 	ADDQ.W	#4,A7
@@ -2390,7 +2390,7 @@ L00523:
 	PEA	-$003C(A5)
 	PEA	-$0028(A5)
 	PEA	-$0014(A5)
-	MOVE.L	-$514C(A4),-(A7)	;_StdWin
+	MOVE.L	_StdWin-BASE(A4),-(A7)	;_StdWin
 	JSR	_AutoRequest
 	LEA	$0020(A7),A7
 	MOVEM.L	(A7)+,D4/D5
@@ -2428,7 +2428,7 @@ _scrlen:
 	EXT.L	D0
 	MOVE.L	D0,-(A7)
 	MOVE.L	$0008(A5),-(A7)
-	MOVEA.L	-$514C(A4),A6	;_StdWin
+	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_TextLength
 	LEA	$000C(A7),A7
