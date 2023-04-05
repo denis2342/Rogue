@@ -1062,7 +1062,7 @@ L00109:
 	PEA	L00118(PC)	;"No rogue.char file"
 	JSR	_db_print
 	ADDQ.W	#4,A7
-	ST	-$7063(A4)	;_graphics_disabled
+	ST	_graphics_disabled-BASE(A4)	;_graphics_disabled
 	BRA	readCharEnd
 
 L0010B2:
@@ -1691,8 +1691,8 @@ L004D8:
 _cursor:
 ;	LINK	A5,#-$0000
 	MOVEQ	#$00,D0
-	MOVE.B	-$7063(A4),D0	;_graphics_disabled
-	MOVE.B	$0005(A7),-$7063(A4)	;_graphics_disabled
+	MOVE.B	_graphics_disabled-BASE(A4),D0	;_graphics_disabled
+	MOVE.B	$0005(A7),_graphics_disabled-BASE(A4)	;_graphics_disabled
 ;	UNLK	A5
 	RTS
 
@@ -1845,7 +1845,7 @@ L004DE:
 	CMP.B	#$14,D3
 	BCC.B	L004DF
 
-	TST.B	-$7063(A4)	;_graphics_disabled
+	TST.B	_graphics_disabled-BASE(A4)	;_graphics_disabled
 	BNE.B	L004DF
 
 	MOVE.W	D4,-(A7)
@@ -1891,8 +1891,8 @@ L004E3:
 
 _addstr:
 	LINK	A5,#-$0002
-	MOVE.B	-$7063(A4),-$0001(A5)	;backup _graphics_disabled
-	ST	-$7063(A4)	;_graphics_disabled
+	MOVE.B	_graphics_disabled-BASE(A4),-$0001(A5)	;backup _graphics_disabled
+	ST	_graphics_disabled-BASE(A4)	;_graphics_disabled
 
 	MOVE.L	$0008(A5),-(A7)
 	JSR	__zapstr(PC)
@@ -1906,7 +1906,7 @@ _addstr:
 	MOVE.B	-$7066(A4),D0	;_c_row
 	JSR	_movequick
 
-	MOVE.B	-$0001(A5),-$7063(A4)	;_graphics_disabled
+	MOVE.B	-$0001(A5),_graphics_disabled-BASE(A4)	;_graphics_disabled
 	UNLK	A5
 	RTS
 
@@ -1987,7 +1987,7 @@ L004E5:
 	MOVE.B	D1,-$7065(A4)	;_c_col
 
 	MOVEQ	#$00,D3
-	MOVE.B	-$7063(A4),D3	;_graphics_disabled
+	MOVE.B	_graphics_disabled-BASE(A4),D3	;_graphics_disabled
 	MOVE.W	D3,-(A7)
 ;	MOVEQ	#$00,D3
 	MOVE.B	D1,D3
