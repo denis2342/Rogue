@@ -241,7 +241,7 @@ L0018E:
 
 	JSR	_treas_room(PC)
 L0018F:
-	CMPI.W	#$0053,-$60A8(A4)	;83 objects _total
+	CMPI.W	#$0053,_total-BASE(A4)	;83 objects _total
 	BGE.W	L00193
 
 	MOVEq	#100,D0
@@ -334,7 +334,7 @@ L00196:
 	TST.W	D3
 	BEQ.W	L00199
 
-	CMPI.W	#$0053,-$60A8(A4)	;83 objects _total
+	CMPI.W	#$0053,_total-BASE(A4)	;83 objects _total
 	BGE.B	L00199
 L00197:
 	PEA	-$000C(A5)

@@ -524,7 +524,7 @@ _give_pack:
 	MOVE.L	A2,-(A7)
 
 	MOVEA.L	$0008(A5),A2
-	CMPI.W	#$0053,-$60A8(A4)	;83 objects _total
+	CMPI.W	#$0053,_total-BASE(A4)	;83 objects _total
 	BGE.B	L00A3D
 
 	MOVEq	#100,D0
