@@ -390,7 +390,7 @@ L00AD8:
 L00AD9:
 	MOVE.W	D5,D3
 	MULU.W	#21,D3
-	LEA	-$61E2(A4),A6	;_ws_guess
+	LEA	_ws_guess-BASE(A4),A6	;_ws_guess
 	TST.B	$00(A6,D3.L)
 	BEQ.B	L00ADC
 
@@ -401,7 +401,7 @@ L00AD9:
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	D5,D3
 	MULU.W	#21,D3
-	LEA	-$61E2(A4),A6	;_ws_guess
+	LEA	_ws_guess-BASE(A4),A6	;_ws_guess
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 	MOVE.W	D5,D3
@@ -1208,7 +1208,7 @@ _discovered:
 	MOVEq	#$002F,D7	;'/' sticks
 	MOVEQ	#14,D5
 	LEA	-$66CB(A4),A2	;_ws_know
-	LEA	-$61E2(A4),A3	;_ws_guess
+	LEA	_ws_guess-BASE(A4),A3	;_ws_guess
 	BSR.B	_print_disc
 
 	PEA	-$69CC(A4)	;_nullstr

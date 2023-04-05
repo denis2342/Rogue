@@ -1372,7 +1372,7 @@ L008DE:
 L008DF:
 	BRA.B	L008E4
 L008E0:
-	LEA	-$61E2(A4),A6	;_ws_guess
+	LEA	_ws_guess-BASE(A4),A6	;_ws_guess
 	MOVE.L	A6,-$0004(A5)
 	LEA	-$66CB(A4),A6	;_ws_know
 	MOVEA.L	A6,A3
