@@ -330,7 +330,7 @@ L00456:
 _passnum:
 ;	LINK	A5,#-$0000
 	MOVEM.L	D4/A2,-(A7)
-	CLR.W	-$54C0(A4)
+	CLR.W	_numpass_tmp-BASE(A4)
 	CLR.B	-$54BE(A4)
 	LEA	_passages-BASE(A4),A2	;_passages
 	LEA	_SV_END-BASE(A4),A6	;_SV_END
@@ -405,7 +405,7 @@ L0045C:
 	TST.B	-$54BE(A4)
 	BEQ.B	L0045E
 
-	ADDQ.W	#1,-$54C0(A4)
+	ADDQ.W	#1,_numpass_tmp-BASE(A4)
 	CLR.B	-$54BE(A4)
 L0045E:
 	MOVE.W	$000A(A5),d0
@@ -427,7 +427,7 @@ L0045E:
 	CMP.B	#$2E,D3
 	BEQ.B	L00460
 L0045F:
-	MOVE.W	-$54C0(A4),D3
+	MOVE.W	_numpass_tmp-BASE(A4),D3
 	MULU.W	#66,D3
 	LEA	_passages-BASE(A4),A6	;_passages
 	MOVEA.L	D3,A3

@@ -1632,7 +1632,9 @@ _is_again:	ds.b	1
 _is_pickup:	ds.b	1
 _is_pickup_tmp:	ds.b	1
 
-	ds.b	5
+	dc.b	0
+
+_numpass_tmp:	ds.w	2
 
 add_line_tmp:	ds.w	1
 add_line_tmp2:	ds.b	2
