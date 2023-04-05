@@ -996,7 +996,7 @@ L00550:
 	MOVEQ	#$00,D4
 	MOVEq	#100,D0
 	JSR	_rnd
-	LEA	-$6F10(A4),A6	;_a_chances
+	LEA	_a_chances-BASE(A4),A6	;_a_chances
 	BRA.B	L00552
 L00551:
 	MOVE.W	D4,D3
