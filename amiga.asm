@@ -2766,101 +2766,101 @@ _TextLength:
 _AddGadget:
 	MOVEM.L	$0004(A7),A0/A1
 	MOVE.L	$000C(A7),D0
-	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
 	JMP	_LVOAddGadget(A6)
 
 _AutoRequest:
 	MOVEM.L	A2/A3,-(A7)
 	MOVEM.L	$000C(A7),A0-A3
 	MOVEM.L	$001C(A7),D0-D3
-	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
 	JSR	_LVOAutoRequest(A6)
 	MOVEM.L	(A7)+,A2/A3
 	RTS
 
 _ClearMenuStrip:
 	MOVEA.L	$0004(A7),A0
-	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
 	JMP	_LVOClearMenuStrip(A6)
 
 _CloseScreen:
 	MOVEA.L	$0004(A7),A0
-	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
 	JMP	_LVOCloseScreen(A6)
 
 _CloseWindow:
 	MOVEA.L	$0004(A7),A0
-	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
 	JMP	_LVOCloseWindow(A6)
 
 _CurrentTime:
 	MOVEM.L	$0004(A7),A0/A1
-	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
 	JMP	_LVOCurrentTime(A6)
 
 _ItemAddress:
 	MOVEA.L	$0004(A7),A0
 	MOVE.L	$0008(A7),D0
-	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
 	JMP	_LVOItemAddress(A6)
 
 _ModifyIDCMP:
 	MOVEA.L	$0004(A7),A0
 	MOVE.L	$0008(A7),D0
-	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
 	JMP	_LVOModifyIDCMP(A6)
 
 _OnGadget:
 	MOVE.L	A2,-(A7)
 	MOVEM.L	$0008(A7),A0-A2
-	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
 	JSR	_LVOOnGadget(A6)
 	MOVEA.L	(A7)+,A2
 	RTS
 
 _OpenScreen:
 	MOVEA.L	$0004(A7),A0
-	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
 	JMP	_LVOOpenScreen(A6)
 
 _OpenWindow:
 	MOVEA.L	$0004(A7),A0
-	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
 	JMP	_LVOOpenWindow(A6)
 
 ;_PrintIText:
 ;	MOVEM.L	$0004(A7),A0/A1
 ;	MOVEM.L	$000C(A7),D0/D1
-;	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+;	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
 ;	JMP	_LVOPrintIText(A6)
 
 _RefreshGadgets:
 	MOVE.L	A2,-(A7)
 	MOVEM.L	$0008(A7),A0-A2
-	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
 	JSR	_LVORefreshGadgets(A6)
 	MOVEA.L	(A7)+,A2
 	RTS
 
 _SetMenuStrip:
 	MOVEM.L	$0004(A7),A0/A1
-	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
 	JMP	_LVOSetMenuStrip(A6)
 
 _SetWindowTitles:
 	MOVE.L	A2,-(A7)
 	MOVEM.L	$0008(A7),A0-A2
-	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
 	JSR	_LVOSetWindowTitles(A6)
 	MOVEA.L	(A7)+,A2
 	RTS
 
 _WBenchToBack:
-	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
 	JMP	_LVOWBenchToBack(A6)
 
 _WBenchToFront:
-	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
 	JMP	_LVOWBenchToBack(A6)
 
 _RawKeyConvert:

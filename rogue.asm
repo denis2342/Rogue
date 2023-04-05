@@ -941,7 +941,7 @@ __addch:
 	lea	-$77CE(A4),a1	;_addch_text + 0
 	MOVE.L	$0032(A6),a0
 
-	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
 	JSR	_LVOPrintIText(A6)
 
 ;	MOVE.W	_p_row-BASE(A4),D3	;_p_row
@@ -1030,8 +1030,8 @@ L00108:
 	PEA	L00113(PC)	;"intuition.library"
 	JSR	_OpenLibrary
 	ADDQ.W	#8,A7
-	MOVE.L	D0,-$5188(A4)	;_IntuitionBase
-;	TST.L	-$5188(A4)
+	MOVE.L	D0,_IntuitionBase-BASE(A4)	;_IntuitionBase
+;	TST.L	_IntuitionBase-BASE(A4)
 	BNE.B	L00109
 
 	PEA	L00114(PC)
@@ -1234,9 +1234,9 @@ L0011F:
 	JSR	_CloseLibrary
 	ADDQ.W	#4,A7
 L00120:
-	TST.L	-$5188(A4)	;_IntuitionBase
+	TST.L	_IntuitionBase-BASE(A4)	;_IntuitionBase
 	BEQ.B	L00121
-	MOVE.L	-$5188(A4),-(A7)	;_IntuitionBase
+	MOVE.L	_IntuitionBase-BASE(A4),-(A7)	;_IntuitionBase
 	JSR	_CloseLibrary
 	ADDQ.W	#4,A7
 L00121:
@@ -1319,7 +1319,7 @@ __zapstr:
 	lea	-$77CE(A4),a1	;_addch_text + 0
 	MOVE.L	$0032(A6),a0
 
-	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
 	JSR	_LVOPrintIText(A6)
 
 ;	MOVE.W	_p_row-BASE(A4),D3	;_p_row
@@ -2206,7 +2206,7 @@ _beep:
 ;	LINK	A5,#-$0000
 
 	move.l	_StdScr-BASE(A4),a0	;_StdScr
-	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
 	jsr	_LVODisplayBeep(A6)
 
 ;	UNLK	A5

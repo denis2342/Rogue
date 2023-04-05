@@ -551,7 +551,7 @@ _tomb_center:
 	lea	-$0014(A5),a1
 	MOVE.L	$0032(A6),a0
 
-	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
 	JSR	_LVOPrintIText(A6)
 
 ;	MOVE.L	$0032(A6),-(A7)
