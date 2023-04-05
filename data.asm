@@ -271,7 +271,10 @@ _map_up:
 _graphics_disabled:
 	dc.b	$00		;disables itself if Rogue.Char file not present
 _CURSES_END:
-	dc.l	$0000FFFF
+	dc.w	$0000
+
+_choose_row_tmp:
+	dc.w	$FFFF
 
 _my_palette:
 	dc.l	$00000000	;black

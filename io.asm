@@ -808,7 +808,7 @@ L00503:
 	BNE.B	L00504
 
 	CLR.W	-$001E(A5)
-	MOVE.W	-$7060(A4),-(A7)
+	MOVE.W	_choose_row_tmp-BASE(A4),-(A7)
 	JSR	_sel_char
 	ADDQ.W	#2,A7
 	TST.b	D0
@@ -817,15 +817,15 @@ L00503:
 	MOVEA.L	_kb_head-BASE(A4),A6
 	ADDQ.L	#1,_kb_head-BASE(A4)
 	MOVE.L	A6,-(A7)
-	MOVE.W	-$7060(A4),-(A7)
+	MOVE.W	_choose_row_tmp-BASE(A4),-(A7)
 	JSR	_sel_char
 	ADDQ.W	#2,A7
 	MOVEA.L	(A7)+,A6
 	MOVE.B	D0,(A6)
-	MOVE.W	-$7060(A4),-(A7)
+	MOVE.W	_choose_row_tmp-BASE(A4),-(A7)
 	JSR	_invert_row(PC)
 	ADDQ.W	#2,A7
-	MOVE.W	#$FFFF,-$7060(A4)
+	MOVE.W	#$FFFF,_choose_row_tmp-BASE(A4)
 L00504:
 	BRA.B	L00508
 L00505:

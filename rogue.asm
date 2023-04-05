@@ -2439,17 +2439,17 @@ _scrlen:
 _choose_row:
 	LINK	A5,#-$0000
 
-	CMPI.W	#$FFFF,-$7060(A4)
+	CMPI.W	#$FFFF,_choose_row_tmp-BASE(A4)
 	BEQ.B	L00528
 
-	MOVE.W	-$7060(A4),D3
+	MOVE.W	_choose_row_tmp-BASE(A4),D3
 	CMP.W	$0008(A5),D3
 	BEQ.B	L00528
 
 	MOVE.W	D3,-(A7)
 	JSR	_invert_row(PC)
 	ADDQ.W	#2,A7
-	MOVE.W	#$FFFF,-$7060(A4)
+	MOVE.W	#$FFFF,_choose_row_tmp-BASE(A4)
 L00528:
 	MOVE.W	$0008(A5),-(A7)
 	JSR	_sel_char(PC)
@@ -2458,13 +2458,13 @@ L00528:
 	BEQ.B	L00529
 
 	MOVE.W	$0008(A5),D3
-	CMP.W	-$7060(A4),D3
+	CMP.W	_choose_row_tmp-BASE(A4),D3
 	BEQ.B	L00529
 
 	MOVE.W	D3,-(A7)
 	JSR	_invert_row(PC)
 	ADDQ.W	#2,A7
-	MOVE.W	$0008(A5),-$7060(A4)
+	MOVE.W	$0008(A5),_choose_row_tmp-BASE(A4)
 L00529:
 	UNLK	A5
 	RTS
