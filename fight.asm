@@ -1055,7 +1055,7 @@ _prname:
 	MOVE.L	A2,D3
 	BNE.B	L009A0
 
-	MOVE.L	-$69BA(A4),-(A7)	;_you
+	MOVE.L	_you-BASE(A4),-(A7)	;_you
 	MOVE.L	_tbuf-BASE(A4),-(A7)	;_tbuf
 	JSR	_strcpy
 	ADDQ.W	#8,A7
