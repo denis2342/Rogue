@@ -1721,7 +1721,8 @@ __level:
 __flags:
 	dc.l	$00000000
 _nh:
-	dc.l	$00000000
+_nh1:	dc.w	$0000
+_nh2:	dc.w	$0000
 
 _cur_ring:
 _cur_ring_1:	ds.l	1

@@ -65,13 +65,13 @@ L00092:
 L00093:
 	MOVE.W	-$52BE(A4),D3	;_player + 12
 	ADD.W	$0008(A5),D3
-	MOVE.W	D3,-$5192(A4)	;_nh + 2
+	MOVE.W	D3,_nh2-BASE(A4)	;_nh + 2
 	MOVE.W	-$52C0(A4),D3	;_player + 10
 	ADD.W	$000A(A5),D3
 	MOVE.W	D3,_nh-BASE(A4)	;_nh
 L00094:
 	MOVE.W	_nh-BASE(A4),-(A7)	;_nh
-	MOVE.W	-$5192(A4),-(A7)	;_nh + 2
+	MOVE.W	_nh2-BASE(A4),-(A7)	;_nh + 2
 	JSR	_offmap
 	ADDQ.W	#4,A7
 	TST.W	D0
@@ -102,7 +102,7 @@ L00095:
 	CLR.B	_after-BASE(A4)	;_after
 L00096:
 	MOVE.W	_nh-BASE(A4),d0	;_nh
-	MOVE.W	-$5192(A4),d1	;_nh + 2
+	MOVE.W	_nh2-BASE(A4),d1	;_nh + 2
 	JSR	_INDEXquick
 
 	MOVEA.L	__flags-BASE(A4),A6	;__flags
@@ -110,7 +110,7 @@ L00096:
 	MOVE.B	$00(A6,D0.W),D3
 	MOVE.W	D3,D5
 	MOVE.W	_nh-BASE(A4),-(A7)	;_nh
-	MOVE.W	-$5192(A4),-(A7)	;_nh + 2
+	MOVE.W	_nh2-BASE(A4),-(A7)	;_nh + 2
 	JSR	_winat
 	ADDQ.W	#4,A7
 	MOVE.B	D0,D4
@@ -134,7 +134,7 @@ L00097:
 	BNE.B	L00098
 
 	MOVE.W	_nh-BASE(A4),d0	;_nh
-	MOVE.W	-$5192(A4),d1	;_nh + 2
+	MOVE.W	_nh2-BASE(A4),d1	;_nh + 2
 	JSR	_INDEXquick
 
 	MOVEA.L	__level-BASE(A4),A6	;__level
@@ -145,7 +145,7 @@ L00097:
 	MOVE.B	D3,$00(A6,D0.W)
 
 	MOVE.W	_nh-BASE(A4),d0	;_nh
-	MOVE.W	-$5192(A4),d1	;_nh + 2
+	MOVE.W	_nh2-BASE(A4),d1	;_nh + 2
 	JSR	_INDEXquick
 
 	MOVEA.L	__flags-BASE(A4),A6	;__flags
@@ -407,7 +407,7 @@ L000B9:
 	BNE.B	L000BA
 
 	MOVE.W	_nh-BASE(A4),d1	;_nh
-	MOVE.W	-$5192(A4),d0	;_nh +2
+	MOVE.W	_nh2-BASE(A4),d0	;_nh +2
 	JSR	_moatquick
 
 	TST.L	D0
