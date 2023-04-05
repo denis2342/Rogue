@@ -505,7 +505,7 @@ L00B54:
 	TST.W	-$532E(A4)
 	BEQ.B	L00B57
 
-	LEA	-$79D2(A4),A6	;_stones
+	LEA	_stones-BASE(A4),A6	;_stones
 	MOVE.L	A6,D5
 	BRA.B	L00B56
 L00B55:
@@ -520,7 +520,7 @@ L00B56:
 	BNE.B	L00B55
 
 	MOVE.L	D5,D0
-	LEA	-$79D2(A4),A6	;_stones
+	LEA	_stones-BASE(A4),A6	;_stones
 	SUB.L	A6,D0
 	MOVEQ	#$06,D1
 	JSR	_divu
@@ -535,7 +535,7 @@ L00B57:
 
 	MOVE.W	-$0002(A5),D3
 	MULU.W	#$0006,D3
-	LEA	-$79D2(A4),A6	;_stones
+	LEA	_stones-BASE(A4),A6	;_stones
 	MOVE.L	$00(A6,D3.L),(A2)
 	MOVE.L	A2,D3
 	LEA	-$5254(A4),A6	;_r_stones

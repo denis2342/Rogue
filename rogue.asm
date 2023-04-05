@@ -508,7 +508,7 @@ L00082:
 	LEA	-$5254(A4),A6	;_r_stones
 	MOVE.W	D5,D2
 	MULU.W	#$0006,D2
-	LEA	-$79D2(A4),A1	;_stones
+	LEA	_stones-BASE(A4),A1	;_stones
 	MOVE.L	$00(A1,D2.L),$00(A6,D3.w)
 	LEA	_r_know-BASE(A4),A6	;_r_know
 	CLR.B	$00(A6,D4.W)
