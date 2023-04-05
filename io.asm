@@ -678,7 +678,7 @@ L004F2:
 	TST.B	-$48B8(A4)	;_menu_on
 	BEQ.B	L004F5
 
-	TST.B	-$7064(A4)	;_map_up
+	TST.B	_map_up-BASE(A4)	;_map_up
 	BEQ.B	L004F5
 
 	CMP.W	#$0000,D7
@@ -763,7 +763,7 @@ L004FD:
 ;	EXT.L	D0
 	BRA.W	L00507
 L004FE:
-	TST.B	-$7064(A4)	;_map_up
+	TST.B	_map_up-BASE(A4)	;_map_up
 	BEQ.B	L00501
 
 	MOVE.W	D6,D3
@@ -804,7 +804,7 @@ L00501:
 L00502:
 	BRA.B	L00508
 L00503:
-	TST.B	-$7064(A4)	;_map_up
+	TST.B	_map_up-BASE(A4)	;_map_up
 	BNE.B	L00504
 
 	CLR.W	-$001E(A5)
@@ -829,7 +829,7 @@ L00503:
 L00504:
 	BRA.B	L00508
 L00505:
-	TST.B	-$7064(A4)	;_map_up
+	TST.B	_map_up-BASE(A4)	;_map_up
 	BEQ.B	L00506
 
 	MOVE.W	D6,D3

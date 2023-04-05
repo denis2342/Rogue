@@ -752,7 +752,7 @@ __move:
 	MOVE.W	$0008(A5),D4
 	BGT.B	L000FC
 
-	TST.B	-$7064(A4)	;_map_up
+	TST.B	_map_up-BASE(A4)	;_map_up
 	BNE.B	L000FD
 L000FC:
 	CMP.W	#$0014,D4
@@ -814,10 +814,10 @@ _standend:
 _wtext:
 ;	LINK	A5,#-$0000
 
-	TST.B	-$7064(A4)	;_map_up
+	TST.B	_map_up-BASE(A4)	;_map_up
 	BEQ.B	L00100
 
-	MOVE.L	_StdScr-BASE(A4),-$77E4(A4)	;_StdScr
+	MOVE.L	_StdScr-BASE(A4),-$77E4(A4)	;_StdScr,_Window2+30
 	PEA	_Window2-BASE(A4)		;_Window2
 	JSR	_OpenWindow
 	ADDQ.W	#4,A7
@@ -829,7 +829,7 @@ _wtext:
 	JSR	_fatal
 	ADDQ.W	#4,A7
 L000FF:
-	CLR.B	-$7064(A4)	;_map_up
+	CLR.B	_map_up-BASE(A4)	;_map_up
 	MOVE.L	_TextWin-BASE(A4),_StdWin-BASE(A4)	;_TextWin,_StdWin
 	JSR	_intui_sync(PC)
 L00100:
@@ -841,7 +841,7 @@ L00101:	dc.b	"No Alternate Window",0
 _wmap:
 ;	LINK	A5,#-$0000
 
-	TST.B	-$7064(A4)	;_map_up
+	TST.B	_map_up-BASE(A4)	;_map_up
 	BNE.B	L00102
 
 	TST.L	_TextWin-BASE(A4)	;_TextWin
@@ -851,7 +851,7 @@ _wmap:
 	JSR	_CloseWindow
 	ADDQ.W	#4,A7
 	CLR.L	_TextWin-BASE(A4)	;_TextWin
-	ST	-$7064(A4)	;_map_up
+	ST	_map_up-BASE(A4)	;_map_up
 	MOVE.L	-$5148(A4),_StdWin-BASE(A4)	;_RogueWin,_StdWin
 	JSR	_intui_sync(PC)
 L00102:
@@ -890,7 +890,7 @@ L00104:
 	MOVE.W	_p_col-BASE(A4),D2	;_p_col ;dstx
 	MOVE.W	_p_row-BASE(A4),D3	;_p_row = dsty
 
-	TST.B	-$7064(A4)	;_map_up
+	TST.B	_map_up-BASE(A4)	;_map_up
 	BEQ.B	L00106
 	ADD.W	#$000C,D3	;dsty + 12
 L00106:
@@ -1627,7 +1627,7 @@ L00482:
 _clear:
 ;	LINK	A5,#-$0000
 	MOVEM.L	D4/D5,-(A7)
-	TST.B	-$7064(A4)	;_map_up
+	TST.B	_map_up-BASE(A4)	;_map_up
 	BEQ.B	L004D5
 
 	MOVEq	#$0020,d1
@@ -1699,7 +1699,7 @@ _cursor:
 _clrtoeol:
 ;	LINK	A5,#-$0000
 
-	TST.B	-$7064(A4)	;_map_up
+	TST.B	_map_up-BASE(A4)	;_map_up
 	BEQ.B	1$
 
 	MOVEq	#32,d1		;space for memset
@@ -1815,7 +1815,7 @@ L004DC:
 
 	BRA.B	L004DB
 L004DD:
-	TST.B	-$7064(A4)	;_map_up
+	TST.B	_map_up-BASE(A4)	;_map_up
 	BNE.B	L004DE
 
 	MOVE.W	D4,-(A7)
