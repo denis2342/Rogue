@@ -2303,7 +2303,7 @@ _sel_line:
 
 _db_print:
 	LINK	A5,#-$0000
-	TST.B	-$66AC(A4)	;_db_enabled
+	TST.B	_db_enabled-BASE(A4)	;_db_enabled
 	BEQ.B	1$
 
 	MOVE.L	$0024(A5),-(A7)
