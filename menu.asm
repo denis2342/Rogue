@@ -710,7 +710,7 @@ _about_rogue:
 	JSR	_readchar
 	JSR	_clear
 	CLR.L	-(A7)
-	PEA	-$705E(A4)	;_my_palette
+	PEA	_my_palette-BASE(A4)	;_my_palette
 	JSR	_fade_in
 	ADDQ.W	#8,A7
 	JSR	_wmap

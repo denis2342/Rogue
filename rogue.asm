@@ -2026,7 +2026,7 @@ _endwin:
 _ready_to_go:
 ;	LINK	A5,#-$0000
 	MOVE.W	#$0001,-(A7)
-	PEA	-$705E(A4)	;_my_palette
+	PEA	_my_palette-BASE(A4)	;_my_palette
 	JSR	_fade_in
 	ADDQ.W	#6,A7
 ;	UNLK	A5
