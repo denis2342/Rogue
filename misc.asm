@@ -162,7 +162,7 @@ L00823:
 	MOVE.W	-$52BE(A4),D3	;_player + 12
 	SUBQ.W	#1,D3
 	MOVE.W	D3,-$0012(A5)
-	TST.B	-$66BB(A4)	;_door_stop
+	TST.B	_door_stop-BASE(A4)	;_door_stop
 	BEQ.B	L00824
 	TST.B	-$66B8(A4)	;_firstmove
 	BNE.B	L00824
@@ -279,7 +279,7 @@ L0082C:
 	AND.W	#C_CANSEE,D3	;C_CANSEE
 	BNE	L0082E
 
-	TST.B	-$66BB(A4)	;_door_stop
+	TST.B	_door_stop-BASE(A4)	;_door_stop
 	BEQ.B	L0082D
 
 	TST.B	-$66B8(A4)	;_firstmove
@@ -334,7 +334,7 @@ L00832:
 
 	JSR	_standend
 
-	TST.B	-$66BB(A4)	;_door_stop
+	TST.B	_door_stop-BASE(A4)	;_door_stop
 	BEQ.W	L00846
 
 	TST.B	-$66B8(A4)	;_firstmove
@@ -465,7 +465,7 @@ L00849:
 	CMP.W	-$0006(A5),D5
 	BLE.W	L00825
 
-	TST.B	-$66BB(A4)	;_door_stop
+	TST.B	_door_stop-BASE(A4)	;_door_stop
 	BEQ.B	L0084A
 
 	TST.B	-$66B8(A4)	;_firstmove

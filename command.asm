@@ -188,7 +188,7 @@ _get_prefix:
 	TST.B	_running-BASE(A4)	;_running
 	BNE.B	L003B7
 
-	CLR.B	-$66BB(A4)	;_door_stop
+	CLR.B	_door_stop-BASE(A4)	;_door_stop
 L003B7:
 	ST	-$54C3(A4)	;_is_pickup
 	CLR.B	_again-BASE(A4)	;_again
@@ -261,7 +261,7 @@ L003C1:
 	BRA.B	L003C6
 
 L003C3:
-	CLR.B	-$66BB(A4)	;_door_stop
+	CLR.B	_door_stop-BASE(A4)	;_door_stop
 	CLR.W	_count-BASE(A4)	;_count
 	JSR	_show_count(PC)
 	BRA.B	L003C6
@@ -323,7 +323,7 @@ L003C9:
 	AND.W	-$52B4(A4),D3	;_player + 22 (flags)
 	BNE.B	L003CA
 
-	ST	-$66BB(A4)	;_door_stop
+	ST	_door_stop-BASE(A4)	;_door_stop
 	ST	-$66B8(A4)	;_firstmove
 L003CA:
 	MOVE.W	D4,-(A7)
@@ -1033,7 +1033,7 @@ L0040A:
 	CLR.B	-$66A9(A4)	;_take
 	TST.B	_running-BASE(A4)	;_running
 	BNE.B	L0040B
-	CLR.B	-$66BB(A4)	;_door_stop
+	CLR.B	_door_stop-BASE(A4)	;_door_stop
 L0040B:
 	TST.B	-$66AF(A4)	;_mouse_run
 	BEQ.B	L0040E
