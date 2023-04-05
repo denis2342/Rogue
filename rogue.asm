@@ -2624,7 +2624,7 @@ L00660:
 L00661:
 	MOVE.W	_dnum-BASE(A4),D3	;_dnum
 	EXT.L	D3
-	MOVE.L	D3,-$6094(A4)	;_seed
+	MOVE.L	D3,_seed-BASE(A4)	;_seed
 	JSR	_credits
 	JSR	_init_player
 	JSR	_init_things
@@ -2697,17 +2697,17 @@ L00665:
 	dc.b	" have to allow it",0
 
 _ran:
-	MOVE.L	-$6094(A4),D0	;_seed
+	MOVE.L	_seed-BASE(A4),D0	;_seed
 	MOVEQ	#$7D,D1
 	JSR	_mulu
-	MOVE.L	D0,-$6094(A4)	;_seed
-;	MOVE.L	-$6094(A4),D0	;_seed
+	MOVE.L	D0,_seed-BASE(A4)	;_seed
+;	MOVE.L	_seed-BASE(A4),D0	;_seed
 	MOVE.L	#$002AAAAB,D1
 	JSR	_divu
 	MOVE.L	#$002AAAAB,D1
 	JSR	_mulu
-	SUB.L	D0,-$6094(A4)	;_seed
-	MOVE.L	-$6094(A4),D0	;_seed
+	SUB.L	D0,_seed-BASE(A4)	;_seed
+	MOVE.L	_seed-BASE(A4),D0	;_seed
 	RTS
 
 ;/*
