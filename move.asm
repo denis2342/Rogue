@@ -21,7 +21,7 @@ _do_move:
 	LINK	A5,#-$0000
 	MOVEM.L	D4-D7,-(A7)
 
-	CLR.B	-$66B8(A4)	;_firstmove
+	CLR.B	_firstmove-BASE(A4)	;_firstmove
 	TST.B	-$66AD(A4)	;_bailout
 	BEQ.B	L00091
 

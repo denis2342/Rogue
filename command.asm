@@ -324,7 +324,7 @@ L003C9:
 	BNE.B	L003CA
 
 	ST	_door_stop-BASE(A4)	;_door_stop
-	ST	-$66B8(A4)	;_firstmove
+	ST	_firstmove-BASE(A4)	;_firstmove
 L003CA:
 	MOVE.W	D4,-(A7)
 	JSR	_toupper

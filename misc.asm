@@ -164,7 +164,7 @@ L00823:
 	MOVE.W	D3,-$0012(A5)
 	TST.B	_door_stop-BASE(A4)	;_door_stop
 	BEQ.B	L00824
-	TST.B	-$66B8(A4)	;_firstmove
+	TST.B	_firstmove-BASE(A4)	;_firstmove
 	BNE.B	L00824
 	TST.B	_running-BASE(A4)	;_running
 	BEQ.B	L00824
@@ -282,7 +282,7 @@ L0082C:
 	TST.B	_door_stop-BASE(A4)	;_door_stop
 	BEQ.B	L0082D
 
-	TST.B	-$66B8(A4)	;_firstmove
+	TST.B	_firstmove-BASE(A4)	;_firstmove
 	BNE.B	L0082D
 
 	CLR.B	_running-BASE(A4)	;_running
@@ -337,7 +337,7 @@ L00832:
 	TST.B	_door_stop-BASE(A4)	;_door_stop
 	BEQ.W	L00846
 
-	TST.B	-$66B8(A4)	;_firstmove
+	TST.B	_firstmove-BASE(A4)	;_firstmove
 	BNE.W	L00846
 
 	TST.B	_running-BASE(A4)	;_running
@@ -468,7 +468,7 @@ L00849:
 	TST.B	_door_stop-BASE(A4)	;_door_stop
 	BEQ.B	L0084A
 
-	TST.B	-$66B8(A4)	;_firstmove
+	TST.B	_firstmove-BASE(A4)	;_firstmove
 	BNE.B	L0084A
 
 	CMPI.W	#$0001,-$000A(A5)
