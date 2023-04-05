@@ -495,7 +495,7 @@ L009F9:
 	MOVE.W	$0020(A2),D3
 ;	EXT.L	D3
 	ASL.w	#1,D3
-	LEA	-$6F00(A4),A6	;_a_class
+	LEA	_a_class-BASE(A4),A6	;_a_class
 	MOVE.W	$00(A6,D3.w),D2
 	CMP.W	$0026(A2),D2
 	BEQ.B	L009FA

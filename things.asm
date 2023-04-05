@@ -314,7 +314,7 @@ L00AD3:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#1,D3
-	LEA	-$6F00(A4),A6	;_a_class
+	LEA	_a_class-BASE(A4),A6	;_a_class
 	MOVE.W	$00(A6,D3.w),D2
 	SUB.W	$0026(A2),D2
 	MOVE.W	D2,-(A7)
@@ -1017,7 +1017,7 @@ L00553:
 	MOVE.W	D4,D3
 ;	EXT.L	D3
 	ASL.w	#1,D3
-	LEA	-$6F00(A4),A6	;_a_class
+	LEA	_a_class-BASE(A4),A6	;_a_class
 	MOVE.W	$00(A6,D3.w),$0026(A2)
 
 	MOVEq	#100,D0

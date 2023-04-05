@@ -372,7 +372,7 @@ L007DC:
 	MOVE.W	$0020(A6),D3
 ;	EXT.L	D3
 	ASL.w	#1,D3
-	LEA	-$6F00(A4),A1	;_a_class
+	LEA	_a_class-BASE(A4),A1	;_a_class
 	MOVE.W	$00(A1,D3.w),$0026(A6)
 
 	MOVEq	#$0003,D0

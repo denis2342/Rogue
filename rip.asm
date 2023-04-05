@@ -686,7 +686,7 @@ L006C9:
 	MOVE.W	$0020(A2),D3	;which armor did we have?
 ;	EXT.L	D3
 	ASL.w	#1,D3
-	LEA	-$6F00(A4),A6	;_a_class
+	LEA	_a_class-BASE(A4),A6	;_a_class
 	MOVE.W	$00(A6,D3.w),D2	;load the base AC value
 	SUB.W	$0026(A2),D2
 	MULU.W	#10,D2		; 10 extra gold for every AC point we made it better
