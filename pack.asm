@@ -44,7 +44,7 @@ L00295:
 	TST.W	$002C(A6)	;check for group
 	BNE.B	L00296
 
-	SUBQ.W	#1,-$60AA(A4)	;_inpack
+	SUBQ.W	#1,_inpack-BASE(A4)	;_inpack
 L00296:
 	MOVE.L	A2,D0
 L00297:
@@ -64,10 +64,10 @@ L00299:
 
 	MOVE.W	$001E(A6),D3	;get number of items
 
-1$	SUB.W	D3,-$60AA(A4)	;_inpack
+1$	SUB.W	D3,_inpack-BASE(A4)	;_inpack
 	BRA.B	L0029F
 L0029E:
-	SUBQ.W	#1,-$60AA(A4)	;_inpack
+	SUBQ.W	#1,_inpack-BASE(A4)	;_inpack
 L0029F:
 	MOVE.L	$0008(A5),-(A7)
 	PEA	-$529C(A4)	;_player + 46 (pack)
@@ -249,7 +249,7 @@ L002B0:
 	BNE.B	L002AD
 
 L002B1:
-	CMPI.W	#22,-$60AA(A4)	;_inpack, max items in inventory
+	CMPI.W	#22,_inpack-BASE(A4)	;_inpack, max items in inventory
 	BLT.B	L002B2
 
 	PEA	L002CC(PC)	;"you can't carry anything else"
@@ -294,7 +294,7 @@ L002B2:
 L002B3:
 	ORI.W	#O_SCAREUSED,$0028(A2)	;set scare bit used
 L002B4:
-	ADDQ.W	#1,-$60AA(A4)	;_inpack++
+	ADDQ.W	#1,_inpack-BASE(A4)	;_inpack++
 	TST.B	D6
 	BEQ.B	L002B5
 

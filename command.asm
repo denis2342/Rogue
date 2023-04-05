@@ -671,7 +671,7 @@ show_inpack:
 
 	CLR.B	_after-BASE(A4)	;_after
 
-	move.w	-$60AA(A4),-(a7)	;_inpack
+	move.w	_inpack-BASE(A4),-(a7)	;_inpack
 	pea	inpacktext
 	JSR	_msg
 	ADDQ.W	#6,A7
