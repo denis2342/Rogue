@@ -759,7 +759,7 @@ _mouse_dir:
 
 	MOVE.W	_p_col-BASE(A4),D4	;_p_col
 	ADDQ.W	#5,D4
-	MOVE.W	-$5154(A4),D5	;_p_row
+	MOVE.W	_p_row-BASE(A4),D5	;_p_row
 	ADDQ.W	#4,D5
 	MOVE.W	$000A(A5),D6
 	SUB.W	D4,D6

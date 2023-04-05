@@ -772,7 +772,7 @@ L000FE:
 
 	MULU.W	#$0009,D4
 	ADD.W	-$77D2(A4),D4	;_Window2 + 48
-	MOVE.W	D4,-$5154(A4)	;_p_row
+	MOVE.W	D4,_p_row-BASE(A4)	;_p_row
 
 	MOVE.L	(A7)+,D4
 	UNLK	A5
@@ -888,7 +888,7 @@ L00104:
 	MOVEA.L	$0032(A6),A1
 	move.l	$0004(A1),a1	;dstbitmap
 	MOVE.W	_p_col-BASE(A4),D2	;_p_col ;dstx
-	MOVE.W	-$5154(A4),D3	;_p_row = dsty
+	MOVE.W	_p_row-BASE(A4),D3	;_p_row = dsty
 
 	TST.B	-$7064(A4)	;_map_up
 	BEQ.B	L00106
@@ -937,14 +937,14 @@ __addch:
 	MOVE.L	A2,-$77C2(A4)	_addch_text + 12
 
 	MOVE.W	_p_col-BASE(A4),D0	;_p_col
-	MOVE.W	-$5154(A4),D1	;_p_row
+	MOVE.W	_p_row-BASE(A4),D1	;_p_row
 	lea	-$77CE(A4),a1	;_addch_text + 0
 	MOVE.L	$0032(A6),a0
 
 	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
 	JSR	_LVOPrintIText(A6)
 
-;	MOVE.W	-$5154(A4),D3	;_p_row
+;	MOVE.W	_p_row-BASE(A4),D3	;_p_row
 ;	EXT.L	D3
 ;	MOVE.L	D3,-(A7)
 ;	MOVE.W	_p_col-BASE(A4),D3	;_p_col
@@ -968,7 +968,7 @@ L00107:
 
 __clearbot:
 ;	LINK	A5,#-$0000
-	MOVE.W	-$5154(A4),D3	;_p_row
+	MOVE.W	_p_row-BASE(A4),D3	;_p_row
 	EXT.L	D3
 	MOVEA.L	D3,A6
 
@@ -991,7 +991,7 @@ __clearbot:
 __clrtoeol:
 ;	LINK	A5,#-$0000
 
-	MOVE.W	-$5154(A4),D3	;_p_row
+	MOVE.W	_p_row-BASE(A4),D3	;_p_row
 	EXT.L	D3
 	MOVEA.L	D3,A6
 	PEA	$0006(A6)
@@ -1315,14 +1315,14 @@ __zapstr:
 	MOVE.L	$0008(A5),-$77C2(A4)	;_addch_text + 12
 
 	MOVE.W	_p_col-BASE(A4),D0	;_p_col
-	MOVE.W	-$5154(A4),D1	;_p_row
+	MOVE.W	_p_row-BASE(A4),D1	;_p_row
 	lea	-$77CE(A4),a1	;_addch_text + 0
 	MOVE.L	$0032(A6),a0
 
 	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
 	JSR	_LVOPrintIText(A6)
 
-;	MOVE.W	-$5154(A4),D3	;_p_row
+;	MOVE.W	_p_row-BASE(A4),D3	;_p_row
 ;	EXT.L	D3
 ;	MOVE.L	D3,-(A7)
 ;	MOVE.W	_p_col-BASE(A4),D3	;_p_col
