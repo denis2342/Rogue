@@ -723,7 +723,7 @@ _mouse_go:
 	LINK	A5,#-$0000
 	MOVE.W	$0008(A5),-$533A(A4)
 	MOVE.W	$000A(A5),-$5338(A4)
-	ST	-$66AF(A4)	;_mouse_run
+	ST	_mouse_run-BASE(A4)	;_mouse_run
 	MOVE.W	-$5338(A4),-(A7)
 	MOVE.W	-$533A(A4),-(A7)
 	BSR.B	_mouse_dir
@@ -740,7 +740,7 @@ _mouse_adjust:
 	CMP.W	-$52BE(A4),D3	;_player + 12
 	BNE.B	L00AB0
 	CLR.B	_running-BASE(A4)	;_running
-	CLR.B	-$66AF(A4)	;_mouse_run
+	CLR.B	_mouse_run-BASE(A4)	;_mouse_run
 L00AB0:
 	MOVE.W	-$5338(A4),-(A7)
 	MOVE.W	-$533A(A4),-(A7)

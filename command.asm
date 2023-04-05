@@ -1035,7 +1035,7 @@ L0040A:
 	BNE.B	L0040B
 	CLR.B	_door_stop-BASE(A4)	;_door_stop
 L0040B:
-	TST.B	-$66AF(A4)	;_mouse_run
+	TST.B	_mouse_run-BASE(A4)	;_mouse_run
 	BEQ.B	L0040E
 	TST.B	_running-BASE(A4)	;_running
 	BEQ.B	L0040D
@@ -1051,7 +1051,7 @@ L0040B:
 L0040C:
 	BRA.B	L0040E
 L0040D:
-	CLR.B	-$66AF(A4)	;_mouse_run
+	CLR.B	_mouse_run-BASE(A4)	;_mouse_run
 L0040E:
 	TST.B	_after-BASE(A4)	;_after
 	BEQ.W	L003D5
