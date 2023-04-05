@@ -367,11 +367,11 @@ L005DF:
 	ADDQ.W	#6,A7
 
 	MOVE.L	D0,-(A7)
-	MOVE.L	-$51A0(A4),-(A7)
+	MOVE.L	_ring_buf-BASE(A4),-(A7)
 	JSR	_strcpy
 	ADDQ.W	#8,A7
 	PEA	L005E6(PC)	;' '
-	MOVE.L	-$51A0(A4),-(A7)
+	MOVE.L	_ring_buf-BASE(A4),-(A7)
 	JSR	_strcat
 	ADDQ.W	#8,A7
 	BRA.B	L005E4
@@ -396,7 +396,7 @@ L005E2:
 	MOVE.W	L005E1(PC,D0.W),D0
 L005E3:	JMP	L005E3(PC,D0.W)
 L005E4:
-	MOVE.L	-$51A0(A4),D0
+	MOVE.L	_ring_buf-BASE(A4),D0
 	BRA.B	L005DD
 
 L005E5:	dc.b	$00

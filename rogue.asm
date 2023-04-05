@@ -692,7 +692,7 @@ _init_ds:
 	MOVE.W	#$0006,-(A7)
 	JSR	_newmem
 	ADDQ.W	#2,A7
-	MOVE.L	D0,-$51A0(A4)	;_ring_buf
+	MOVE.L	D0,_ring_buf-BASE(A4)	;_ring_buf
 
 	MOVE.W	-$6CCC(A4),D3	;_nlevels 23
 	ADDQ.W	#1,D3
