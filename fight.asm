@@ -1050,13 +1050,13 @@ _prname:
 	MOVE.L	A2,-(A7)
 
 	MOVEA.L	$0008(A5),A2
-	MOVEA.L	-$51A8(A4),A6	;_tbuf
+	MOVEA.L	_tbuf-BASE(A4),A6	;_tbuf
 	CLR.B	(A6)
 	MOVE.L	A2,D3
 	BNE.B	L009A0
 
 	MOVE.L	-$69BA(A4),-(A7)	;_you
-	MOVE.L	-$51A8(A4),-(A7)	;_tbuf
+	MOVE.L	_tbuf-BASE(A4),-(A7)	;_tbuf
 	JSR	_strcpy
 	ADDQ.W	#8,A7
 	BRA.B	L009A2
@@ -1066,24 +1066,24 @@ L009A0:
 	BEQ.B	L009A1
 
 	MOVE.L	-$69BE(A4),-(A7)	;_it
-	MOVE.L	-$51A8(A4),-(A7)	;_tbuf
+	MOVE.L	_tbuf-BASE(A4),-(A7)	;_tbuf
 	JSR	_strcpy
 	ADDQ.W	#8,A7
 	BRA.B	L009A2
 L009A1:
 	PEA	L009A4(PC)
-	MOVE.L	-$51A8(A4),-(A7)	;_tbuf
+	MOVE.L	_tbuf-BASE(A4),-(A7)	;_tbuf
 	JSR	_strcpy
 	ADDQ.W	#8,A7
 	MOVE.L	A2,-(A7)
-	MOVE.L	-$51A8(A4),-(A7)	;_tbuf
+	MOVE.L	_tbuf-BASE(A4),-(A7)	;_tbuf
 	JSR	_strcat
 	ADDQ.W	#8,A7
 L009A2:
 	TST.B	$000D(A5)
 	BEQ.B	L009A3
 
-	MOVEA.L	-$51A8(A4),A6	;_tbuf
+	MOVEA.L	_tbuf-BASE(A4),A6	;_tbuf
 	MOVE.L	A6,-(A7)
 	MOVE.B	(A6),D3
 	MOVE.W	D3,-(A7)
@@ -1092,7 +1092,7 @@ L009A2:
 	MOVEA.L	(A7)+,A6
 	MOVE.B	D0,(A6)
 L009A3:
-	MOVE.L	-$51A8(A4),D0	;_tbuf
+	MOVE.L	_tbuf-BASE(A4),D0	;_tbuf
 
 	MOVEA.L	(A7)+,A2
 	UNLK	A5

@@ -677,7 +677,7 @@ _init_ds:
 	MOVE.W	#$0050,-(A7)
 	JSR	_newmem
 	ADDQ.W	#2,A7
-	MOVE.L	D0,-$51A8(A4)	;_tbuf
+	MOVE.L	D0,_tbuf-BASE(A4)	;_tbuf
 
 	MOVE.W	#$0080,-(A7)
 	JSR	_newmem
