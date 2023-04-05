@@ -541,7 +541,7 @@ L002D2:
 	BEQ.B	L002D4
 
 	CLR.W	add_line_tmp-BASE(A4)	;former function _end_add() inlined
-	CLR.B	-$54BA(A4)
+	CLR.B	add_line_tmp2-BASE(A4)
 	JSR	_wmap
 
 	MOVE.W	-$0056(A5),D0

@@ -1391,7 +1391,7 @@ L0057D:
 	BEQ.B	L0057D
 L0057E:
 	CLR.B	_want_click-BASE(A4)	;_want_click
-	MOVE.B	#$01,-$54BA(A4)
+	MOVE.B	#$01,add_line_tmp2-BASE(A4)
 	CLR.W	add_line_tmp-BASE(A4)
 	JSR	_clear
 L0057F:
@@ -1439,8 +1439,8 @@ L00580:
 	ADDQ.W	#1,D3
 	MOVE.W	D3,add_line_tmp-BASE(A4)
 L00581:
-	MOVE.L	$000C(A5),-$54B8(A4)
-	MOVE.L	$0010(A5),-$54B4(A4)
+	MOVE.L	$000C(A5),add_line_tmp3-BASE(A4)
+	MOVE.L	$0010(A5),add_line_tmp4-BASE(A4)
 L00582:
 	TST.W	add_line_tmp-BASE(A4)
 	BNE.B	L00583
@@ -1470,7 +1470,7 @@ _end_line:
 	ADDQ.W	#8,A7
 	MOVE.W	D0,D4
 	CLR.W	add_line_tmp-BASE(A4)
-	CLR.B	-$54BA(A4)
+	CLR.B	add_line_tmp2-BASE(A4)
 	MOVE.W	D4,D0
 
 	MOVE.L	(A7)+,D4

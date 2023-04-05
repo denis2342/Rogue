@@ -1621,7 +1621,12 @@ __Uorg:		ds.b	108
 
 charge_string:	ds.b	30
 
-add_line_tmp:	ds.b	22
+add_line_tmp:	ds.w	1
+add_line_tmp2:	ds.b	2
+add_line_tmp3:	ds.l	1
+add_line_tmp4:	ds.l	1
+
+		ds.w	5
 
 disc1:	ds.w	10		;used by _print_disc()
 disc2:	ds.w	1
