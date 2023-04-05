@@ -54,7 +54,7 @@ L007B6:
 
 L007B9:
 	MOVE.W	$0020(A2),D3
-	LEA	-$66F6(A4),A6	;_s_know
+	LEA	_s_know-BASE(A4),A6	;_s_know
 	ST	$00(A6,D3.W)
 ;	MOVE.W	$0020(A2),D3
 	MULU.W	#21,D3

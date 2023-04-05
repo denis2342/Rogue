@@ -441,7 +441,7 @@ L0007E:
 	CLR.B	$0014(A6)
 	MOVE.W	-$0004(A5),D3
 
-	LEA	-$66F6(A4),A6	;_s_know
+	LEA	_s_know-BASE(A4),A6	;_s_know
 	CLR.B	$00(A6,D3.W)	;mark as unknown
 
 	MOVE.L	_prbuf-BASE(A4),-(A7)	;_prbuf

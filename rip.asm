@@ -715,7 +715,7 @@ L006CA:
 	MOVE.W	$00(A6,D3.w),D4
 	MULU.W	$001E(A2),D4	;multiply by the amount we have
 	MOVE.W	$0020(A2),D3
-	LEA	-$66F6(A4),A6	;_s_know
+	LEA	_s_know-BASE(A4),A6	;_s_know
 	TST.B	$00(A6,D3.W)
 	BNE.B	L006D7
 

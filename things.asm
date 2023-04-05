@@ -34,7 +34,7 @@ L00ABB:
 	AND.W	#$0004,D3	;only the simple name?
 	BEQ.B	L00ABE
 
-	LEA	-$66F6(A4),A6	;_s_know
+	LEA	_s_know-BASE(A4),A6	;_s_know
 	TST.B	$00(A6,D5.W)
 	BEQ.B	L00ABC
 
@@ -1185,7 +1185,7 @@ _discovered:
 
 	MOVEq	#$003F,D7	;'?' scrolls
 	MOVEQ	#15,D5
-	LEA	-$66F6(A4),A2	;_s_know
+	LEA	_s_know-BASE(A4),A2	;_s_know
 	LEA	_s_guess-BASE(A4),A3	;_s_guess
 	BSR.B	_print_disc
 
