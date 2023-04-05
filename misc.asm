@@ -481,11 +481,11 @@ L0084A:
 	MOVE.W	-$52BE(A4),d0	;_player + 12
 	JSR	_mvaddchquick
 
-	TST.B	-$66B4(A4)	;_was_trapped
+	TST.B	_was_trapped-BASE(A4)	;_was_trapped
 	BEQ.B	L0084B
 
 	JSR	_beep(PC)
-	CLR.B	-$66B4(A4)	;_was_trapped
+	CLR.B	_was_trapped-BASE(A4)	;_was_trapped
 L0084B:
 	CLR.B	-$48B7(A4)	;_looking
 

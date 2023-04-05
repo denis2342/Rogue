@@ -622,7 +622,7 @@ _be_trapped:
 	MOVE.B	D4,D3
 	ADD.B	#$0E,D3
 	MOVE.B	D3,$00(A6,D5.W)
-	MOVE.B	#$01,-$66B4(A4)	;_was_trapped
+	MOVE.B	#$01,_was_trapped-BASE(A4)	;_was_trapped
 	MOVEQ	#$00,D0
 	MOVE.B	D4,D0
 	BRA.W	L000E0
@@ -720,7 +720,7 @@ L000D7:
 	MOVE.W	$0002(A2),d0
 	JSR	_mvaddchquick
 
-	ADDQ.B	#1,-$66B4(A4)	;_was_trapped
+	ADDQ.B	#1,_was_trapped-BASE(A4)	;_was_trapped
 	BRA.W	L000E2
 L000D8:
 	MOVE.W	#$0001,-(A7)	;hplus = 1
