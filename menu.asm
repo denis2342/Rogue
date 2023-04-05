@@ -322,7 +322,7 @@ L00A81:
 	MOVEQ	#$0B,D2
 	ASR.L	D2,D5
 	AND.B	#$1F,D5
-	MOVE.B	D5,-$66AA(A4)	;_menu_style
+	MOVE.B	D5,_menu_style-BASE(A4)	;_menu_style
 	BRA.B	L00A8A
 L00A82:
 	TST.w	D0
@@ -643,7 +643,7 @@ _fix_menu:
 	ADDQ.W	#6,A7
 
 	MOVEQ	#$00,D3
-	MOVE.B	-$66AA(A4),D3	;_menu_style
+	MOVE.B	_menu_style-BASE(A4),D3	;_menu_style
 	MOVE.W	D3,-(A7)
 	MOVE.W	#$0001,-(A7)
 	MOVE.W	#$0001,-(A7)

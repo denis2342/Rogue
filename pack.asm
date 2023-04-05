@@ -656,7 +656,7 @@ _get_item:
 	LINK	A5,#-$0004
 	MOVEM.L	D4/A2,-(A7)
 	CLR.W	-$0004(A5)
-	CMP.B	#$02,-$66AA(A4)	;_menu_style
+	CMP.B	#$02,_menu_style-BASE(A4)	;_menu_style
 	BNE.B	L002E1
 
 	PEA	L002F2(PC)	;"eat"
@@ -673,7 +673,7 @@ _get_item:
 	TST.W	D0
 	BNE.B	L002E2
 L002E1:
-	CMP.B	#$01,-$66AA(A4)	;_menu_style
+	CMP.B	#$01,_menu_style-BASE(A4)	;_menu_style
 	BEQ.B	L002E2
 
 	TST.B	-$66B1(A4)	;_com_from_menu

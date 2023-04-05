@@ -192,7 +192,7 @@ L001B9:
 	PEA	L001F1(PC)	;"this scroll is an identify scroll"
 	JSR	_msg
 	ADDQ.W	#4,A7
-	TST.B	-$66AA(A4)	;_menu_style
+	TST.B	_menu_style-BASE(A4)	;_menu_style
 	BEQ.B	L001BA
 
 	PEA	L001F2(PC)	;" More "
