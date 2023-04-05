@@ -852,7 +852,7 @@ _wmap:
 	ADDQ.W	#4,A7
 	CLR.L	_TextWin-BASE(A4)	;_TextWin
 	ST	_map_up-BASE(A4)	;_map_up
-	MOVE.L	-$5148(A4),_StdWin-BASE(A4)	;_RogueWin,_StdWin
+	MOVE.L	_RogueWin-BASE(A4),_StdWin-BASE(A4)	;_RogueWin,_StdWin
 	JSR	_intui_sync(PC)
 L00102:
 ;	UNLK	A5
@@ -1167,7 +1167,7 @@ L0010F:
 	JSR	_OpenWindow
 	ADDQ.W	#4,A7
 
-	MOVE.L	D0,-$5148(A4)	;_RogueWin
+	MOVE.L	D0,_RogueWin-BASE(A4)	;_RogueWin
 	MOVE.L	D0,_StdWin-BASE(A4)	;_StdWin
 ;	TST.L	D0
 	BNE.B	L00110
@@ -1211,14 +1211,14 @@ L0011C:
 	JSR	_CloseWindow
 	ADDQ.W	#4,A7
 L0011D:
-	TST.L	-$5148(A4)	;_RogueWin
+	TST.L	_RogueWin-BASE(A4)	;_RogueWin
 	BEQ.B	L0011E
 
-	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
+	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
 	JSR	_ClearMenuStrip
 	ADDQ.W	#4,A7
 
-	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
+	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
 	JSR	_CloseWindow
 	ADDQ.W	#4,A7
 L0011E:
@@ -1261,7 +1261,7 @@ _ScreenTitle:
 
 	PEA	-$5542(A4)
 	PEA	-$1
-	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
+	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
 	JSR	_SetWindowTitles
 	LEA	$000C(A7),A7
 

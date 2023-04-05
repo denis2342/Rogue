@@ -251,7 +251,7 @@ _InstallMenus:
 	MOVE.L	D0,-$53A2(A4)
 
 	MOVE.L	-$53A2(A4),-(A7)
-	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
+	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
 	JSR	_SetMenuStrip(PC)
 	ADDQ.W	#8,A7
 
@@ -414,7 +414,7 @@ L00A90:
 	RTS
 
 L00A91:
-	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
+	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
 	JSR	_ClearMenuStrip
 	ADDQ.W	#4,A7
 	MOVEA.L	-$0006(A5),A6
@@ -529,7 +529,7 @@ L00A9A:
 	MOVE.L	A2,D3
 	BNE.B	L00A99
 	MOVE.L	-$53A2(A4),-(A7)
-	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
+	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
 	JSR	_SetMenuStrip(PC)
 	ADDQ.W	#8,A7
 	BRA.W	L00A90
@@ -630,7 +630,7 @@ L00AAA:
 _fix_menu:
 	LINK	A5,#-$0000
 
-	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
+	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
 	JSR	_ClearMenuStrip
 	ADDQ.W	#4,A7
 
@@ -651,7 +651,7 @@ _fix_menu:
 	ADDQ.W	#6,A7
 
 	MOVE.L	-$53A2(A4),-(A7)
-	MOVE.L	-$5148(A4),-(A7)	;_RogueWin
+	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
 	JSR	_SetMenuStrip(PC)
 	ADDQ.W	#8,A7
 
