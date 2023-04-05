@@ -2778,7 +2778,7 @@ _playit:
 	ADDQ.W	#4,A7
 	MOVE.L	D0,_oldrp-BASE(A4)	;_oldrp
 L0066A:
-	TST.B	-$66B7(A4)	;_playing
+	TST.B	_playing-BASE(A4)	;_playing
 	BEQ.B	L0066B
 
 	JSR	_command(PC)
