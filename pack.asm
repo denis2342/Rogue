@@ -445,7 +445,7 @@ L002C9:
 	BNE.B	L002CA
 
 	ST	_amulet-BASE(A4)	;_amulet
-	ST	-$66BC(A4)	;_saw_amulet
+	ST	_saw_amulet-BASE(A4)	;_saw_amulet
 L002CA:
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	A2,-(A7)

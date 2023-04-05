@@ -169,7 +169,7 @@ _put_things:
 	MOVEM.L	D4/D5/A2,-(A7)
 
 	MOVEQ	#9-1,D4		;create 9 items if we didnt saw the amulet yet
-	TST.B	-$66BC(A4)	;_saw_amulet
+	TST.B	_saw_amulet-BASE(A4)	;_saw_amulet
 	BEQ.B	L0018B
 
 	MOVE.W	_level-BASE(A4),D3	;_level
@@ -183,7 +183,7 @@ L0018B:
 	CMPI.W	#26,_level-BASE(A4)	;_level
 	BLT.W	L0018E
 
-	TST.B	-$66BC(A4)	;_saw_amulet
+	TST.B	_saw_amulet-BASE(A4)	;_saw_amulet
 	BNE.W	L0018E
 
 	JSR	_new_item

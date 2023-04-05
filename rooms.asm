@@ -545,7 +545,7 @@ L00909:
 	TST.W	D0
 	BNE.W	L0090D
 
-	TST.B	-$66BC(A4)	;_saw_amulet
+	TST.B	_saw_amulet-BASE(A4)	;_saw_amulet
 	BEQ.B	L0090A
 
 	MOVE.W	_level-BASE(A4),D3	;_level
