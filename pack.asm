@@ -724,10 +724,10 @@ L002E8:
 	PEA	L002F6(PC)	;"%s? (* for list): "
 	JSR	_msg
 	ADDQ.W	#8,A7
-	MOVE.B	#$01,-$66B0(A4)	;_want_click
+	MOVE.B	#$01,_want_click-BASE(A4)	;_want_click
 	JSR	_readchar
 	MOVE.B	D0,D4
-	CLR.B	-$66B0(A4)	;_want_click
+	CLR.B	_want_click-BASE(A4)	;_want_click
 L002E9:
 	CLR.W	_mpos-BASE(A4)	;_mpos
 	CLR.B	-$0002(A5)

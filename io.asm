@@ -791,7 +791,7 @@ L004FF:
 L00500:
 	BRA.B	L00502
 L00501:
-	TST.B	-$66B0(A4)	;_want_click
+	TST.B	_want_click-BASE(A4)	;_want_click
 	BEQ.B	L00502
 
 	MOVE.W	D7,-(A7)

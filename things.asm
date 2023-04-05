@@ -1374,7 +1374,7 @@ L0057B:
 	JSR	_addstr
 	ADDQ.W	#4,A7
 L0057C:
-	MOVE.B	#$01,-$66B0(A4)	;_want_click
+	MOVE.B	#$01,_want_click-BASE(A4)	;_want_click
 L0057D:
 	JSR	_readchar
 	MOVE.W	D0,D4
@@ -1390,7 +1390,7 @@ L0057D:
 	TST.W	D0
 	BEQ.B	L0057D
 L0057E:
-	CLR.B	-$66B0(A4)	;_want_click
+	CLR.B	_want_click-BASE(A4)	;_want_click
 	MOVE.B	#$01,-$54BA(A4)
 	CLR.W	add_line_tmp-BASE(A4)
 	JSR	_clear
