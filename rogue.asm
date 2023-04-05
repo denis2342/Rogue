@@ -2051,7 +2051,7 @@ _setup:
 	JSR	_OpenDevice
 
 	LEA	$0010(A7),A7
-	MOVE.L	-$001C(A5),-$48B6(A4)	;_ConsoleDevice
+	MOVE.L	-$001C(A5),_ConsoleDevice-BASE(A4)	;_ConsoleDevice
 	BSR.B	_flush_type
 
 	JSR	_BuildFuncTable

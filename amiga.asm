@@ -2867,7 +2867,7 @@ _RawKeyConvert:
 	MOVE.L	A2,-(A7)
 	MOVEM.L	$0008(A7),A0/A1
 	MOVEM.L	$0010(A7),D1/A2
-	MOVEA.L	-$48B6(A4),A6	;_ConsoleDevice
+	MOVEA.L	_ConsoleDevice-BASE(A4),A6	;_ConsoleDevice
 	JSR	-$0030(A6)
 	MOVEA.L	(A7)+,A2
 	RTS
