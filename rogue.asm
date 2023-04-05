@@ -817,7 +817,7 @@ _wtext:
 	TST.B	-$7064(A4)	;_map_up
 	BEQ.B	L00100
 
-	MOVE.L	-$5150(A4),-$77E4(A4)	;_StdScr
+	MOVE.L	_StdScr-BASE(A4),-$77E4(A4)	;_StdScr
 	PEA	_Window2-BASE(A4)		;_Window2
 	JSR	_OpenWindow
 	ADDQ.W	#4,A7
@@ -1147,7 +1147,7 @@ readCharEnd:
 	JSR	_OpenScreen
 	ADDQ.W	#4,A7
 
-	MOVE.L	D0,-$5150(A4)	;_StdScr
+	MOVE.L	D0,_StdScr-BASE(A4)	;_StdScr
 ;	TST.L	D0
 	BNE.B	L0010F
 
@@ -1162,7 +1162,7 @@ L0010F:
 	JSR	_InitBitMap
 	LEA	$0010(A7),A7
 
-	MOVE.L	-$5150(A4),-$7814(A4)	;_StdScr
+	MOVE.L	_StdScr-BASE(A4),-$7814(A4)	;_StdScr
 	PEA	-$7832(A4)		;_Window1
 	JSR	_OpenWindow
 	ADDQ.W	#4,A7
@@ -1198,7 +1198,7 @@ _wclose:
 ;	LINK	A5,#-$0000
 	MOVEM.L	D4/D5,-(A7)
 
-	TST.L	-$5150(A4)	;_StdScr
+	TST.L	_StdScr-BASE(A4)	;_StdScr
 	BEQ.B	L0011C
 	JSR	_black_out
 L0011C:
@@ -1222,9 +1222,9 @@ L0011D:
 	JSR	_CloseWindow
 	ADDQ.W	#4,A7
 L0011E:
-	TST.L	-$5150(A4)	;_StdScr
+	TST.L	_StdScr-BASE(A4)	;_StdScr
 	BEQ.B	L0011F
-	MOVE.L	-$5150(A4),-(A7)	;_StdScr
+	MOVE.L	_StdScr-BASE(A4),-(A7)	;_StdScr
 	JSR	_CloseScreen
 	ADDQ.W	#4,A7
 L0011F:
@@ -2205,7 +2205,7 @@ L00515:	dc.b	"No Memory",0
 _beep:
 ;	LINK	A5,#-$0000
 
-	move.l	-$5150(A4),a0	;_StdScr
+	move.l	_StdScr-BASE(A4),a0	;_StdScr
 	MOVEA.L	-$5188(A4),A6	;_IntuitionBase
 	jsr	_LVODisplayBeep(A6)
 

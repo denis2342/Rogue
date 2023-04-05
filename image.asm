@@ -205,7 +205,7 @@ _black_out:
 	CLR.L	d2	;g
 	CLR.L	d3	;b
 	MOVE.W	D4,D0
-	MOVEA.L	-$5150(A4),A6	;_StdScr
+	MOVEA.L	_StdScr-BASE(A4),A6	;_StdScr
 	LEA	$002C(A6),a0
 	MOVEA.L	-$5184(A4),A6	;_GfxBase
 	JSR	_LVOSetRGB4(A6)
@@ -226,7 +226,7 @@ _setRGB4colors:
 	MOVE.B	(A0)+,D2	;green
 	MOVE.B	(A0),D3		;blue
 
-	MOVEA.L	-$5150(A4),A1	;_StdScr
+	MOVEA.L	_StdScr-BASE(A4),A1	;_StdScr
 	LEA	$002C(A1),a0
 
 	MOVEA.L	-$5184(A4),A6	;_GfxBase
