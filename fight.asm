@@ -105,7 +105,7 @@ L00937:
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L00938
 
-	MOVE.L	-$69BE(A4),D5	;_it
+	MOVE.L	_it-BASE(A4),D5	;_it
 L00938:
 	MOVEQ	#$00,D3
 	MOVE.B	$0013(A5),D3
@@ -269,7 +269,7 @@ _attack:
 	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L0094C
-	MOVEA.L	-$69BE(A4),A2	;_it
+	MOVEA.L	_it-BASE(A4),A2	;_it
 L0094C:
 	CLR.L	-(A7)
 	CLR.L	-(A7)
@@ -1065,7 +1065,7 @@ L009A0:
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L009A1
 
-	MOVE.L	-$69BE(A4),-(A7)	;_it
+	MOVE.L	_it-BASE(A4),-(A7)	;_it
 	MOVE.L	_tbuf-BASE(A4),-(A7)	;_tbuf
 	JSR	_strcpy
 	ADDQ.W	#8,A7
@@ -1141,7 +1141,7 @@ L009EA:
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L009EB
 
-	MOVE.L	-$69BE(A4),-(A7)	;_it
+	MOVE.L	_it-BASE(A4),-(A7)	;_it
 	JSR	_msg
 	ADDQ.W	#4,A7
 	BRA.B	L009EC
@@ -1588,7 +1588,7 @@ L00A08:
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L00A09
 
-	MOVE.L	-$69BE(A4),-(A7)	;_it
+	MOVE.L	_it-BASE(A4),-(A7)	;_it
 	JSR	_msg
 	ADDQ.W	#4,A7
 	BRA.B	L00A0A
