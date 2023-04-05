@@ -702,7 +702,7 @@ foodlefttext:	dc.b	"food left: %d",0
 L003F5:
 	CLR.B	_after-BASE(A4)	;_after
 	LEA	_macro-BASE(A4),A6	;_macro
-	MOVE.L	A6,-$69CA(A4)	;_typeahead
+	MOVE.L	A6,_typeahead-BASE(A4)	;_typeahead
 	BRA.W	L00409
 
 ; ctrl-r show last message
