@@ -109,7 +109,7 @@ _init_player:
 	MOVEA.L	D0,A2
 	MOVE.W	#$0062,$000A(A2)	;b = ring mail
 	MOVE.W	#$0001,$0020(A2)	;ring mail
-	MOVE.W	-$6EFE(A4),D3		;_a_class + 2
+	MOVE.W	_a_class+2-BASE(A4),D3		;_a_class + 2
 	SUBQ.W	#1,D3			;make the ring mail +1
 	MOVE.W	D3,$0026(A2)
 	ORI.W	#O_ISKNOW,$0028(A2)
