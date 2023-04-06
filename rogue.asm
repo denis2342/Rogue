@@ -1582,7 +1582,7 @@ _isprint:
 chartest:
 	ext.w	d0
 	BMI.B	2$
-	LEA	-$55CA(A4),A6		;_ctp_
+	LEA	_ctp_-BASE(A4),A6		;_ctp_
 	AND.B	$00(A6,D0.W),D3
 	move.b	d3,d0
 	RTS

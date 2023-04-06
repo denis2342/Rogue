@@ -355,7 +355,7 @@ L00BF7:
 	SUBQ.L	#1,A2
 L00BF8:
 	MOVEQ	#$00,D4
-	LEA	-$55CA(A4),A6		;_ctp_
+	LEA	_ctp_-BASE(A4),A6		;_ctp_
 	BRA.B	L00BFA
 
 L00BF9:
@@ -1150,7 +1150,7 @@ L00C37:
 	EXT.W	D3
 	MOVE.W	D3,D4
 L00C38:
-	LEA	-$55CA(A4),A6		;_ctp_
+	LEA	_ctp_-BASE(A4),A6		;_ctp_
 	moveq	#$0004,D2
 	AND.B	$00(A6,D4.W),D2
 	BNE.B	L00C37
@@ -1190,7 +1190,7 @@ L00C3B:
 	EXT.W	D3
 	MOVE.W	D3,D4
 L00C3C:
-	LEA	-$55CA(A4),A6		;_ctp_
+	LEA	_ctp_-BASE(A4),A6		;_ctp_
 	moveq	#$0004,D2
 	AND.B	$00(A6,D4.W),D2
 	BNE.B	L00C3B
@@ -2137,7 +2137,7 @@ L00CA2:
 	MOVEA.L	-$52DA(A4),A2
 L00CA3:
 	moveq	#0,d3
-	LEA	-$55CA(A4),A6		;_ctp_
+	LEA	_ctp_-BASE(A4),A6		;_ctp_
 
 1$	MOVE.B	(A2),D3
 	moveq	#$0010,D2
@@ -2152,7 +2152,7 @@ L00CA4:
 	CMP.b	#$20,D3		;' '
 	BLT.B	L00CA7
 
-	LEA	-$55CA(A4),A6		;_ctp_
+	LEA	_ctp_-BASE(A4),A6		;_ctp_
 	moveq	#0,d4
 1$
 	MOVE.B	(A2),D4
@@ -2189,7 +2189,7 @@ L00CA7:
 
 L00CA8:
 	moveq	#0,d3
-	LEA	-$55CA(A4),A6		;_ctp_
+	LEA	_ctp_-BASE(A4),A6		;_ctp_
 
 1$	MOVE.B	(A2),D3
 	moveq	#$0010,D2
