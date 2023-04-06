@@ -620,6 +620,7 @@ _monsters:
 	dc.l	L00766		; 1d2
 	dc.w	$0000
 
+_venus_flytrap:
 	dc.l	L00767		; #18 venus flytrap, 13-23
 	dc.w	$0000
 	dc.w	C_ISMEAN	;flags
