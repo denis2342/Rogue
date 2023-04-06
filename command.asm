@@ -1016,7 +1016,7 @@ L00408:
 	BEQ.W	L00409
 	BRA.W	L00407
 L00409:
-	CLR.B	-$66B1(A4)	;_com_from_menu
+	CLR.B	_com_from_menu-BASE(A4)	;_com_from_menu
 
 	TST.B	_take-BASE(A4)	;_take
 	BEQ.B	L0040A

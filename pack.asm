@@ -676,7 +676,7 @@ L002E1:
 	CMP.B	#$01,_menu_style-BASE(A4)	;_menu_style
 	BEQ.B	L002E2
 
-	TST.B	-$66B1(A4)	;_com_from_menu
+	TST.B	_com_from_menu-BASE(A4)	;_com_from_menu
 	BEQ.B	L002E3
 L002E2:
 	MOVE.W	#$0001,-$0004(A5)
