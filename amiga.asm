@@ -1555,7 +1555,7 @@ L00C73:
 
 	ADDA.L	#$00000016,A2
 
-	LEA	-$55D2(A4),A6	;_cls_
+	LEA	_cls_-BASE(A4),A6	;_cls_
 	CMPA.L	A6,A2
 	BCS.B	L00C73
 
@@ -1633,7 +1633,7 @@ _flsh_:
 
 	MOVEA.L	$0008(A5),A2
 	LEA	L00C72(PC),A6
-	MOVE.L	A6,-$55D2(A4)	;_cls_
+	MOVE.L	A6,_cls_-BASE(A4)	;_cls_
 	MOVE.B	$000C(A2),D3
 ;	EXT.W	D3
 	AND.W	#$0010,D3
@@ -1723,7 +1723,7 @@ L00C7F:
 ;;	LINK	A5,#-$0000
 ;	MOVE.L	A2,-(A7)
 ;	LEA	-$578A(A4),A2	;_Cbuffs
-;	LEA	-$55D2(A4),A6	;_cls_
+;	LEA	_cls_-BASE(A4),A6	;_cls_
 ;
 ;1$	TST.B	$000C(A2)
 ;	BEQ.B	3$
@@ -2038,10 +2038,10 @@ L00C9E:
 
 _exit:
 	LINK	A5,#-$0000
-	TST.L	-$55D2(A4)	;_cls_
+	TST.L	_cls_-BASE(A4)	;_cls_
 	BEQ.B	L00C9F
 
-	MOVEA.L	-$55D2(A4),A6	;_cls_
+	MOVEA.L	_cls_-BASE(A4),A6	;_cls_
 	JSR	(A6)
 L00C9F:
 	MOVE.W	$0008(A5),-(A7)
