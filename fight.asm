@@ -496,8 +496,8 @@ L00964:
 
 L00965:
 	ORI.W	#C_ISHELD,-$52B4(A4)	;C_ISHELD,_player + 22 (flags)
-	ADDQ.W	#1,-$60A2(A4)	;_fung_hit
-	MOVE.W	-$60A2(A4),-(A7)	;_fung_hit
+	ADDQ.W	#1,_fung_hit-BASE(A4)	;_fung_hit
+	MOVE.W	_fung_hit-BASE(A4),-(A7)	;_fung_hit
 	PEA	L0097D(PC)	;"%dd1"
 	MOVEA.L	$0008(A5),A6
 	MOVE.L	$0024(A6),-(A7)
@@ -678,7 +678,7 @@ L00974:
 	CMP.B	#$46,D3		;'F' venus flytrap
 	BNE.B	L00975
 
-	MOVE.W	-$60A2(A4),D3	;_fung_hit
+	MOVE.W	_fung_hit-BASE(A4),D3	;_fung_hit
 	SUB.W	D3,-$52A8(A4)	;_player + 34 (hp)
 	CMPI.W	#$0000,-$52A8(A4)	;_player + 34 (hp)
 	BGT.B	L00975

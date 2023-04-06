@@ -227,7 +227,7 @@ L00A26:
 _f_restor:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
-	CLR.W	-$60A2(A4)	;_fung_hit
+	CLR.W	_fung_hit-BASE(A4)	;_fung_hit
 	LEA	_venus_flytrap-BASE(A4),A2	;venus flytrap struct
 	MOVE.L	$0014(A2),-(A7)	;"%%%d0"
 	PEA	_f_damage-BASE(A4)	;_f_damage
