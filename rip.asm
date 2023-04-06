@@ -227,11 +227,11 @@ L00689:
 	ADDQ.W	#7,D0
 	JSR	_movequick
 
-	move.b	#1,-$77CE(A4)	;set the default color in IntuiText
+	move.b	#1,_addch_text+0-BASE(A4)	;set the default color in IntuiText
 
 	cmp.b	-$46d8(A4),d4	;_all_clear + 1
 	bne	1$
-	move.b	#3,-$77CE(A4)	;changes the color in IntuiText
+	move.b	#3,_addch_text+0-BASE(A4)	;changes the color in IntuiText
 
 1$	MOVEA.L	$000A(A5),A6
 	MOVE.W	$0026(A6),D3

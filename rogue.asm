@@ -799,15 +799,15 @@ _alloc_raster:
 
 _standout:
 ;	LINK	A5,#-$0000
-	CLR.B	-$77CE(A4)	;_addch_text + 0
-	MOVE.B	#$01,-$77CD(A4)	;_addch_text + 1
+	CLR.B	_addch_text+0-BASE(A4)	;_addch_text + 0
+	MOVE.B	#$01,_addch_text+1-BASE(A4)	;_addch_text + 1
 ;	UNLK	A5
 	RTS
 
 _standend:
 ;	LINK	A5,#-$0000
-	MOVE.B	#$01,-$77CE(A4)	;_addch_text + 0
-	CLR.B	-$77CD(A4)	;_addch_text + 1
+	MOVE.B	#$01,_addch_text+0-BASE(A4)	;_addch_text + 0
+	CLR.B	_addch_text+1-BASE(A4)	;_addch_text + 1
 ;	UNLK	A5
 	RTS
 
@@ -938,7 +938,7 @@ __addch:
 
 	MOVE.W	_p_col-BASE(A4),D0	;_p_col
 	MOVE.W	_p_row-BASE(A4),D1	;_p_row
-	lea	-$77CE(A4),a1	;_addch_text + 0
+	lea	_addch_text+0-BASE(A4),a1	;_addch_text + 0
 	MOVE.L	$0032(A6),a0
 
 	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
@@ -950,7 +950,7 @@ __addch:
 ;	MOVE.W	_p_col-BASE(A4),D3	;_p_col
 ;	EXT.L	D3
 ;	MOVE.L	D3,-(A7)
-;	PEA	-$77CE(A4)	;_addch_text + 0
+;	PEA	_addch_text+0-BASE(A4)	;_addch_text + 0
 ;	MOVE.L	$0032(A6),-(A7)
 ;	JSR	_PrintIText
 ;	LEA	$0010(A7),A7
@@ -1316,7 +1316,7 @@ __zapstr:
 
 	MOVE.W	_p_col-BASE(A4),D0	;_p_col
 	MOVE.W	_p_row-BASE(A4),D1	;_p_row
-	lea	-$77CE(A4),a1	;_addch_text + 0
+	lea	_addch_text+0-BASE(A4),a1	;_addch_text + 0
 	MOVE.L	$0032(A6),a0
 
 	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
@@ -1328,7 +1328,7 @@ __zapstr:
 ;	MOVE.W	_p_col-BASE(A4),D3	;_p_col
 ;	EXT.L	D3
 ;	MOVE.L	D3,-(A7)
-;	PEA	-$77CE(A4)
+;	PEA	_addch_text+0-BASE(A4)
 ;	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
 ;	MOVE.L	$0032(A6),-(A7)
 ;	JSR	_PrintIText
