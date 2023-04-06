@@ -199,8 +199,8 @@ L0031B:
 	TST.W	D0
 	BEQ.B	L0031C
 
-	ADD.W	-$608A(A4),D4	;_delta + 2
-	ADD.W	-$608C(A4),D5	;_delta + 0
+	ADD.W	_delta+2-BASE(A4),D4	;_delta + 2
+	ADD.W	_delta+0-BASE(A4),D5	;_delta + 0
 	BRA.B	L0031B
 L0031C:
 	MOVE.W	D5,d1
@@ -248,9 +248,9 @@ L0031D:
 L0031E:
 	MOVEA.L	-$0004(A5),A6
 	MOVE.B	$0011(A6),D7
-	MOVE.W	D4,-$608A(A4)	;_delta + 2
-	MOVE.W	D5,-$608C(A4)	;_delta + 0
-	PEA	-$608C(A4)	;_delta + 0
+	MOVE.W	D4,_delta+2-BASE(A4)	;_delta + 2
+	MOVE.W	D5,_delta+0-BASE(A4)	;_delta + 0
+	PEA	_delta+0-BASE(A4)	;_delta + 0
 
 	MOVEq	#26,D0
 	JSR	_rnd
@@ -336,10 +336,10 @@ L00325:
 L00326:
 	MOVEA.L	-$0004(A5),A6
 	MOVE.W	-$52BE(A4),D3	;_player + 12
-	ADD.W	-$608A(A4),D3	;_delta + 2
+	ADD.W	_delta+2-BASE(A4),D3	;_delta + 2
 	MOVE.W	D3,$000C(A6)
 	MOVE.W	-$52C0(A4),D3	;_player + 10
-	ADD.W	-$608C(A4),D3	;_delta + 0
+	ADD.W	_delta+0-BASE(A4),D3	;_delta + 0
 	MOVE.W	D3,$000A(A6)
 L00327:
 	MOVEA.L	-$0004(A5),A6
@@ -395,8 +395,8 @@ L0032C:
 L0032D:
 	LEA	L0034F(PC),A6	;"missile"
 	MOVE.L	A6,missile_name-BASE(A4)
-	MOVE.W	-$608C(A4),-(A7)	;_delta + 0
-	MOVE.W	-$608A(A4),-(A7)	;_delta + 2
+	MOVE.W	_delta+0-BASE(A4),-(A7)	;_delta + 0
+	MOVE.W	_delta+2-BASE(A4),-(A7)	;_delta + 2
 	PEA	-$0038(A5)
 	JSR	_do_motion(PC)
 	ADDQ.W	#8,A7
@@ -433,12 +433,12 @@ L0032F:
 
 L00330:
 	MOVE.W	-$52BE(A4),D3	;_player + 12
-	ADD.W	D3,-$608A(A4)	;_delta + 2
+	ADD.W	D3,_delta+2-BASE(A4)	;_delta + 2
 	MOVE.W	-$52C0(A4),D3	;_player + 10
-	ADD.W	D3,-$608C(A4)	;_delta + 0
+	ADD.W	D3,_delta+0-BASE(A4)	;_delta + 0
 
-	MOVE.W	-$608C(A4),d1	;_delta + 0
-	MOVE.W	-$608A(A4),d0	;_delta + 2
+	MOVE.W	_delta+0-BASE(A4),d1	;_delta + 0
+	MOVE.W	_delta+2-BASE(A4),d0	;_delta + 2
 	JSR	_moatquick
 
 	MOVE.L	D0,-$0004(A5)
@@ -468,7 +468,7 @@ L00332:
 	MOVE.B	$000F(A6),D3
 	EXT.W	D3
 	MOVE.W	D3,-(A7)
-	PEA	-$608C(A4)	;_delta + 0
+	PEA	_delta+0-BASE(A4)	;_delta + 0
 	JSR	_fight
 	LEA	$000E(A7),A7
 L00333:
@@ -490,8 +490,8 @@ L00335:
 	TST.W	D0
 	BEQ.B	L00336
 
-	ADD.W	-$608A(A4),D4	;_delta + 2
-	ADD.W	-$608C(A4),D5	;_delta + 0
+	ADD.W	_delta+2-BASE(A4),D4	;_delta + 2
+	ADD.W	_delta+0-BASE(A4),D5	;_delta + 0
 	BRA.B	L00335
 L00336:
 	MOVE.W	D5,d1
@@ -528,9 +528,9 @@ L00339:
 2$
 	MOVE.B	#$01,$000E(A6)
 L0033C:
-	MOVE.W	D4,-$608A(A4)	;_delta + 2
-	MOVE.W	D5,-$608C(A4)	;_delta + 0
-	PEA	-$608C(A4)	;_delta + 0
+	MOVE.W	D4,_delta+2-BASE(A4)	;_delta + 2
+	MOVE.W	D5,_delta+0-BASE(A4)	;_delta + 0
+	PEA	_delta+0-BASE(A4)	;_delta + 0
 	JSR	_start_run
 	ADDQ.W	#4,A7
 L0033D:
@@ -554,7 +554,7 @@ L00340:
 	LEA	L00355(PC),A2	;"ice"
 L00341:
 	MOVE.L	A2,-(A7)
-	PEA	-$608C(A4)	;_delta + 0
+	PEA	_delta+0-BASE(A4)	;_delta + 0
 	PEA	-$52C0(A4)	;_player + 10
 	JSR	_fire_bolt(PC)
 	LEA	$000C(A7),A7

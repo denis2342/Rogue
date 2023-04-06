@@ -279,7 +279,7 @@ L0024D:
 	JSR	_sign
 	ADDQ.W	#2,A7
 
-	MOVE.W	D0,-$608A(A4)	;_delta + 2
+	MOVE.W	D0,_delta+2-BASE(A4)	;_delta + 2
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	-$52C0(A4),D3	;_player + 10
 	SUB.W	$000A(A6),D3
@@ -287,7 +287,7 @@ L0024D:
 	JSR	_sign
 	ADDQ.W	#2,A7
 
-	MOVE.W	D0,-$608C(A4)	;_delta + 0
+	MOVE.W	D0,_delta+0-BASE(A4)	;_delta + 0
 	MOVEA.L	$0008(A5),A6
 	CMP.b	#$44,$000F(A6)	;'D' dragon
 	BNE.B	1$
@@ -297,7 +297,7 @@ L0024D:
 1$
 	PEA	L00264(PC)	;"frost"
 2$
-	PEA	-$608C(A4)	;_delta + 0
+	PEA	_delta+0-BASE(A4)	;_delta + 0
 	PEA	$000A(A6)
 	JSR	_fire_bolt(PC)
 	LEA	$000C(A7),A7

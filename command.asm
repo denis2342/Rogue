@@ -462,8 +462,8 @@ L003D8:
 	JSR	_get_dir(PC)
 	TST.W	D0
 	BEQ.B	L003D9
-	MOVE.W	-$608C(A4),-(A7)	;_delta + 0
-	MOVE.W	-$608A(A4),-(A7)	;_delta + 2
+	MOVE.W	_delta+0-BASE(A4),-(A7)	;_delta + 0
+	MOVE.W	_delta+2-BASE(A4),-(A7)	;_delta + 2
 	JSR	_missile(PC)
 	ADDQ.W	#4,A7
 	BRA.B	L003DA
@@ -741,10 +741,10 @@ L003F9:
 	BEQ.B	L003FB
 
 	MOVE.W	-$52BE(A4),D3	;_player + 12
-	ADD.W	-$608A(A4),D3	;_delta + 2
+	ADD.W	_delta+2-BASE(A4),D3	;_delta + 2
 	MOVE.W	D3,-$0006(A5)
 	MOVE.W	-$52C0(A4),D3	;_player + 10
-	ADD.W	-$608C(A4),D3	;_delta + 0
+	ADD.W	_delta+0-BASE(A4),D3	;_delta + 0
 	MOVE.W	D3,-$0008(A5)
 
 	MOVE.W	-$0008(A5),d0

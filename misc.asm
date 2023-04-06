@@ -996,7 +996,7 @@ L0087E:
 	MOVEQ	#$00,D0
 	BRA.B	L0087C
 L0087F:
-	PEA	-$608C(A4)	;_delta + 0
+	PEA	_delta+0-BASE(A4)	;_delta + 0
 	MOVE.W	D4,-(A7)
 	BSR.B	_find_dir
 	ADDQ.W	#6,A7
@@ -1018,17 +1018,17 @@ L00880:
 	MOVEq	#$0003,D0
 	JSR	_rnd
 	SUBQ.W	#1,D0
-	MOVE.W	D0,-$608A(A4)	;_delta + 2
+	MOVE.W	D0,_delta+2-BASE(A4)	;_delta + 2
 
 	MOVEq	#$0003,D0
 	JSR	_rnd
 	SUBQ.W	#1,D0
-	MOVE.W	D0,-$608C(A4)	;_delta + 0
+	MOVE.W	D0,_delta+0-BASE(A4)	;_delta + 0
 
-	TST.W	-$608A(A4)	;_delta + 2
+	TST.W	_delta+2-BASE(A4)	;_delta + 2
 	BNE.B	L00881
 
-	TST.W	-$608C(A4)	;_delta + 0
+	TST.W	_delta+0-BASE(A4)	;_delta + 0
 	BEQ.B	L00880
 L00881:
 	MOVEQ	#$01,D0
