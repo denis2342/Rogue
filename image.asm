@@ -180,7 +180,7 @@ loop2$
 	BRA.B	L00B1A
 
 reversetitle:
-	tst.b	-$47AA(A4)	;_all_clear
+	tst.b	_all_clear-BASE(A4)	;_all_clear
 	beq	1$
 
 	moveq	#16-1,d2	;turn the color for the title.screen
@@ -190,7 +190,7 @@ loop$	move.b	(a0),d1
 	addq.l	#4,a0
 	dbra	d2,loop$
 
-	clr.b	-$47AA(A4)	;_all_clear
+	clr.b	_all_clear-BASE(A4)	;_all_clear
 1$	rts
 
 L00B1D:	dc.b	"Couldn't open %s",10,0

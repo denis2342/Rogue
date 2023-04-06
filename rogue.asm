@@ -2137,7 +2137,7 @@ _credits:
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	_TextWin-BASE(A4),-(A7)	;_TextWin
 	PEA	L00513(PC)	; "Title.Screen"
-	st	-$47AA(A4)	;turn on _all_clear to reverse red/blue
+	st	_all_clear-BASE(A4)	;turn on _all_clear to reverse red/blue
 	JSR	_show_ilbm
 	LEA	$000A(A7),A7
 ;_SetOffset
