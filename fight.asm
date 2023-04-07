@@ -1334,20 +1334,20 @@ L00223:
 	PEA	L00225(PC)
 	JSR	_msg
 	ADDQ.W	#4,A7
-	PEA	-$54E0(A4)
+	PEA	_slime_split_tmp-BASE(A4)
 	MOVE.W	#$0053,-(A7)	;'S' slime
 	MOVE.L	A2,-(A7)
 	JSR	_new_monster
 	LEA	$000A(A7),A7
 
-	MOVE.W	-$54E0(A4),-(A7)
-	MOVE.W	-$54DE(A4),-(A7)
+	MOVE.W	_slime_split_tmp-BASE(A4),-(A7)
+	MOVE.W	_slime_split_tmp1-BASE(A4),-(A7)
 	JSR	_cansee
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BEQ.B	L00224
 
-	MOVE.W	-$54E0(A4),d0
+	MOVE.W	_slime_split_tmp-BASE(A4),d0
 	MOVE.W	-$54DE(A4),d1
 	JSR	_INDEXquick
 
@@ -1355,12 +1355,12 @@ L00223:
 	MOVE.B	$00(A6,D0.W),$0011(A2)
 
 	MOVEq	#$53,d2		;'S'
-	MOVE.W	-$54E0(A4),d1
-	MOVE.W	-$54DE(A4),d0
+	MOVE.W	_slime_split_tmp-BASE(A4),d1
+	MOVE.W	_slime_split_tmp1-BASE(A4),d0
 	JSR	_mvaddchquick
 
 L00224:
-	PEA	-$54E0(A4)
+	PEA	_slime_split_tmp-BASE(A4)
 	JSR	_start_run
 	ADDQ.W	#4,A7
 	BRA.B	L00222
@@ -1440,7 +1440,7 @@ L0022A:
 	BRA.B	L0022C
 L0022B:
 	MOVEA.W	#$0001,A2
-	LEA	-$54E0(A4),A6
+	LEA	_slime_split_tmp-BASE(A4),A6
 	LEA	-$0004(A5),A1
 	MOVE.L	(A1)+,(A6)+
 L0022C:

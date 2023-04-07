@@ -1624,7 +1624,16 @@ _ctp_:	dc.b	$20,$20,$20,$20
 
 __Dend:
 
-__Uorg:		ds.b	108
+__Uorg:		ds.b	102
+
+_slime_split_tmp:
+	ds.w	1
+_slime_split_tmp1:
+	ds.w	1
+_slime_split_tmp2:
+	ds.b	1
+
+	dc.b	0	;padding?
 
 charge_string:	ds.b	20
 
