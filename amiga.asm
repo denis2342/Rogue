@@ -1547,7 +1547,7 @@ L00C72:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
 
-	LEA	-$578A(A4),A2	;_Cbuffs
+	LEA	_Cbuffs-BASE(A4),A2	;_Cbuffs
 L00C73:
 	MOVE.L	A2,-(A7)
 	BSR.B	_fclose
@@ -1722,7 +1722,7 @@ L00C7F:
 ;_newstream:
 ;;	LINK	A5,#-$0000
 ;	MOVE.L	A2,-(A7)
-;	LEA	-$578A(A4),A2	;_Cbuffs
+;	LEA	_Cbuffs-BASE(A4),A2	;_Cbuffs
 ;	LEA	_cls_-BASE(A4),A6	;_cls_
 ;
 ;1$	TST.B	$000C(A2)
