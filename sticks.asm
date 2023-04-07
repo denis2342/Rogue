@@ -284,7 +284,7 @@ L0031F:
 L00320:
 	CLR.W	D3
 L00321:
-	OR.B	D3,-$66C6(A4)
+	OR.B	D3,_ws_know+5-BASE(A4)	;_ws_know+5
 	BRA.W	L0032A
 L00322:
 	CMPI.W	#WS_CANCEL,-$0006(A5)	;is it a cancellation wand/staff?
