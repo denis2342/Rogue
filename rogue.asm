@@ -254,8 +254,8 @@ L00070:	dc.b	"zinc",0
 _init_things:
 	MOVE.L	A2,-(A7)
 
-	LEA	-$69FC(A4),A2	;_things + 8
-	LEA	-$69D4(A4),A6	;_things + 48
+	LEA	_things+8-BASE(A4),A2	;_things + 8
+	LEA	_things+48-BASE(A4),A6	;_things + 48
 
 1$	MOVE.W	-$0004(A2),D3
 	ADD.W	D3,$0004(A2)
