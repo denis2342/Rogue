@@ -817,7 +817,7 @@ _wtext:
 	TST.B	_map_up-BASE(A4)	;_map_up
 	BEQ.B	L00100
 
-	MOVE.L	_StdScr-BASE(A4),-$77E4(A4)	;_StdScr,_Window2+30
+	MOVE.L	_StdScr-BASE(A4),_Window2+30-BASE(A4)	;_StdScr,_Window2+30
 	PEA	_Window2-BASE(A4)		;_Window2
 	JSR	_OpenWindow
 	ADDQ.W	#4,A7
