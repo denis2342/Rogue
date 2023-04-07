@@ -741,7 +741,7 @@ L000FB:	dc.b	"Rogue: The Adventure game",0
 _SetOffset:
 ;	LINK	A5,#-$0000
 ;	MOVE.W	$0004(A7),-$77D2(A4)	;_Window2 + 48
-;	MOVE.W	$0006(A7),-$77D0(A4)	;_Window2 + 50
+;	MOVE.W	$0006(A7),_Window2+50-BASE(A4)	;_Window2 + 50
 ;	UNLK	A5
 ;	RTS
 
@@ -767,7 +767,7 @@ L000FD:
 	MOVEQ	#$08,D3
 L000FE:
 	MULU.W	$000A(A5),D3
-	ADD.W	-$77D0(A4),D3	;_Window2 + 50
+	ADD.W	_Window2+50-BASE(A4),D3	;_Window2 + 50
 	MOVE.W	D3,_p_col-BASE(A4)	;_p_col
 
 	MULU.W	#$0009,D4
@@ -2142,7 +2142,7 @@ _credits:
 	LEA	$000A(A7),A7
 ;_SetOffset
 	MOVE.W	#$0007,-$77D2(A4)	;_Window2 + 48
-	MOVE.W	#$0005,-$77D0(A4)	;_Window2 + 50
+	MOVE.W	#$0005,_Window2+50-BASE(A4)	;_Window2 + 50
 
 	MOVE.W	#$0001,-(A7)
 	JSR	_cursor(PC)
@@ -2161,7 +2161,7 @@ _credits:
 
 ;_SetOffset
 	CLR.W	-$77D2(A4)	;_Window2 + 48
-	CLR.W	-$77D0(A4)	;_Window2 + 50
+	CLR.W	_Window2+50-BASE(A4)	;_Window2 + 50
 
 ;	CLR.W	-(A7)	;getting _graphics_disabled state back (its already on the stack)
 	JSR	_cursor(PC)
