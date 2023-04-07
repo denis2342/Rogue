@@ -369,8 +369,8 @@ _init_weapon:
 	JSR	_rnd
 	ADDQ.W	#8,D0		; add 8 - 15
 
-	MOVE.W	-$609C(A4),d1	;get group for item
-	ADDQ.W	#1,-$609C(A4)	;_group++
+	MOVE.W	_group-BASE(A4),d1	;get group for item
+	ADDQ.W	#1,_group-BASE(A4)	;_group++
 
 1$	MOVE.W	d0,$001E(A2)	;one or the random number of items
 	MOVE.W	d1,$002C(A2)	;set group for item
