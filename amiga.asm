@@ -17,7 +17,7 @@ _OffVerify:
 	TST.L	_StdWin-BASE(A4)	;_StdWin
 	BEQ.B	L00127
 
-	MOVE.L	-$7828(A4),D3
+	MOVE.L	_Window1+10-BASE(A4),D3
 	AND.L	#$FFFFDFFF,D3
 	MOVE.L	D3,-(A7)
 	MOVE.L	_StdWin-BASE(A4),-(A7)	;_StdWin
@@ -56,7 +56,7 @@ _OnVerify:
 	LINK	A5,#-$0000
 	TST.L	_StdWin-BASE(A4)	;_StdWin
 	BEQ.B	L00128
-	MOVE.L	-$7828(A4),-(A7)
+	MOVE.L	_Window1+10-BASE(A4),-(A7)
 	MOVE.L	_StdWin-BASE(A4),-(A7)	;_StdWin
 	JSR	_ModifyIDCMP
 	ADDQ.W	#8,A7
