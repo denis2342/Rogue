@@ -458,7 +458,7 @@ L0007E:
 	CMPI.W	#$0000,-$0004(A5)
 	BLE.B	L0007F
 
-	LEA	-$6EEC(A4),A6	;_s_magic + 4
+	LEA	_s_magic+4-BASE(A4),A6	;_s_magic + 4
 	MOVE.W	-$0004(A5),D3
 	MOVE.W	D3,D2
 	SUBQ.W	#1,D2
