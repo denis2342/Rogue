@@ -711,7 +711,7 @@ L006CA:
 	MOVE.W	$0020(A2),D3
 ;	EXT.L	D3
 	ASL.w	#3,D3
-	LEA	-$6EEA(A4),A6	;_s_magic + 6
+	LEA	_s_magic+6-BASE(A4),A6	;_s_magic + 6
 	MOVE.W	$00(A6,D3.w),D4
 	MULU.W	$001E(A2),D4	;multiply by the amount we have
 	MOVE.W	$0020(A2),D3
