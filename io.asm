@@ -927,11 +927,11 @@ _status:
 	TST.B	_new_stats-BASE(A4)	;_new_stats
 	BNE.B	L0015D
 
-	MOVE.W	-$54EC(A4),D3
+	MOVE.W	_lp_hp-BASE(A4),D3
 	CMP.W	_player+34-BASE(A4),D3	;_player + 34 (hp)
 	BNE.B	L0015D
 
-	MOVE.W	-$54EA(A4),D3
+	MOVE.W	_lp_max_hp-BASE(A4),D3
 	CMP.W	_player+40-BASE(A4),D3	;_player + 40 (max hp)
 	BEQ.B	L0015E
 L0015D:
@@ -944,17 +944,17 @@ L0015D:
 	PEA	L00169(PC)	;"Hits:%.3d(%.3d)  "
 	JSR	_printw
 	ADDQ.W	#8,A7
-	MOVE.W	_player+34-BASE(A4),-$54EC(A4)	;_player + 34 (hp)
-	MOVE.W	_player+40-BASE(A4),-$54EA(A4)	;_player + 40 (max hp)
+	MOVE.W	_player+34-BASE(A4),_lp_hp-BASE(A4)	;_player + 34 (hp)
+	MOVE.W	_player+40-BASE(A4),_lp_max_hp-BASE(A4)	;_player + 40 (max hp)
 L0015E:
 	TST.B	_new_stats-BASE(A4)	;_new_stats
 	BNE.B	L0015F
 
-	MOVE.W	-$54E8(A4),D3
+	MOVE.W	_lp_strength-BASE(A4),D3
 	CMP.W	_player+24-BASE(A4),D3	;_player + 24 (strength)
 	BNE.B	L0015F
 
-	MOVE.W	-$54E6(A4),D3
+	MOVE.W	_lp_max_strength-BASE(A4),D3
 	CMP.W	_max_stats+0-BASE(A4),D3	;_max_stats + 0 (max strength)
 	BEQ.B	L00160
 L0015F:
@@ -966,13 +966,13 @@ L0015F:
 	PEA	L0016A(PC)	;"Str:%.3d(%.3d)"
 	JSR	_printw
 	ADDQ.W	#8,A7
-	MOVE.W	_player+24-BASE(A4),-$54E8(A4)	;_player + 24 (strength)
-	MOVE.W	_max_stats+0-BASE(A4),-$54E6(A4)	;_max_stats + 0 (max strength),
+	MOVE.W	_player+24-BASE(A4),_lp_strength-BASE(A4)	;_player + 24 (strength)
+	MOVE.W	_max_stats+0-BASE(A4),_lp_max_strength-BASE(A4)	;_max_stats + 0 (max strength),
 L00160:
 	TST.B	_new_stats-BASE(A4)	;_new_stats
 	BNE.B	L00161
 
-	MOVE.W	-$54E4(A4),D3	;last printed purse
+	MOVE.W	_lp_purse-BASE(A4),D3	;last printed purse
 	CMP.W	_purse-BASE(A4),D3	;_purse
 	BEQ.B	L00162
 L00161:
@@ -984,7 +984,7 @@ L00161:
 	PEA	L0016B(PC)	;"Gold:%-5.5u"
 	JSR	_printw
 	ADDQ.W	#6,A7
-	MOVE.W	_purse-BASE(A4),-$54E4(A4)	;_purse, last printed purse
+	MOVE.W	_purse-BASE(A4),_lp_purse-BASE(A4)	;_purse, last printed purse
 L00162:
 	MOVE.L	_cur_armor-BASE(A4),D0	;_cur_armor
 	BEQ.B	L00163
@@ -1016,7 +1016,7 @@ L00166:
 	TST.B	_new_stats-BASE(A4)	;_new_stats
 	BNE.B	L00167
 
-	CMP.W	-$54E2(A4),D4	;last printed armor class
+	CMP.W	_lp_armor_class-BASE(A4),D4	;last printed armor class
 	BEQ.B	L00168
 L00167:
 	MOVEq	#$002A,d1
@@ -1030,7 +1030,7 @@ L00167:
 	PEA	L0016C(PC)	;"Armor:%-2.2d"
 	JSR	_printw
 	ADDQ.W	#6,A7
-	MOVE.W	D4,-$54E2(A4)	;last printed armor class
+	MOVE.W	D4,_lp_armor_class-BASE(A4)	;last printed armor class
 
 L00168:
 	CLR.B	_new_stats-BASE(A4)	;_new_stats

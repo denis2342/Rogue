@@ -1631,7 +1631,14 @@ _unctrl_tmp:
 	ds.b	1
 
 _unctrl_tmp2:
-	ds.b	21
+	ds.b	9
+
+_lp_hp			dc.w	0
+_lp_max_hp		dc.w	0
+_lp_strength		dc.w	0
+_lp_max_strength	dc.w	0
+_lp_purse		dc.w	0
+_lp_armor_class		dc.w	0
 
 _slime_split_tmp:
 	ds.w	1
