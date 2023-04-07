@@ -2313,9 +2313,9 @@ L00CB2:
 	MOVEA.L	__cln-BASE(A4),A6	;__cln
 	JSR	(A6)
 L00CB3:
-;	TST.L	-$46D4(A4)		;_MathTransBase
+;	TST.L	_MathTransBase-BASE(A4)		;_MathTransBase
 ;	BEQ.B	L00CB4
-;	MOVE.L	-$46D4(A4),-(A7)
+;	MOVE.L	_MathTransBase-BASE(A4),-(A7)
 ;	JSR	_CloseLibrary(PC)
 ;	ADDQ.W	#4,A7
 L00CB4:
