@@ -1810,7 +1810,7 @@ _lmalloc2:
 	MOVE.L	A2,-(A7)
 
 	LEA	L00C87(PC),A6
-	MOVE.L	A6,-$55CE(A4)	;__cln
+	MOVE.L	A6,__cln-BASE(A4)	;__cln
 	move.l	#2,-(a7)	; chip memory
 
 	MOVEA.L	$0008(A5),A6
@@ -1831,7 +1831,7 @@ _lmalloc:
 	MOVE.L	A2,-(A7)
 
 	LEA	L00C87(PC),A6
-	MOVE.L	A6,-$55CE(A4)	;__cln
+	MOVE.L	A6,__cln-BASE(A4)	;__cln
 	CLR.L	-(A7)		; any sort of memory
 
 	MOVEA.L	$0008(A5),A6
@@ -2307,10 +2307,10 @@ L00CB2:
 	CMPI.W	#$000A,-$0002(A5)
 	BLT.B	L00CB2
 
-	TST.L	-$55CE(A4)	;__cln
+	TST.L	__cln-BASE(A4)	;__cln
 	BEQ.B	L00CB3
 
-	MOVEA.L	-$55CE(A4),A6	;__cln
+	MOVEA.L	__cln-BASE(A4),A6	;__cln
 	JSR	(A6)
 L00CB3:
 ;	TST.L	-$46D4(A4)		;_MathTransBase
