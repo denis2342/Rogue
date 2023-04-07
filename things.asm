@@ -757,7 +757,7 @@ L00533:
 	MOVE.B	$000B(A3),$00(A6,D0.W)
 	MOVEA.L	A3,A6
 	ADDA.L	#$0000000C,A6
-	LEA	-$52C0(A4),A1	;_player + 10
+	LEA	_player+10-BASE(A4),A1	;_player + 10
 	MOVE.L	(A1)+,(A6)+
 
 	CMPI.W	#$002C,$000A(A3)	;',' amulet of yendor

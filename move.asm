@@ -63,10 +63,10 @@ L00092:
 	ADDQ.W	#8,A7
 	BRA.B	L00094
 L00093:
-	MOVE.W	-$52BE(A4),D3	;_player + 12
+	MOVE.W	_player+12-BASE(A4),D3	;_player + 12
 	ADD.W	$0008(A5),D3
 	MOVE.W	D3,_nh2-BASE(A4)	;_nh + 2
-	MOVE.W	-$52C0(A4),D3	;_player + 10
+	MOVE.W	_player+10-BASE(A4),D3	;_player + 10
 	ADD.W	$000A(A5),D3
 	MOVE.W	D3,_nh-BASE(A4)	;_nh
 L00094:
@@ -78,7 +78,7 @@ L00094:
 	BNE.W	L0009B
 
 	PEA	_nh-BASE(A4)	;_nh
-	PEA	-$52C0(A4)	;_player + 10
+	PEA	_player+10-BASE(A4)	;_player + 10
 	JSR	_diag_ok
 	ADDQ.W	#8,A7
 	TST.W	D0
@@ -92,7 +92,7 @@ L00095:
 	BEQ.B	L00096
 
 	PEA	_nh-BASE(A4)	;_nh
-	PEA	-$52C0(A4)	;_player + 10
+	PEA	_player+10-BASE(A4)	;_player + 10
 	JSR	__ce
 	ADDQ.W	#8,A7
 	TST.W	D0
@@ -201,7 +201,7 @@ L0009B:
 ;	EXT.L	D0
 	BRA.W	L000AF
 L0009C:
-	CMPI.W	#$0001,-$52BE(A4)	;_player + 12
+	CMPI.W	#$0001,_player+12-BASE(A4)	;_player + 12
 	BLE.B	L0009E
 
 	JSR	_INDEXplayer
@@ -228,7 +228,7 @@ L0009F:
 	MOVE.B	D3,D6
 	MOVE.W	_maxrow-BASE(A4),D3	;_maxrow
 	SUBQ.W	#1,D3
-	MOVE.W	-$52BE(A4),D2	;_player + 12
+	MOVE.W	_player+12-BASE(A4),D2	;_player + 12
 	CMP.W	D3,D2
 	BGE.B	L000A1
 
@@ -270,12 +270,12 @@ L000A4:
 	CLR.W	$000A(A5)
 	BRA.W	L00093
 L000A5:
-	CMPI.W	#$0001,-$52C0(A4)	;_player + 10
+	CMPI.W	#$0001,_player+10-BASE(A4)	;_player + 10
 	BLE.B	L000A7
 
-	MOVE.W	-$52C0(A4),D0	;_player + 10
+	MOVE.W	_player+10-BASE(A4),D0	;_player + 10
 	SUBQ.W	#1,D0
-	MOVE.W	-$52BE(A4),d1	;_player + 12
+	MOVE.W	_player+12-BASE(A4),d1	;_player + 12
 	JSR	_INDEXquick
 
 	MOVEA.L	__flags-BASE(A4),A6	;__flags
@@ -283,9 +283,9 @@ L000A5:
 	AND.B	#F_SEEN,D3	;F_SEEN have seen this spot before
 	BNE.B	L000A6
 
-;	MOVE.W	-$52C0(A4),D0	;_player + 10
+;	MOVE.W	_player+10-BASE(A4),D0	;_player + 10
 ;	SUBQ.W	#1,D0
-;	MOVE.W	-$52BE(A4),d1	;_player + 12
+;	MOVE.W	_player+12-BASE(A4),d1	;_player + 12
 ;	JSR	_INDEXquick
 
 	MOVEA.L	__level-BASE(A4),A6	;__level
@@ -298,12 +298,12 @@ L000A7:
 	CLR.W	D3
 L000A8:
 	MOVE.B	D3,D6
-	CMPI.W	#$003A,-$52C0(A4)	;':',_player + 10
+	CMPI.W	#$003A,_player+10-BASE(A4)	;':',_player + 10
 	BGE.B	L000AA
 
-	MOVE.W	-$52C0(A4),D0	;_player + 10
+	MOVE.W	_player+10-BASE(A4),D0	;_player + 10
 	ADDQ.W	#1,D0
-	MOVE.W	-$52BE(A4),d1	;_player + 12
+	MOVE.W	_player+12-BASE(A4),d1	;_player + 12
 	JSR	_INDEXquick
 
 	MOVEA.L	__flags-BASE(A4),A6	;__flags
@@ -312,9 +312,9 @@ L000A8:
 	AND.W	#F_SEEN,D3	;F_SEEN have seen this spot before
 	BNE.B	L000A9
 
-;	MOVE.W	-$52C0(A4),D0	;_player + 10
+;	MOVE.W	_player+10-BASE(A4),D0	;_player + 10
 ;	ADDQ.W	#1,D0
-;	MOVE.W	-$52BE(A4),d1	;_player + 12
+;	MOVE.W	_player+12-BASE(A4),d1	;_player + 12
 ;	JSR	_INDEXquick
 
 	MOVEA.L	__level-BASE(A4),A6	;__level
@@ -393,7 +393,7 @@ L000B7:
 	AND.W	#F_REAL,D3
 	BNE.B	L000BC
 
-	PEA	-$52C0(A4)	;_player + 10
+	PEA	_player+10-BASE(A4)	;_player + 10
 	JSR	_be_trapped(PC)
 	ADDQ.W	#4,A7
 L000B8:
@@ -434,8 +434,8 @@ L000BC:
 	MOVEA.L	__level-BASE(A4),A6	;__level
 
 	MOVE.B	$00(A6,D0.W),D2
-	MOVE.W	-$52C0(A4),d1	;_player + 10
-	MOVE.W	-$52BE(A4),d0	;_player + 12
+	MOVE.W	_player+10-BASE(A4),d1	;_player + 10
+	MOVE.W	_player+12-BASE(A4),d0	;_player + 12
 	JSR	_mvaddchquick
 
 	MOVE.W	D5,D3
@@ -480,7 +480,7 @@ L000BE:
 	JSR	_enter_room
 	ADDQ.W	#4,A7
 L000BF:
-	LEA	-$52C0(A4),A6	;_player + 10
+	LEA	_player+10-BASE(A4),A6	;_player + 10
 	LEA	_nh-BASE(A4),A1	;_nh
 	MOVE.L	(A1)+,(A6)+
 	BRA.B	L00090
@@ -700,7 +700,7 @@ L000D4:
 	MOVEA.L	-$0004(A5),A6
 	MOVE.W	#$0001,$001E(A6)	;one arrow
 	ADDA.L	#$0000000C,A6
-	LEA	-$52C0(A4),A1	;_player + 10
+	LEA	_player+10-BASE(A4),A1	;_player + 10
 	MOVE.L	(A1)+,(A6)+
 	CLR.L	-(A7)
 	MOVE.L	-$0004(A5),-(A7)

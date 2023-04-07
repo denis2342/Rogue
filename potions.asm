@@ -170,11 +170,11 @@ L00493:
 	ADDQ.W	#4,A7
 
 	ORI.W	#C_ISFOUND,-$52B4(A4)	;_player + 22 (flags)
-	PEA	-$52C0(A4)	;_player + 10
+	PEA	_player+10-BASE(A4)	;_player + 10
 	JSR	_leave_room
 	ADDQ.W	#4,A7
 
-	PEA	-$52C0(A4)	;_player + 10
+	PEA	_player+10-BASE(A4)	;_player + 10
 	JSR	_enter_room
 	ADDQ.W	#4,A7
 	BRA.W	L004AD

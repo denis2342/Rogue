@@ -27,8 +27,8 @@ L00234:
 
 	MOVE.W	$000A(A2),-(A7)
 	MOVE.W	$000C(A2),-(A7)
-	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
-	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
+	MOVE.W	_player+10-BASE(A4),-(A7)	;_player + 10
+	MOVE.W	_player+12-BASE(A4),-(A7)	;_player + 12
 	JSR	_DISTANCE
 	ADDQ.W	#8,A7
 
@@ -56,8 +56,8 @@ L00238:
 
 	MOVE.W	$000A(A2),-(A7)
 	MOVE.W	$000C(A2),-(A7)
-	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
-	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
+	MOVE.W	_player+10-BASE(A4),-(A7)	;_player + 10
+	MOVE.W	_player+12-BASE(A4),-(A7)	;_player + 12
 	JSR	_DISTANCE
 	ADDQ.W	#8,A7
 
@@ -100,12 +100,12 @@ _do_chase:
 	BNE.B	L0023C
 
 	MOVEA.L	$0008(A5),A6
-	LEA	-$52C0(A4),A1	;_player + 10
+	LEA	_player+10-BASE(A4),A1	;_player + 10
 	MOVE.L	A1,$0012(A6)
 L0023C:
 	MOVE.L	-$52A0(A4),D5	;_player + 42 (proom)
 	MOVEA.L	$0008(A5),A6
-	LEA	-$52C0(A4),A1	;_player + 10
+	LEA	_player+10-BASE(A4),A1	;_player + 10
 	MOVEA.L	$0012(A6),A0
 	CMPA.L	A1,A0
 	BEQ.B	L0023D
@@ -220,21 +220,21 @@ L00248:
 	MOVEA.L	$0008(A5),A6
 
 	MOVE.W	$000A(A6),D3
-	CMP.W	-$52C0(A4),D3	;_player + 10
+	CMP.W	_player+10-BASE(A4),D3	;_player + 10
 	BEQ.B	L0024D
 
 	MOVE.W	$000C(A6),D3
-	CMP.W	-$52BE(A4),D3	;_player + 12
+	CMP.W	_player+12-BASE(A4),D3	;_player + 12
 	BEQ.B	L0024D
 
-	SUB.W	-$52BE(A4),D3	;_player + 12
+	SUB.W	_player+12-BASE(A4),D3	;_player + 12
 	BGE.B	L0024A
 
 	NEG.W	D3
 L0024A:
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	$000A(A6),D2
-	SUB.W	-$52C0(A4),D2	;_player + 10
+	SUB.W	_player+10-BASE(A4),D2	;_player + 10
 	BGE.B	L0024B
 
 	NEG.W	D2
@@ -242,13 +242,13 @@ L0024A:
 L0024B:
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	$000A(A6),D2
-	SUB.W	-$52C0(A4),D2	;_player + 10
+	SUB.W	_player+10-BASE(A4),D2	;_player + 10
 L0024C:
 	CMP.W	D2,D3
 	BNE.W	L00250
 L0024D:
-	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
-	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
+	MOVE.W	_player+10-BASE(A4),-(A7)	;_player + 10
+	MOVE.W	_player+12-BASE(A4),-(A7)	;_player + 12
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	$000A(A6),-(A7)
 	MOVE.W	$000C(A6),-(A7)
@@ -273,7 +273,7 @@ L0024D:
 
 	CLR.B	_running-BASE(A4)	;_running
 	MOVEA.L	$0008(A5),A6
-	MOVE.W	-$52BE(A4),D3	;_player + 12
+	MOVE.W	_player+12-BASE(A4),D3	;_player + 12
 	SUB.W	$000C(A6),D3
 	MOVE.W	D3,-(A7)
 	JSR	_sign
@@ -281,7 +281,7 @@ L0024D:
 
 	MOVE.W	D0,_delta+2-BASE(A4)	;_delta + 2
 	MOVEA.L	$0008(A5),A6
-	MOVE.W	-$52C0(A4),D3	;_player + 10
+	MOVE.W	_player+10-BASE(A4),D3	;_player + 10
 	SUB.W	$000A(A6),D3
 	MOVE.W	D3,-(A7)
 	JSR	_sign
@@ -307,7 +307,7 @@ L00250:
 	MOVE.L	$0008(A5),-(A7)
 	JSR	_chase(PC)
 	ADDQ.W	#8,A7
-	PEA	-$52C0(A4)	;_player + 10
+	PEA	_player+10-BASE(A4)	;_player + 10
 	PEA	_ch_ret-BASE(A4)
 	JSR	__ce
 	ADDQ.W	#8,A7
@@ -562,8 +562,8 @@ L00266:
 	AND.W	#C_CANSEE,D3	;C_CANSEE
 	BEQ.B	L00268
 L00267:
-	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
-	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
+	MOVE.W	_player+10-BASE(A4),-(A7)	;_player + 10
+	MOVE.W	_player+12-BASE(A4),-(A7)	;_player + 12
 	MOVE.W	$000A(A2),-(A7)
 	MOVE.W	$000C(A2),-(A7)
 	JSR	_DISTANCE
@@ -982,8 +982,8 @@ L00286:
 	RTS
 
 L00287:
-	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
-	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
+	MOVE.W	_player+10-BASE(A4),-(A7)	;_player + 10
+	MOVE.W	_player+12-BASE(A4),-(A7)	;_player + 12
 	MOVE.W	D5,-(A7)
 	MOVE.W	D4,-(A7)
 	JSR	_DISTANCE
@@ -1039,7 +1039,7 @@ _find_dest:
 	TST.W	D0
 	BEQ.B	L0028D
 L0028B:
-	LEA	-$52C0(A4),A6	;_player + 10
+	LEA	_player+10-BASE(A4),A6	;_player + 10
 	MOVE.L	A6,D0
 L0028C:
 	MOVEM.L	(A7)+,D4/D5/A2/A3
@@ -1094,7 +1094,7 @@ L00294:
 	MOVE.L	A3,D3
 	BNE.B	L0028E
 
-	LEA	-$52C0(A4),A6	;_player + 10
+	LEA	_player+10-BASE(A4),A6	;_player + 10
 	MOVE.L	A6,D0
 	BRA.B	L0028C
 

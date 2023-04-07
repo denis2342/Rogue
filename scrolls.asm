@@ -90,7 +90,7 @@ L001AD:
 ; hold monster scroll
 
 L001AE:
-	MOVE.W	-$52C0(A4),D5	;_player + 10
+	MOVE.W	_player+10-BASE(A4),D5	;_player + 10
 	SUBQ.W	#3,D5
 	BRA.B	L001B4
 L001AF:
@@ -98,7 +98,7 @@ L001AF:
 	BLT.B	L001B3
 	CMP.W	#$003C,D5
 	BGE.B	L001B3
-	MOVE.W	-$52BE(A4),D4	;_player + 12
+	MOVE.W	_player+12-BASE(A4),D4	;_player + 12
 	SUBQ.W	#3,D4
 	BRA.B	L001B2
 L001B0:
@@ -119,14 +119,14 @@ L001B0:
 L001B1:
 	ADDQ.W	#1,D4
 L001B2:
-	MOVE.W	-$52BE(A4),D3	;_player + 12
+	MOVE.W	_player+12-BASE(A4),D3	;_player + 12
 	ADDQ.W	#3,D3
 	CMP.W	D3,D4
 	BLE.B	L001B0
 L001B3:
 	ADDQ.W	#1,D5
 L001B4:
-	MOVE.W	-$52C0(A4),D3	;_player + 10
+	MOVE.W	_player+10-BASE(A4),D3	;_player + 10
 	ADDQ.W	#3,D3
 	CMP.W	D3,D5
 	BLE.B	L001AF
@@ -156,8 +156,8 @@ L001B5:
 
 L001B6:
 	PEA	-$0006(A5)
-	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
-	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
+	MOVE.W	_player+10-BASE(A4),-(A7)	;_player + 10
+	MOVE.W	_player+12-BASE(A4),-(A7)	;_player + 12
 	JSR	_plop_monster(PC)
 	ADDQ.W	#8,A7
 	TST.W	D0
@@ -905,10 +905,10 @@ L0022D:
 	SUBQ.W	#1,D5
 	BRA	L00232
 L0022E:
-	CMP.W	-$52BE(A4),D4	;_player + 12
+	CMP.W	_player+12-BASE(A4),D4	;_player + 12
 	BNE.B	L0022F
 
-	CMP.W	-$52C0(A4),D5	;_player + 10
+	CMP.W	_player+10-BASE(A4),D5	;_player + 10
 	BEQ.B	L00231
 L0022F:
 	MOVE.W	D5,-(A7)

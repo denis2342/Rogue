@@ -101,7 +101,7 @@ L00187:
 	OR.B	D0,(A3)
 	BRA.B	L00187
 L00188:
-	PEA	-$52C0(A4)	;_player + 10
+	PEA	_player+10-BASE(A4)	;_player + 10
 	JSR	_blank_spot
 	ADDQ.W	#4,A7
 
@@ -111,25 +111,25 @@ L00188:
 	AND.B	#F_REAL,D3	;F_REAL
 	BEQ.B	L00188
 
-	MOVE.W	-$52C0(A4),d1	;_player + 10
-	MOVE.W	-$52BE(A4),d0	;_player + 12
+	MOVE.W	_player+10-BASE(A4),d1	;_player + 10
+	MOVE.W	_player+12-BASE(A4),d0	;_player + 12
 	JSR	_moatquick
 
 	TST.L	D0
 	BNE.B	L00188
 
 	CLR.W	_mpos-BASE(A4)	;_mpos
-	PEA	-$52C0(A4)	;_player + 10
+	PEA	_player+10-BASE(A4)	;_player + 10
 	JSR	_enter_room
 	ADDQ.W	#4,A7
 
 	MOVEq	#$0040,d2	;'@' PLAYER
-	MOVE.W	-$52C0(A4),d1	;hero.y
-	MOVE.W	-$52BE(A4),d0	;hero.x
+	MOVE.W	_player+10-BASE(A4),d1	;hero.y
+	MOVE.W	_player+12-BASE(A4),d0	;hero.x
 	JSR	_mvaddchquick
 
 	LEA	_oldpos-BASE(A4),A6
-	LEA	-$52C0(A4),A1	;_player + 10
+	LEA	_player+10-BASE(A4),A1	;_player + 10
 	MOVE.L	(A1)+,(A6)+
 	MOVE.L	-$52A0(A4),_oldrp-BASE(A4)	;_player + 42 (proom),_oldrp
 	JSR	_InitGadgets

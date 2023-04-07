@@ -1092,8 +1092,8 @@ _wait_for:
 ;	JSR	_mvaddstr
 ;	ADDQ.W	#8,A7
 ;
-;	MOVE.W	-$52C0(A4),d1	;_player + 10
-;	MOVE.W	-$52BE(A4),d0	;_player + 12
+;	MOVE.W	_player+10-BASE(A4),d1	;_player + 10
+;	MOVE.W	_player+12-BASE(A4),d0	;_player + 12
 ;	JSR	_movequick
 ;
 ;	MOVE.W	#$0020,-(A7)	; SPACE

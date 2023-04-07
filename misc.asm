@@ -21,7 +21,7 @@ _look:
 	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	$00(A6,D3.W),D7
 
-	PEA	-$52C0(A4)	;_player + 10
+	PEA	_player+10-BASE(A4)	;_player + 10
 	PEA	_oldpos-BASE(A4)
 	JSR	__ce(PC)
 	ADDQ.W	#8,A7
@@ -41,10 +41,10 @@ L00818:
 	SUBQ.W	#1,D5
 	BRA.W	L00820
 L00819:
-	CMP.W	-$52BE(A4),D5	;_player + 12
+	CMP.W	_player+12-BASE(A4),D5	;_player + 12
 	BNE.B	L0081A
 
-	CMP.W	-$52C0(A4),D4	;_player + 10
+	CMP.W	_player+10-BASE(A4),D4	;_player + 10
 	BEQ.W	L0081F
 L0081A:
 	MOVE.W	D4,-(A7)
@@ -65,7 +65,7 @@ L0081A:
 
 	MOVE.W	D4,-(A7)
 	MOVE.W	D5,-(A7)
-	PEA	-$52C0(A4)	;_player + 10
+	PEA	_player+10-BASE(A4)	;_player + 10
 	JSR	_near_to(PC)
 	ADDQ.W	#8,A7
 
@@ -146,20 +146,20 @@ L00821:
 	BLE.W	L00818
 L00822:
 	LEA	_oldpos-BASE(A4),A6
-	LEA	-$52C0(A4),A1	;_player + 10
+	LEA	_player+10-BASE(A4),A1	;_player + 10
 	MOVE.L	(A1)+,(A6)+
 	MOVE.L	-$0004(A5),_oldrp-BASE(A4)	;_oldrp
 L00823:
-	MOVE.W	-$52BE(A4),D3	;_player + 12
+	MOVE.W	_player+12-BASE(A4),D3	;_player + 12
 	ADDQ.W	#1,D3
 	MOVE.W	D3,-$0006(A5)
-	MOVE.W	-$52C0(A4),D3	;_player + 10
+	MOVE.W	_player+10-BASE(A4),D3	;_player + 10
 	ADDQ.W	#1,D3
 	MOVE.W	D3,-$0008(A5)
-	MOVE.W	-$52C0(A4),D3	;_player + 10
+	MOVE.W	_player+10-BASE(A4),D3	;_player + 10
 	SUBQ.W	#1,D3
 	MOVE.W	D3,-$0014(A5)
-	MOVE.W	-$52BE(A4),D3	;_player + 12
+	MOVE.W	_player+12-BASE(A4),D3	;_player + 12
 	SUBQ.W	#1,D3
 	MOVE.W	D3,-$0012(A5)
 	TST.B	_door_stop-BASE(A4)	;_door_stop
@@ -168,16 +168,16 @@ L00823:
 	BNE.B	L00824
 	TST.B	_running-BASE(A4)	;_running
 	BEQ.B	L00824
-	MOVE.W	-$52BE(A4),D3	;_player + 12
-	ADD.W	-$52C0(A4),D3	;_player + 10
+	MOVE.W	_player+12-BASE(A4),D3	;_player + 12
+	ADD.W	_player+10-BASE(A4),D3	;_player + 10
 	MOVE.W	D3,-$0016(A5)
-	MOVE.W	-$52BE(A4),D3	;_player + 12
-	SUB.W	-$52C0(A4),D3	;_player + 10
+	MOVE.W	_player+12-BASE(A4),D3	;_player + 12
+	SUB.W	_player+10-BASE(A4),D3	;_player + 10
 	MOVE.W	D3,-$0018(A5)
 L00824:
 	MOVEq	#$0040,d2	;'@' PLAYER
-	MOVE.W	-$52C0(A4),d1	;_player + 10
-	MOVE.W	-$52BE(A4),d0	;_player + 12
+	MOVE.W	_player+10-BASE(A4),d1	;_player + 10
+	MOVE.W	_player+12-BASE(A4),d0	;_player + 12
 	JSR	_mvaddchquick
 
 	MOVE.W	-$0012(A5),D5
@@ -199,16 +199,16 @@ L00826:
 	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BNE.B	L00828
-	CMP.W	-$52BE(A4),D5	;_player + 12
+	CMP.W	_player+12-BASE(A4),D5	;_player + 12
 	BNE.B	L00827
-	CMP.W	-$52C0(A4),D4	;_player + 10
+	CMP.W	_player+10-BASE(A4),D4	;_player + 10
 	BEQ.W	L00846
 L00827:
 	BRA.B	L00829
 L00828:
-	CMP.W	-$52BE(A4),D5	;_player + 12
+	CMP.W	_player+12-BASE(A4),D5	;_player + 12
 	BNE.W	L00846
-	CMP.W	-$52C0(A4),D4	;_player + 10
+	CMP.W	_player+10-BASE(A4),D4	;_player + 10
 	BNE.W	L00846
 L00829:
 	MOVE.W	D4,d0
@@ -413,18 +413,18 @@ L0083C:
 	MOVE.B	D6,D0
 	BRA.B	L00845
 L0083D:
-	CMP.W	-$52C0(A4),D4	;_player + 10
+	CMP.W	_player+10-BASE(A4),D4	;_player + 10
 	BEQ.B	L0083E
-	CMP.W	-$52BE(A4),D5	;_player + 12
+	CMP.W	_player+12-BASE(A4),D5	;_player + 12
 	BNE.B	L0083F
 L0083E:
 	CLR.B	_running-BASE(A4)	;_running
 L0083F:
 	BRA.B	L00846
 L00840:
-	CMP.W	-$52C0(A4),D4	;_player + 10
+	CMP.W	_player+10-BASE(A4),D4	;_player + 10
 	BEQ.B	L00841
-	CMP.W	-$52BE(A4),D5	;_player + 12
+	CMP.W	_player+12-BASE(A4),D5	;_player + 12
 	BNE.B	L00846
 L00841:
 	ADDQ.W	#1,-$000A(A5)
@@ -477,8 +477,8 @@ L00849:
 	CLR.B	_running-BASE(A4)	;_running
 L0084A:
 	MOVEq	#$0040,d2	;'@' PLAYER
-	MOVE.W	-$52C0(A4),d1	;_player + 10
-	MOVE.W	-$52BE(A4),d0	;_player + 12
+	MOVE.W	_player+10-BASE(A4),d1	;_player + 10
+	MOVE.W	_player+12-BASE(A4),d0	;_player + 12
 	JSR	_mvaddchquick
 
 	TST.B	_was_trapped-BASE(A4)	;_was_trapped

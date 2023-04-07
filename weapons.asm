@@ -132,13 +132,13 @@ _do_motion:
 	MOVEQ	#$22,D6
 	MOVEA.L	$0008(A5),A6
 	ADDA.L	#$0000000C,A6
-	LEA	-$52C0(A4),A1	;_player + 10
+	LEA	_player+10-BASE(A4),A1	;_player + 10
 	MOVE.L	(A1)+,(A6)+
 L00604:
 	CMP.b	#$22,D6		;'"'
 	BEQ.B	L00605
 
-	PEA	-$52C0(A4)	;_player + 10
+	PEA	_player+10-BASE(A4)	;_player + 10
 	MOVEA.L	$0008(A5),A6
 	PEA	$000C(A6)
 	JSR	__ce
@@ -582,10 +582,10 @@ L0062E:
 	SUBQ.W	#1,D5
 	BRA.W	L00636
 L0062F:
-	CMP.W	-$52BE(A4),D4	;_player + 12
+	CMP.W	_player+12-BASE(A4),D4	;_player + 12
 	BNE.B	L00630
 
-	CMP.W	-$52C0(A4),D5	;_player + 10
+	CMP.W	_player+10-BASE(A4),D5	;_player + 10
 	BEQ.W	L00635
 L00630:
 	MOVE.W	D5,-(A7)

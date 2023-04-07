@@ -512,8 +512,8 @@ _teleport:
 	MOVEA.L	__level-BASE(A4),A6	;__level
 
 	MOVE.B	$00(A6,D0.W),D2
-	MOVE.W	-$52C0(A4),d1	;_player + 10
-	MOVE.W	-$52BE(A4),d0	;_player + 12
+	MOVE.W	_player+10-BASE(A4),d1	;_player + 10
+	MOVE.W	_player+12-BASE(A4),d0	;_player + 12
 	JSR	_mvaddchquick
 
 L007F4:
@@ -547,20 +547,20 @@ L007F4:
 	CMP.L	-$52A0(A4),D3	;_player + 42 (proom)
 	BEQ.B	L007F5
 
-	PEA	-$52C0(A4)	;_player + 10
+	PEA	_player+10-BASE(A4)	;_player + 10
 	JSR	_leave_room
 	ADDQ.W	#4,A7
 
-	LEA	-$52C0(A4),A6	;_player + 10
+	LEA	_player+10-BASE(A4),A6	;_player + 10
 	LEA	-$0004(A5),A1
 	MOVE.L	(A1)+,(A6)+
-	PEA	-$52C0(A4)	;_player + 10
+	PEA	_player+10-BASE(A4)	;_player + 10
 	JSR	_enter_room
 	ADDQ.W	#4,A7
 
 	BRA.B	L007F6
 L007F5:
-	LEA	-$52C0(A4),A6	;_player + 10
+	LEA	_player+10-BASE(A4),A6	;_player + 10
 	LEA	-$0004(A5),A1
 	MOVE.L	(A1)+,(A6)+
 	MOVE.W	#$0001,-(A7)
@@ -568,8 +568,8 @@ L007F5:
 	ADDQ.W	#2,A7
 L007F6:
 	MOVEq	#$0040,d2	;'@' PLAYER
-	MOVE.W	-$52C0(A4),d1	;_player + 10
-	MOVE.W	-$52BE(A4),d0	;_player + 12
+	MOVE.W	_player+10-BASE(A4),d1	;_player + 10
+	MOVE.W	_player+12-BASE(A4),d0	;_player + 12
 	JSR	_mvaddchquick
 
 	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)

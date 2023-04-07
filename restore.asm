@@ -159,8 +159,8 @@ L00B38:
 	JSR	_sprintf
 	LEA	$000C(A7),A7
 L00B39:
-	MOVE.W	-$52C0(A4),d1	;_player + 10
-	MOVE.W	-$52BE(A4),d0	;_player + 12
+	MOVE.W	_player+10-BASE(A4),d1	;_player + 10
+	MOVE.W	_player+12-BASE(A4),d0	;_player + 12
 	JSR	_movequick
 
 	PEA	-$0050(A5)
@@ -905,7 +905,7 @@ L00B7E:
 	MOVE.W	D3,D0
 	BRA.B	L00B83
 L00B7F:
-	LEA	-$52C0(A4),A6	;_player + 10
+	LEA	_player+10-BASE(A4),A6	;_player + 10
 	MOVE.L	A6,$0012(A2)
 	BRA.B	L00B84
 L00B80:
@@ -961,7 +961,7 @@ L00B84:
 	TST.W	_restore_bool-BASE(A4)
 	BEQ.W	L00B89
 
-	LEA	-$52C0(A4),A6	;_player + 10
+	LEA	_player+10-BASE(A4),A6	;_player + 10
 	MOVEA.L	$0012(A2),A1
 	CMPA.L	A6,A1
 	BNE.B	L00B85

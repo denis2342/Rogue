@@ -162,7 +162,7 @@ L00316:
 
 	MOVEA.L	-$52A0(A4),A6	;_player + 42 (proom)
 	ANDI.W	#$FFFE,$000E(A6)	;clear room ISDARK
-	PEA	-$52C0(A4)	;_player + 10
+	PEA	_player+10-BASE(A4)	;_player + 10
 	JSR	_enter_room
 	ADDQ.W	#4,A7
 L00317:
@@ -185,8 +185,8 @@ L00319:
 ; polymorph, teleport to, teleport away and cancellation
 
 L0031A:
-	MOVE.W	-$52BE(A4),D4	;_player + 12
-	MOVE.W	-$52C0(A4),D5	;_player + 10
+	MOVE.W	_player+12-BASE(A4),D4	;_player + 12
+	MOVE.W	_player+10-BASE(A4),D5	;_player + 10
 L0031B:
 	MOVE.W	D5,-(A7)
 	MOVE.W	D4,-(A7)
@@ -335,10 +335,10 @@ L00325:
 	BRA.B	L00327
 L00326:
 	MOVEA.L	-$0004(A5),A6
-	MOVE.W	-$52BE(A4),D3	;_player + 12
+	MOVE.W	_player+12-BASE(A4),D3	;_player + 12
 	ADD.W	_delta+2-BASE(A4),D3	;_delta + 2
 	MOVE.W	D3,$000C(A6)
-	MOVE.W	-$52C0(A4),D3	;_player + 10
+	MOVE.W	_player+10-BASE(A4),D3	;_player + 10
 	ADD.W	_delta+0-BASE(A4),D3	;_delta + 0
 	MOVE.W	D3,$000A(A6)
 L00327:
@@ -369,7 +369,7 @@ L00328:
 	MOVE.B	D0,$0011(A6)
 L0032A:
 	MOVEA.L	-$0004(A5),A6
-	LEA	-$52C0(A4),A1	;_player + 10
+	LEA	_player+10-BASE(A4),A1	;_player + 10
 	MOVE.L	A1,$0012(A6)
 	ORI.W	#C_ISRUN,$0016(A6)	;C_ISRUN
 L0032B:
@@ -432,9 +432,9 @@ L0032F:
 ; striking
 
 L00330:
-	MOVE.W	-$52BE(A4),D3	;_player + 12
+	MOVE.W	_player+12-BASE(A4),D3	;_player + 12
 	ADD.W	D3,_delta+2-BASE(A4)	;_delta + 2
-	MOVE.W	-$52C0(A4),D3	;_player + 10
+	MOVE.W	_player+10-BASE(A4),D3	;_player + 10
 	ADD.W	D3,_delta+0-BASE(A4)	;_delta + 0
 
 	MOVE.W	_delta+0-BASE(A4),d1	;_delta + 0
@@ -477,8 +477,8 @@ L00333:
 ; haste monster, slow monster
 
 L00334:
-	MOVE.W	-$52BE(A4),D4	;_player + 12
-	MOVE.W	-$52C0(A4),D5	;_player + 10
+	MOVE.W	_player+12-BASE(A4),D4	;_player + 12
+	MOVE.W	_player+10-BASE(A4),D5	;_player + 10
 L00335:
 	MOVE.W	D5,-(A7)
 	MOVE.W	D4,-(A7)
@@ -555,7 +555,7 @@ L00340:
 L00341:
 	MOVE.L	A2,-(A7)
 	PEA	_delta+0-BASE(A4)	;_delta + 0
-	PEA	-$52C0(A4)	;_player + 10
+	PEA	_player+10-BASE(A4)	;_player + 10
 	JSR	_fire_bolt(PC)
 	LEA	$000C(A7),A7
 	MOVE.W	-$0006(A5),D3
@@ -793,7 +793,7 @@ L00364:
 	LEA	-$0008(A5),A6
 	MOVEA.L	$0008(A5),A1
 	MOVE.L	(A1)+,(A6)+
-	LEA	-$52C0(A4),A6	;_player + 10
+	LEA	_player+10-BASE(A4),A6	;_player + 10
 	MOVEA.L	$0008(A5),A1
 	CMPA.L	A6,A1
 	BEQ.B	L00365
@@ -972,7 +972,7 @@ L00374:
 	CMP.B	#$58,$0010(A2)	;'X'
 	BNE.B	L00377
 L00375:
-	LEA	-$52C0(A4),A6	;_player + 10
+	LEA	_player+10-BASE(A4),A6	;_player + 10
 	MOVEA.L	$0008(A5),A1
 	CMPA.L	A6,A1
 	BNE.B	L00376
@@ -997,7 +997,7 @@ L00378:
 	TST.B	D6
 	BEQ.W	L00381
 
-	PEA	-$52C0(A4)	;_player + 10
+	PEA	_player+10-BASE(A4)	;_player + 10
 	PEA	-$0008(A5)
 	JSR	__ce
 	ADDQ.W	#8,A7
@@ -1047,7 +1047,7 @@ L0037C:
 	SUB.W	D0,_player+34-BASE(A4)	;_player + 34 (hp)
 	BGT.B	L0037E
 
-	LEA	-$52C0(A4),A6	;_player + 10
+	LEA	_player+10-BASE(A4),A6	;_player + 10
 	MOVEA.L	$0008(A5),A1
 	CMPA.L	A6,A1
 	BNE.B	L0037D

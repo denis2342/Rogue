@@ -2540,10 +2540,10 @@ L0063D:	dc.b	"You see your destiny, but the knowledge vaporizes",0
 _lose_vision:
 ;	LINK	A5,#-$0000
 	ANDI.W	#~C_ISFOUND,-$52B4(A4)	;clear C_ISFOUND,_player + 22 (flags)
-	PEA	-$52C0(A4)	;_player + 10
+	PEA	_player+10-BASE(A4)	;_player + 10
 	JSR	_leave_room
 	ADDQ.W	#4,A7
-	PEA	-$52C0(A4)	;_player + 10
+	PEA	_player+10-BASE(A4)	;_player + 10
 	JSR	_enter_room
 	ADDQ.W	#4,A7
 	CLR.L	-(A7)
@@ -2771,9 +2771,9 @@ _roll:
 _playit:
 ;	LINK	A5,#-$0000
 
-	MOVE.W	-$52C0(A4),_oldpos-BASE(A4)	;_player + 10
-	MOVE.W	-$52BE(A4),-$608E(A4)	;_player + 12
-	PEA	-$52C0(A4)	;_player + 10
+	MOVE.W	_player+10-BASE(A4),_oldpos-BASE(A4)	;_player + 10
+	MOVE.W	_player+12-BASE(A4),-$608E(A4)	;_player + 12
+	PEA	_player+10-BASE(A4)	;_player + 10
 	JSR	_roomin
 	ADDQ.W	#4,A7
 	MOVE.L	D0,_oldrp-BASE(A4)	;_oldrp
@@ -3216,8 +3216,8 @@ L008BB:
 _INDEXplayer:
 	MOVE.W	_maxrow-BASE(A4),D0	;_maxrow
 	SUBQ.W	#1,D0
-	MULU.W	-$52C0(A4),D0
-	ADD.W	-$52BE(A4),D0
+	MULU.W	_player+10-BASE(A4),D0
+	ADD.W	_player+12-BASE(A4),D0
 	SUBQ.W	#1,D0
 	RTS
 

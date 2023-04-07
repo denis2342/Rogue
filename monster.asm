@@ -408,7 +408,7 @@ L00A32:
 	CMPI.W	#R_STEALTH,$0020(A6)	; ring of stealth
 	BEQ.B	L00A34
 L00A33:
-	LEA	-$52C0(A4),A6	;_player + 10
+	LEA	_player+10-BASE(A4),A6	;_player + 10
 	MOVE.L	A6,$0012(A2)
 	ORI.W	#C_ISRUN,$0016(A2)	;C_ISRUN
 L00A34:
@@ -432,8 +432,8 @@ L00A34:
 	BEQ.W	L00A39
 
 	MOVEA.L	-$52A0(A4),A3	;_player + 42 (proom)
-	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
-	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
+	MOVE.W	_player+10-BASE(A4),-(A7)	;_player + 10
+	MOVE.W	_player+12-BASE(A4),-(A7)	;_player + 12
 	MOVE.W	$000A(A5),-(A7)
 	MOVE.W	$0008(A5),-(A7)
 	JSR	_DISTANCE
@@ -506,7 +506,7 @@ L00A39:
 	MOVE.L	D3,$0012(A2)
 	BRA.B	L00A3B
 L00A3A:
-	LEA	-$52C0(A4),A6	;_player + 10
+	LEA	_player+10-BASE(A4),A6	;_player + 10
 	MOVE.L	A6,$0012(A2)
 L00A3B:
 	MOVE.L	A2,D0

@@ -740,10 +740,10 @@ L003F9:
 	TST.W	D0
 	BEQ.B	L003FB
 
-	MOVE.W	-$52BE(A4),D3	;_player + 12
+	MOVE.W	_player+12-BASE(A4),D3	;_player + 12
 	ADD.W	_delta+2-BASE(A4),D3	;_delta + 2
 	MOVE.W	D3,-$0006(A5)
-	MOVE.W	-$52C0(A4),D3	;_player + 10
+	MOVE.W	_player+10-BASE(A4),D3	;_player + 10
 	ADD.W	_delta+0-BASE(A4),D3	;_delta + 0
 	MOVE.W	D3,-$0008(A5)
 
@@ -1089,22 +1089,22 @@ _search:
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BNE.B	L008C1
 L008C2:
-	MOVE.W	-$52BE(A4),D6	;_player + 12
-	MOVE.W	-$52C0(A4),D7	;_player + 10
+	MOVE.W	_player+12-BASE(A4),D6	;_player + 12
+	MOVE.W	_player+10-BASE(A4),D7	;_player + 10
 	MOVE.W	D6,D4
 	ADDQ.W	#1,D6
 	ADDQ.W	#1,D7
 	SUBQ.W	#1,D4
 	BRA.W	L008CB
 L008C3:
-	MOVE.W	-$52C0(A4),D5	;_player + 10
+	MOVE.W	_player+10-BASE(A4),D5	;_player + 10
 	SUBQ.W	#1,D5
 	BRA.W	L008CA
 L008C4:
-	CMP.W	-$52BE(A4),D4	;_player + 12
+	CMP.W	_player+12-BASE(A4),D4	;_player + 12
 	BNE.B	L008C5
 
-	CMP.W	-$52C0(A4),D5	;_player + 10
+	CMP.W	_player+10-BASE(A4),D5	;_player + 10
 	BEQ.W	L008C9
 L008C5:
 	MOVE.W	D5,-(A7)

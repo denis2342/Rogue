@@ -200,7 +200,7 @@ _sight:
 	AND.W	#$0002,D3
 	BNE.B	L0064C
 
-	PEA	-$52C0(A4)	;_player + 10
+	PEA	_player+10-BASE(A4)	;_player + 10
 	JSR	_enter_room
 	ADDQ.W	#4,A7
 L0064C:

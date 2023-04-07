@@ -180,8 +180,8 @@ _add_pack:
 
 	MOVEQ	#$01,D6
 
-	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
-	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
+	MOVE.W	_player+10-BASE(A4),-(A7)	;_player + 10
+	MOVE.W	_player+12-BASE(A4),-(A7)	;_player + 12
 	JSR	_find_obj
 	ADDQ.W	#4,A7
 
@@ -228,8 +228,8 @@ L002AD:
 	ADDQ.W	#8,A7
 
 	MOVE.B	D7,D2
-	MOVE.W	-$52C0(A4),d1	;_player + 10
-	MOVE.W	-$52BE(A4),d0	;_player + 12
+	MOVE.W	_player+10-BASE(A4),d1	;_player + 10
+	MOVE.W	_player+12-BASE(A4),d0	;_player + 12
 	JSR	_mvaddchquick
 
 	JSR	_INDEXplayer
@@ -273,8 +273,8 @@ L002B2:
 	ADDQ.W	#8,A7
 
 	MOVE.B	D7,D2
-	MOVE.W	-$52C0(A4),d1	;_player + 10
-	MOVE.W	-$52BE(A4),d0	;_player + 12
+	MOVE.W	_player+10-BASE(A4),d1	;_player + 10
+	MOVE.W	_player+12-BASE(A4),d0	;_player + 12
 	JSR	_mvaddchquick
 
 	JSR	_INDEXplayer
@@ -304,8 +304,8 @@ L002B4:
 	ADDQ.W	#8,A7
 
 	MOVE.B	D7,D2
-	MOVE.W	-$52C0(A4),d1	;_player + 10
-	MOVE.W	-$52BE(A4),d0	;_player + 12
+	MOVE.W	_player+10-BASE(A4),d1	;_player + 10
+	MOVE.W	_player+12-BASE(A4),d0	;_player + 12
 	JSR	_mvaddchquick
 
 	JSR	_INDEXplayer
@@ -433,7 +433,7 @@ L002C7:
 	CMPA.L	$0012(A3),A6
 	BNE.B	L002C8
 
-	LEA	-$52C0(A4),A6	;_player + 10
+	LEA	_player+10-BASE(A4),A6	;_player + 10
 	MOVE.L	A6,$0012(A3)
 L002C8:
 	MOVEA.L	(A3),A3
@@ -612,8 +612,8 @@ _pick_up:
 	CMP.b	#$2A,$0009(A5)	;'*' gold
 	BNE.B	L002DF
 
-	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
-	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
+	MOVE.W	_player+10-BASE(A4),-(A7)	;_player + 10
+	MOVE.W	_player+12-BASE(A4),-(A7)	;_player + 12
 	JSR	_find_obj
 	ADDQ.W	#4,A7
 	MOVEA.L	D0,A2
@@ -862,8 +862,8 @@ _money:
 	MOVEQ	#$2E,D5		;'.' floor
 2$
 	MOVE.B	D5,D2
-	MOVE.W	-$52C0(A4),d1	;_player + 10
-	MOVE.W	-$52BE(A4),d0	;_player + 12
+	MOVE.W	_player+10-BASE(A4),d1	;_player + 10
+	MOVE.W	_player+12-BASE(A4),d0	;_player + 12
 	JSR	_mvaddchquick
 
 	JSR	_INDEXplayer

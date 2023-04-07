@@ -734,10 +734,10 @@ _mouse_go:
 _mouse_adjust:
 ;	LINK	A5,#-$0000
 	MOVE.W	-$533C(A4),D3
-	CMP.W	-$52C0(A4),D3	;_player + 10
+	CMP.W	_player+10-BASE(A4),D3	;_player + 10
 	BNE.B	L00AB0
 	MOVE.W	-$533E(A4),D3
-	CMP.W	-$52BE(A4),D3	;_player + 12
+	CMP.W	_player+12-BASE(A4),D3	;_player + 12
 	BNE.B	L00AB0
 	CLR.B	_running-BASE(A4)	;_running
 	CLR.B	_mouse_run-BASE(A4)	;_mouse_run
@@ -753,8 +753,8 @@ _mouse_dir:
 	LINK	A5,#-$0002
 	MOVEM.L	D4-D7/A2/A3,-(A7)
 
-	MOVE.W	-$52C0(A4),d1	;_player + 10
-	MOVE.W	-$52BE(A4),d0	;_player + 12
+	MOVE.W	_player+10-BASE(A4),d1	;_player + 10
+	MOVE.W	_player+12-BASE(A4),d0	;_player + 12
 	JSR	_movequick
 
 	MOVE.W	_p_col-BASE(A4),D4	;_p_col
@@ -828,10 +828,10 @@ _mouse_char:
 
 	MOVE.W	$0008(A5),D4
 	MOVE.W	$000A(A5),D5
-	MOVE.W	-$52C0(A4),D3	;_player + 10
+	MOVE.W	_player+10-BASE(A4),D3	;_player + 10
 	ADD.W	D5,D3
 	MOVE.W	D3,-(A7)
-	MOVE.W	-$52BE(A4),D3	;_player + 12
+	MOVE.W	_player+12-BASE(A4),D3	;_player + 12
 	ADD.W	D4,D3
 	MOVE.W	D3,-(A7)
 	JSR	_one_step(PC)
@@ -841,8 +841,8 @@ _mouse_char:
 
 	MOVE.W	-$533C(A4),-(A7)
 	MOVE.W	-$533E(A4),-(A7)
-	MOVE.W	-$52C0(A4),-(A7)	;_player + 10
-	MOVE.W	-$52BE(A4),-(A7)	;_player + 12
+	MOVE.W	_player+10-BASE(A4),-(A7)	;_player + 10
+	MOVE.W	_player+12-BASE(A4),-(A7)	;_player + 12
 	JSR	_DISTANCE
 	ADDQ.W	#8,A7
 	MOVEA.W	D0,A2
@@ -857,10 +857,10 @@ L00AB5:
 	TST.W	D6
 	BEQ.B	L00AB7
 L00AB6:
-	MOVE.W	-$52C0(A4),D3	;_player + 10
+	MOVE.W	_player+10-BASE(A4),D3	;_player + 10
 	ADD.W	D6,D3
 	MOVE.W	D3,-(A7)
-	MOVE.W	-$52BE(A4),D3	;_player + 12
+	MOVE.W	_player+12-BASE(A4),D3	;_player + 12
 	ADD.W	D7,D3
 	MOVE.W	D3,-(A7)
 	BSR.B	_one_step
@@ -870,10 +870,10 @@ L00AB6:
 
 	MOVE.W	-$533C(A4),-(A7)
 	MOVE.W	-$533E(A4),-(A7)
-	MOVE.W	-$52C0(A4),D3	;_player + 10
+	MOVE.W	_player+10-BASE(A4),D3	;_player + 10
 	ADD.W	D6,D3
 	MOVE.W	D3,-(A7)
-	MOVE.W	-$52BE(A4),D3	;_player + 12
+	MOVE.W	_player+12-BASE(A4),D3	;_player + 12
 	ADD.W	D7,D3
 	MOVE.W	D3,-(A7)
 	JSR	_DISTANCE
@@ -937,7 +937,7 @@ L00ABA:
 	MOVE.W	$0008(A5),-$0002(A5)
 	MOVE.W	$000A(A5),-$0004(A5)
 	PEA	-$0004(A5)
-	PEA	-$52C0(A4)	;_player + 10
+	PEA	_player+10-BASE(A4)	;_player + 10
 	JSR	_diag_ok
 	ADDQ.W	#8,A7
 	BRA.B	L00AB9
