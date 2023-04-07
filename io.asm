@@ -951,7 +951,7 @@ L0015E:
 	BNE.B	L0015F
 
 	MOVE.W	-$54E8(A4),D3
-	CMP.W	-$52B2(A4),D3	;_player + 24 (strength)
+	CMP.W	_player+24-BASE(A4),D3	;_player + 24 (strength)
 	BNE.B	L0015F
 
 	MOVE.W	-$54E6(A4),D3
@@ -962,11 +962,11 @@ L0015F:
 	MOVEq	#$0014,d0
 	JSR	_movequick
 	MOVE.W	_max_stats+0-BASE(A4),-(A7)	;_max_stats + 0 (max strength)
-	MOVE.W	-$52B2(A4),-(A7)	;_player + 24 (strength)
+	MOVE.W	_player+24-BASE(A4),-(A7)	;_player + 24 (strength)
 	PEA	L0016A(PC)	;"Str:%.3d(%.3d)"
 	JSR	_printw
 	ADDQ.W	#8,A7
-	MOVE.W	-$52B2(A4),-$54E8(A4)	;_player + 24 (strength)
+	MOVE.W	_player+24-BASE(A4),-$54E8(A4)	;_player + 24 (strength)
 	MOVE.W	_max_stats+0-BASE(A4),-$54E6(A4)	;_max_stats + 0 (max strength),
 L00160:
 	TST.B	_new_stats-BASE(A4)	;_new_stats

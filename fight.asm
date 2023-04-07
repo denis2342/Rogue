@@ -901,7 +901,7 @@ L00994:
 	ADDQ.W	#4,D5		;hplus += 4
 L00995:
 	MOVE.W	$0008(A3),-$000A(A5)
-	LEA	-$52B2(A4),A6	;_player + 24 (strength)
+	LEA	_player+24-BASE(A4),A6	;_player + 24 (strength)
 	CMPA.L	A6,A3
 	BNE.B	L00998
 

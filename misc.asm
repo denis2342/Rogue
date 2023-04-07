@@ -732,11 +732,11 @@ _chg_str:
 	BEQ.B	L00862
 
 	MOVE.W	D0,-(A7)
-	PEA	-$52B2(A4)	;_player + 24 (strength)
+	PEA	_player+24-BASE(A4)	;_player + 24 (strength)
 	BSR.B	_add_str
 	ADDQ.W	#6,A7
 
-	MOVE.W	-$52B2(A4),-$0002(A5)	;_player + 24 (strength)
+	MOVE.W	_player+24-BASE(A4),-$0002(A5)	;_player + 24 (strength)
 
 	MOVE.L	_cur_ring_1-BASE(A4),D0	;_cur_ring_1
 	bsr	L00864

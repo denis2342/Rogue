@@ -321,7 +321,7 @@ L004A1:
 	MOVE.W	$0026(A6),D3
 	NEG.W	D3
 	MOVE.W	D3,-(A7)
-	PEA	-$52B2(A4)	;_player + 24 (strength)
+	PEA	_player+24-BASE(A4)	;_player + 24 (strength)
 	JSR	_add_str(PC)
 	ADDQ.W	#6,A7
 L004A2:
@@ -335,15 +335,15 @@ L004A2:
 	MOVE.W	$0026(A6),D3
 	NEG.W	D3
 	MOVE.W	D3,-(A7)
-	PEA	-$52B2(A4)	;_player + 24 (strength)
+	PEA	_player+24-BASE(A4)	;_player + 24 (strength)
 	JSR	_add_str(PC)
 	ADDQ.W	#6,A7
 L004A3:
-	MOVE.W	-$52B2(A4),D3	;_player + 24 (strength)
+	MOVE.W	_player+24-BASE(A4),D3	;_player + 24 (strength)
 	CMP.W	_max_stats+0-BASE(A4),D3	;_max_stats + 0 (max strength)
 	BCC.B	L004A4
 
-	MOVE.W	_max_stats+0-BASE(A4),-$52B2(A4)	;_max_stats + 0 (max strength),_player + 24 (strength)
+	MOVE.W	_max_stats+0-BASE(A4),_player+24-BASE(A4)	;_max_stats + 0 (max strength),_player + 24 (strength)
 L004A4:
 	MOVE.L	_cur_ring_1-BASE(A4),D0	;_cur_ring_1
 	BEQ.B	L004A5
@@ -353,7 +353,7 @@ L004A4:
 	BNE.B	L004A5
 
 	MOVE.W	$0026(A6),-(A7)
-	PEA	-$52B2(A4)	;_player + 24 (strength)
+	PEA	_player+24-BASE(A4)	;_player + 24 (strength)
 	JSR	_add_str(PC)
 	ADDQ.W	#6,A7
 L004A5:
@@ -365,7 +365,7 @@ L004A5:
 	BNE.B	L004A6
 
 	MOVE.W	$0026(A6),-(A7)
-	PEA	-$52B2(A4)	;_player + 24 (strength)
+	PEA	_player+24-BASE(A4)	;_player + 24 (strength)
 	JSR	_add_str(PC)
 	ADDQ.W	#6,A7
 L004A6:

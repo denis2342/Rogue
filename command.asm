@@ -870,7 +870,7 @@ L00404:
 	MOVE.W	D3,_player+40-BASE(A4)	;_player + 40 (max hp)
 	MOVE.W	D3,_player+34-BASE(A4)	;_player + 34 (hp)
 	MOVE.W	#$0010,_max_stats+0-BASE(A4)	;_max_stats + 0 (max strength)
-	MOVE.W	#$0010,-$52B2(A4)	;_player + 24 (strength)
+	MOVE.W	#$0010,_player+24-BASE(A4)	;_player + 24 (strength)
 	JSR	_raise_level
 L00405:
 	CLR.B	_wizard-BASE(A4)	;_wizard
@@ -882,7 +882,7 @@ L00406:
 	MOVE.W	#200,_player+40-BASE(A4)	;_player + 40 (max hp)
 	MOVE.W	#200,_player+34-BASE(A4)	;_player + 34 (hp)
 	MOVE.W	#25,_max_stats+0-BASE(A4)	;_max_stats + 0 (max strength)
-	MOVE.W	#25,-$52B2(A4)	;_player + 24 (strength)
+	MOVE.W	#25,_player+24-BASE(A4)	;_player + 24 (strength)
 
 	JSR	_raise_level
 

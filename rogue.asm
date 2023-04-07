@@ -30,7 +30,7 @@ L00001:	dc.b	"staff",0,0
 _init_player:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
-	LEA	-$52B2(A4),A6	;_player + 24 (strength)
+	LEA	_player+24-BASE(A4),A6	;_player + 24 (strength)
 	LEA	_max_stats+0-BASE(A4),A1	;_max_stats + 0 (max strength)
 	MOVE.L	(A1)+,(A6)+
 	MOVE.L	(A1)+,(A6)+
