@@ -614,7 +614,7 @@ L00857:
 	CMPI.W	#$0001,$0020(A2)
 	BNE.B	L00858
 
-	PEA	-$6713(A4)	;_fruit "Mango"
+	PEA	_fruit-BASE(A4)	;_fruit "Mango"
 	PEA	L0085E(PC)	;"my, that was a yummy %s"
 	JSR	_msg
 	ADDQ.W	#8,A7

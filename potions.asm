@@ -245,7 +245,7 @@ L00498:
 	JSR	_invis_on(PC)
 1$
 	JSR	_sight(PC)
-	PEA	-$6713(A4)
+	PEA	_fruit-BASE(A4)
 	PEA	L004B9(PC)	;"this potion tastes like %s juice"
 	JSR	_msg
 	ADDQ.W	#8,A7

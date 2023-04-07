@@ -170,7 +170,7 @@ L00AC6:
 	AND.W	#$0002,D3	;with whats made of?
 	BEQ.B	L00AC7
 
-	PEA	-$6713(A4)
+	PEA	_fruit-BASE(A4)
 	MOVE.W	D4,-(A7)
 	MOVE.L	A2,-(A7)
 	JSR	_do_count(PC)
