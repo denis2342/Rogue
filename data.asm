@@ -1176,7 +1176,8 @@ _fall_level:
 _seed:
 	dc.l	$00000000
 _oldpos:
-	dc.l	$00000000
+	dc.w	$0000
+	dc.w	$0000
 _delta:
 	dc.l	$00000000
 

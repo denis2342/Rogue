@@ -2772,7 +2772,7 @@ _playit:
 ;	LINK	A5,#-$0000
 
 	MOVE.W	_player+10-BASE(A4),_oldpos-BASE(A4)	;_player + 10
-	MOVE.W	_player+12-BASE(A4),-$608E(A4)	;_player + 12
+	MOVE.W	_player+12-BASE(A4),_oldpos+2-BASE(A4)	;_player + 12
 	PEA	_player+10-BASE(A4)	;_player + 10
 	JSR	_roomin
 	ADDQ.W	#4,A7

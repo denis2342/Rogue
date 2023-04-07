@@ -443,7 +443,7 @@ L000BC:
 	BEQ.B	L000BE
 
 	MOVE.W	_oldpos-BASE(A4),d0
-	MOVE.W	-$608E(A4),d1
+	MOVE.W	_oldpos+2-BASE(A4),d1
 	JSR	_INDEXquick
 
 	MOVEA.L	__level-BASE(A4),A6	;__level
@@ -451,7 +451,7 @@ L000BC:
 	BEQ.B	L000BD
 
 ;	MOVE.W	_oldpos-BASE(A4),d0
-;	MOVE.W	-$608E(A4),d1
+;	MOVE.W	_oldpos+2-BASE(A4),d1
 ;	JSR	_INDEXquick
 
 	MOVEA.L	__flags-BASE(A4),A6	;__flags
@@ -468,7 +468,7 @@ L000BE:
 	BEQ.B	L000BF
 
 	MOVE.W	_oldpos-BASE(A4),d0
-	MOVE.W	-$608E(A4),d1
+	MOVE.W	_oldpos+2-BASE(A4),d1
 	JSR	_INDEXquick
 
 	MOVEA.L	__flags-BASE(A4),A6	;__flags
