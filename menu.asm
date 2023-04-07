@@ -440,7 +440,7 @@ L00A93:
 	MOVEQ	#$00,D6
 	MOVE.W	D6,D7
 	MOVE.W	D6,-$0002(A5)
-	MOVE.L	-$529C(A4),-$000A(A5)	;_player + 46 (pack)
+	MOVE.L	_player+46-BASE(A4),-$000A(A5)	;_player + 46 (pack)
 	BRA.W	L00A98
 L00A94:
 	MOVE.W	-$0002(A5),D3

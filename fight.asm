@@ -563,7 +563,7 @@ L0096A:
 	MOVE.L	A6,-$0004(A5)
 	MOVEQ	#$00,D4
 	MOVEQ	#$00,D5
-	MOVEA.L	-$529C(A4),A3	;_player + 46 (pack)
+	MOVEA.L	_player+46-BASE(A4),A3	;_player + 46 (pack)
 	BRA.B	L0096D
 L0096B:
 	CMPA.L	_cur_armor-BASE(A4),A3	;_cur_armor

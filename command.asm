@@ -482,7 +482,7 @@ L003DC:
 	CLR.B	_after-BASE(A4)	;_after
 	PEA	L0040F(PC)	;"",0
 	CLR.W	-(A7)
-	MOVE.L	-$529C(A4),-(A7)	;_player + 46 (pack)
+	MOVE.L	_player+46-BASE(A4),-(A7)	;_player + 46 (pack)
 	JSR	_inventory(PC)
 	LEA	$000A(A7),A7
 	BRA.W	L00409

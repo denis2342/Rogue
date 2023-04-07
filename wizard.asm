@@ -11,7 +11,7 @@ _whatis:
 	MOVE.L	A2,D3
 	BNE.B	L007B6
 
-	TST.L	-$529C(A4)	;_player + 46 (pack)
+	TST.L	_player+46-BASE(A4)	;_player + 46 (pack)
 	BNE.B	L007B5
 
 	PEA	L007C2(PC)	;"You don't have anything in your pack to identify"
@@ -163,7 +163,7 @@ L007C5:	dc.b	" ",0
 
 _pack_update:
 	move.l	a3,-(a7)
-	MOVE.L	-$529C(A4),a3	;_player + 46 (pack)
+	MOVE.L	_player+46-BASE(A4),a3	;_player + 46 (pack)
 
 ;	MOVE.W	$0A(A2),d6	;item type we want to update
 	move.w	$20(A2),d5	;subtype

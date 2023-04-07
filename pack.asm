@@ -70,7 +70,7 @@ L0029E:
 	SUBQ.W	#1,_inpack-BASE(A4)	;_inpack
 L0029F:
 	MOVE.L	$0008(A5),-(A7)
-	PEA	-$529C(A4)	;_player + 46 (pack)
+	PEA	_player+46-BASE(A4)	;_player + 46 (pack)
 	JSR	__detach
 	ADDQ.W	#8,A7
 
@@ -137,7 +137,7 @@ _pack_obj:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/A2,-(A7)
 
-	MOVEA.L	-$529C(A4),A2	;_player + 46 (pack)
+	MOVEA.L	_player+46-BASE(A4),A2	;_player + 46 (pack)
 	MOVEQ	#$61,D4	;'a'
 	BRA.B	L002A6
 
@@ -210,7 +210,7 @@ L002AC:
 	TST.W	$002C(A2)	;is it in a group?
 	BEQ.B	L002B1
 
-	MOVEA.L	-$529C(A4),A3	;_player + 46 (pack)
+	MOVEA.L	_player+46-BASE(A4),A3	;_player + 46 (pack)
 	BRA.B	L002B0
 L002AD:
 	MOVE.W	$002C(A3),D3
@@ -314,7 +314,7 @@ L002B4:
 	MOVE.B	D7,$00(A6,D0.W)
 L002B5:
 	MOVEQ	#$00,D5
-	MOVEA.L	-$529C(A4),A3	;_player + 46 (pack)
+	MOVEA.L	_player+46-BASE(A4),A3	;_player + 46 (pack)
 
 	MOVE.L	A2,-(A7)
 	JSR	_typeof
@@ -338,7 +338,7 @@ L002B8:
 	MOVE.L	A3,D3		;did we find something?
 	BNE.B	L002BC
 
-	MOVEA.L	-$529C(A4),A3	;_player + 46 (pack)
+	MOVEA.L	_player+46-BASE(A4),A3	;_player + 46 (pack)
 	BRA.B	L002BA
 L002B9:
 	CMPI.W	#$003A,$000A(A3)	;':' food
@@ -380,10 +380,10 @@ L002BE:
 	MOVE.L	A3,D3		;is there another item in the pack?
 	BNE.B	L002C1
 
-	TST.L	-$529C(A4)	;_player + 46 (pack)
+	TST.L	_player+46-BASE(A4)	;_player + 46 (pack)
 	BNE.B	L002BF
 
-	MOVE.L	A2,-$529C(A4)	;_player + 46 (pack)
+	MOVE.L	A2,_player+46-BASE(A4)	;_player + 46 (pack)
 	BRA.B	L002C6
 L002BF:
 	MOVEA.L	D4,A6
@@ -420,7 +420,7 @@ L002C3:
 	MOVE.L	A2,(A6)
 	BRA.B	L002C5
 L002C4:
-	MOVE.L	A2,-$529C(A4)	;_player + 46 (pack)
+	MOVE.L	A2,_player+46-BASE(A4)	;_player + 46 (pack)
 L002C5:
 	MOVE.L	A3,(A2)
 	MOVE.L	A2,$0004(A3)
@@ -682,7 +682,7 @@ L002E2:
 	MOVE.W	#$0001,-$0004(A5)
 L002E3:
 	MOVE.B	_again-BASE(A4),-$0002(A5)	;_again
-	TST.L	-$529C(A4)	;_player + 46 (pack)
+	TST.L	_player+46-BASE(A4)	;_player + 46 (pack)
 	BNE.B	L002E4
 
 	PEA	L002F4(PC)	;"you aren't carrying anything"
@@ -737,7 +737,7 @@ L002E9:
 
 	MOVE.L	$0008(A5),-(A7)
 	MOVE.W	$000C(A5),-(A7)
-	MOVE.L	-$529C(A4),-(A7)	;_player + 46 (pack)
+	MOVE.L	_player+46-BASE(A4),-(A7)	;_player + 46 (pack)
 	JSR	_inventory(PC)
 	LEA	$000A(A7),A7
 	MOVE.B	D0,D4
@@ -823,7 +823,7 @@ L002FA:	dc.b	"identify",0
 _pack_char:
 	MOVEA.L	$0004(A7),A1
 	MOVEQ	#'a',D1
-	MOVEA.L	-$529C(A4),A0	;_player + 46 (pack)
+	MOVEA.L	_player+46-BASE(A4),A0	;_player + 46 (pack)
 	BRA.B	L002FE
 L002FB:
 	CMPA.L	A1,A0

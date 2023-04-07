@@ -673,7 +673,7 @@ L00206:
 ; pack glows yellow, identifies everything in the pack
 
 L00207:
-	MOVEA.L	-$529C(A4),A3	;_player + 46 (pack)
+	MOVEA.L	_player+46-BASE(A4),A3	;_player + 46 (pack)
 	BRA.B	L00209
 L00208:
 	CLR.L	-(A7)
@@ -739,7 +739,7 @@ L0020E:
 	PEA	L0021B(PC)	;"There is a fluttering behind you and suddenly your pack feels lighter."
 	JSR	_msg
 	ADDQ.W	#4,A7
-	MOVEA.L	-$529C(A4),A3	;_player + 46 (pack)
+	MOVEA.L	_player+46-BASE(A4),A3	;_player + 46 (pack)
 	BRA.W	L00212
 L0020F:
 	MOVE.L	(A3),D4

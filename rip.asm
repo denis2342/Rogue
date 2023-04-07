@@ -618,7 +618,7 @@ _total_winner:
 
 	MOVE.W	_purse-BASE(A4),D6	;_purse
 	MOVEQ	#$61,D5
-	MOVEA.L	-$529C(A4),A2	;_player + 46 (pack)
+	MOVEA.L	_player+46-BASE(A4),A2	;_player + 46 (pack)
 	BRA.W	L006D9
 L006AC:
 	MOVE.L	A2,-(A7)

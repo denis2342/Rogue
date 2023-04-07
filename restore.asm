@@ -198,7 +198,7 @@ L00B3A:
 	PEA	L00B43(PC)
 	JSR	_msg
 	ADDQ.W	#8,A7
-	MOVEA.L	-$529C(A4),A2	;_player + 46 (pack)
+	MOVEA.L	_player+46-BASE(A4),A2	;_player + 46 (pack)
 	BRA.B	L00B3C
 L00B3B:
 	CLR.L	$0010(A2)
