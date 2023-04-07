@@ -378,7 +378,7 @@ L0032B:
 ; magic missile
 
 L0032C:
-	ST	-$66C5(A4)		;set _ws_know + 6
+	ST	_ws_know+6-BASE(A4)		;set _ws_know + 6
 	MOVE.W	#$000A,-$0018(A5)	;subtype of weapon 10
 	MOVE.W	#$0077,-$002E(A5)	;'w' wand type
 	LEA	L0034E(PC),A6		;"1d8"
