@@ -1084,7 +1084,7 @@ L0010B2:
 	ADDQ.W	#4,A7
 
 1$	move.l	#1344,d1	;72 * 18 + some spare
-	lea	-$5174(A4),A3	;_chbm + 8 (where the planes begin)
+	lea	_chbm+8-BASE(A4),A3	;_chbm + 8 (where the planes begin)
 	move.l	D0,(A3)+
 	add.l	d1,d0
 	move.l	D0,(A3)+
@@ -1116,7 +1116,7 @@ L0010B:
 L0010D:
 	;calculate the position to read the bitmap to
 
-	LEA	-$5174(A4),A6	;_chbm + 8 (where the planes begin)
+	LEA	_chbm+8-BASE(A4),A6	;_chbm + 8 (where the planes begin)
 	add.l	d6,a6
 	move.l	(a6),a6		;get one of the four planes depending on D6
 
