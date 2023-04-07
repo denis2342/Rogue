@@ -1625,7 +1625,10 @@ _ctp_:	dc.b	$20,$20,$20,$20
 
 __Dend:
 
-__Uorg:		ds.b	102
+__Uorg:		ds.b	80
+
+_unctrl_tmp:
+	ds.b	22
 
 _slime_split_tmp:
 	ds.w	1

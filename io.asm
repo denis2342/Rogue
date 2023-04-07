@@ -569,7 +569,7 @@ _unctrl:
 	BEQ.B	L00155
 
 	PEA	L0015A(PC)
-	PEA	-$54F6(A4)
+	PEA	_unctrl_tmp-BASE(A4)
 	JSR	_strcpy
 	ADDQ.W	#8,A7
 	BRA.B	L00159
@@ -590,7 +590,7 @@ L00155:
 	ADD.W	#$0040,D3
 	MOVE.W	D3,-(A7)
 	PEA	L0015B(PC)
-	PEA	-$54F6(A4)
+	PEA	_unctrl_tmp-BASE(A4)
 	JSR	_sprintf
 	LEA	$000A(A7),A7
 	BRA.B	L00157
@@ -599,16 +599,16 @@ L00156:
 	MOVE.B	$0009(A5),D3
 	MOVE.W	D3,-(A7)
 	PEA	L0015C(PC)
-	PEA	-$54F6(A4)
+	PEA	_unctrl_tmp-BASE(A4)
 	JSR	_sprintf
 	LEA	$000A(A7),A7
 L00157:
 	BRA.B	L00159
 L00158:
-	MOVE.B	$0009(A5),-$54F6(A4)
+	MOVE.B	$0009(A5),_unctrl_tmp-BASE(A4)
 	CLR.B	-$54F5(A4)
 L00159:
-	LEA	-$54F6(A4),A6
+	LEA	_unctrl_tmp-BASE(A4),A6
 	MOVE.L	A6,D0
 	UNLK	A5
 	RTS
