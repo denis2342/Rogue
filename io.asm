@@ -103,8 +103,8 @@ L0013E:
 	CLR.W	-(A7)
 	JSR	_putmsg(PC)
 	ADDQ.W	#6,A7
-	MOVE.W	-$77BA(A4),_mpos-BASE(A4)	;_mpos
-	CLR.W	-$77BA(A4)
+	MOVE.W	_addch_text+20-BASE(A4),_mpos-BASE(A4)	;_mpos
+	CLR.W	_addch_text+20-BASE(A4)
 ;	UNLK	A5
 	RTS
 
@@ -244,7 +244,7 @@ _doadd:
 	MOVE.L	$0010(A5),-(A7)
 	MOVE.L	$000C(A5),-(A7)
 	MOVE.L	$0008(A5),-(A7)
-	MOVE.W	-$77BA(A4),D3		;_addch_text + $14
+	MOVE.W	_addch_text+20-BASE(A4),D3		;_addch_text + $14
 	EXT.L	D3
 	ADD.L	_msgbuf-BASE(A4),D3		;_msgbuf
 	MOVE.L	D3,-(A7)
@@ -254,7 +254,7 @@ _doadd:
 	MOVE.L	_msgbuf-BASE(A4),A0	;_msgbuf
 	JSR	_strlenquick
 
-	MOVE.W	D0,-$77BA(A4)		;_addch_text + $14
+	MOVE.W	D0,_addch_text+20-BASE(A4)		;_addch_text + $14
 
 	UNLK	A5
 	RTS
@@ -442,7 +442,7 @@ L00149:
 	JSR	_strlenquick
 
 	MOVE.W	D0,-$0002(A5)
-	MOVE.W	D0,-$77BA(A4)
+	MOVE.W	D0,_addch_text+20-BASE(A4)
 	CMPI.W	#$0050,-$0002(A5)
 	BLE.B	L0014D
 
