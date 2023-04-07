@@ -419,7 +419,7 @@ begin:
 	CLR.L	(A1)+
 	DBF	D1,1$
 L00C00:
-	MOVE.L	A7,-$4760(A4)		;__savsp
+	MOVE.L	A7,__savsp-BASE(A4)		;__savsp
 	MOVEA.L	$0004,A6
 	MOVE.L	A6,_SysBase-BASE(A4)		;_SysBase
 
@@ -2067,7 +2067,7 @@ __main:
 	JSR	_Alert(PC)
 	ADDQ.W	#8,A7
 L00CA0:
-	MOVEA.L	-$4760(A4),A7		;__savsp
+	MOVEA.L	__savsp-BASE(A4),A7		;__savsp
 	RTS
 
 ;L00CA1:
@@ -2356,7 +2356,7 @@ L00CB6:
 	JSR	_ReplyMsg
 	ADDQ.W	#4,A7
 	MOVE.L	$0008(A5),D0
-	MOVEA.L	-$4760(A4),A7		;__savsp
+	MOVEA.L	__savsp-BASE(A4),A7		;__savsp
 	RTS
 
 L00CB7:
