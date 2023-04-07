@@ -920,7 +920,7 @@ L00B81:
 	MOVE.W	-$0002(A5),D3
 	AND.W	#$0FFF,D3
 	MULU.W	#66,D3
-	LEA	-$6080(A4),A6	;_rooms + 8
+	LEA	_rooms+8-BASE(A4),A6	;_rooms + 8
 	ADD.L	A6,D3
 	MOVE.L	D3,$0012(A2)
 	BRA.B	L00B84
