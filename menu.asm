@@ -245,7 +245,7 @@ L00A74:
 _InstallMenus:
 ;	LINK	A5,#-$0000
 
-	PEA	-$678A(A4)	;_menu_bar
+	PEA	_menu_bar-BASE(A4)	;_menu_bar
 	JSR	_BuildMenu(PC)
 	ADDQ.W	#4,A7
 	MOVE.L	D0,-$53A2(A4)
