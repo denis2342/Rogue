@@ -606,7 +606,7 @@ L00157:
 	BRA.B	L00159
 L00158:
 	MOVE.B	$0009(A5),_unctrl_tmp-BASE(A4)
-	CLR.B	-$54F5(A4)
+	CLR.B	_unctrl_tmp2-BASE(A4)
 L00159:
 	LEA	_unctrl_tmp-BASE(A4),A6
 	MOVE.L	A6,D0

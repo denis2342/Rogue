@@ -1628,7 +1628,10 @@ __Dend:
 __Uorg:		ds.b	80
 
 _unctrl_tmp:
-	ds.b	22
+	ds.b	1
+
+_unctrl_tmp2:
+	ds.b	21
 
 _slime_split_tmp:
 	ds.w	1
