@@ -2528,7 +2528,7 @@ _typech:
 
 _foolish:
 ;	LINK	A5,#-$0000
-	ANDI.W	#~C_WISDOM,-$52B4(A4)	;clear C_WISDOM,_player + 22 (flags)
+	ANDI.W	#~C_WISDOM,_player+22-BASE(A4)	;clear C_WISDOM,_player + 22 (flags)
 	PEA	L0063D(PC)		;"You see your destiny, but the knowledge vaporizes"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -2539,7 +2539,7 @@ L0063D:	dc.b	"You see your destiny, but the knowledge vaporizes",0
 
 _lose_vision:
 ;	LINK	A5,#-$0000
-	ANDI.W	#~C_ISFOUND,-$52B4(A4)	;clear C_ISFOUND,_player + 22 (flags)
+	ANDI.W	#~C_ISFOUND,_player+22-BASE(A4)	;clear C_ISFOUND,_player + 22 (flags)
 	PEA	_player+10-BASE(A4)	;_player + 10
 	JSR	_leave_room
 	ADDQ.W	#4,A7
@@ -3308,7 +3308,7 @@ L008F3:
 	RTS
 
 L008F4:
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISFOUND,D3	;C_ISFOUND
 	BEQ.B	L008F5
 
@@ -3326,7 +3326,7 @@ _check_wisdom:
 	MOVEM.L	A2/A3,-(A7)
 
 	MOVEA.L	$0008(A5),A2
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_WISDOM,D3	;C_WISDOM
 	BNE.B	L008F8
 

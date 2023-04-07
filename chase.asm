@@ -542,7 +542,7 @@ _see_monst:
 	MOVE.L	A2,-(A7)
 
 	MOVEA.L	$0008(A5),A2
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L00266
 
@@ -558,7 +558,7 @@ L00266:
 	AND.W	#C_ISINVIS,D3	;C_ISINVIS
 	BEQ.B	L00267
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_CANSEE,D3	;C_CANSEE
 	BEQ.B	L00268
 L00267:
@@ -971,7 +971,7 @@ _cansee:
 	MOVE.W	$000A(A5),D5
 
 	MOVEq	#C_ISBLIND,D3	;C_ISBLIND
-	AND.W	-$52B4(A4),D3	;_player + 22 (flags)
+	AND.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	BEQ.B	L00287
 
 L00289:

@@ -131,7 +131,7 @@ L00312:
 ; light
 
 L00313:
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;check player C_ISBLIND
 	BEQ.B	L00314
 
@@ -217,7 +217,7 @@ L0031C:
 	CMP.b	#$46,D6		;'F'
 	BNE.B	L0031D
 
-	ANDI.W	#~C_ISHELD,-$52B4(A4)	;clear C_ISHELD ($80) for _player + 22 (flags)
+	ANDI.W	#~C_ISHELD,_player+22-BASE(A4)	;clear C_ISHELD ($80) for _player + 22 (flags)
 L0031D:
 	CMPI.W	#WS_POLYMORPH,-$0006(A5)	;5 = polymorph
 	BNE.W	L00322
@@ -349,7 +349,7 @@ L00327:
 	cmp.b	#$46,$000F(A6)
 	BNE.B	L00328
 
-	ANDI.W	#~C_ISHELD,-$52B4(A4)	;clear C_ISHELD ($80) for _player + 22 (flags)
+	ANDI.W	#~C_ISHELD,_player+22-BASE(A4)	;clear C_ISHELD ($80) for _player + 22 (flags)
 L00328:
 	MOVEA.L	-$0004(A5),A6
 	MOVE.W	$000C(A6),D3

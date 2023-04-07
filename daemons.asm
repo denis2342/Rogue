@@ -128,7 +128,7 @@ L00647:
 
 _unconfuse:
 ;	LINK	A5,#-$0000
-	ANDI.W	#~C_ISHUH,-$52B4(A4)	;clear ISHUH,_player + 22 (flags)
+	ANDI.W	#~C_ISHUH,_player+22-BASE(A4)	;clear ISHUH,_player + 22 (flags)
 	PEA	L00648(PC)	;"you feel less confused now"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -174,7 +174,7 @@ _unsee:
 3$	MOVE.L	A2,D3
 	BNE.B	1$
 
-	ANDI.W	#~C_CANSEE,-$52B4(A4)	;clear CANSEE, _player + 22 (flags)
+	ANDI.W	#~C_CANSEE,_player+22-BASE(A4)	;clear CANSEE, _player + 22 (flags)
 
 	MOVEA.L	(A7)+,A2
 ;	UNLK	A5
@@ -187,14 +187,14 @@ _unsee:
 
 _sight:
 ;	LINK	A5,#-$0000
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L0064D
 
 	PEA	_sight(PC)
 	JSR	_extinguish(PC)
 	ADDQ.W	#4,A7
-	ANDI.W	#~C_ISBLIND,-$52B4(A4)	;clear C_ISBLIND, _player + 22 (flags)
+	ANDI.W	#~C_ISBLIND,_player+22-BASE(A4)	;clear C_ISBLIND, _player + 22 (flags)
 	MOVEA.L	_player+42-BASE(A4),A6	;_player + 42 (proom)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3
@@ -220,7 +220,7 @@ L0064E:	dc.b	"the veil of darkness lifts",0,0
 
 _nohaste:
 ;	LINK	A5,#-$0000
-	ANDI.W	#~C_ISHASTE,-$52B4(A4)	;clear C_ISHASTE,_player + 22 (flags)
+	ANDI.W	#~C_ISHASTE,_player+22-BASE(A4)	;clear C_ISHASTE,_player + 22 (flags)
 
 	PEA	L0064F(PC)	;"you feel yourself slowing down"
 	JSR	_msg
@@ -262,7 +262,7 @@ L00650:
 	JSR	_rnd
 	ADDQ.W	#4,D0
 	ADD.W	D0,_no_command-BASE(A4)	;_no_command
-	ANDI.W	#~C_ISRUN,-$52B4(A4)	;clear C_ISRUN, _player + 22 (flags)
+	ANDI.W	#~C_ISRUN,_player+22-BASE(A4)	;clear C_ISRUN, _player + 22 (flags)
 	CLR.B	_running-BASE(A4)	;_running
 	CLR.W	_count-BASE(A4)	;_count
 	MOVE.W	#$0003,_hungry_state-BASE(A4)	;_hungry_state

@@ -150,7 +150,7 @@ L00491:
 
 	MOVE.W	D0,-(A7)
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISFOUND,D3	;C_ISFOUND
 	BEQ.B	L00492
 
@@ -169,7 +169,7 @@ L00493:
 	JSR	_msg
 	ADDQ.W	#4,A7
 
-	ORI.W	#C_ISFOUND,-$52B4(A4)	;_player + 22 (flags)
+	ORI.W	#C_ISFOUND,_player+22-BASE(A4)	;_player + 22 (flags)
 	PEA	_player+10-BASE(A4)	;_player + 10
 	JSR	_leave_room
 	ADDQ.W	#4,A7
@@ -187,7 +187,7 @@ L00494:
 
 	MOVE.W	D0,-(A7)
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_WISDOM,D3
 	BEQ.B	1$
 
@@ -196,7 +196,7 @@ L00494:
 	ADDQ.W	#6,A7
 	BRA.B	2$
 1$
-	ORI.W	#C_WISDOM,-$52B4(A4)	;WISDOM, _player + 22 (flags)
+	ORI.W	#C_WISDOM,_player+22-BASE(A4)	;WISDOM, _player + 22 (flags)
 
 	CLR.W	-(A7)
 	PEA	_foolish(PC)
@@ -217,7 +217,7 @@ L00497:
 	JSR	_spread
 
 	MOVE.W	D0,_no_command-BASE(A4)	;_no_command
-	ANDI.W	#~C_ISRUN,-$52B4(A4)	;clear C_ISRUN, _player + 22 (flags)
+	ANDI.W	#~C_ISRUN,_player+22-BASE(A4)	;clear C_ISRUN, _player + 22 (flags)
 	PEA	L004B8(PC)	;"you can't move"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -226,7 +226,7 @@ L00497:
 ; potion of see invisible
 
 L00498:
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_CANSEE,D3	;C_CANSEE
 	BNE.B	1$
 
@@ -543,7 +543,7 @@ _invis_on:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
 
-	ORI.W	#C_CANSEE,-$52B4(A4)	;_player + 22 (flags)
+	ORI.W	#C_CANSEE,_player+22-BASE(A4)	;_player + 22 (flags)
 
 	MOVEA.L	_mlist-BASE(A4),A2	;_mlist
 	BRA.B	3$
@@ -678,7 +678,7 @@ _p_confuse:
 
 	ADD.W	D0,(A7)		;add spread to rnd on stack
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISHUH,D3	;C_ISHUH
 	BEQ.B	1$
 
@@ -692,17 +692,17 @@ _p_confuse:
 	JSR	_fuse(PC)
 	ADDQ.W	#8,A7
 
-2$	ORI.W	#C_ISHUH,-$52B4(A4)	;C_ISHUH,_player + 22 (flags)
+2$	ORI.W	#C_ISHUH,_player+22-BASE(A4)	;C_ISHUH,_player + 22 (flags)
 ;	UNLK	A5
 	RTS
 
 _p_blind:
 ;	LINK	A5,#-$0000
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3
 	BNE.B	L004D4
 
-	ORI.W	#C_ISBLIND,-$52B4(A4)	;_player + 22 (flags)
+	ORI.W	#C_ISBLIND,_player+22-BASE(A4)	;_player + 22 (flags)
 
 	MOVE.W	#300,D0
 	JSR	_spread

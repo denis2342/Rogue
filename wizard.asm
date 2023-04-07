@@ -572,11 +572,11 @@ L007F6:
 	MOVE.W	_player+12-BASE(A4),d0	;_player + 12
 	JSR	_mvaddchquick
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISHELD,D3	;C_ISHELD
 	BEQ.B	L007F7
 
-	ANDI.W	#~C_ISHELD,-$52B4(A4)	;clear C_ISHELD,_player + 22 (flags)
+	ANDI.W	#~C_ISHELD,_player+22-BASE(A4)	;clear C_ISHELD,_player + 22 (flags)
 	JSR	_f_restor
 L007F7:
 	CLR.W	_no_move-BASE(A4)	;_no_move
@@ -587,7 +587,7 @@ L007F7:
 	TST.B	_wizard-BASE(A4)	;_wizard
 	BNE.B	L007FA
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISHUH,D3	;C_ISHUH
 	BEQ.B	L007F8
 
@@ -609,7 +609,7 @@ L007F8:
 	JSR	_fuse(PC)
 	ADDQ.W	#8,A7
 L007F9:
-	ORI.W	#C_ISHUH,-$52B4(A4)	;ISHUH,_player + 22 (flags)
+	ORI.W	#C_ISHUH,_player+22-BASE(A4)	;ISHUH,_player + 22 (flags)
 L007FA:
 	MOVE.W	D4,D0
 

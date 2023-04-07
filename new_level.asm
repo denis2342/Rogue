@@ -8,7 +8,7 @@ _new_level:
 	MOVEM.L	D4-D6/A2/A3,-(A7)
 
 	JSR	_NewRank(PC)
-	ANDI.W	#~C_ISHELD,-$52B4(A4)	;clear C_ISHELD ($80) _player + 22 (flags)
+	ANDI.W	#~C_ISHELD,_player+22-BASE(A4)	;clear C_ISHELD ($80) _player + 22 (flags)
 	CLR.B	_no_more_fears-BASE(A4)	;_no_more_fears
 	MOVE.W	_level-BASE(A4),D3	;_level
 	CMP.W	_max_level-BASE(A4),D3	;_max_level

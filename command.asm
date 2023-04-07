@@ -16,7 +16,7 @@ L00398:
 	BNE.B	L00399
 	CLR.B	_wizard-BASE(A4)	;_wizard
 L00399:
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISHASTE,D3	;C_ISHASTE
 	BEQ.B	L0039A
 
@@ -320,7 +320,7 @@ L003C9:
 	BNE.B	L003CE
 
 	moveq	#C_ISBLIND,D3	;C_ISBLIND
-	AND.W	-$52B4(A4),D3	;_player + 22 (flags)
+	AND.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	BNE.B	L003CA
 
 	ST	_door_stop-BASE(A4)	;_door_stop
@@ -1085,7 +1085,7 @@ _search:
 ;	LINK	A5,#-$0000
 	MOVEM.L	D4-D7/A2,-(A7)
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BNE.B	L008C1
 L008C2:

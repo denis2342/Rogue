@@ -78,7 +78,7 @@ L00935:
 	CMP.B	#$58,D3		;'X' xeroc
 	BEQ.B	L00937
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BNE.B	L00937
 
@@ -101,7 +101,7 @@ L00937:
 	LEA	_monsters-BASE(A4),A6	;_monsters
 	MOVE.L	$00(A6,D3.L),D5
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L00938
 
@@ -161,14 +161,14 @@ L0093B:
 	ADDQ.W	#4,A7
 	CLR.L	_cur_weapon-BASE(A4)	;_cur_weapon
 L0093C:
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_CANHUH,D3	;C_CANHUH
 	BEQ.B	L0093D
 
 	MOVE.B	#$01,-$0001(A5)
 	MOVEA.L	D4,A6
 	ORI.W	#C_ISHUH,$0016(A6)	;C_ISHUH
-	ANDI.W	#~C_CANHUH,-$52B4(A4)	;clear C_CANHUH,_player + 22 (flags)
+	ANDI.W	#~C_CANHUH,_player+22-BASE(A4)	;clear C_CANHUH,_player + 22 (flags)
 	PEA	L00947(PC)	;"your hands stop glowing red"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -186,7 +186,7 @@ L0093E:
 	TST.B	-$0001(A5)
 	BEQ.B	L0093F
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BNE.B	L0093F
 	MOVE.L	D5,-(A7)
@@ -254,7 +254,7 @@ _attack:
 	CMP.B	#$58,$000F(A6)	;'X' xerox
 	BNE.B	1$
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BNE.B	1$
 
@@ -266,7 +266,7 @@ _attack:
 	MULU.W	#26,D3
 	LEA	_monsters-BASE(A4),A6	;_monsters
 	MOVEA.L	$00(A6,D3.L),A2
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L0094C
 	MOVEA.L	_it-BASE(A4),A2	;_it
@@ -495,7 +495,7 @@ L00964:
 ; venus flytrap
 
 L00965:
-	ORI.W	#C_ISHELD,-$52B4(A4)	;C_ISHELD,_player + 22 (flags)
+	ORI.W	#C_ISHELD,_player+22-BASE(A4)	;C_ISHELD,_player + 22 (flags)
 	ADDQ.W	#1,_fung_hit-BASE(A4)	;_fung_hit
 	MOVE.W	_fung_hit-BASE(A4),-(A7)	;_fung_hit
 	PEA	L0097D(PC)	;"%dd1"
@@ -1061,7 +1061,7 @@ _prname:
 	ADDQ.W	#8,A7
 	BRA.B	L009A2
 L009A0:
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L009A1
 
@@ -1137,7 +1137,7 @@ L009E9:
 	JSR	_addmsg
 	ADDQ.W	#8,A7
 L009EA:
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L009EB
 
@@ -1584,7 +1584,7 @@ L00A08:
 	PEA	L00A0B(PC)	;"you have defeated "
 	JSR	_addmsg
 	ADDQ.W	#4,A7
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L00A09
 
@@ -1613,7 +1613,7 @@ L00A04:
 ; killed a venus flytrap
 
 L00A02:
-	ANDI.W	#~C_ISHELD,-$52B4(A4)	;clear C_ISHELD, _player + 22 (flags)
+	ANDI.W	#~C_ISHELD,_player+22-BASE(A4)	;clear C_ISHELD, _player + 22 (flags)
 	JSR	_f_restor
 	BRA.W	L00A08
 

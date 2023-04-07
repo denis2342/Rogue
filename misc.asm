@@ -29,7 +29,7 @@ _look:
 	TST.W	D0
 	BNE.W	L00823
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BNE.W	L00822
 
@@ -196,7 +196,7 @@ L00826:
 	BLE.W	L00846
 	CMP.W	#$003C,D4	;'<' room corner
 	BGE.W	L00846
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BNE.B	L00828
 	CMP.W	_player+12-BASE(A4),D5	;_player + 12
@@ -275,7 +275,7 @@ L0082C:
 
 	; bugfix: test if we actually can see the invisible
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_CANSEE,D3	;C_CANSEE
 	BNE	L0082E
 
@@ -306,7 +306,7 @@ L0082F:
 	TST.W	D0
 	BNE.B	L00831
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BNE.B	L00831
 L00830:
@@ -804,7 +804,7 @@ _add_str:
 
 _add_haste:
 	LINK	A5,#-$0000
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISHASTE,D3	; check C_ISHASTE bit
 	BEQ.B	L0086A
 
@@ -812,13 +812,13 @@ _add_haste:
 	JSR	_rnd
 	ADD.W	D0,_no_command-BASE(A4)	;_no_command
 
-	ANDI.W	#~C_ISRUN,-$52B4(A4)	;clear C_ISRUN, _player + 22 (flags)
+	ANDI.W	#~C_ISRUN,_player+22-BASE(A4)	;clear C_ISRUN, _player + 22 (flags)
 
 	PEA	_nohaste(PC)
 	JSR	_extinguish(PC)
 	ADDQ.W	#4,A7
 
-	ANDI.W	#~C_ISHASTE,-$52B4(A4)	;clear C_ISHASTE,_player + 22 (flags)
+	ANDI.W	#~C_ISHASTE,_player+22-BASE(A4)	;clear C_ISHASTE,_player + 22 (flags)
 
 	PEA	L0086C(PC)	;"you faint from exhaustion"
 	JSR	_msg
@@ -830,7 +830,7 @@ L00869:
 	RTS
 
 L0086A:
-	ORI.W	#C_ISHASTE,-$52B4(A4)	;C_ISHASTE,_player + 22 (flags)
+	ORI.W	#C_ISHASTE,_player+22-BASE(A4)	;C_ISHASTE,_player + 22 (flags)
 	TST.B	$0009(A5)
 	BEQ.B	L0086B
 
@@ -1006,7 +1006,7 @@ L0087F:
 	PEA	L00884(PC)	;"",0
 	JSR	_msg
 	ADDQ.W	#4,A7
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISHUH,D3	;C_ISHUH
 	BEQ.B	L00881
 

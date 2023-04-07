@@ -61,7 +61,7 @@ L001AA:
 ; monster confusion scroll
 
 L001AB:
-	ORI.W	#C_CANHUH,-$52B4(A4)	;set C_CANHUH,_player + 22 (flags)
+	ORI.W	#C_CANHUH,_player+22-BASE(A4)	;set C_CANHUH,_player + 22 (flags)
 	PEA	L001EB(PC)	;"your hands begin to glow red"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -146,7 +146,7 @@ L001B5:
 
 	ADD.W	D0,_no_command-BASE(A4)	;_no_command
 
-	ANDI.W	#~C_ISRUN,-$52B4(A4)	;clear C_ISRUN, _player + 22 (flags)
+	ANDI.W	#~C_ISRUN,_player+22-BASE(A4)	;clear C_ISRUN, _player + 22 (flags)
 	PEA	L001EE(PC)	;"you fall asleep"
 	JSR	_msg
 	ADDQ.W	#4,A7

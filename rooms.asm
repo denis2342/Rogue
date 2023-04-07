@@ -925,7 +925,7 @@ L0091D:
 	TST.W	D0
 	BNE.W	L00925
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BNE.W	L00925
 
@@ -1032,7 +1032,7 @@ _leave_room:
 	TST.W	D0
 	BEQ.B	L00926
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BNE.B	L00926
 

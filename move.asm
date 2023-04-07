@@ -48,7 +48,7 @@ L00091:
 	ADDQ.W	#4,A7
 	BRA.B	L00090
 L00092:
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISHUH,D3	;C_ISHUH
 	BEQ.B	L00093
 
@@ -152,7 +152,7 @@ L00097:
 	ORI.B	#F_REAL,$00(A6,D0.W)
 	BRA.B	L00099
 L00098:
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISHELD,D3	;C_ISHELD
 	BEQ.B	L00099
 
@@ -192,7 +192,7 @@ L0009B:
 	AND.W	#$0004,D3	;ISMAZE?
 	BNE.W	L000B1
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BNE.W	L000B1
 
@@ -530,7 +530,7 @@ _door_open:
 	AND.W	#$0002,D3
 	BNE.W	L000CD
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BNE.W	L000CD
 
@@ -566,7 +566,7 @@ L000C9:
 	TST.W	D0
 	BNE.B	L000CA
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BNE.B	L000CA
 
@@ -645,7 +645,7 @@ L000D0:
 	JSR	_spread
 
 	ADD.W	D0,_no_command-BASE(A4)	;_no_command
-	ANDI.W	#~C_ISRUN,-$52B4(A4)	;clear C_ISRUN, _player + 22 (flags)
+	ANDI.W	#~C_ISRUN,_player+22-BASE(A4)	;clear C_ISRUN, _player + 22 (flags)
 
 	LEA	L000E6(PC),a0	;"strange white "
 	JSR	_noterse

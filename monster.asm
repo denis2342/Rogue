@@ -415,7 +415,7 @@ L00A34:
 	CMP.B	#$4D,D4		;'M' medusa
 	BNE.W	L00A39
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;we are blind, so we can't see the medusas gaze
 	BNE.W	L00A39
 
@@ -469,7 +469,7 @@ L00A36:
 	ADD.W	D0,D3
 	MOVE.W	D3,-(A7)
 
-	MOVE.W	-$52B4(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISHUH,D3	;C_ISHUH
 	BEQ.B	1$
 
@@ -483,7 +483,7 @@ L00A36:
 	JSR	_fuse(PC)
 	ADDQ.W	#8,A7
 2$
-	ORI.W	#C_ISHUH,-$52B4(A4)	;set C_ISHUH,_player + 22 (flags)
+	ORI.W	#C_ISHUH,_player+22-BASE(A4)	;set C_ISHUH,_player + 22 (flags)
 	PEA	L00A3C(PC)	;"the medusa's gaze has confused you"
 	JSR	_msg
 	ADDQ.W	#4,A7
