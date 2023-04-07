@@ -6,7 +6,7 @@
 _command:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/D5,-(A7)
-	TST.B	-$66B3(A4)	;_is_wizard
+	TST.B	_is_wizard-BASE(A4)	;_is_wizard
 	BEQ.B	L00398
 
 	MOVE.B	#$02,_wizard-BASE(A4)	;_wizard
