@@ -740,7 +740,7 @@ L000FB:	dc.b	"Rogue: The Adventure game",0
 
 _SetOffset:
 ;	LINK	A5,#-$0000
-;	MOVE.W	$0004(A7),-$77D2(A4)	;_Window2 + 48
+;	MOVE.W	$0004(A7),_Window2+48-BASE(A4)	;_Window2 + 48
 ;	MOVE.W	$0006(A7),_Window2+50-BASE(A4)	;_Window2 + 50
 ;	UNLK	A5
 ;	RTS
@@ -771,7 +771,7 @@ L000FE:
 	MOVE.W	D3,_p_col-BASE(A4)	;_p_col
 
 	MULU.W	#$0009,D4
-	ADD.W	-$77D2(A4),D4	;_Window2 + 48
+	ADD.W	_Window2+48-BASE(A4),D4	;_Window2 + 48
 	MOVE.W	D4,_p_row-BASE(A4)	;_p_row
 
 	MOVE.L	(A7)+,D4
@@ -2141,7 +2141,7 @@ _credits:
 	JSR	_show_ilbm
 	LEA	$000A(A7),A7
 ;_SetOffset
-	MOVE.W	#$0007,-$77D2(A4)	;_Window2 + 48
+	MOVE.W	#$0007,_Window2+48-BASE(A4)	;_Window2 + 48
 	MOVE.W	#$0005,_Window2+50-BASE(A4)	;_Window2 + 50
 
 	MOVE.W	#$0001,-(A7)
@@ -2160,7 +2160,7 @@ _credits:
 	ADDQ.W	#6,A7
 
 ;_SetOffset
-	CLR.W	-$77D2(A4)	;_Window2 + 48
+	CLR.W	_Window2+48-BASE(A4)	;_Window2 + 48
 	CLR.W	_Window2+50-BASE(A4)	;_Window2 + 50
 
 ;	CLR.W	-(A7)	;getting _graphics_disabled state back (its already on the stack)
