@@ -515,7 +515,7 @@ L00082:
 	CMP.W	#$0000,D4
 	BLE.B	L00083
 
-	LEA	-$6E04(A4),A6	;_r_magic + 4
+	LEA	_r_magic+4-BASE(A4),A6	;_r_magic + 4
 	MOVE.W	D4,D3
 	MOVE.W	D4,D2
 	SUBQ.W	#1,D2
