@@ -734,7 +734,7 @@ _raise_level:
 	MOVEA.L	_e_levels-BASE(A4),A6	;_e_levels
 	MOVE.L	$00(A6,D3.w),D2
 	ADDQ.L	#1,D2
-	MOVE.L	D2,-$52B0(A4)	;_player + 26 (EXP)
+	MOVE.L	D2,_player+26-BASE(A4)	;_player + 26 (EXP)
 	JSR	_check_level(PC)
 
 ;	UNLK	A5

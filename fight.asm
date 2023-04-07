@@ -429,7 +429,7 @@ L0095C:
 
 ; wraith drains experience/level
 
-	TST.L	-$52B0(A4)	;_player + 26 (EXP)
+	TST.L	_player+26-BASE(A4)	;_player + 26 (EXP)
 	BNE.B	L0095D
 
 	MOVE.W	#$0057,-(A7)	;'W' killed by a wraith
@@ -440,7 +440,7 @@ L0095D:
 ;	TST.W	-$52AC(A4)	;_player + 30 (rank)
 	BNE.B	L0095E
 
-	CLR.L	-$52B0(A4)	;_player + 26 (EXP)
+	CLR.L	_player+26-BASE(A4)	;_player + 26 (EXP)
 	MOVE.W	#$0001,-$52AC(A4)	;_player + 30 (rank)
 	BRA.B	L0095F
 L0095E:
@@ -451,7 +451,7 @@ L0095E:
 	MOVEA.L	_e_levels-BASE(A4),A6	;_e_levels
 	MOVE.L	$00(A6,D3.w),D2
 	ADDQ.L	#1,D2
-	MOVE.L	D2,-$52B0(A4)	;_player + 26 (EXP)
+	MOVE.L	D2,_player+26-BASE(A4)	;_player + 26 (EXP)
 L0095F:
 	MOVE.W	#$000A,-(A7)	;1d10
 	MOVE.W	#$0001,-(A7)
@@ -1562,7 +1562,7 @@ _killed:
 
 	MOVEA.L	$0008(A5),A6
 	MOVE.L	$001A(A6),D3
-	ADD.L	D3,-$52B0(A4)	;_player + 26 (EXP)
+	ADD.L	D3,_player+26-BASE(A4)	;_player + 26 (EXP)
 	MOVEA.L	$0008(A5),A6
 	MOVE.B	$000F(A6),D0
 	EXT.W	D0

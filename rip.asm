@@ -68,7 +68,7 @@ L00677:
 	bne	L00679
 
 	;hiding strength, maxhp and experience points in the highscore
-	move.l	-$52B0(A4),-$000E(A5)	;_player + 26 (EXP)
+	move.l	_player+26-BASE(A4),-$000E(A5)	;_player + 26 (EXP)
 	move.b	-$52B1(A4),-$000A(A5)	;_player + 24 strength
 	move.b	-$52A1(A4),-$0009(A5)	;_player + 40 (max HP)
 

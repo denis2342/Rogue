@@ -625,7 +625,7 @@ L00858:
 	CMP.W	#70,D0
 	BLE.B	L00859
 
-	ADDQ.L	#1,-$52B0(A4)	;_player + 26 (EXP)
+	ADDQ.L	#1,_player+26-BASE(A4)	;_player + 26 (EXP)
 
 	PEA	L0085F(PC)	;"yuk, this food tastes awful"
 	JSR	_msg
@@ -667,7 +667,7 @@ _check_level:
 
 	MOVEQ	#$01,D4
 	MOVEA.L	_e_levels-BASE(A4),A6	;_e_levels
-	MOVE.L	-$52B0(A4),D3
+	MOVE.L	_player+26-BASE(A4),D3
 	BRA.B	L00983
 L00982:
 	CMP.L	D3,D2	;_player + 26 (EXP)
