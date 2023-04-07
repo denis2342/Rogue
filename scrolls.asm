@@ -135,7 +135,7 @@ L001B4:
 ; sleep scroll
 
 L001B5:
-	ST	-$66F3(A4)	;_s_know + 3 "sleep"
+	ST	_s_know+3-BASE(A4)	;_s_know + 3 "sleep"
 
 	MOVEq	#$0005,D0
 	JSR	_spread
@@ -188,7 +188,7 @@ L001B8:
 ; identify scroll
 
 L001B9:
-	ST	-$66F1(A4)	;_s_know + 5 "identify"
+	ST	_s_know+5-BASE(A4)	;_s_know + 5 "identify"
 	PEA	L001F1(PC)	;"this scroll is an identify scroll"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -208,7 +208,7 @@ L001BA:
 ; magic mapping scroll
 
 L001BB:
-	ST	-$66F5(A4)	;_s_know + 1 "magic mapping"
+	ST	_s_know+1-BASE(A4)	;_s_know + 1 "magic mapping"
 	PEA	L001F3(PC)	;"oh, now this scroll has a map on it"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -315,7 +315,7 @@ L001C7:
 	JSR	_msg
 	ADDQ.W	#4,A7
 
-	ST	-$66EF(A4)	;_s_know + 7 "wild magic"
+	ST	_s_know+7-BASE(A4)	;_s_know + 7 "wild magic"
 
 ; special case for wild magic scrolls, because it is maybe not consumed
 
