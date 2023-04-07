@@ -62,7 +62,7 @@ L00677:
 	JSR	_get_scores(PC)
 	ADDQ.W	#4,A7
 
-	move.b	#-1,-$46d8(A4)	;normal is negativ, score color flag
+	move.b	#-1,_MathBase-BASE(A4)	;normal is negativ, score color flag
 
 	tst.b	_noscore-BASE(A4)	;_noscore
 	bne	L00679
@@ -229,7 +229,7 @@ L00689:
 
 	move.b	#1,_addch_text+0-BASE(A4)	;set the default color in IntuiText
 
-	cmp.b	-$46d8(A4),d4	;_all_clear + 1
+	cmp.b	_MathBase-BASE(A4),d4	;_all_clear + 1
 	bne	1$
 	move.b	#3,_addch_text+0-BASE(A4)	;changes the color in IntuiText
 
@@ -378,8 +378,8 @@ L0069D:
 
 	MOVEQ	#$00,D0
 L0069E:
-	move.b	d0,-$46d8(A4)	;_all_clear + 1
-	subq.b	#1,-$46d8(A4)
+	move.b	d0,_MathBase-BASE(A4)	;_all_clear + 1
+	subq.b	#1,_MathBase-BASE(A4)
 
 	MOVEM.L	(A7)+,A2/A3
 	UNLK	A5

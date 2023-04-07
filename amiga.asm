@@ -2075,7 +2075,7 @@ L00CA0:
 ;	PEA	L00CB0(PC)		;mathffp.library
 ;	JSR	__OpenLibrary(PC)
 ;	ADDQ.W	#8,A7
-;	MOVE.L	D0,-$46D8(A4)
+;	MOVE.L	D0,_MathBase-BASE(A4)
 ;;	TST.L	D0
 ;	BNE.B	L00CA2
 ;	CLR.L	-(A7)
@@ -2319,9 +2319,9 @@ L00CB3:
 ;	JSR	_CloseLibrary(PC)
 ;	ADDQ.W	#4,A7
 L00CB4:
-;	TST.L	-$46D8(A4)		;_MathBase
+;	TST.L	_MathBase-BASE(A4)		;_MathBase
 ;	BEQ.B	L00CB5
-;	MOVE.L	-$46D8(A4),-(A7)
+;	MOVE.L	_MathBase-BASE(A4),-(A7)
 ;	JSR	_CloseLibrary(PC)
 ;	ADDQ.W	#4,A7
 L00CB5:
