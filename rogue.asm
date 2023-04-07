@@ -934,7 +934,7 @@ __addch:
 	MOVEA.L	$0032(A6),A1
 	MOVE.B	$0018(A1),D4
 	MOVE.B	#$01,$0018(A1)
-	MOVE.L	A2,-$77C2(A4)	_addch_text + 12
+	MOVE.L	A2,_addch_text+12-BASE(A4)	_addch_text + 12
 
 	MOVE.W	_p_col-BASE(A4),D0	;_p_col
 	MOVE.W	_p_row-BASE(A4),D1	;_p_row
@@ -1312,7 +1312,7 @@ __zapstr:
 	MOVEA.L	$0032(A6),A1
 	MOVE.B	$0018(A1),D4
 	MOVE.B	#$01,$0018(A1)
-	MOVE.L	$0008(A5),-$77C2(A4)	;_addch_text + 12
+	MOVE.L	$0008(A5),_addch_text+12-BASE(A4)	;_addch_text + 12
 
 	MOVE.W	_p_col-BASE(A4),D0	;_p_col
 	MOVE.W	_p_row-BASE(A4),D1	;_p_row
