@@ -344,7 +344,7 @@ L008A7:
 	MOVEQ	#$2B,D4		;'+'
 	BRA.B	L008AB
 L008A8:
-	MOVE.W	-$52AC(A4),D3	;_player + 30 (rank)
+	MOVE.W	_player+30-BASE(A4),D3	;_player + 30 (rank)
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3

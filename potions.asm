@@ -110,7 +110,7 @@ L0048D:
 L0048E:
 	ST	_p_know+5-BASE(A4)	;_p_know + 5 (potion of healing)
 	MOVE.W	#$0004,-(A7)	;xd4
-	MOVE.W	-$52AC(A4),-(A7)	;_player + 30 (rank)
+	MOVE.W	_player+30-BASE(A4),-(A7)	;_player + 30 (rank)
 	JSR	_roll
 	ADDQ.W	#4,A7
 
@@ -255,7 +255,7 @@ L00498:
 
 L0049A:
 	ST	_p_know+8-BASE(A4)	;_p_know + 8 (potion of raise level)
-	MOVE.W	-$52AC(A4),D3	;_player + 30 (rank)
+	MOVE.W	_player+30-BASE(A4),D3	;_player + 30 (rank)
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
@@ -727,7 +727,7 @@ L004D4:
 _raise_level:
 ;	LINK	A5,#-$0000
 
-	MOVE.W	-$52AC(A4),D3	;_player + 30 (rank)
+	MOVE.W	_player+30-BASE(A4),D3	;_player + 30 (rank)
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3

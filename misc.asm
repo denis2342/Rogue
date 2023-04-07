@@ -678,8 +678,8 @@ L00983:
 	MOVE.L	(A6)+,D2
 	BNE.B	L00982
 L00984:
-	MOVE.W	-$52AC(A4),D0	;_player + 30 (rank)
-	MOVE.W	D4,-$52AC(A4)	;_player + 30 (rank)
+	MOVE.W	_player+30-BASE(A4),D0	;_player + 30 (rank)
+	MOVE.W	D4,_player+30-BASE(A4)	;_player + 30 (rank)
 	CMP.W	D0,D4		;compare old with new
 	BLE.B	L00986
 

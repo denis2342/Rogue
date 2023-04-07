@@ -864,7 +864,7 @@ L00404:
 	ADDQ.W	#1,D3
 	EXT.L	D3
 	DIVS.W	#$0002,D3
-	MOVE.W	D3,-$52AC(A4)	;_player + 30 (rank)
+	MOVE.W	D3,_player+30-BASE(A4)	;_player + 30 (rank)
 	MOVE.W	_level-BASE(A4),D3	;_level
 	MULU.W	#5,D3
 	MOVE.W	D3,_player+40-BASE(A4)	;_player + 40 (max hp)
@@ -878,7 +878,7 @@ L00405:
 
 L00406:
 	MOVE.B	#1,_wizard-BASE(A4)		;_wizard
-	MOVE.W	#15,-$52AC(A4)	;_player + 30 (rank)
+	MOVE.W	#15,_player+30-BASE(A4)	;_player + 30 (rank)
 	MOVE.W	#200,_player+40-BASE(A4)	;_player + 40 (max hp)
 	MOVE.W	#200,_player+34-BASE(A4)	;_player + 34 (hp)
 	MOVE.W	#25,_max_stats+0-BASE(A4)	;_max_stats + 0 (max strength)

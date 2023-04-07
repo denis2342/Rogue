@@ -2242,10 +2242,10 @@ _NewRank:
 	LINK	A5,#-$0078
 
 	CLR.B	-$0078(A5)
-	CMPI.W	#$0001,-$52AC(A4)	;_player + 30 (rank)
+	CMPI.W	#$0001,_player+30-BASE(A4)	;_player + 30 (rank)
 	BLE.B	L00519
 
-	MOVE.W	-$52AC(A4),D3	;_player + 30 (rank)
+	MOVE.W	_player+30-BASE(A4),D3	;_player + 30 (rank)
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
@@ -2259,7 +2259,7 @@ L00519:
 	CMPI.W	#$0001,_level-BASE(A4)	;_level
 	BNE.B	L0051B
 
-	CMPI.W	#$0002,-$52AC(A4)	;_player + 30 (rank)
+	CMPI.W	#$0002,_player+30-BASE(A4)	;_player + 30 (rank)
 	BGE.B	L0051B
 
 	TST.W	_hungry_state-BASE(A4)	;_hungry_state

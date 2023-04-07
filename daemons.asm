@@ -7,7 +7,7 @@ _doctor:
 ;	LINK	A5,#-$0000
 	MOVEM.L	D4/D5,-(A7)
 
-	MOVE.W	-$52AC(A4),D4	;_player + 30 (rank)
+	MOVE.W	_player+30-BASE(A4),D4	;_player + 30 (rank)
 	MOVE.W	_player+34-BASE(A4),D5	;_player + 34 (hp)
 	ADDQ.W	#1,_quiet-BASE(A4)	;_quiet
 	CMP.W	#$0008,D4

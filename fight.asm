@@ -436,15 +436,15 @@ L0095C:
 	JSR	_death
 	ADDQ.W	#2,A7
 L0095D:
-	SUBQ.W	#1,-$52AC(A4)	;_player + 30 (rank)
-;	TST.W	-$52AC(A4)	;_player + 30 (rank)
+	SUBQ.W	#1,_player+30-BASE(A4)	;_player + 30 (rank)
+;	TST.W	_player+30-BASE(A4)	;_player + 30 (rank)
 	BNE.B	L0095E
 
 	CLR.L	_player+26-BASE(A4)	;_player + 26 (EXP)
-	MOVE.W	#$0001,-$52AC(A4)	;_player + 30 (rank)
+	MOVE.W	#$0001,_player+30-BASE(A4)	;_player + 30 (rank)
 	BRA.B	L0095F
 L0095E:
-	MOVE.W	-$52AC(A4),D3	;_player + 30 (rank)
+	MOVE.W	_player+30-BASE(A4),D3	;_player + 30 (rank)
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3

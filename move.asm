@@ -658,7 +658,7 @@ L000D0:
 L000D1:
 	MOVE.W	#$0001,-(A7)	;arrow is hplus = 1
 	MOVE.W	-$52AA(A4),-(A7)	;_player + 32 AC
-	MOVE.W	-$52AC(A4),D3	;_player + 30 (rank)
+	MOVE.W	_player+30-BASE(A4),D3	;_player + 30 (rank)
 	SUBQ.W	#1,D3
 	MOVE.W	D3,-(A7)
 	JSR	_swing
@@ -725,7 +725,7 @@ L000D7:
 L000D8:
 	MOVE.W	#$0001,-(A7)	;hplus = 1
 	MOVE.W	-$52AA(A4),-(A7)	;_player + 32 AC
-	MOVE.W	-$52AC(A4),D3	;_player + 30 (rank)
+	MOVE.W	_player+30-BASE(A4),D3	;_player + 30 (rank)
 	ADDQ.W	#1,D3
 	MOVE.W	D3,-(A7)
 	JSR	_swing
