@@ -55,10 +55,10 @@ L00643:	CMP.W	_player+34-BASE(A4),D5	;_player + 34 (hp)
 	BEQ.B	L00645
 
 	MOVE.W	_player+34-BASE(A4),D3	;_player + 34 (hp)
-	CMP.W	-$52A2(A4),D3	;_player + 40 (max hp)
+	CMP.W	_player+40-BASE(A4),D3	;_player + 40 (max hp)
 	BLE.B	L00644
 
-	MOVE.W	-$52A2(A4),_player+34-BASE(A4)	;_player + 40 (max hp),_player + 34 (hp)
+	MOVE.W	_player+40-BASE(A4),_player+34-BASE(A4)	;_player + 40 (max hp),_player + 34 (hp)
 L00644:
 	CLR.W	_quiet-BASE(A4)	;_quiet
 L00645:

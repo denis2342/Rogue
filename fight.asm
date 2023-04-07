@@ -470,13 +470,13 @@ L00960:
 	MOVE.W	D0,D4
 L00961:
 	SUB.W	D4,_player+34-BASE(A4)	;_player + 34 (hp)
-	SUB.W	D4,-$52A2(A4)	;_player + 40 (max hp)
+	SUB.W	D4,_player+40-BASE(A4)	;_player + 40 (max hp)
 	CMPI.W	#$0001,_player+34-BASE(A4)	;_player + 34 (hp)
 	BGE.B	L00962
 
 	MOVE.W	#$0001,_player+34-BASE(A4)	;_player + 34 (hp)
 L00962:
-	CMPI.W	#$0001,-$52A2(A4)	;_player + 40 (max hp)
+	CMPI.W	#$0001,_player+40-BASE(A4)	;_player + 40 (max hp)
 	BGE.B	L00963
 
 	MOVEA.L	$0008(A5),A6

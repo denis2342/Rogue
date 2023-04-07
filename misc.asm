@@ -690,13 +690,13 @@ L00984:
 	JSR	_roll		;so mostly it is 1d10
 	ADDQ.W	#4,A7
 
-	ADD.W	D0,-$52A2(A4)	;_player + 40 (max hp)
+	ADD.W	D0,_player+40-BASE(A4)	;_player + 40 (max hp)
 	ADD.W	D0,_player+34-BASE(A4)	;_player + 34 (hp)
 	MOVE.W	_player+34-BASE(A4),D3	;_player + 34 (hp)
-	CMP.W	-$52A2(A4),D3	;_player + 40 (max hp)
+	CMP.W	_player+40-BASE(A4),D3	;_player + 40 (max hp)
 	BLE.B	L00985
 
-	MOVE.W	-$52A2(A4),_player+34-BASE(A4)	;_player + 40 (max hp),_player + 34 (hp)
+	MOVE.W	_player+40-BASE(A4),_player+34-BASE(A4)	;_player + 40 (max hp),_player + 34 (hp)
 L00985:
 	MOVE.W	D4,D3
 	SUBQ.W	#1,D3

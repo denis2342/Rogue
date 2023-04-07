@@ -932,20 +932,20 @@ _status:
 	BNE.B	L0015D
 
 	MOVE.W	-$54EA(A4),D3
-	CMP.W	-$52A2(A4),D3	;_player + 40 (max hp)
+	CMP.W	_player+40-BASE(A4),D3	;_player + 40 (max hp)
 	BEQ.B	L0015E
 L0015D:
 	moveq	#0,d1
 	MOVEq	#$0014,d0
 	JSR	_movequick
 
-	MOVE.W	-$52A2(A4),-(A7)	;_player + 40 (max hp)
+	MOVE.W	_player+40-BASE(A4),-(A7)	;_player + 40 (max hp)
 	MOVE.W	_player+34-BASE(A4),-(A7)	;_player + 34 (hp)
 	PEA	L00169(PC)	;"Hits:%.3d(%.3d)  "
 	JSR	_printw
 	ADDQ.W	#8,A7
 	MOVE.W	_player+34-BASE(A4),-$54EC(A4)	;_player + 34 (hp)
-	MOVE.W	-$52A2(A4),-$54EA(A4)	;_player + 40 (max hp)
+	MOVE.W	_player+40-BASE(A4),-$54EA(A4)	;_player + 40 (max hp)
 L0015E:
 	TST.B	_new_stats-BASE(A4)	;_new_stats
 	BNE.B	L0015F

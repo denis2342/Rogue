@@ -116,11 +116,11 @@ L0048E:
 
 	ADD.W	D0,_player+34-BASE(A4)	;_player + 34 (hp)
 	MOVE.W	_player+34-BASE(A4),D3	;_player + 34 (hp)
-	CMP.W	-$52A2(A4),D3	;_player + 40 (max hp)
+	CMP.W	_player+40-BASE(A4),D3	;_player + 40 (max hp)
 	BLE.B	L0048F
 
-	ADDQ.W	#1,-$52A2(A4)	;_player + 40 (max hp)
-	MOVE.W	-$52A2(A4),_player+34-BASE(A4)	;_player + 34 (hp),_player + 40 (max hp)
+	ADDQ.W	#1,_player+40-BASE(A4)	;_player + 40 (max hp)
+	MOVE.W	_player+40-BASE(A4),_player+34-BASE(A4)	;_player + 34 (hp),_player + 40 (max hp)
 L0048F:
 	JSR	_sight(PC)
 	PEA	L004B4(PC)	;"you begin to feel better"
@@ -280,12 +280,12 @@ L0049A:
 L0049D:
 	ST	_p_know+9-BASE(A4)	;_p_know + 9 (potion of extra healing)
 	MOVE.W	_player+34-BASE(A4),D3	;_player + 34 (hp)
-	CMP.W	-$52A2(A4),D3	;_player + 40 (max hp)
+	CMP.W	_player+40-BASE(A4),D3	;_player + 40 (max hp)
 	BNE.B	1$
 
-	ADDQ.W	#1,-$52A2(A4)	;_player + 40 (max hp)
+	ADDQ.W	#1,_player+40-BASE(A4)	;_player + 40 (max hp)
 1$
-	MOVE.W	-$52A2(A4),_player+34-BASE(A4)	;_player + 40 (max hp),_player + 34 (hp)
+	MOVE.W	_player+40-BASE(A4),_player+34-BASE(A4)	;_player + 40 (max hp),_player + 34 (hp)
 	JSR	_sight(PC)
 	PEA	L004BC(PC)	;"you begin to feel much better"
 	JSR	_msg
