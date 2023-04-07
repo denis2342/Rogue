@@ -103,7 +103,7 @@ _do_chase:
 	LEA	_player+10-BASE(A4),A1	;_player + 10
 	MOVE.L	A1,$0012(A6)
 L0023C:
-	MOVE.L	-$52A0(A4),D5	;_player + 42 (proom)
+	MOVE.L	_player+42-BASE(A4),D5	;_player + 42 (proom)
 	MOVEA.L	$0008(A5),A6
 	LEA	_player+10-BASE(A4),A1	;_player + 10
 	MOVEA.L	$0012(A6),A0
@@ -572,7 +572,7 @@ L00267:
 	BLT.B	L00269
 
 	MOVEA.L	$002A(A2),A6
-	CMPA.L	-$52A0(A4),A6	;_player + 42 (proom)
+	CMPA.L	_player+42-BASE(A4),A6	;_player + 42 (proom)
 	BNE.B	L00268
 	MOVE.L	$002A(A2),-(A7)
 	JSR	_is_dark
@@ -1001,7 +1001,7 @@ L00288:
 	PEA	-$0004(A5)
 	JSR	_roomin(PC)
 	ADDQ.W	#4,A7
-	CMP.L	-$52A0(A4),D0	;_player + 42 (proom)
+	CMP.L	_player+42-BASE(A4),D0	;_player + 42 (proom)
 	BNE.B	L00289
 
 	MOVE.L	D0,-(A7)
@@ -1030,7 +1030,7 @@ _find_dest:
 	BLE.B	L0028B		;does the monster carry?
 
 	MOVEA.L	$002A(A2),A6
-	CMPA.L	-$52A0(A4),A6	;_player + 42 (proom)
+	CMPA.L	_player+42-BASE(A4),A6	;_player + 42 (proom)
 	BEQ.B	L0028B
 
 	MOVE.L	A2,-(A7)

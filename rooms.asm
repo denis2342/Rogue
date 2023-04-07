@@ -898,7 +898,7 @@ _enter_room:
 	MOVE.L	A2,-(A7)
 	JSR	_roomin
 	ADDQ.W	#4,A7
-	MOVE.L	D0,-$52A0(A4)	;_player + 42 (proom)
+	MOVE.L	D0,_player+42-BASE(A4)	;_player + 42 (proom)
 	MOVEA.L	D0,A3
 	TST.B	_bailout-BASE(A4)	;_bailout
 	BNE.B	L0091C
@@ -1011,7 +1011,7 @@ _leave_room:
 	MOVEM.L	D4-D7/A2/A3,-(A7)
 
 	MOVEA.L	$0008(A5),A2
-	MOVEA.L	-$52A0(A4),A3	;_player + 42 (proom)
+	MOVEA.L	_player+42-BASE(A4),A3	;_player + 42 (proom)
 
 	MOVE.W	(A2),d0
 	MOVE.W	$0002(A2),d1
@@ -1024,7 +1024,7 @@ _leave_room:
 	MULU.W	#66,D3
 	LEA	_passages-BASE(A4),A6	;_passages
 	ADD.L	A6,D3
-	MOVE.L	D3,-$52A0(A4)	;_player + 42 (proom)
+	MOVE.L	D3,_player+42-BASE(A4)	;_player + 42 (proom)
 
 	MOVE.L	A3,-(A7)
 	JSR	_is_dark

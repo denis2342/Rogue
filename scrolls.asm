@@ -356,10 +356,10 @@ L001C9:
 ; teleportation scroll
 
 L001CA:
-	MOVE.L	-$52A0(A4),-$0006(A5)	;_player + 42 (proom)
+	MOVE.L	_player+42-BASE(A4),-$0006(A5)	;_player + 42 (proom)
 	JSR	_teleport
 	MOVEA.L	-$0006(A5),A6
-	CMPA.L	-$52A0(A4),A6	;_player + 42 (proom)
+	CMPA.L	_player+42-BASE(A4),A6	;_player + 42 (proom)
 	BEQ	L001E6
 
 	MOVE.B	#$01,_s_know+8-BASE(A4)

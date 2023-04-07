@@ -544,7 +544,7 @@ L007F4:
 	MULU.W	#66,D3
 	LEA	_rooms-BASE(A4),A6	;_rooms
 	ADD.L	A6,D3
-	CMP.L	-$52A0(A4),D3	;_player + 42 (proom)
+	CMP.L	_player+42-BASE(A4),D3	;_player + 42 (proom)
 	BEQ.B	L007F5
 
 	PEA	_player+10-BASE(A4)	;_player + 10

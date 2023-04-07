@@ -183,7 +183,7 @@ L0009B:
 	TST.B	_running-BASE(A4)	;_running
 	BEQ.W	L000B1
 
-	MOVEA.L	-$52A0(A4),A6	;_player + 42 (proom)
+	MOVEA.L	_player+42-BASE(A4),A6	;_player + 42 (proom)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3	;ISGONE?
 	BEQ.W	L000B1

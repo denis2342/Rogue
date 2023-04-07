@@ -9,7 +9,7 @@ _look:
 
 	CLR.W	-$000A(A5)
 	ST	_looking-BASE(A4)		;_looking
-	MOVE.L	-$52A0(A4),-$0004(A5)	;_player + 42 (proom)
+	MOVE.L	_player+42-BASE(A4),-$0004(A5)	;_player + 42 (proom)
 
 	JSR	_INDEXplayer
 

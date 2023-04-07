@@ -306,14 +306,14 @@ L00A2C:
 	LEA	_rooms-BASE(A4),A6	;_rooms
 	MOVEA.L	D3,A2
 	ADDA.L	A6,A2
-	CMPA.L	-$52A0(A4),A2	;_player + 42 (proom)
+	CMPA.L	_player+42-BASE(A4),A2	;_player + 42 (proom)
 	BEQ.B	L00A2D
 	PEA	-$0004(A5)
 	MOVE.L	A2,-(A7)
 	JSR	_rnd_pos
 	ADDQ.W	#8,A7
 L00A2D:
-	CMPA.L	-$52A0(A4),A2	;_player + 42 (proom)
+	CMPA.L	_player+42-BASE(A4),A2	;_player + 42 (proom)
 	BEQ.B	L00A2C
 	MOVE.W	-$0004(A5),-(A7)
 	MOVE.W	-$0002(A5),-(A7)
@@ -431,7 +431,7 @@ L00A34:
 	AND.W	#C_ISRUN,D3	;shes coming at us
 	BEQ.W	L00A39
 
-	MOVEA.L	-$52A0(A4),A3	;_player + 42 (proom)
+	MOVEA.L	_player+42-BASE(A4),A3	;_player + 42 (proom)
 	MOVE.W	_player+10-BASE(A4),-(A7)	;_player + 10
 	MOVE.W	_player+12-BASE(A4),-(A7)	;_player + 12
 	MOVE.W	$000A(A5),-(A7)
@@ -497,11 +497,11 @@ L00A39:
 	BNE.B	L00A3B
 
 	ORI.W	#C_ISRUN,$0016(A2)	;C_ISRUN
-	MOVEA.L	-$52A0(A4),A6	;_player + 42 (proom)
+	MOVEA.L	_player+42-BASE(A4),A6	;_player + 42 (proom)
 	TST.W	$000C(A6)
 	BEQ.B	L00A3A
 
-	MOVE.L	-$52A0(A4),D3	;_player + 42 (proom)
+	MOVE.L	_player+42-BASE(A4),D3	;_player + 42 (proom)
 	ADDQ.L	#8,D3
 	MOVE.L	D3,$0012(A2)
 	BRA.B	L00A3B

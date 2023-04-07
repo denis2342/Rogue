@@ -196,7 +196,7 @@ L002A7:
 L002A9:
 	MOVEQ	#$00,D6
 L002AA:
-	MOVEA.L	-$52A0(A4),A6	;_player + 42 (proom)
+	MOVEA.L	_player+42-BASE(A4),A6	;_player + 42 (proom)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3	;ISGONE?
 
@@ -633,7 +633,7 @@ _pick_up:
 	JSR	_discard
 	ADDQ.W	#4,A7
 
-	MOVEA.L	-$52A0(A4),A6	;_player + 42 (proom)
+	MOVEA.L	_player+42-BASE(A4),A6	;_player + 42 (proom)
 	CLR.W	$000C(A6)
 	BRA.B	L002DD
 
@@ -851,7 +851,7 @@ _money:
 	LINK	A5,#-$0000
 	MOVE.L	D5,-(A7)
 
-	MOVEA.L	-$52A0(A4),A6	;_player + 42 (room)
+	MOVEA.L	_player+42-BASE(A4),A6	;_player + 42 (room)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3	;ISGONE
 	BEQ.B	1$

@@ -195,7 +195,7 @@ _sight:
 	JSR	_extinguish(PC)
 	ADDQ.W	#4,A7
 	ANDI.W	#~C_ISBLIND,-$52B4(A4)	;clear C_ISBLIND, _player + 22 (flags)
-	MOVEA.L	-$52A0(A4),A6	;_player + 42 (proom)
+	MOVEA.L	_player+42-BASE(A4),A6	;_player + 42 (proom)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3
 	BNE.B	L0064C

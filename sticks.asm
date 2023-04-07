@@ -141,7 +141,7 @@ L00313:
 	BRA.B	L00316
 L00314:
 	ST	_ws_know-BASE(A4)	;_ws_know
-	MOVEA.L	-$52A0(A4),A6	;_player + 42 (proom)
+	MOVEA.L	_player+42-BASE(A4),A6	;_player + 42 (proom)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3	;check for room ISDARK
 	BEQ.B	L00315
@@ -155,12 +155,12 @@ L00315:
 	JSR	_msg
 	ADDQ.W	#4,A7
 L00316:
-	MOVEA.L	-$52A0(A4),A6	;_player + 42 (proom)
+	MOVEA.L	_player+42-BASE(A4),A6	;_player + 42 (proom)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3	;check for room ISDARK
 	BNE.B	L00317
 
-	MOVEA.L	-$52A0(A4),A6	;_player + 42 (proom)
+	MOVEA.L	_player+42-BASE(A4),A6	;_player + 42 (proom)
 	ANDI.W	#$FFFE,$000E(A6)	;clear room ISDARK
 	PEA	_player+10-BASE(A4)	;_player + 10
 	JSR	_enter_room
@@ -644,7 +644,7 @@ _drain:
 L00356:
 	SUBA.L	A2,A2
 L00357:
-	MOVEA.L	-$52A0(A4),A6	;_player + 42 (proom)
+	MOVEA.L	_player+42-BASE(A4),A6	;_player + 42 (proom)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3
 	MOVE.B	D3,D5
@@ -655,7 +655,7 @@ L00357:
 L00358:
 	MOVEA.L	-$0004(A5),A6
 	MOVEA.L	$002A(A6),A1
-	CMPA.L	-$52A0(A4),A1	;_player + 42 (proom)
+	CMPA.L	_player+42-BASE(A4),A1	;_player + 42 (proom)
 	BEQ.B	L00359
 
 	MOVEA.L	-$0004(A5),A6
@@ -686,7 +686,7 @@ L00358:
 	MULU.W	#66,D3
 	LEA	_passages-BASE(A4),A6	;_passages
 	ADD.L	A6,D3
-	CMP.L	-$52A0(A4),D3	;_player + 42 (proom)
+	CMP.L	_player+42-BASE(A4),D3	;_player + 42 (proom)
 	BNE.B	L0035A
 L00359:
 	MOVEA.L	A3,A6
