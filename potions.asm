@@ -67,7 +67,7 @@ L00488:
 L00489:
 	LEA	L004B1(PC),A6	;"you feel %s sick."
 	MOVE.L	A6,-$0004(A5)
-	ST	-$66E5(A4)	;_p_know + 2 (potion of poison)
+	ST	_p_know+2-BASE(A4)	;_p_know + 2 (potion of poison)
 
 	MOVE.L	_cur_ring_1-BASE(A4),D0	;_cur_ring_1
 	BEQ.B	L0048A
@@ -108,7 +108,7 @@ L0048D:
 ; potion of healing
 
 L0048E:
-	ST	-$66E2(A4)	;_p_know + 5 (potion of healing)
+	ST	_p_know+5-BASE(A4)	;_p_know + 5 (potion of healing)
 	MOVE.W	#$0004,-(A7)	;xd4
 	MOVE.W	-$52AC(A4),-(A7)	;_player + 30 (rank)
 	JSR	_roll
@@ -132,7 +132,7 @@ L0048F:
 ; potion of gain strength
 
 L00490:
-	ST	-$66E4(A4)	;_p_know + 3 (potion of gain strength)
+	ST	_p_know+3-BASE(A4)	;_p_know + 3 (potion of gain strength)
 	MOVE.W	#$0001,-(A7)	; plus one strength point
 	JSR	_chg_str
 	ADDQ.W	#2,A7
@@ -211,7 +211,7 @@ L00494:
 ; potion of paralysis
 
 L00497:
-	ST	-$66E6(A4)	;_p_know + 1 (potion of paralysis)
+	ST	_p_know+1-BASE(A4)	;_p_know + 1 (potion of paralysis)
 
 	MOVEq	#$0002,D0
 	JSR	_spread
@@ -254,7 +254,7 @@ L00498:
 ; potion of raise level
 
 L0049A:
-	ST	-$66DF(A4)	;_p_know + 8 (potion of raise level)
+	ST	_p_know+8-BASE(A4)	;_p_know + 8 (potion of raise level)
 	MOVE.W	-$52AC(A4),D3	;_player + 30 (rank)
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
@@ -278,7 +278,7 @@ L0049A:
 ; potion of extra healing
 
 L0049D:
-	ST	-$66DE(A4)	;_p_know + 9 (potion of extra healing)
+	ST	_p_know+9-BASE(A4)	;_p_know + 9 (potion of extra healing)
 	MOVE.W	-$52A8(A4),D3	;_player + 34 (hp)
 	CMP.W	-$52A2(A4),D3	;_player + 40 (max hp)
 	BNE.B	1$
@@ -295,7 +295,7 @@ L0049D:
 ; potion of haste self
 
 L0049F:
-	ST	-$66DD(A4)	;_p_know + 10 (potion of haste self)
+	ST	_p_know+10-BASE(A4)	;_p_know + 10 (potion of haste self)
 	MOVE.W	#$0001,-(A7)
 	JSR	_add_haste(PC)
 	ADDQ.W	#2,A7
@@ -381,7 +381,7 @@ L004A6:
 ; potion of blindness
 
 L004A7:
-	ST	-$66DB(A4)	;_p_know + 12 (potion of blindness)
+	ST	_p_know+12-BASE(A4)	;_p_know + 12 (potion of blindness)
 	JSR	_p_blind(PC)
 	PEA	L004C0(PC)	;"a cloak of darkness falls around you"
 	JSR	_msg
