@@ -128,7 +128,7 @@ L00188:
 	MOVE.W	-$52BE(A4),d0	;hero.x
 	JSR	_mvaddchquick
 
-	LEA	-$6090(A4),A6
+	LEA	_oldpos-BASE(A4),A6
 	LEA	-$52C0(A4),A1	;_player + 10
 	MOVE.L	(A1)+,(A6)+
 	MOVE.L	-$52A0(A4),_oldrp-BASE(A4)	;_player + 42 (proom),_oldrp

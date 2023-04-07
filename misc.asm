@@ -22,7 +22,7 @@ _look:
 	MOVE.B	$00(A6,D3.W),D7
 
 	PEA	-$52C0(A4)	;_player + 10
-	PEA	-$6090(A4)
+	PEA	_oldpos-BASE(A4)
 	JSR	__ce(PC)
 	ADDQ.W	#8,A7
 
@@ -33,7 +33,7 @@ _look:
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BNE.W	L00822
 
-	MOVE.W	-$6090(A4),D4
+	MOVE.W	_oldpos-BASE(A4),D4
 	SUBQ.W	#1,D4
 	BRA.W	L00821
 L00818:
@@ -56,7 +56,7 @@ L0081A:
 
 	MOVE.W	D4,-(A7)
 	MOVE.W	D5,-(A7)
-	PEA	-$6090(A4)
+	PEA	_oldpos-BASE(A4)
 	JSR	_near_to(PC)
 	ADDQ.W	#8,A7
 
@@ -140,12 +140,12 @@ L00820:
 
 	ADDQ.W	#1,D4
 L00821:
-	MOVE.W	-$6090(A4),D3
+	MOVE.W	_oldpos-BASE(A4),D3
 	ADDQ.W	#1,D3
 	CMP.W	D3,D4
 	BLE.W	L00818
 L00822:
-	LEA	-$6090(A4),A6
+	LEA	_oldpos-BASE(A4),A6
 	LEA	-$52C0(A4),A1	;_player + 10
 	MOVE.L	(A1)+,(A6)+
 	MOVE.L	-$0004(A5),_oldrp-BASE(A4)	;_oldrp

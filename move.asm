@@ -442,7 +442,7 @@ L000BC:
 	AND.W	#F_SEEN,D3
 	BEQ.B	L000BE
 
-	MOVE.W	-$6090(A4),d0
+	MOVE.W	_oldpos-BASE(A4),d0
 	MOVE.W	-$608E(A4),d1
 	JSR	_INDEXquick
 
@@ -450,7 +450,7 @@ L000BC:
 	CMP.B	#$2B,$00(A6,D0.W)
 	BEQ.B	L000BD
 
-;	MOVE.W	-$6090(A4),d0
+;	MOVE.W	_oldpos-BASE(A4),d0
 ;	MOVE.W	-$608E(A4),d1
 ;	JSR	_INDEXquick
 
@@ -467,7 +467,7 @@ L000BE:
 	AND.W	#F_DROPPED,D3
 	BEQ.B	L000BF
 
-	MOVE.W	-$6090(A4),d0
+	MOVE.W	_oldpos-BASE(A4),d0
 	MOVE.W	-$608E(A4),d1
 	JSR	_INDEXquick
 

@@ -2771,7 +2771,7 @@ _roll:
 _playit:
 ;	LINK	A5,#-$0000
 
-	MOVE.W	-$52C0(A4),-$6090(A4)	;_player + 10
+	MOVE.W	-$52C0(A4),_oldpos-BASE(A4)	;_player + 10
 	MOVE.W	-$52BE(A4),-$608E(A4)	;_player + 12
 	PEA	-$52C0(A4)	;_player + 10
 	JSR	_roomin
