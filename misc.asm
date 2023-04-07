@@ -8,7 +8,7 @@ _look:
 	MOVEM.L	D4-D7/A2/A3,-(A7)
 
 	CLR.W	-$000A(A5)
-	ST	-$48B7(A4)		;_looking
+	ST	_looking-BASE(A4)		;_looking
 	MOVE.L	-$52A0(A4),-$0004(A5)	;_player + 42 (proom)
 
 	JSR	_INDEXplayer
@@ -487,7 +487,7 @@ L0084A:
 	JSR	_beep(PC)
 	CLR.B	_was_trapped-BASE(A4)	;_was_trapped
 L0084B:
-	CLR.B	-$48B7(A4)	;_looking
+	CLR.B	_looking-BASE(A4)	;_looking
 
 	MOVEM.L	(A7)+,D4-D7/A2/A3
 	UNLK	A5
