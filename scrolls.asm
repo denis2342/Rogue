@@ -362,7 +362,7 @@ L001CA:
 	CMPA.L	-$52A0(A4),A6	;_player + 42 (proom)
 	BEQ	L001E6
 
-	MOVE.B	#$01,-$66EE(A4)
+	MOVE.B	#$01,_s_know+8-BASE(A4)
 	BRA.W	L001E6
 
 ; enchant weapon
