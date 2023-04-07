@@ -1675,7 +1675,10 @@ r_score_fd:
 _restore_bool:
 	dc.w	0	;bool
 
-	ds.b	90
+	ds.b	30
+
+_printf_tmp:
+	ds.b	60
 
 __things:
 	dc.l	$00000000

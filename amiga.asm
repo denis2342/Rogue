@@ -936,7 +936,7 @@ _printf:
 	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
 
-	LEA	-$530E(A4),A6
+	LEA	_printf_tmp-BASE(A4),A6
 	MOVE.L	A6,-$5312(A4)
 	PEA	$000C(A5)
 	MOVE.L	$0008(A5),-(A7)
@@ -947,11 +947,11 @@ _printf:
 	CMPI.W	#$0001,-$5764(A4)
 	BNE.B	L00C27
 
-	LEA	-$530E(A4),A6
+	LEA	_printf_tmp-BASE(A4),A6
 	MOVE.L	-$5312(A4),D3
 	SUB.L	A6,D3
 	MOVE.W	D3,-(A7)
-	PEA	-$530E(A4)
+	PEA	_printf_tmp-BASE(A4)
 	MOVE.B	-$5767(A4),D3
 	EXT.W	D3
 	MOVE.W	D3,-(A7)
@@ -960,12 +960,12 @@ _printf:
 	BRA.B	L00C28
 L00C27:
 	PEA	-$5774(A4)
-	LEA	-$530E(A4),A6
+	LEA	_printf_tmp-BASE(A4),A6
 	MOVE.L	-$5312(A4),D3
 	SUB.L	A6,D3
 	MOVE.W	D3,-(A7)
 	MOVE.W	#$0001,-(A7)
-	PEA	-$530E(A4)
+	PEA	_printf_tmp-BASE(A4)
 	JSR	_fwrite(PC)
 	LEA	$000C(A7),A7
 L00C28:
@@ -979,7 +979,7 @@ L00C29:
 	MOVEA.L	-$5312(A4),A6
 	ADDQ.L	#1,-$5312(A4)
 	MOVE.B	$0009(A5),(A6)
-	LEA	-$530E(A4),A6
+	LEA	_printf_tmp-BASE(A4),A6
 	MOVE.L	-$5312(A4),D3
 	SUB.L	A6,D3
 	CMP.W	#$0028,D3
@@ -988,11 +988,11 @@ L00C29:
 	CMPI.W	#$0001,-$5764(A4)
 	BNE.B	L00C2A
 
-	LEA	-$530E(A4),A6
+	LEA	_printf_tmp-BASE(A4),A6
 	MOVE.L	-$5312(A4),D3
 	SUB.L	A6,D3
 	MOVE.W	D3,-(A7)
-	PEA	-$530E(A4)
+	PEA	_printf_tmp-BASE(A4)
 	MOVE.B	-$5767(A4),D3
 	EXT.W	D3
 	MOVE.W	D3,-(A7)
@@ -1001,16 +1001,16 @@ L00C29:
 	BRA.B	L00C2B
 L00C2A:
 	PEA	-$5774(A4)
-	LEA	-$530E(A4),A6
+	LEA	_printf_tmp-BASE(A4),A6
 	MOVE.L	-$5312(A4),D3
 	SUB.L	A6,D3
 	MOVE.W	D3,-(A7)
 	MOVE.W	#$0001,-(A7)
-	PEA	-$530E(A4)
+	PEA	_printf_tmp-BASE(A4)
 	JSR	_fwrite(PC)
 	LEA	$000C(A7),A7
 L00C2B:
-	LEA	-$530E(A4),A6
+	LEA	_printf_tmp-BASE(A4),A6
 	MOVE.L	A6,-$5312(A4)
 L00C2C:
 	MOVE.W	$0008(A5),D0
