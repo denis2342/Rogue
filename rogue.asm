@@ -527,7 +527,7 @@ L00083:
 	MOVE.W	D4,D3
 ;	EXT.L	D3
 	ASL.w	#3,D3
-	LEA	-$6E02(A4),A6	;_r_magic + 6
+	LEA	_r_magic+6-BASE(A4),A6	;_r_magic + 6
 	MOVE.W	D5,D2
 	MULU.W	#6,D2
 	LEA	-$79CE(A4),A1	;_stones + 4

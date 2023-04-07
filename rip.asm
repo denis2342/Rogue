@@ -749,7 +749,7 @@ L006CE:
 	MOVE.W	$0020(A2),D3
 ;	EXT.L	D3
 	ASL.w	#3,D3
-	LEA	-$6E02(A4),A6	;_r_magic + 6
+	LEA	_r_magic+6-BASE(A4),A6	;_r_magic + 6
 	MOVE.W	$00(A6,D3.w),D4		;worth of the ring in gold
 	CMPI.W	#R_ADDSTR,$0020(A2)
 	BEQ.B	L006CF
