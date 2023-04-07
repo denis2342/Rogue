@@ -904,7 +904,7 @@ L00AB8:
 	MULU.W	#$0003,D4
 	ADDQ.W	#1,D5
 	ADD.w	D5,D4
-	LEA	-$6758(A4),A6	;_mvt "ykuhllbjn"
+	LEA	_mvt-BASE(A4),A6	;_mvt "ykuhllbjn"
 	MOVE.B	$00(A6,D4.w),D0
 	EXT.W	D0
 
