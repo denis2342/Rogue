@@ -2017,7 +2017,7 @@ L00C9B:
 	RTS
 
 L00C9C:
-	TST.W	-$46DE(A4)
+	TST.W	_Enable_Abort-BASE(A4)
 	BNE.B	L00C9D
 
 	MOVE.L	-$0004(A5),D0
@@ -2229,7 +2229,7 @@ L00CAA:
 	JSR	_Output
 	MOVE.L	D0,-$474C(A4)
 	MOVE.W	#$8001,-$4748(A4)
-	MOVE.W	#$0001,-$46DE(A4)	;_Enable_Abort
+	MOVE.W	#$0001,_Enable_Abort-BASE(A4)	;_Enable_Abort
 	MOVE.L	-$52DE(A4),-(A7)
 	MOVE.W	-$52E2(A4),-(A7)
 	JSR	_main
