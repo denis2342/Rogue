@@ -148,7 +148,7 @@ _rnd_room:
 	JSR	_rnd
 	MOVE.W	D0,D3
 	MULU.W	#66,D3
-	LEA	-$607A(A4),A6	;_rooms + 14 (r_flags)
+	LEA	_rooms+14-BASE(A4),A6	;_rooms + 14 (r_flags)
 
 	MOVE.W	$00(A6,D3.L),D2
 	AND.W	#$0002,D2	;ISGONE?
