@@ -633,12 +633,12 @@ L0008C:
 	MOVE.W	D4,D3
 ;	EXT.L	D3
 	ASL.w	#3,D3
-	LEA	-$6D94(A4),A6	;_ws_magic + 4
+	LEA	_ws_magic+4-BASE(A4),A6	;_ws_magic + 4
 	MOVE.W	D4,D2
 	SUBQ.W	#1,D2
 ;	EXT.L	D2
 	ASL.w	#3,D2
-	LEA	-$6D94(A4),A1	;_ws_magic + 4
+	LEA	_ws_magic+4-BASE(A4),A1	;_ws_magic + 4
 	MOVE.W	$00(A1,D2.w),D1
 	ADD.W	D1,$00(A6,D3.w)
 L0008D:
