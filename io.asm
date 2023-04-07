@@ -993,7 +993,7 @@ L00162:
 	MOVE.W	$0026(A6),D4
 	BRA.B	L00164
 L00163:
-	MOVE.W	-$52AA(A4),D4	;_player + 32 (AC)
+	MOVE.W	_player+32-BASE(A4),D4	;_player + 32 (AC)
 L00164:
 	MOVE.L	_cur_ring_1-BASE(A4),D0	;_cur_ring_1
 	BEQ.B	L00165
