@@ -670,8 +670,8 @@ L000D1:
 	MOVE.W	#$0001,-(A7)
 	JSR	_roll
 	ADDQ.W	#4,A7
-	SUB.W	D0,-$52A8(A4)	;_player + 34 (hp)
-;	CMPI.W	#$0000,-$52A8(A4)	;_player + 34 (hp)
+	SUB.W	D0,_player+34-BASE(A4)	;_player + 34 (hp)
+;	CMPI.W	#$0000,_player+34-BASE(A4)	;_player + 34 (hp)
 	BGT.B	L000D2
 
 	PEA	L000E7(PC)	;"an arrow killed you"
@@ -737,8 +737,8 @@ L000D8:
 	MOVE.W	#$0001,-(A7)
 	JSR	_roll
 	ADDQ.W	#4,A7
-	SUB.W	D0,-$52A8(A4)	;_player + 34 (hp)
-	CMPI.W	#$0000,-$52A8(A4)	;_player + 34 (hp)
+	SUB.W	D0,_player+34-BASE(A4)	;_player + 34 (hp)
+	CMPI.W	#$0000,_player+34-BASE(A4)	;_player + 34 (hp)
 	BGT.B	L000D9
 
 	PEA	L000EA(PC)	;"a poisoned dart killed you"
@@ -848,8 +848,8 @@ L000ED:
 	JSR	_roll
 	ADDQ.W	#4,A7
 
-	SUB.W	D0,-$52A8(A4)	;_player + 34 (hp)
-	CMPI.W	#$0000,-$52A8(A4)	;_player + 34 (hp)
+	SUB.W	D0,_player+34-BASE(A4)	;_player + 34 (hp)
+	CMPI.W	#$0000,_player+34-BASE(A4)	;_player + 34 (hp)
 	BGT.B	L000EE
 
 	MOVE.W	#$0066,-(A7)	;'f' fall

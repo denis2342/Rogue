@@ -284,7 +284,7 @@ L0094C:
 	MOVE.L	A2,-(A7)
 	JSR	_hit(PC)
 	ADDQ.W	#8,A7
-	CMPI.W	#$0000,-$52A8(A4)	;_player + 34 (hp)
+	CMPI.W	#$0000,_player+34-BASE(A4)	;_player + 34 (hp)
 	BGT.B	L0094D
 
 	MOVEA.L	$0008(A5),A6
@@ -469,12 +469,12 @@ L00960:
 	ADDQ.W	#4,A7
 	MOVE.W	D0,D4
 L00961:
-	SUB.W	D4,-$52A8(A4)	;_player + 34 (hp)
+	SUB.W	D4,_player+34-BASE(A4)	;_player + 34 (hp)
 	SUB.W	D4,-$52A2(A4)	;_player + 40 (max hp)
-	CMPI.W	#$0001,-$52A8(A4)	;_player + 34 (hp)
+	CMPI.W	#$0001,_player+34-BASE(A4)	;_player + 34 (hp)
 	BGE.B	L00962
 
-	MOVE.W	#$0001,-$52A8(A4)	;_player + 34 (hp)
+	MOVE.W	#$0001,_player+34-BASE(A4)	;_player + 34 (hp)
 L00962:
 	CMPI.W	#$0001,-$52A2(A4)	;_player + 40 (max hp)
 	BGE.B	L00963
@@ -679,8 +679,8 @@ L00974:
 	BNE.B	L00975
 
 	MOVE.W	_fung_hit-BASE(A4),D3	;_fung_hit
-	SUB.W	D3,-$52A8(A4)	;_player + 34 (hp)
-	CMPI.W	#$0000,-$52A8(A4)	;_player + 34 (hp)
+	SUB.W	D3,_player+34-BASE(A4)	;_player + 34 (hp)
+	CMPI.W	#$0000,_player+34-BASE(A4)	;_player + 34 (hp)
 	BGT.B	L00975
 
 ;	MOVEA.L	$0008(A5),A6

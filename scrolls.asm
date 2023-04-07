@@ -324,9 +324,9 @@ L001C7:
 	JSR	_pack_name	;updates the items name in the pack
 	ADDQ.W	#6,A7
 
-	MOVE.W	-$52A8(A4),D3	;_player + 34 (hp)
+	MOVE.W	_player+34-BASE(A4),D3	;_player + 34 (hp)
 	LSR.W	#1,D3		;divide the players health in half
-	SUB.W	D3,-$52A8(A4)	;_player + 34 (hp)
+	SUB.W	D3,_player+34-BASE(A4)	;_player + 34 (hp)
 
 	MOVE.W	#-1,-(A7)	;subtract one strength point
 

@@ -1162,7 +1162,7 @@ L0010F:
 	JSR	_InitBitMap
 	LEA	$0010(A7),A7
 
-	MOVE.L	_StdScr-BASE(A4),-$7814(A4)	;_StdScr
+	MOVE.L	_StdScr-BASE(A4),_Window1+30-BASE(A4)	;_StdScr
 	PEA	_Window1-BASE(A4)		;_Window1
 	JSR	_OpenWindow
 	ADDQ.W	#4,A7

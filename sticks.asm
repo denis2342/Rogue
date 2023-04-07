@@ -171,7 +171,7 @@ L00317:
 ; drain life
 
 L00318:
-	CMPI.W	#$0002,-$52A8(A4)	;_player + 34 (hp)
+	CMPI.W	#$0002,_player+34-BASE(A4)	;_player + 34 (hp)
 	BGE.B	L00319
 
 	PEA	L0034D(PC)	;"you are too weak to use it"
@@ -717,10 +717,10 @@ L0035C:
 
 L0035D:
 	CLR.L	(A3)
-	MOVE.W	-$52A8(A4),D3	;_player + 34 (hp)
+	MOVE.W	_player+34-BASE(A4),D3	;_player + 34 (hp)
 	ASR.W	#1,D3		;hp cut in half
-	MOVE.W	D3,-$52A8(A4)	;_player + 34 (hp)
-;	MOVE.W	-$52A8(A4),D3	;_player + 34 (hp)
+	MOVE.W	D3,_player+34-BASE(A4)	;_player + 34 (hp)
+;	MOVE.W	_player+34-BASE(A4),D3	;_player + 34 (hp)
 	EXT.L	D3
 	DIVS.W	D4,D3
 	MOVE.W	D3,D4
@@ -1044,7 +1044,7 @@ L0037C:
 	MOVE.W	#$0006,-(A7)
 	JSR	_roll
 	ADDQ.W	#4,A7
-	SUB.W	D0,-$52A8(A4)	;_player + 34 (hp)
+	SUB.W	D0,_player+34-BASE(A4)	;_player + 34 (hp)
 	BGT.B	L0037E
 
 	LEA	-$52C0(A4),A6	;_player + 10

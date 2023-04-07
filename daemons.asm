@@ -8,7 +8,7 @@ _doctor:
 	MOVEM.L	D4/D5,-(A7)
 
 	MOVE.W	-$52AC(A4),D4	;_player + 30 (rank)
-	MOVE.W	-$52A8(A4),D5	;_player + 34 (hp)
+	MOVE.W	_player+34-BASE(A4),D5	;_player + 34 (hp)
 	ADDQ.W	#1,_quiet-BASE(A4)	;_quiet
 	CMP.W	#$0008,D4
 	BGE.B	L00640
@@ -19,7 +19,7 @@ _doctor:
 	CMP.W	#$0014,D3
 	BLE.B	L0063F
 
-	ADDQ.W	#1,-$52A8(A4)	;_player + 34 (hp)
+	ADDQ.W	#1,_player+34-BASE(A4)	;_player + 34 (hp)
 L0063F:
 	BRA.B	L00641
 
@@ -31,7 +31,7 @@ L00640:	CMPI.W	#$0003,_quiet-BASE(A4)	;_quiet
 	MOVE.W	D3,D0
 	JSR	_rnd
 	ADDQ.W	#1,D0
-	ADD.W	D0,-$52A8(A4)	;_player + 34 (hp)
+	ADD.W	D0,_player+34-BASE(A4)	;_player + 34 (hp)
 
 L00641:	MOVE.L	_cur_ring_1-BASE(A4),D3	;_cur_ring_1
 	BEQ.B	L00642
@@ -40,7 +40,7 @@ L00641:	MOVE.L	_cur_ring_1-BASE(A4),D3	;_cur_ring_1
 	CMPI.W	#R_REGEN,$0020(A6)	; 9 = ring of regeneration
 	BNE.B	L00642
 
-	ADDQ.W	#1,-$52A8(A4)	;_player + 34 (hp)
+	ADDQ.W	#1,_player+34-BASE(A4)	;_player + 34 (hp)
 
 L00642:	MOVE.L	_cur_ring_2-BASE(A4),D3	;_cur_ring_2
 	BEQ.B	L00643
@@ -49,16 +49,16 @@ L00642:	MOVE.L	_cur_ring_2-BASE(A4),D3	;_cur_ring_2
 	CMPI.W	#R_REGEN,$0020(A6)	; 9 = ring of regeneration
 	BNE.B	L00643
 
-	ADDQ.W	#1,-$52A8(A4)	;_player + 34 (hp)
+	ADDQ.W	#1,_player+34-BASE(A4)	;_player + 34 (hp)
 
-L00643:	CMP.W	-$52A8(A4),D5	;_player + 34 (hp)
+L00643:	CMP.W	_player+34-BASE(A4),D5	;_player + 34 (hp)
 	BEQ.B	L00645
 
-	MOVE.W	-$52A8(A4),D3	;_player + 34 (hp)
+	MOVE.W	_player+34-BASE(A4),D3	;_player + 34 (hp)
 	CMP.W	-$52A2(A4),D3	;_player + 40 (max hp)
 	BLE.B	L00644
 
-	MOVE.W	-$52A2(A4),-$52A8(A4)	;_player + 40 (max hp),_player + 34 (hp)
+	MOVE.W	-$52A2(A4),_player+34-BASE(A4)	;_player + 40 (max hp),_player + 34 (hp)
 L00644:
 	CLR.W	_quiet-BASE(A4)	;_quiet
 L00645:
