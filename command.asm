@@ -869,7 +869,7 @@ L00404:
 	MULU.W	#5,D3
 	MOVE.W	D3,-$52A2(A4)	;_player + 40 (max hp)
 	MOVE.W	D3,-$52A8(A4)	;_player + 34 (hp)
-	MOVE.W	#$0010,-$6CC2(A4)	;_max_stats + 0 (max strength)
+	MOVE.W	#$0010,_max_stats+0-BASE(A4)	;_max_stats + 0 (max strength)
 	MOVE.W	#$0010,-$52B2(A4)	;_player + 24 (strength)
 	JSR	_raise_level
 L00405:
@@ -881,7 +881,7 @@ L00406:
 	MOVE.W	#15,-$52AC(A4)	;_player + 30 (rank)
 	MOVE.W	#200,-$52A2(A4)	;_player + 40 (max hp)
 	MOVE.W	#200,-$52A8(A4)	;_player + 34 (hp)
-	MOVE.W	#25,-$6CC2(A4)	;_max_stats + 0 (max strength)
+	MOVE.W	#25,_max_stats+0-BASE(A4)	;_max_stats + 0 (max strength)
 	MOVE.W	#25,-$52B2(A4)	;_player + 24 (strength)
 
 	JSR	_raise_level

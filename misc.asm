@@ -745,10 +745,10 @@ _chg_str:
 	bsr	L00864
 
 	MOVE.W	-$0002(A5),D3
-	CMP.W	-$6CC2(A4),D3	;_max_stats + 0 (max strength)
+	CMP.W	_max_stats+0-BASE(A4),D3	;_max_stats + 0 (max strength)
 	BLS.B	L00862
 
-	MOVE.W	D3,-$6CC2(A4)	;_max_stats + 0 (max strength)
+	MOVE.W	D3,_max_stats+0-BASE(A4)	;_max_stats + 0 (max strength)
 L00862:
 	UNLK	A5
 	RTS

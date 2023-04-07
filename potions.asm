@@ -340,10 +340,10 @@ L004A2:
 	ADDQ.W	#6,A7
 L004A3:
 	MOVE.W	-$52B2(A4),D3	;_player + 24 (strength)
-	CMP.W	-$6CC2(A4),D3	;_max_stats + 0 (max strength)
+	CMP.W	_max_stats+0-BASE(A4),D3	;_max_stats + 0 (max strength)
 	BCC.B	L004A4
 
-	MOVE.W	-$6CC2(A4),-$52B2(A4)	;_max_stats + 0 (max strength),_player + 24 (strength)
+	MOVE.W	_max_stats+0-BASE(A4),-$52B2(A4)	;_max_stats + 0 (max strength),_player + 24 (strength)
 L004A4:
 	MOVE.L	_cur_ring_1-BASE(A4),D0	;_cur_ring_1
 	BEQ.B	L004A5
