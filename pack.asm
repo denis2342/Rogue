@@ -701,7 +701,7 @@ L002E5:
 	MOVE.W	D3,-(A7)
 	JSR	_pack_obj(PC)
 	ADDQ.W	#6,A7
-	CMP.L	-$77B0(A4),D0
+	CMP.L	_in_dist+4-BASE(A4),D0
 	BEQ.B	L002E9
 L002E6:
 	TST.W	-$0004(A5)
@@ -795,7 +795,7 @@ L002EE:
 	BEQ.B	L002EF
 
 	MOVE.B	D4,_slime_split_tmp2-BASE(A4)
-	MOVE.L	A2,-$77B0(A4)
+	MOVE.L	A2,_in_dist+4-BASE(A4)
 L002EF:
 	MOVE.L	A2,D0
 	BRA.W	L002EA
