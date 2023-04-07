@@ -530,7 +530,7 @@ L00083:
 	LEA	_r_magic+6-BASE(A4),A6	;_r_magic + 6
 	MOVE.W	D5,D2
 	MULU.W	#6,D2
-	LEA	-$79CE(A4),A1	;_stones + 4
+	LEA	_stones+4-BASE(A4),A1	;_stones + 4
 	MOVE.W	$00(A1,D2.L),D1
 	ADD.W	D1,$00(A6,D3.w)
 
