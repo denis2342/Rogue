@@ -250,7 +250,7 @@ _InstallMenus:
 	ADDQ.W	#4,A7
 	MOVE.L	D0,-$53A2(A4)
 
-	MOVE.L	-$53A2(A4),-(A7)
+	MOVE.L	installmenus_tmp-BASE(A4),-(A7)
 	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
 	JSR	_SetMenuStrip(PC)
 	ADDQ.W	#8,A7
@@ -264,7 +264,7 @@ _DoMenu:
 	MOVE.L	$0008(A5),D4
 	SUBA.L	A2,A2
 	MOVEQ	#$00,D6
-	MOVEA.L	-$53A2(A4),A3
+	MOVEA.L	installmenus_tmp-BASE(A4),A3
 L00A75:
 	MOVE.L	D4,D5
 	MOVE.L	#$0000FFFF,D4
@@ -339,7 +339,7 @@ L00A84:
 	ASR.L	#5,D3
 	AND.w	#$003F,D3
 	ASL.w	#2,D3
-	LEA	-$539A(A4),A6
+	LEA	do_menus_tmp-BASE(A4),A6
 	MOVE.L	$00(A6,D3.w),-(A7)
 	JSR	_use_obj(PC)
 	ADDQ.W	#4,A7
@@ -388,7 +388,7 @@ _want_a_menu:
 	LINK	A5,#-$000A
 	MOVEM.L	D4-D7/A2/A3,-(A7)
 
-	MOVE.L	-$53A2(A4),-$0006(A5)
+	MOVE.L	installmenus_tmp-BASE(A4),-$0006(A5)
 	BRA.B	L00A8E
 L00A8D:
 	MOVEA.L	-$0006(A5),A6
@@ -447,7 +447,7 @@ L00A94:
 	ADDQ.W	#1,-$0002(A5)
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	-$539A(A4),A6
+	LEA	do_menus_tmp-BASE(A4),A6
 	MOVE.L	-$000A(A5),$00(A6,D3.w)
 
 	MOVE.W	#$0022,-(A7)
@@ -528,7 +528,7 @@ L00A99:
 L00A9A:
 	MOVE.L	A2,D3
 	BNE.B	L00A99
-	MOVE.L	-$53A2(A4),-(A7)
+	MOVE.L	installmenus_tmp-BASE(A4),-(A7)
 	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
 	JSR	_SetMenuStrip(PC)
 	ADDQ.W	#8,A7
@@ -650,7 +650,7 @@ _fix_menu:
 	BSR.B	_SetCheck
 	ADDQ.W	#6,A7
 
-	MOVE.L	-$53A2(A4),-(A7)
+	MOVE.L	installmenus_tmp-BASE(A4),-(A7)
 	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
 	JSR	_SetMenuStrip(PC)
 	ADDQ.W	#8,A7
@@ -670,7 +670,7 @@ _SetCheck:
 	OR.L	D2,D3
 
 	MOVE.L	D3,-(A7)
-	MOVE.L	-$53A2(A4),-(A7)
+	MOVE.L	installmenus_tmp-BASE(A4),-(A7)
 	JSR	_ItemAddress(PC)
 	ADDQ.W	#8,A7
 

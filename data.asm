@@ -1706,8 +1706,16 @@ maze_tmp2:
 
 create_object_tmp:
 	ds.b	5
+	dc.b	0
 
-	ds.b	117
+installmenus_tmp:
+	ds.l	1
+	ds.l	1
+
+do_menus_tmp:
+	ds.l	1
+
+	ds.b	104
 
 _restore_bool:
 	dc.w	0	;bool
