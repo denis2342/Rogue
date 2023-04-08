@@ -331,7 +331,7 @@ _passnum:
 ;	LINK	A5,#-$0000
 	MOVEM.L	D4/A2,-(A7)
 	CLR.W	_numpass_tmp-BASE(A4)
-	CLR.B	-$54BE(A4)
+	CLR.B	_numpass_tmp+2-BASE(A4)
 	LEA	_passages-BASE(A4),A2	;_passages
 	LEA	_SV_END-BASE(A4),A6	;_SV_END
 1$
@@ -346,7 +346,7 @@ L00458:
 	MOVEQ	#$00,D4
 	BRA.B	L0045A
 L00459:
-	ADDQ.B	#1,-$54BE(A4)
+	ADDQ.B	#1,_numpass_tmp+2-BASE(A4)
 	MOVE.W	D4,D3
 	EXT.L	D3
 	ASL.L	#2,D3
@@ -402,11 +402,11 @@ L0045C:
 	AND.W	#F_PNUM,D3
 	BNE.B	L0045B
 
-	TST.B	-$54BE(A4)
+	TST.B	_numpass_tmp+2-BASE(A4)
 	BEQ.B	L0045E
 
 	ADDQ.W	#1,_numpass_tmp-BASE(A4)
-	CLR.B	-$54BE(A4)
+	CLR.B	_numpass_tmp+2-BASE(A4)
 L0045E:
 	MOVE.W	$000A(A5),d0
 	MOVE.W	$0008(A5),d1
@@ -448,7 +448,7 @@ L00460:
 
 	BRA.W	L0045B
 L00461:
-	MOVE.B	-$54BF(A4),D3
+	MOVE.B	_numpass_tmp+1-BASE(A4),D3
 	OR.B	D3,(A2)
 
 	MOVE.W	$000A(A5),-(A7)
