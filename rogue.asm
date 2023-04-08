@@ -1255,11 +1255,11 @@ _ScreenTitle:
 
 	MOVE.W	#$004A,-(A7)
 	MOVE.L	$0008(A5),-(A7)
-	PEA	-$5542(A4)
+	PEA	_ScreenTitle_tmp-BASE(A4)
 	JSR	_strncpy
 	LEA	$000A(A7),A7
 
-	PEA	-$5542(A4)
+	PEA	_ScreenTitle_tmp-BASE(A4)
 	PEA	-$1
 	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
 	JSR	_SetWindowTitles

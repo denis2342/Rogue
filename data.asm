@@ -1630,6 +1630,7 @@ __Uorg:
 _getsyl_tmp:
 	ds.b	4
 
+_ScreenTitle_tmp:
 	ds.b	76
 
 _unctrl_tmp:
