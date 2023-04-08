@@ -220,9 +220,9 @@ L007C7:
 	JSR	_msg
 	ADDQ.W	#4,A7
 	JSR	_readchar
-	MOVE.W	D0,-$53A4(A4)
+	MOVE.W	D0,create_object_tmp+4-BASE(A4)
 1$
-	MOVE.W	-$53A4(A4),D0
+	MOVE.W	create_object_tmp+4-BASE(A4),D0
 
 	MOVEA.L	-$0004(A5),A6
 
@@ -261,7 +261,7 @@ L007D0b:
 	BRA	L007EB
 
 L007C9:
-	MOVE.W	-$53A4(A4),$000A(A6)	; potion, stick, ring, scroll
+	MOVE.W	create_object_tmp+4-BASE(A4),$000A(A6)	; potion, stick, ring, scroll
 ;	BRA.B	L007D2
 
 L007D2:
@@ -274,18 +274,18 @@ L007D2:
 	TST.B	_again-BASE(A4)	;_again
 	BEQ.B	L007D3
 
-	MOVE.B	-$53A5(A4),-$53A8(A4)
+	MOVE.B	create_object_tmp+3-BASE(A4),create_object_tmp-BASE(A4)
 	BRA.B	L007D4
 L007D3:
 	JSR	_readchar
-	MOVE.B	D0,-$53A8(A4)
+	MOVE.B	D0,create_object_tmp-BASE(A4)
 	MOVEQ	#$00,D3
 	MOVE.B	D0,D3
-	MOVE.W	D3,-$53A6(A4)
+	MOVE.W	D3,create_object_tmp+2-BASE(A4)
 L007D4:
 	MOVEA.L	-$0004(A5),A6
 	MOVE.L	A6,-(A7)
-	MOVE.B	-$53A8(A4),D0
+	MOVE.B	create_object_tmp-BASE(A4),D0
 
 	JSR	_isdigit(PC)
 
@@ -295,13 +295,13 @@ L007D4:
 	BEQ.B	L007D5
 
 	MOVEQ	#$00,D3
-	MOVE.B	-$53A8(A4),D3
+	MOVE.B	create_object_tmp-BASE(A4),D3
 	SUB.W	#$0030,D3	; - '0'
 	MOVE.W	D3,$0020(A6)
 	BRA.B	L007D6
 L007D5:
 	MOVEQ	#$00,D3
-	MOVE.B	-$53A8(A4),D3
+	MOVE.B	create_object_tmp-BASE(A4),D3
 	SUB.W	#$0057,D3	; - 'a' + 10
 	MOVE.W	D3,$0020(A6)
 L007D6:
@@ -329,10 +329,10 @@ L007D7:
 	JSR	_msg
 	ADDQ.W	#4,A7
 	JSR	_readchar
-	MOVE.B	D0,-$53A7(A4)
+	MOVE.B	D0,create_object_tmp+1-BASE(A4)
 	CLR.W	_mpos-BASE(A4)	;_mpos
 L007D8:
-	CMP.B	#$2D,-$53A7(A4)	; '-'
+	CMP.B	#$2D,create_object_tmp+1-BASE(A4)	; '-'
 	BNE.B	L007D9
 
 	MOVEA.L	-$0004(A5),A6
@@ -352,12 +352,12 @@ L007D9:
 	ADDQ.W	#1,D0
 	MOVEA.L	-$0004(A5),A6
 
-	CMP.B	#$2D,-$53A7(A4)	; '-'
+	CMP.B	#$2D,create_object_tmp+1-BASE(A4)	; '-'
 	BNE.B	1$
 
 	SUB.W	D0,$0022(A6)
 1$
-	CMP.B	#$2B,-$53A7(A4)	; '+'
+	CMP.B	#$2B,create_object_tmp+1-BASE(A4)	; '+'
 	BNE.B	L007DB
 
 	ADD.W	D0,$0022(A6)
@@ -380,12 +380,12 @@ L007DC:
 	ADDQ.W	#1,D0
 	MOVEA.L	-$0004(A5),A6
 
-	CMP.B	#$2D,-$53A7(A4)	; -
+	CMP.B	#$2D,create_object_tmp+1-BASE(A4)	; -
 	BNE.B	1$
 
 	ADD.W	D0,$0026(A6)
 1$
-	CMP.B	#$2B,-$53A7(A4)	; +
+	CMP.B	#$2B,create_object_tmp+1-BASE(A4)	; +
 	BNE.B	L007DE
 
 	SUB.W	D0,$0026(A6)
@@ -408,10 +408,10 @@ L007E0:
 	JSR	_msg
 	ADDQ.W	#4,A7
 	JSR	_readchar
-	MOVE.B	D0,-$53A7(A4)
+	MOVE.B	D0,create_object_tmp+1-BASE(A4)
 	CLR.W	_mpos-BASE(A4)	;_mpos
 L007E1:
-	CMP.B	#$2D,-$53A7(A4)	; '-'
+	CMP.B	#$2D,create_object_tmp+1-BASE(A4)	; '-'
 	BNE.B	L007E3
 
 	MOVE.W	#-1,$0026(A6)

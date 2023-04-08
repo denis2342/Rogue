@@ -4,7 +4,7 @@ _draw_maze:
 	LEA	-$00C8(A5),A6
 	MOVE.L	A6,maze_tmp+14-BASE(A4)
 	LEA	-$0190(A5),A6
-	MOVE.L	A6,-$53AC(A4)
+	MOVE.L	A6,maze_tmp2-BASE(A4)
 	CLR.W	maze_tmp+12-BASE(A4)
 	CLR.W	maze_tmp+10-BASE(A4)
 	MOVEA.L	$0008(A5),A6
@@ -179,7 +179,7 @@ _add_frnt:
 	ADDQ.W	#1,maze_tmp-BASE(A4)
 	EXT.L	D3
 	ASL.L	#1,D3
-	MOVEA.L	-$53AC(A4),A6
+	MOVEA.L	maze_tmp2-BASE(A4),A6
 	MOVE.W	$000A(A5),$00(A6,D3.L)
 L007A0:
 	UNLK	A5
@@ -203,7 +203,7 @@ _con_frnt:
 	MOVEA.L	maze_tmp+14-BASE(A4),A6
 	MOVE.W	$00(A6,D3.L),maze_tmp+2-BASE(A4)
 
-	MOVEA.L	-$53AC(A4),A6
+	MOVEA.L	maze_tmp2-BASE(A4),A6
 	MOVE.W	$00(A6,D3.L),maze_tmp+4-BASE(A4)
 
 	MOVEA.L	maze_tmp+14-BASE(A4),A6
@@ -214,7 +214,7 @@ _con_frnt:
 	ASL.L	#1,D2
 	MOVE.W	$00(A6,D2.L),$00(A6,D3.L)
 
-	MOVEA.L	-$53AC(A4),A6
+	MOVEA.L	maze_tmp2-BASE(A4),A6
 	SUBQ.W	#1,maze_tmp-BASE(A4)
 	MOVE.W	maze_tmp-BASE(A4),D2
 	EXT.L	D2

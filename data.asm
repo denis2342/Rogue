@@ -1699,9 +1699,15 @@ r_score_fd:
 	ds.w	1
 
 maze_tmp:
-	ds.w	8	;$53be
+	ds.w	9	;$53be
 
-	ds.b	128
+maze_tmp2:
+	ds.l	1	;$53ac
+
+create_object_tmp:
+	ds.b	5
+
+	ds.b	117
 
 _restore_bool:
 	dc.w	0	;bool
