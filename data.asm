@@ -1625,7 +1625,12 @@ _ctp_:	dc.b	$20,$20,$20,$20
 
 __Dend:
 
-__Uorg:		ds.b	80
+__Uorg:
+
+_getsyl_tmp:
+	ds.b	4
+
+	ds.b	76
 
 _unctrl_tmp:
 	ds.b	1

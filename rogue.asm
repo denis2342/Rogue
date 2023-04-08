@@ -342,28 +342,28 @@ _rchr:
 	RTS
 
 _getsyl:
-	CLR.B	-$5543(A4)	;zero terminated string
+	CLR.B	_getsyl_tmp+3-BASE(A4)	;zero terminated string
 
 	move.w	#21,-(a7)
 	PEA	_consonants
 	bsr	_rchr
 	ADDQ.W	#6,A7
 
-	MOVE.B	D0,-$5544(A4)
+	MOVE.B	D0,_getsyl_tmp+2-BASE(A4)
 
 	move.w	#5,-(a7)
 	PEA	_vowels
 	bsr	_rchr
 	ADDQ.W	#6,A7
 
-	MOVE.B	D0,-$5545(A4)
+	MOVE.B	D0,_getsyl_tmp+1-BASE(A4)
 
 	move.w	#21,-(a7)
 	PEA	_consonants
 	bsr	_rchr
 	ADDQ.W	#6,A7
 
-	LEA	__Uorg-BASE(A4),A3
+	LEA	_getsyl_tmp-BASE(A4),A3
 	MOVE.B	D0,(A3)
 
 	RTS
