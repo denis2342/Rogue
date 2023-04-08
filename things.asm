@@ -1250,7 +1250,7 @@ L00571:
 	MOVE.W	D7,disc1-BASE(A4)
 	MOVE.W	$00(A6,D3.w),disc3-BASE(A4)
 	MOVE.W	#$0026,-(A7)
-	PEA	-$54B0(A4)
+	PEA	disc0-BASE(A4)
 	JSR	_nameof
 	ADDQ.W	#6,A7
 	MOVE.L	D0,-(A7)
