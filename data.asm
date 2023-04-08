@@ -1696,9 +1696,12 @@ _num_storage:	ds.l	1
 	ds.b	6
 
 r_score_fd:
-	ds.w	2
+	ds.w	1
 
-	ds.b	142
+maze_tmp:
+	ds.w	8	;$53be
+
+	ds.b	128
 
 _restore_bool:
 	dc.w	0	;bool

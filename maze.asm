@@ -2,24 +2,24 @@ _draw_maze:
 	LINK	A5,#-$019C
 	MOVEM.L	D4/D5,-(A7)
 	LEA	-$00C8(A5),A6
-	MOVE.L	A6,-$53B0(A4)
+	MOVE.L	A6,maze_tmp+14-BASE(A4)
 	LEA	-$0190(A5),A6
 	MOVE.L	A6,-$53AC(A4)
-	CLR.W	-$53B2(A4)
-	CLR.W	-$53B4(A4)
+	CLR.W	maze_tmp+12-BASE(A4)
+	CLR.W	maze_tmp+10-BASE(A4)
 	MOVEA.L	$0008(A5),A6
-	MOVE.W	$0002(A6),-$53B8(A4)
-;	TST.W	-$53B8(A4)
+	MOVE.W	$0002(A6),maze_tmp+6-BASE(A4)
+;	TST.W	maze_tmp+6-BASE(A4)
 	BNE.B	L00799
 
 	MOVEA.L	$0008(A5),A6
 	ADDQ.W	#1,$0002(A6)
-	MOVE.W	$0002(A6),-$53B8(A4)
+	MOVE.W	$0002(A6),maze_tmp+6-BASE(A4)
 L00799:
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	(A6),D5
-	MOVE.W	-$53B8(A4),D4
-	MOVE.W	D5,-$53B6(A4)
+	MOVE.W	maze_tmp+6-BASE(A4),D4
+	MOVE.W	D5,maze_tmp+8-BASE(A4)
 	MOVE.W	D5,-(A7)
 	MOVE.W	D4,-(A7)
 	JSR	_splat(PC)
@@ -29,22 +29,22 @@ L00799:
 	JSR	_new_frontier(PC)
 	ADDQ.W	#4,A7
 L0079A:
-	TST.W	-$53BE(A4)
+	TST.W	maze_tmp-BASE(A4)
 	BEQ.B	L0079B
 
 	JSR	_con_frnt(PC)
-	MOVE.W	-$53BA(A4),-(A7)
-	MOVE.W	-$53BC(A4),-(A7)
+	MOVE.W	maze_tmp+4-BASE(A4),-(A7)
+	MOVE.W	maze_tmp+2-BASE(A4),-(A7)
 	JSR	_new_frontier(PC)
 	ADDQ.W	#4,A7
 	BRA.B	L0079A
 L0079B:
 	MOVEA.L	$0008(A5),A6
-	MOVE.W	-$53B4(A4),D3
+	MOVE.W	maze_tmp+10-BASE(A4),D3
 	SUB.W	(A6),D3
 	ADDQ.W	#1,D3
 	MOVE.W	D3,$0004(A6)
-	MOVE.W	-$53B2(A4),D3
+	MOVE.W	maze_tmp+12-BASE(A4),D3
 	SUB.W	$0002(A6),D3
 	ADDQ.W	#1,D3
 	MOVE.W	D3,$0006(A6)
@@ -170,13 +170,13 @@ _add_frnt:
 
 ;	MOVEA.L	__level-BASE(A4),A6	;__level
 	MOVE.B	#$46,$00(A6,D0.W)
-	MOVE.W	-$53BE(A4),D3
+	MOVE.W	maze_tmp-BASE(A4),D3
 	EXT.L	D3
 	ASL.L	#1,D3
-	MOVEA.L	-$53B0(A4),A6
+	MOVEA.L	maze_tmp+14-BASE(A4),A6
 	MOVE.W	$0008(A5),$00(A6,D3.L)
-	MOVE.W	-$53BE(A4),D3
-	ADDQ.W	#1,-$53BE(A4)
+	MOVE.W	maze_tmp-BASE(A4),D3
+	ADDQ.W	#1,maze_tmp-BASE(A4)
 	EXT.L	D3
 	ASL.L	#1,D3
 	MOVEA.L	-$53AC(A4),A6
@@ -192,7 +192,7 @@ _con_frnt:
 	MOVEQ	#$00,D6
 	MOVEQ	#$00,D7
 	CLR.W	-$000A(A5)
-	MOVE.W	-$53BE(A4),D0
+	MOVE.W	maze_tmp-BASE(A4),D0
 	JSR	_rnd
 	MOVE.W	D0,D4
 
@@ -200,14 +200,14 @@ _con_frnt:
 	EXT.L	D3
 	ASL.L	#1,D3
 
-	MOVEA.L	-$53B0(A4),A6
-	MOVE.W	$00(A6,D3.L),-$53BC(A4)
+	MOVEA.L	maze_tmp+14-BASE(A4),A6
+	MOVE.W	$00(A6,D3.L),maze_tmp+2-BASE(A4)
 
 	MOVEA.L	-$53AC(A4),A6
-	MOVE.W	$00(A6,D3.L),-$53BA(A4)
+	MOVE.W	$00(A6,D3.L),maze_tmp+4-BASE(A4)
 
-	MOVEA.L	-$53B0(A4),A6
-	MOVE.W	-$53BE(A4),D2
+	MOVEA.L	maze_tmp+14-BASE(A4),A6
+	MOVE.W	maze_tmp-BASE(A4),D2
 
 	SUBQ.W	#1,D2
 	EXT.L	D2
@@ -215,13 +215,13 @@ _con_frnt:
 	MOVE.W	$00(A6,D2.L),$00(A6,D3.L)
 
 	MOVEA.L	-$53AC(A4),A6
-	SUBQ.W	#1,-$53BE(A4)
-	MOVE.W	-$53BE(A4),D2
+	SUBQ.W	#1,maze_tmp-BASE(A4)
+	MOVE.W	maze_tmp-BASE(A4),D2
 	EXT.L	D2
 	ASL.L	#1,D2
 	MOVE.W	$00(A6,D2.L),$00(A6,D3.L)
-	MOVE.W	-$53BA(A4),-(A7)
-	MOVE.W	-$53BC(A4),D3
+	MOVE.W	maze_tmp+4-BASE(A4),-(A7)
+	MOVE.W	maze_tmp+2-BASE(A4),D3
 	SUBQ.W	#2,D3
 	MOVE.W	D3,-(A7)
 	JSR	_maze_at(PC)
@@ -236,8 +236,8 @@ _con_frnt:
 	LEA	-$0008(A5),A6
 	CLR.W	$00(A6,D3.L)
 L007A1:
-	MOVE.W	-$53BA(A4),-(A7)
-	MOVE.W	-$53BC(A4),D3
+	MOVE.W	maze_tmp+4-BASE(A4),-(A7)
+	MOVE.W	maze_tmp+2-BASE(A4),D3
 	ADDQ.W	#2,D3
 	MOVE.W	D3,-(A7)
 	JSR	_maze_at(PC)
@@ -252,10 +252,10 @@ L007A1:
 	LEA	-$0008(A5),A6
 	MOVE.W	#$0001,$00(A6,D3.L)
 L007A2:
-	MOVE.W	-$53BA(A4),D3
+	MOVE.W	maze_tmp+4-BASE(A4),D3
 	SUBQ.W	#2,D3
 	MOVE.W	D3,-(A7)
-	MOVE.W	-$53BC(A4),-(A7)
+	MOVE.W	maze_tmp+2-BASE(A4),-(A7)
 	JSR	_maze_at(PC)
 	ADDQ.W	#4,A7
 	CMP.W	#$0000,D0
@@ -268,10 +268,10 @@ L007A2:
 	LEA	-$0008(A5),A6
 	MOVE.W	#$0002,$00(A6,D3.L)
 L007A3:
-	MOVE.W	-$53BA(A4),D3
+	MOVE.W	maze_tmp+4-BASE(A4),D3
 	ADDQ.W	#2,D3
 	MOVE.W	D3,-(A7)
-	MOVE.W	-$53BC(A4),-(A7)
+	MOVE.W	maze_tmp+2-BASE(A4),-(A7)
 	JSR	_maze_at(PC)
 	ADDQ.W	#4,A7
 	CMP.W	#$0000,D0
@@ -290,8 +290,8 @@ L007A4:
 	ASL.L	#1,D0
 	LEA	-$0008(A5),A6
 	MOVE.W	$00(A6,D0.L),D5
-	MOVE.W	-$53BA(A4),-(A7)
-	MOVE.W	-$53BC(A4),-(A7)
+	MOVE.W	maze_tmp+4-BASE(A4),-(A7)
+	MOVE.W	maze_tmp+2-BASE(A4),-(A7)
 	JSR	_splat(PC)
 	ADDQ.W	#4,A7
 	MOVE.W	D5,D0
@@ -324,10 +324,10 @@ L007AA:
 	MOVE.W	L007A9(PC,D0.W),D0
 L007AB:	JMP	L007AB(PC,D0.W)
 L007AC:
-	MOVE.W	-$53BC(A4),D3
+	MOVE.W	maze_tmp+2-BASE(A4),D3
 	ADD.W	D6,D3
 	MOVE.W	D3,-$000C(A5)
-	MOVE.W	-$53BA(A4),D3
+	MOVE.W	maze_tmp+4-BASE(A4),D3
 	ADD.W	D7,D3
 	MOVE.W	D3,-$000E(A5)
 	MOVE.W	-$000E(A5),-(A7)
@@ -388,15 +388,15 @@ _splat:
 	MOVEA.L	__flags-BASE(A4),A6	;__flags
 	MOVE.B	#$30,$00(A6,D0.W)
 	MOVE.W	$000A(A5),D3
-	CMP.W	-$53B4(A4),D3
+	CMP.W	maze_tmp+10-BASE(A4),D3
 	BLE.B	L007B0
 
-	MOVE.W	$000A(A5),-$53B4(A4)
+	MOVE.W	$000A(A5),maze_tmp+10-BASE(A4)
 L007B0:
 	MOVE.W	$0008(A5),D3
-	CMP.W	-$53B2(A4),D3
+	CMP.W	maze_tmp+12-BASE(A4),D3
 	BLE.B	L007B1
-	MOVE.W	$0008(A5),-$53B2(A4)
+	MOVE.W	$0008(A5),maze_tmp+12-BASE(A4)
 L007B1:
 	UNLK	A5
 	RTS
@@ -405,24 +405,24 @@ _inrange:
 	LINK	A5,#-$0000
 
 	MOVE.W	$0008(A5),D3
-	CMP.W	-$53B8(A4),D3
+	CMP.W	maze_tmp+6-BASE(A4),D3
 	BLT.B	L007B2
 
 	MOVE.W	_maxrow-BASE(A4),D3	;_maxrow
 	ADDQ.W	#1,D3
 	EXT.L	D3
 	DIVS.W	#$0003,D3
-	ADD.W	-$53B8(A4),D3
+	ADD.W	maze_tmp+6-BASE(A4),D3
 	MOVE.W	$0008(A5),D2
 	CMP.W	D3,D2
 	BGE.B	L007B2
 
 	MOVE.W	$000A(A5),D3
-	CMP.W	-$53B6(A4),D3
+	CMP.W	maze_tmp+8-BASE(A4),D3
 	BLT.B	L007B2
 
 	moveq	#$14,d3
-	ADD.W	-$53B6(A4),D3
+	ADD.W	maze_tmp+8-BASE(A4),D3
 	MOVE.W	$000A(A5),D2
 	CMP.W	D3,D2
 	BGE.B	L007B2
