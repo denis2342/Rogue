@@ -1348,7 +1348,7 @@ L00223:
 	BEQ.B	L00224
 
 	MOVE.W	_slime_split_tmp-BASE(A4),d0
-	MOVE.W	-$54DE(A4),d1
+	MOVE.W	_slime_split_tmp1-BASE(A4),d1
 	JSR	_INDEXquick
 
 	MOVEA.L	__level-BASE(A4),A6	;__level
