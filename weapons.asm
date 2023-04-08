@@ -230,8 +230,8 @@ _fall:
 ;	EXT.L	D0
 	BRA.W	L00611
 L0060B:
-	MOVE.W	-$53D2(A4),d0
-	MOVE.W	-$53D0(A4),d1
+	MOVE.W	_fall_posx-BASE(A4),d0
+	MOVE.W	_fall_posy-BASE(A4),d1
 	JSR	_INDEXquick
 
 	MOVE.W	D0,D4
