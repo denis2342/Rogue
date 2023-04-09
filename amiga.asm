@@ -2182,7 +2182,7 @@ L00CA7:
 	MOVE.L	D3,-(A7)
 	JSR	_AllocMem
 	ADDQ.W	#8,A7
-	MOVE.L	D0,-$52DE(A4)
+	MOVE.L	D0,main_tmp+4-BASE(A4)
 	MOVEQ	#$00,D4
 	MOVEA.L	main_tmp+8-BASE(A4),A2
 	BRA.B	L00CAA
@@ -2202,7 +2202,7 @@ L00CA9:
 	MOVEQ	#$00,D3
 	MOVE.W	D4,D3
 	ASL.L	#2,D3
-	MOVEA.L	-$52DE(A4),A6
+	MOVEA.L	main_tmp+4-BASE(A4),A6
 	MOVE.L	A2,$00(A6,D3.L)
 	MOVE.L	A2,A0
 	JSR	_strlenquick
@@ -2218,7 +2218,7 @@ L00CAA:
 	MOVEQ	#$00,D3
 	MOVE.W	D4,D3
 	ASL.L	#2,D3
-	MOVEA.L	-$52DE(A4),A6
+	MOVEA.L	main_tmp+4-BASE(A4),A6
 	CLR.L	$00(A6,D3.L)
 	JSR	_Input
 	MOVE.L	D0,__devtab-BASE(A4)		;__devtab
@@ -2230,7 +2230,7 @@ L00CAA:
 	MOVE.L	D0,__devtab+12-BASE(A4)
 	MOVE.W	#$8001,-$4748(A4)
 	MOVE.W	#$0001,_Enable_Abort-BASE(A4)	;_Enable_Abort
-	MOVE.L	-$52DE(A4),-(A7)
+	MOVE.L	main_tmp+4-BASE(A4),-(A7)
 	MOVE.W	main_tmp-BASE(A4),-(A7)
 	JSR	_main
 	ADDQ.W	#6,A7
@@ -2340,7 +2340,7 @@ L00CB5:
 	EXT.L	D3
 	ASL.L	#2,D3
 	MOVE.L	D3,-(A7)
-	MOVE.L	-$52DE(A4),-(A7)
+	MOVE.L	main_tmp+4-BASE(A4),-(A7)
 	JSR	_FreeMem(PC)
 	ADDQ.W	#8,A7
 
