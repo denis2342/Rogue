@@ -66,7 +66,7 @@ L00128:
 
 _InitGadgets:
 	LINK	A5,#-$0000
-	TST.W	-$5810(A4)
+	TST.W	_DownGadget+44-BASE(A4)
 	BEQ.B	L00B9C
 	CLR.L	-(A7)
 	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
@@ -78,7 +78,7 @@ L00B9B:
 	RTS
 
 L00B9C:
-	MOVE.W	#$0001,-$5810(A4)
+	MOVE.W	#$0001,_DownGadget+44-BASE(A4)
 	CLR.W	-(A7)
 	MOVE.W	#$0014,-(A7)
 	JSR	_malloc
