@@ -718,7 +718,7 @@ L004F8:
 	MOVE.B	#$01,-$0016(A5)
 	MOVE.W	D5,-$0014(A5)
 	MOVE.W	D6,-$0012(A5)
-	PEA	-$58B8(A4)
+	PEA	_KeyMap-BASE(A4)
 	LEA	_kb_head-BASE(A4),A6
 	SUBA.L	_kb_head-BASE(A4),A6
 	MOVE.L	A6,-(A7)
