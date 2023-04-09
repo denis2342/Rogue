@@ -1732,7 +1732,10 @@ _save_game_tmp:
 _sprintf_tmp:
 	ds.l	1
 
-	ds.w	12
+_localtime_tmp:
+	ds.w	8
+
+	ds.w	4
 
 _printf_tmp:
 	ds.b	60

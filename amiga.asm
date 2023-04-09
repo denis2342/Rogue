@@ -783,7 +783,7 @@ _localtime:
 	MOVE.L	D4,D0
 	MOVEQ	#60,D1
 	JSR	_mods
-	MOVE.W	D0,-$5326(A4)
+	MOVE.W	D0,_localtime_tmp-BASE(A4)
 	MOVE.L	D4,D0
 	MOVEQ	#60,D1
 	JSR	_divu
@@ -791,7 +791,7 @@ _localtime:
 	MOVE.L	D4,D0
 	MOVEQ	#60,D1
 	JSR	_mods
-	MOVE.W	D0,-$5324(A4)
+	MOVE.W	D0,_localtime_tmp+2-BASE(A4)
 	MOVE.L	D4,D0
 	MOVEQ	#60,D1
 	JSR	_divu
@@ -799,7 +799,7 @@ _localtime:
 	MOVE.L	D4,D0
 	MOVEQ	#24,D1
 	JSR	_mods
-	MOVE.W	D0,-$5322(A4)
+	MOVE.W	D0,_localtime_tmp+4-BASE(A4)
 	MOVE.L	D4,D0
 	MOVEQ	#24,D1
 	JSR	_divu
@@ -807,13 +807,13 @@ _localtime:
 	MOVE.L	D4,D0
 	MOVEQ	#$07,D1
 	JSR	_mods
-	MOVE.W	D0,-$531A(A4)
+	MOVE.W	D0,_localtime_tmp+12-BASE(A4)
 	MOVE.L	D4,D0
 	MOVE.L	#$000005B5,D1	;4 years in days + one day for leap year
 	JSR	_divu
 	ASL.L	#2,D0
 	ADD.L	#$0000004E,D0	;78
-	MOVE.W	D0,-$531C(A4)
+	MOVE.W	D0,_localtime_tmp+10-BASE(A4)
 	MOVE.L	D4,D0
 	MOVE.L	#$000005B5,D1
 	JSR	_mods
@@ -822,7 +822,7 @@ L00C1D:
 	TST.L	D4
 	BEQ.B	L00C1F
 	MOVE.L	#$0000016D,D5
-	MOVE.W	-$531C(A4),D3
+	MOVE.W	_localtime_tmp+10-BASE(A4),D3
 	AND.W	#$0003,D3
 	BNE.B	L00C1E
 	ADDQ.L	#1,D5
@@ -831,11 +831,11 @@ L00C1E:
 	BLT.B	L00C1F
 
 	SUB.L	D5,D4
-	ADDQ.W	#1,-$531C(A4)
+	ADDQ.W	#1,_localtime_tmp+10-BASE(A4)
 	BRA.B	L00C1D
 L00C1F:
 	ADDQ.L	#1,D4
-	MOVE.W	D4,-$5318(A4)
+	MOVE.W	D4,_localtime_tmp+14-BASE(A4)
 	MOVEQ	#$00,D6
 L00C20:
 	MOVE.W	D6,D3
@@ -848,7 +848,7 @@ L00C20:
 	CMP.W	#$0001,D6
 	BNE.B	L00C21
 
-	MOVE.W	-$531C(A4),D3
+	MOVE.W	_localtime_tmp+10-BASE(A4),D3
 	AND.W	#$0003,D3
 	BNE.B	L00C21
 
@@ -862,9 +862,9 @@ L00C21:
 	CMP.W	#$000C,D6
 	BLT.B	L00C20
 L00C22:
-	MOVE.W	D6,-$531E(A4)
-	MOVE.W	D4,-$5320(A4)
-	LEA	-$5326(A4),A6
+	MOVE.W	D6,_localtime_tmp+8-BASE(A4)
+	MOVE.W	D4,_localtime_tmp+6-BASE(A4)
+	LEA	_localtime_tmp-BASE(A4),A6
 	MOVE.L	A6,D0
 
 	MOVEM.L	(A7)+,D4-D6
