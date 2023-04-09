@@ -1741,7 +1741,10 @@ _printf_tmp0:
 	ds.l	1
 
 _printf_tmp:
-	ds.b	44
+	ds.b	40
+
+freemem_tmp:
+	dc.l	0
 
 main_tmp:
 	ds.b	16
