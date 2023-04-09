@@ -944,7 +944,7 @@ _printf:
 	JSR	_format(PC)
 	LEA	$000C(A7),A7
 	MOVE.W	D0,D4
-	CMPI.W	#$0001,-$5764(A4)
+	CMPI.W	#$0001,_Cbuffs+38-BASE(A4)
 	BNE.B	L00C27
 
 	LEA	_printf_tmp-BASE(A4),A6
@@ -985,7 +985,7 @@ L00C29:
 	CMP.W	#$0028,D3
 	BNE.B	L00C2C
 
-	CMPI.W	#$0001,-$5764(A4)
+	CMPI.W	#$0001,_Cbuffs+38-BASE(A4)
 	BNE.B	L00C2A
 
 	LEA	_printf_tmp-BASE(A4),A6
