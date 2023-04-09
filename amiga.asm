@@ -119,7 +119,7 @@ L00B9C:
 	LEA	$000A(A7),A7
 
 	MOVE.W	#$FFFF,-(A7)
-	PEA	-$5868(A4)
+	PEA	_RestGadget-BASE(A4)
 	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
 	JSR	_AddGadget(PC)
 	LEA	$000A(A7),A7
@@ -138,7 +138,7 @@ L00B9C:
 
 	CLR.L	-(A7)
 	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
-	PEA	-$5868(A4)
+	PEA	_RestGadget-BASE(A4)
 	JSR	_OnGadget(PC)
 	LEA	$000C(A7),A7
 

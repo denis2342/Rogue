@@ -1747,7 +1747,7 @@ freemem_tmp:
 	dc.l	0
 
 main_tmp:
-	ds.b	16
+	ds.l	4
 
 __things:
 	dc.l	$00000000
