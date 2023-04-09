@@ -952,7 +952,7 @@ _printf:
 	SUB.L	A6,D3
 	MOVE.W	D3,-(A7)
 	PEA	_printf_tmp-BASE(A4)
-	MOVE.B	-$5767(A4),D3
+	MOVE.B	_Cbuffs+35-BASE(A4),D3
 	EXT.W	D3
 	MOVE.W	D3,-(A7)
 	JSR	_write
@@ -993,7 +993,7 @@ L00C29:
 	SUB.L	A6,D3
 	MOVE.W	D3,-(A7)
 	PEA	_printf_tmp-BASE(A4)
-	MOVE.B	-$5767(A4),D3
+	MOVE.B	_Cbuffs+35-BASE(A4),D3
 	EXT.W	D3
 	MOVE.W	D3,-(A7)
 	JSR	_write
