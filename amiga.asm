@@ -959,7 +959,7 @@ _printf:
 	ADDQ.W	#8,A7
 	BRA.B	L00C28
 L00C27:
-	PEA	-$5774(A4)
+	PEA	_Cbuffs+22-BASE(A4)
 	LEA	_printf_tmp-BASE(A4),A6
 	MOVE.L	_printf_tmp0-BASE(A4),D3
 	SUB.L	A6,D3
@@ -1000,7 +1000,7 @@ L00C29:
 	ADDQ.W	#8,A7
 	BRA.B	L00C2B
 L00C2A:
-	PEA	-$5774(A4)
+	PEA	_Cbuffs+22-BASE(A4)
 	LEA	_printf_tmp-BASE(A4),A6
 	MOVE.L	_printf_tmp0-BASE(A4),D3
 	SUB.L	A6,D3
