@@ -70,7 +70,7 @@ _InitGadgets:
 	BEQ.B	L00B9C
 	CLR.L	-(A7)
 	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
-	PEA	-$5894(A4)
+	PEA	_SearchGadget-BASE(A4)
 	JSR	_RefreshGadgets(PC)
 	LEA	$000C(A7),A7
 L00B9B:
@@ -113,7 +113,7 @@ L00B9C:
 
 	MOVE.L	D0,-$5822(A4)
 	MOVE.W	#$FFFF,-(A7)
-	PEA	-$5894(A4)
+	PEA	_SearchGadget-BASE(A4)
 	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
 	JSR	_AddGadget(PC)
 	LEA	$000A(A7),A7
@@ -132,7 +132,7 @@ L00B9C:
 
 	CLR.L	-(A7)
 	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
-	PEA	-$5894(A4)
+	PEA	_SearchGadget-BASE(A4)
 	JSR	_OnGadget(PC)
 	LEA	$000C(A7),A7
 
