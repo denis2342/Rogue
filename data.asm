@@ -35,8 +35,8 @@ _rainbow:
 	dc.l	L0001C		; white
 	dc.l	L0001D		; yellow
 
-	ds.l	1		; UNUSED
-	ds.l	1		; UNUSED
+;	ds.l	1		; UNUSED
+;	ds.l	1		; UNUSED
 
 _stones:
 	dc.l	L00020		; agate
@@ -261,8 +261,6 @@ _do_passages_tmp:
 
 _CURSES_START:
 	dc.w	$0000
-
-_screen_map:	ds.b	1680
 
 _c_row:	ds.b	1
 _c_col:	ds.b	1
@@ -1073,12 +1071,6 @@ _noscore:
 	dc.b	$00
 _again:
 	dc.b	$00
-
-_s_know:	ds.b	15
-_p_know:	ds.b	14
-_r_know:	ds.b	14
-_ws_know:	ds.b	14
-
 _amulet:
 	dc.b	$00
 _saw_amulet:
@@ -1123,16 +1115,6 @@ _take:
 	dc.b	$00
 _runch:
 	dc.w	$0000
-
-_s_names:	ds.b	15*21
-		dc.b	0
-
-_s_guess:	ds.b	15*21
-		dc.b	0
-
-_p_guess:	ds.b	14*21
-_r_guess:	ds.b	14*21
-_ws_guess:	ds.b	14*21
 
 _maxrow:
 	dc.w	$0000
@@ -1632,6 +1614,8 @@ __Dend:
 
 __Uorg:
 
+_screen_map:	ds.b	1680
+
 _getsyl_tmp:
 	ds.b	4
 
@@ -1754,6 +1738,21 @@ freemem_tmp:
 main_tmp:
 	ds.l	4
 
+_s_names:	ds.b	15*21
+		dc.b	0
+
+_s_guess:	ds.b	15*21
+		dc.b	0
+
+_p_guess:	ds.b	14*21
+_r_guess:	ds.b	14*21
+_ws_guess:	ds.b	14*21
+
+_s_know:	ds.b	15
+_p_know:	ds.b	14
+_r_know:	ds.b	14
+_ws_know:	ds.b	14
+
 __things:
 	dc.l	$00000000
 __t_alloc:
@@ -1813,7 +1812,7 @@ _cur_ring_2:	ds.l	1
 
 _IntuitionBase:	ds.l	1
 _GfxBase:	ds.l	1
-_LayersBase:	ds.l	1
+;_LayersBase:	ds.l	1
 
 _chbm:	ds.w	1	;BytesPerRow
 	ds.w	1	;Rows
@@ -1832,7 +1831,7 @@ _RogueWin:	dc.l	$00000000
 _TextWin:	dc.l	$00000000
 
 _char_data:	ds.b	256	;we only need this
-		ds.b	1792	;this is now unused
+;		ds.b	1792	;this is now unused
 
 _huh:		ds.b	128
 
@@ -1857,12 +1856,12 @@ _all_clear:
 	dc.w	0
 __whoami:	ds.l	1
 
-_want:	ds.b	64	;color palette of the images is loaded to here (unused now)
+;_want:	ds.b	64	;color palette of the images is loaded to here (unused now)
 
 _sverr:
 	dc.w	0
 _mega_frob:
-	dc.w	$0000
+;	dc.w	$0000
 
 __savsp:	ds.l	1
 _SysBase:	ds.l	1
@@ -1872,9 +1871,8 @@ _Enable_Abort:	ds.w	1
 
 _DOSBase:	ds.l	1
 _MathBase:	ds.l	1
-_MathTransBase:	ds.l	1
+;_MathTransBase:	ds.l	1
 
 	ds.w	1
 
 __Uend:
-
