@@ -12,8 +12,8 @@ _d_slot:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
 
-	LEA	dm_list-BASE(A4),A2	;starting $2bb4
-	LEA	dm_list_end-BASE(A4),A6	;ending $2c2c
+	LEA	dm_list(A4),A2	;starting $2bb4
+	LEA	dm_list_end(A4),A6	;ending $2c2c
 L00594:
 	TST.W	(A2)
 	BEQ.B	L00596
@@ -41,8 +41,8 @@ _find_slot:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
 
-	LEA	dm_list-BASE(A4),A2
-	LEA	dm_list_end-BASE(A4),A6
+	LEA	dm_list(A4),A2
+	LEA	dm_list_end(A4),A6
 
 	MOVE.W	$0008(A5),D3	;looking for this
 
@@ -96,7 +96,7 @@ _do_daemons:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
 
-	LEA	dm_list-BASE(A4),A6
+	LEA	dm_list(A4),A6
 	MOVEA.L	A6,A2
 L0059A:
 	TST.W	(A2)
@@ -113,7 +113,7 @@ L0059B:
 	MOVE.W	(A2),D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	dm_callbacks-BASE(A4),A6	;start of deamon callbacks
+	LEA	dm_callbacks(A4),A6	;start of deamon callbacks
 	MOVEA.L	$00(A6,D3.w),A1
 	JSR	(A1)
 	ADDQ.W	#2,A7
@@ -123,7 +123,7 @@ L0059B:
 	CLR.W	(A2)
 L0059C:
 	ADDQ.L	#6,A2
-	LEA	dm_list_end-BASE(A4),A6
+	LEA	dm_list_end(A4),A6
 	CMPA.L	A6,A2
 	BCS.B	L0059A
 
@@ -212,7 +212,7 @@ _cvt_f_i:
 	MOVEM.L	A2/A3,-(A7)
 
 	MOVEA.L	$0008(A5),A2
-	LEA	dm_callbacks-BASE(A4),A6
+	LEA	dm_callbacks(A4),A6
 	MOVEA.L	A6,A3
 	BRA.B	L005A4
 L005A1:
@@ -221,7 +221,7 @@ L005A1:
 	BNE.B	L005A3
 
 	MOVE.L	A3,D0
-	LEA	dm_callbacks-BASE(A4),A6
+	LEA	dm_callbacks(A4),A6
 	SUB.L	A6,D0
 	LSR.L	#2,D0
 L005A2:
@@ -246,7 +246,7 @@ L005A5:
 _dm_xfer:
 ;	LINK	A5,#-$0000
 	MOVE.W	#$0078,-(A7)
-	PEA	dm_list-BASE(A4)
+	PEA	dm_list(A4)
 	JSR	_xfer
 	ADDQ.W	#6,A7
 ;	UNLK	A5

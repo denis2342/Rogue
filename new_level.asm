@@ -8,25 +8,25 @@ _new_level:
 	MOVEM.L	D4-D6/A2/A3,-(A7)
 
 	JSR	_NewRank(PC)
-	ANDI.W	#~C_ISHELD,_player+22-BASE(A4)	;clear C_ISHELD ($80) _player + 22 (flags)
-	CLR.B	_no_more_fears-BASE(A4)	;_no_more_fears
-	MOVE.W	_level-BASE(A4),D3	;_level
-	CMP.W	_max_level-BASE(A4),D3	;_max_level
+	ANDI.W	#~C_ISHELD,_player+22(A4)	;clear C_ISHELD ($80) _player + 22 (flags)
+	CLR.B	_no_more_fears(A4)	;_no_more_fears
+	MOVE.W	_level(A4),D3	;_level
+	CMP.W	_max_level(A4),D3	;_max_level
 	BLE.B	L00183
 
-	MOVE.W	_level-BASE(A4),_max_level-BASE(A4)	;_level,_max_level
+	MOVE.W	_level(A4),_max_level(A4)	;_level,_max_level
 L00183:
 	MOVEq	#$0020,d1
 	MOVE.W	#1760,d0
-	MOVE.L	__level-BASE(A4),a0	;__level
+	MOVE.L	__level(A4),a0	;__level
 	JSR	_memset
 
 	MOVEq	#F_REAL,d1	;what you see is what you get
 	MOVE.W	#1760,d0
-	MOVE.L	__flags-BASE(A4),a0	;__flags
+	MOVE.L	__flags(A4),a0	;__flags
 	JSR	_memset
 
-	MOVEA.L	_mlist-BASE(A4),A2	;_mlist
+	MOVEA.L	_mlist(A4),A2	;_mlist
 	BRA.B	L00185
 L00184:
 	PEA	$002E(A2)
@@ -37,47 +37,47 @@ L00185:
 	MOVE.L	A2,D3
 	BNE.B	L00184
 
-	PEA	_mlist-BASE(A4)	;_mlist
+	PEA	_mlist(A4)	;_mlist
 	JSR	__free_list(PC)
 	ADDQ.W	#4,A7
 
 	JSR	_f_restor
 
-	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
+	PEA	_lvl_obj(A4)	;_lvl_obj
 	JSR	__free_list(PC)
 	ADDQ.W	#4,A7
 
 	JSR	_do_rooms
-	ST	_new_stats-BASE(A4)	;_new_stats
+	ST	_new_stats(A4)	;_new_stats
 	JSR	_clear
 	JSR	_status
 	JSR	_do_passages(PC)
-	ADDQ.W	#1,_no_food-BASE(A4)	;_no_food
+	ADDQ.W	#1,_no_food(A4)	;_no_food
 	JSR	_put_things(PC)
 	PEA	-$0004(A5)
 	JSR	_blank_spot
 	ADDQ.W	#4,A7
 	MOVE.W	D0,D6
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	MOVE.B	#$25,$00(A6,D6.W)	;'%' STAIRS
 
 	MOVEq	#10,D0
 	JSR	_rnd
-	CMP.W	_level-BASE(A4),D0	;_level
+	CMP.W	_level(A4),D0	;_level
 	BGE.B	L00188
 
-	MOVE.W	_level-BASE(A4),D0	;_level
+	MOVE.W	_level(A4),D0	;_level
 	EXT.L	D0
 	DIVS.W	#$0004,D0
 	JSR	_rnd
 	ADDQ.W	#1,D0
-	MOVE.W	D0,_ntraps-BASE(A4)	;_ntraps
+	MOVE.W	D0,_ntraps(A4)	;_ntraps
 	CMPI.W	#10,D0		;_dnum
 	BLE.B	L00186
 
-	MOVE.W	#$000A,_ntraps-BASE(A4)	;_ntraps
+	MOVE.W	#$000A,_ntraps(A4)	;_ntraps
 L00186:
-	MOVE.W	_ntraps-BASE(A4),D5	;_ntraps
+	MOVE.W	_ntraps(A4),D5	;_ntraps
 L00187:
 	MOVE.W	D5,D3
 	SUBQ.W	#1,D5
@@ -92,7 +92,7 @@ L00187:
 	MOVE.W	D6,D3
 	EXT.L	D3
 	MOVEA.L	D3,A3
-	ADDA.L	__flags-BASE(A4),A3	;__flags
+	ADDA.L	__flags(A4),A3	;__flags
 	ANDI.B	#~F_REAL,(A3)	;clear F_REAL
 
 	MOVEq	#$0006,D0
@@ -101,37 +101,37 @@ L00187:
 	OR.B	D0,(A3)
 	BRA.B	L00187
 L00188:
-	PEA	_player+10-BASE(A4)	;_player + 10
+	PEA	_player+10(A4)	;_player + 10
 	JSR	_blank_spot
 	ADDQ.W	#4,A7
 
 	MOVE.W	D0,D6
-	MOVEA.L	__flags-BASE(A4),A6	;__flags
+	MOVEA.L	__flags(A4),A6	;__flags
 	MOVE.B	$00(A6,D6.W),D3
 	AND.B	#F_REAL,D3	;F_REAL
 	BEQ.B	L00188
 
-	MOVE.W	_player+10-BASE(A4),d1	;_player + 10
-	MOVE.W	_player+12-BASE(A4),d0	;_player + 12
+	MOVE.W	_player+10(A4),d1	;_player + 10
+	MOVE.W	_player+12(A4),d0	;_player + 12
 	JSR	_moatquick
 
 	TST.L	D0
 	BNE.B	L00188
 
-	CLR.W	_mpos-BASE(A4)	;_mpos
-	PEA	_player+10-BASE(A4)	;_player + 10
+	CLR.W	_mpos(A4)	;_mpos
+	PEA	_player+10(A4)	;_player + 10
 	JSR	_enter_room
 	ADDQ.W	#4,A7
 
 	MOVEq	#$0040,d2	;'@' PLAYER
-	MOVE.W	_player+10-BASE(A4),d1	;hero.y
-	MOVE.W	_player+12-BASE(A4),d0	;hero.x
+	MOVE.W	_player+10(A4),d1	;hero.y
+	MOVE.W	_player+12(A4),d0	;hero.x
 	JSR	_mvaddchquick
 
-	LEA	_oldpos-BASE(A4),A6
-	LEA	_player+10-BASE(A4),A1	;_player + 10
+	LEA	_oldpos(A4),A6
+	LEA	_player+10(A4),A1	;_player + 10
 	MOVE.L	(A1)+,(A6)+
-	MOVE.L	_player+42-BASE(A4),_oldrp-BASE(A4)	;_player + 42 (proom),_oldrp
+	MOVE.L	_player+42(A4),_oldrp(A4)	;_player + 42 (proom),_oldrp
 	JSR	_InitGadgets
 
 	MOVEM.L	(A7)+,D4-D6/A2/A3
@@ -148,7 +148,7 @@ _rnd_room:
 	JSR	_rnd
 	MOVE.W	D0,D3
 	MULU.W	#66,D3
-	LEA	_rooms+14-BASE(A4),A6	;_rooms + 14 (r_flags)
+	LEA	_rooms+14(A4),A6	;_rooms + 14 (r_flags)
 
 	MOVE.W	$00(A6,D3.L),D2
 	AND.W	#$0002,D2	;ISGONE?
@@ -169,21 +169,21 @@ _put_things:
 	MOVEM.L	D4/D5/A2,-(A7)
 
 	MOVEQ	#9-1,D4		;create 9 items if we didnt saw the amulet yet
-	TST.B	_saw_amulet-BASE(A4)	;_saw_amulet
+	TST.B	_saw_amulet(A4)	;_saw_amulet
 	BEQ.B	L0018B
 
-	MOVE.W	_level-BASE(A4),D3	;_level
-;	MOVE.W	_level-BASE(A4),D3	;_level
-	CMP.W	_max_level-BASE(A4),D3	;_max_level
+	MOVE.W	_level(A4),D3	;_level
+;	MOVE.W	_level(A4),D3	;_level
+	CMP.W	_max_level(A4),D3	;_max_level
 	BGE.B	L0018B
 
 	MOVEQ	#1-1,D4		;if we saw it then create only one item
 	BRA.W	L0018F
 L0018B:
-	CMPI.W	#26,_level-BASE(A4)	;_level
+	CMPI.W	#26,_level(A4)	;_level
 	BLT.W	L0018E
 
-	TST.B	_saw_amulet-BASE(A4)	;_saw_amulet
+	TST.B	_saw_amulet(A4)	;_saw_amulet
 	BNE.W	L0018E
 
 	JSR	_new_item
@@ -192,12 +192,12 @@ L0018B:
 	BEQ.W	L0018E
 
 	MOVE.L	A2,-(A7)
-	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
+	PEA	_lvl_obj(A4)	;_lvl_obj
 	JSR	__attach
 	ADDQ.W	#8,A7
 	CLR.W	$0024(A2)
 	CLR.W	$0022(A2)
-	MOVE.L	_no_damage-BASE(A4),$001A(A2)	;_no_damage
+	MOVE.L	_no_damage(A4),$001A(A2)	;_no_damage
 	MOVE.L	$001A(A2),$0016(A2)
 	MOVE.W	#$000B,$0026(A2)
 	MOVE.W	#$002C,$000A(A2)
@@ -207,7 +207,7 @@ L0018C:
 	PEA	-$0004(A5)
 	MOVE.W	D5,D3
 	MULU.W	#66,D3
-	LEA	_rooms-BASE(A4),A6	;_rooms
+	LEA	_rooms(A4),A6	;_rooms
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 	JSR	_rnd_pos
@@ -227,7 +227,7 @@ L0018D:
 	MOVE.W	-$0002(A5),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	MOVE.B	#$2C,$00(A6,D0.W)	;"," amulet of yendor
 	MOVEA.L	A2,A6
 	ADDA.L	#$0000000C,A6
@@ -241,7 +241,7 @@ L0018E:
 
 	JSR	_treas_room(PC)
 L0018F:
-	CMPI.W	#$0053,_total-BASE(A4)	;83 objects _total
+	CMPI.W	#$0053,_total(A4)	;83 objects _total
 	BGE.W	L00193
 
 	MOVEq	#100,D0
@@ -253,7 +253,7 @@ L0018F:
 	JSR	_new_thing
 	MOVEA.L	D0,A2
 	MOVE.L	A2,-(A7)
-	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
+	PEA	_lvl_obj(A4)	;_lvl_obj
 	JSR	__attach
 	ADDQ.W	#8,A7
 L00191:
@@ -262,7 +262,7 @@ L00191:
 	PEA	-$0004(A5)
 	MOVE.W	D5,D3
 	MULU.W	#66,D3
-	LEA	_rooms-BASE(A4),A6	;_rooms
+	LEA	_rooms(A4),A6	;_rooms
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 	JSR	_rnd_pos
@@ -272,7 +272,7 @@ L00191:
 	MOVE.W	-$0002(A5),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	CMPI.B	#$002E,$00(A6,D0.W)	;'.' FLOOR
 	BEQ.B	1$
 
@@ -283,7 +283,7 @@ L00191:
 ;	MOVE.W	-$0002(A5),d1
 ;	JSR	_INDEXquick
 
-;	MOVEA.L	__level-BASE(A4),A6	;__level
+;	MOVEA.L	__level(A4),A6	;__level
 	MOVE.B	$000B(A2),$00(A6,D0.W)
 	MOVEA.L	A2,A6
 	ADDA.L	#$0000000C,A6
@@ -307,7 +307,7 @@ _treas_room:
 
 	JSR	_rnd_room(PC)
 	MULU.W	#$0042,D0
-	LEA	_rooms-BASE(A4),A6	;_rooms
+	LEA	_rooms(A4),A6	;_rooms
 
 	MOVEA.L	D0,A3
 	ADDA.L	A6,A3
@@ -334,7 +334,7 @@ L00196:
 	TST.W	D3
 	BEQ.W	L00199
 
-	CMPI.W	#$0053,_total-BASE(A4)	;83 objects _total
+	CMPI.W	#$0053,_total(A4)	;83 objects _total
 	BGE.B	L00199
 L00197:
 	PEA	-$000C(A5)
@@ -348,7 +348,7 @@ L00197:
 
 	MOVE.W	D0,-$0004(A5)
 	MOVE.W	-$0004(A5),D3
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 
 	MOVE.B	$00(A6,D3.W),D2
 	CMP.B	#$2E,D2		;'.' FLOOR
@@ -364,12 +364,12 @@ L00198:
 	MOVE.L	(A1)+,(A6)+
 
 	MOVE.L	A2,-(A7)
-	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
+	PEA	_lvl_obj(A4)	;_lvl_obj
 	JSR	__attach
 	ADDQ.W	#8,A7
 
 	MOVE.W	-$0004(A5),D3
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	MOVE.B	$000B(A2),$00(A6,D3.W)
 	BRA.W	L00196
 L00199:
@@ -399,7 +399,7 @@ L0019A:
 
 	MOVE.W	-$0006(A5),-$0002(A5)
 L0019B:
-	ADDQ.W	#1,_level-BASE(A4)	;_level
+	ADDQ.W	#1,_level(A4)	;_level
 L0019C:
 	MOVE.W	-$0002(A5),D3
 	SUBQ.W	#1,-$0002(A5)
@@ -418,7 +418,7 @@ L0019D:
 	JSR	_INDEXquick
 
 	MOVE.W	D0,-$0004(A5)
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 
 	MOVE.B	$00(A6,D0.W),D2
 	CMP.B	#$2E,D2		;'.' FLOOR
@@ -462,7 +462,7 @@ L001A0:
 	ADDQ.W	#4,A7
 	BRA.W	L0019C
 L001A2:
-	SUBQ.W	#1,_level-BASE(A4)	;_level
+	SUBQ.W	#1,_level(A4)	;_level
 
 	MOVEM.L	(A7)+,A2/A3
 	UNLK	A5

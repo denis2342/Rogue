@@ -62,8 +62,8 @@ L00934:
 	RTS
 
 L00935:
-	CLR.W	_quiet-BASE(A4)	;_quiet
-	CLR.W	_count-BASE(A4)	;_count
+	CLR.W	_quiet(A4)	;_quiet
+	CLR.W	_count(A4)	;_count
 
 	MOVE.L	A2,-(A7)
 	JSR	_start_run	;attacked monster wakes up and will run to you
@@ -78,7 +78,7 @@ L00935:
 	CMP.B	#$58,D3		;'X' xeroc
 	BEQ.B	L00937
 
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BNE.B	L00937
 
@@ -98,21 +98,21 @@ L00937:
 	EXT.W	D3
 	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
-	LEA	_monsters-BASE(A4),A6	;_monsters
+	LEA	_monsters(A4),A6	;_monsters
 	MOVE.L	$00(A6,D3.L),D5
 
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L00938
 
-	MOVE.L	_it-BASE(A4),D5	;_it
+	MOVE.L	_it(A4),D5	;_it
 L00938:
 	MOVEQ	#$00,D3
 	MOVE.B	$0013(A5),D3
 	MOVE.W	D3,-(A7)
 	MOVE.L	A3,-(A7)
 	MOVE.L	D4,-(A7)
-	PEA	_player-BASE(A4)	;_player + 0
+	PEA	_player(A4)	;_player + 0
 	JSR	_roll_em(PC)
 	LEA	$000E(A7),A7
 	TST.W	D0		;did we hit?
@@ -159,16 +159,16 @@ L0093B:
 	MOVE.L	D0,-(A7)
 	JSR	_discard
 	ADDQ.W	#4,A7
-	CLR.L	_cur_weapon-BASE(A4)	;_cur_weapon
+	CLR.L	_cur_weapon(A4)	;_cur_weapon
 L0093C:
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_CANHUH,D3	;C_CANHUH
 	BEQ.B	L0093D
 
 	MOVE.B	#$01,-$0001(A5)
 	MOVEA.L	D4,A6
 	ORI.W	#C_ISHUH,$0016(A6)	;C_ISHUH
-	ANDI.W	#~C_CANHUH,_player+22-BASE(A4)	;clear C_CANHUH,_player + 22 (flags)
+	ANDI.W	#~C_CANHUH,_player+22(A4)	;clear C_CANHUH,_player + 22 (flags)
 	PEA	L00947(PC)	;"your hands stop glowing red"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -186,7 +186,7 @@ L0093E:
 	TST.B	-$0001(A5)
 	BEQ.B	L0093F
 
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BNE.B	L0093F
 	MOVE.L	D5,-(A7)
@@ -246,15 +246,15 @@ _attack:
 	LINK	A5,#-$0004
 	MOVEM.L	D4/D5/A2/A3,-(A7)
 
-	CLR.B	_running-BASE(A4)	;_running
-	CLR.W	_quiet-BASE(A4)	;_quiet
-	CLR.W	_count-BASE(A4)	;_count
+	CLR.B	_running(A4)	;_running
+	CLR.W	_quiet(A4)	;_quiet
+	CLR.W	_count(A4)	;_count
 
 	MOVEA.L	$0008(A5),A6
 	CMP.B	#$58,$000F(A6)	;'X' xerox
 	BNE.B	1$
 
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BNE.B	1$
 
@@ -264,16 +264,16 @@ _attack:
 	EXT.W	D3
 	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
-	LEA	_monsters-BASE(A4),A6	;_monsters
+	LEA	_monsters(A4),A6	;_monsters
 	MOVEA.L	$00(A6,D3.L),A2
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L0094C
-	MOVEA.L	_it-BASE(A4),A2	;_it
+	MOVEA.L	_it(A4),A2	;_it
 L0094C:
 	CLR.L	-(A7)
 	CLR.L	-(A7)
-	PEA	_player-BASE(A4)	;_player + 0
+	PEA	_player(A4)	;_player + 0
 	MOVE.L	$0008(A5),-(A7)
 	JSR	_roll_em(PC)
 	LEA	$0010(A7),A7
@@ -284,7 +284,7 @@ L0094C:
 	MOVE.L	A2,-(A7)
 	JSR	_hit(PC)
 	ADDQ.W	#8,A7
-	CMPI.W	#$0000,_player+34-BASE(A4)	;_player + 34 (hp)
+	CMPI.W	#$0000,_player+34(A4)	;_player + 34 (hp)
 	BGT.B	L0094D
 
 	MOVEA.L	$0008(A5),A6
@@ -308,27 +308,27 @@ L0094D:
 ; aquator
 
 L0094E:
-	TST.L	_cur_armor-BASE(A4)	;_cur_armor
+	TST.L	_cur_armor(A4)	;_cur_armor
 	BEQ.B	L00952
 
-	MOVEA.L	_cur_armor-BASE(A4),A6	;_cur_armor
+	MOVEA.L	_cur_armor(A4),A6	;_cur_armor
 	CMPI.W	#$0009,$0026(A6)	;dont go lower than 2 (11-9)
 	BGE.B	L00952
 
 	CMP.W	#A_LEATHER,$0020(A6)
 	BEQ.B	L00952
 
-	TST.L	_cur_ring_1-BASE(A4)	;_cur_ring_1
+	TST.L	_cur_ring_1(A4)	;_cur_ring_1
 	BEQ.B	L0094F
 
-	MOVEA.L	_cur_ring_1-BASE(A4),A6	;_cur_ring_1
+	MOVEA.L	_cur_ring_1(A4),A6	;_cur_ring_1
 	CMPI.W	#R_SUSTARM,$0020(A6)
 	BEQ.B	L00950
 L0094F:
-	TST.L	_cur_ring_2-BASE(A4)	;_cur_ring_2
+	TST.L	_cur_ring_2(A4)	;_cur_ring_2
 	BEQ.B	L00951
 
-	MOVEA.L	_cur_ring_2-BASE(A4),A6	;_cur_ring_2
+	MOVEA.L	_cur_ring_2(A4),A6	;_cur_ring_2
 	CMPI.W	#R_SUSTARM,$0020(A6)
 	BNE.B	L00951
 L00950:
@@ -340,10 +340,10 @@ L00951:
 	PEA	L00978(PC)	;"your armor weakens, oh my!"
 	JSR	_msg
 	ADDQ.W	#4,A7
-	MOVEA.L	_cur_armor-BASE(A4),A6	;_cur_armor
+	MOVEA.L	_cur_armor(A4),A6	;_cur_armor
 	ADDQ.W	#1,$0026(A6)	;lower is better
 	MOVE.W	#$0001,-(A7)
-	MOVE.L	_cur_armor-BASE(A4),-(A7)	;_cur_armor
+	MOVE.L	_cur_armor(A4),-(A7)	;_cur_armor
 	JSR	_pack_name
 	ADDQ.W	#6,A7
 L00952:
@@ -352,10 +352,10 @@ L00952:
 ; ice monster
 
 L00953:
-	CMPI.W	#$0001,_no_command-BASE(A4)	;_no_command
+	CMPI.W	#$0001,_no_command(A4)	;_no_command
 	BLE.B	L00954
 
-	SUBQ.W	#1,_no_command-BASE(A4)	;_no_command
+	SUBQ.W	#1,_no_command(A4)	;_no_command
 L00954:
 	BRA.W	L00973
 
@@ -368,17 +368,17 @@ L00955:
 	TST.W	D0
 	BNE.B	L00959
 
-	TST.L	_cur_ring_1-BASE(A4)	;_cur_ring_1
+	TST.L	_cur_ring_1(A4)	;_cur_ring_1
 	BEQ.B	L00956
 
-	MOVEA.L	_cur_ring_1-BASE(A4),A6	;_cur_ring_1
+	MOVEA.L	_cur_ring_1(A4),A6	;_cur_ring_1
 	CMPI.W	#R_SUSTSTR,$0020(A6)
 	BEQ.B	L00958
 L00956:
-	TST.L	_cur_ring_2-BASE(A4)	;_cur_ring_2
+	TST.L	_cur_ring_2(A4)	;_cur_ring_2
 	BEQ.B	L00957
 
-	MOVEA.L	_cur_ring_2-BASE(A4),A6	;_cur_ring_2
+	MOVEA.L	_cur_ring_2(A4),A6	;_cur_ring_2
 	CMPI.W	#R_SUSTSTR,$0020(A6)
 	BEQ.B	L00958
 L00957:
@@ -429,29 +429,29 @@ L0095C:
 
 ; wraith drains experience/level
 
-	TST.L	_player+26-BASE(A4)	;_player + 26 (EXP)
+	TST.L	_player+26(A4)	;_player + 26 (EXP)
 	BNE.B	L0095D
 
 	MOVE.W	#$0057,-(A7)	;'W' killed by a wraith
 	JSR	_death
 	ADDQ.W	#2,A7
 L0095D:
-	SUBQ.W	#1,_player+30-BASE(A4)	;_player + 30 (rank)
-;	TST.W	_player+30-BASE(A4)	;_player + 30 (rank)
+	SUBQ.W	#1,_player+30(A4)	;_player + 30 (rank)
+;	TST.W	_player+30(A4)	;_player + 30 (rank)
 	BNE.B	L0095E
 
-	CLR.L	_player+26-BASE(A4)	;_player + 26 (EXP)
-	MOVE.W	#$0001,_player+30-BASE(A4)	;_player + 30 (rank)
+	CLR.L	_player+26(A4)	;_player + 26 (EXP)
+	MOVE.W	#$0001,_player+30(A4)	;_player + 30 (rank)
 	BRA.B	L0095F
 L0095E:
-	MOVE.W	_player+30-BASE(A4),D3	;_player + 30 (rank)
+	MOVE.W	_player+30(A4),D3	;_player + 30 (rank)
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	MOVEA.L	_e_levels-BASE(A4),A6	;_e_levels
+	MOVEA.L	_e_levels(A4),A6	;_e_levels
 	MOVE.L	$00(A6,D3.w),D2
 	ADDQ.L	#1,D2
-	MOVE.L	D2,_player+26-BASE(A4)	;_player + 26 (EXP)
+	MOVE.L	D2,_player+26(A4)	;_player + 26 (EXP)
 L0095F:
 	MOVE.W	#$000A,-(A7)	;1d10
 	MOVE.W	#$0001,-(A7)
@@ -469,14 +469,14 @@ L00960:
 	ADDQ.W	#4,A7
 	MOVE.W	D0,D4
 L00961:
-	SUB.W	D4,_player+34-BASE(A4)	;_player + 34 (hp)
-	SUB.W	D4,_player+40-BASE(A4)	;_player + 40 (max hp)
-	CMPI.W	#$0001,_player+34-BASE(A4)	;_player + 34 (hp)
+	SUB.W	D4,_player+34(A4)	;_player + 34 (hp)
+	SUB.W	D4,_player+40(A4)	;_player + 40 (max hp)
+	CMPI.W	#$0001,_player+34(A4)	;_player + 34 (hp)
 	BGE.B	L00962
 
-	MOVE.W	#$0001,_player+34-BASE(A4)	;_player + 34 (hp)
+	MOVE.W	#$0001,_player+34(A4)	;_player + 34 (hp)
 L00962:
-	CMPI.W	#$0001,_player+40-BASE(A4)	;_player + 40 (max hp)
+	CMPI.W	#$0001,_player+40(A4)	;_player + 40 (max hp)
 	BGE.B	L00963
 
 	MOVEA.L	$0008(A5),A6
@@ -495,9 +495,9 @@ L00964:
 ; venus flytrap
 
 L00965:
-	ORI.W	#C_ISHELD,_player+22-BASE(A4)	;C_ISHELD,_player + 22 (flags)
-	ADDQ.W	#1,_fung_hit-BASE(A4)	;_fung_hit
-	MOVE.W	_fung_hit-BASE(A4),-(A7)	;_fung_hit
+	ORI.W	#C_ISHELD,_player+22(A4)	;C_ISHELD,_player + 22 (flags)
+	ADDQ.W	#1,_fung_hit(A4)	;_fung_hit
+	MOVE.W	_fung_hit(A4),-(A7)	;_fung_hit
 	PEA	L0097D(PC)	;"%dd1"
 	MOVEA.L	$0008(A5),A6
 	MOVE.L	$0024(A6),-(A7)
@@ -508,7 +508,7 @@ L00965:
 ; leprechaun
 
 L00966:
-	move.w	_purse-BASE(A4),D4	;_purse
+	move.w	_purse(A4),D4	;_purse
 
 	bsr	goldcalc
 	sub.w	D0,D4
@@ -529,9 +529,9 @@ L00966:
 	sub.w	D0,D4
 
 L00967:
-;	tst.W	_purse-BASE(A4)	;_purse
+;	tst.W	_purse(A4)	;_purse
 ;	BGE.B	L00968
-;	CLR.W	_purse-BASE(A4)	;_purse
+;	CLR.W	_purse(A4)	;_purse
 
 	tst.w	D4
 	bge	L00968
@@ -545,11 +545,11 @@ L00968:
 	JSR	_remove(PC)	;removes monster from screen
 	LEA	$000C(A7),A7
 
-	MOVE.W	_purse-BASE(A4),D3	;_purse
+	MOVE.W	_purse(A4),D3	;_purse
 	CMP.w	D3,D4
 	BEQ.B	L00969
 
-	move.w	D4,_purse-BASE(A4)
+	move.w	D4,_purse(A4)
 	PEA	L0097E(PC)	;"your purse feels lighter"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -563,16 +563,16 @@ L0096A:
 	MOVE.L	A6,-$0004(A5)
 	MOVEQ	#$00,D4
 	MOVEQ	#$00,D5
-	MOVEA.L	_player+46-BASE(A4),A3	;_player + 46 (pack)
+	MOVEA.L	_player+46(A4),A3	;_player + 46 (pack)
 	BRA.B	L0096D
 L0096B:
-	CMPA.L	_cur_armor-BASE(A4),A3	;_cur_armor
+	CMPA.L	_cur_armor(A4),A3	;_cur_armor
 	BEQ.B	L0096C
-	CMPA.L	_cur_weapon-BASE(A4),A3	;_cur_weapon
+	CMPA.L	_cur_weapon(A4),A3	;_cur_weapon
 	BEQ.B	L0096C
-	CMPA.L	_cur_ring_1-BASE(A4),A3	;_cur_ring_1
+	CMPA.L	_cur_ring_1(A4),A3	;_cur_ring_1
 	BEQ.B	L0096C
-	CMPA.L	_cur_ring_2-BASE(A4),A3	;_cur_ring_2
+	CMPA.L	_cur_ring_2(A4),A3	;_cur_ring_2
 	BEQ.B	L0096C
 
 	MOVE.L	A3,-(A7)
@@ -678,9 +678,9 @@ L00974:
 	CMP.B	#$46,D3		;'F' venus flytrap
 	BNE.B	L00975
 
-	MOVE.W	_fung_hit-BASE(A4),D3	;_fung_hit
-	SUB.W	D3,_player+34-BASE(A4)	;_player + 34 (hp)
-	CMPI.W	#$0000,_player+34-BASE(A4)	;_player + 34 (hp)
+	MOVE.W	_fung_hit(A4),D3	;_fung_hit
+	SUB.W	D3,_player+34(A4)	;_player + 34 (hp)
+	CMPI.W	#$0000,_player+34(A4)	;_player + 34 (hp)
 	BGT.B	L00975
 
 ;	MOVEA.L	$0008(A5),A6
@@ -696,7 +696,7 @@ L00975:
 	ADDQ.W	#8,A7
 L00976:
 	JSR	_flush_type
-	CLR.W	_count-BASE(A4)	;_count
+	CLR.W	_count(A4)	;_count
 	JSR	_status
 
 	MOVEM.L	(A7)+,D4/D5/A2/A3
@@ -783,25 +783,25 @@ L00989:
 	MOVEA.L	$0010(A5),A6
 	ORI.W	#O_SLAYERUSED,$0028(A6)	;mark as used
 
-	TST.B	_terse-BASE(A4)	;_terse
+	TST.B	_terse(A4)	;_terse
 	BNE.B	L0098A
-	TST.B	_expert-BASE(A4)	;_expert
+	TST.B	_expert(A4)	;_expert
 	BEQ.B	L0098B
 L0098A:
 	LEA	L0099F(PC),A6	; $0
 	MOVE.L	A6,D3
 	BRA.B	L0098C
 L0098B:
-	MOVE.L	_intense-BASE(A4),D3	;_intense
+	MOVE.L	_intense(A4),D3	;_intense
 L0098C:
 	MOVE.L	D3,-(A7)
 	MOVEA.L	$0010(A5),A6
 	MOVE.W	$0020(A6),D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_w_names-BASE(A4),A6	;_w_names
+	LEA	_w_names(A4),A6	;_w_names
 	MOVE.L	$00(A6,D3.w),-(A7)
-	MOVE.L	_flash-BASE(A4),-(A7)	;_flash
+	MOVE.L	_flash(A4),-(A7)	;_flash
 	JSR	_msg
 	LEA	$000C(A7),A7
 
@@ -813,10 +813,10 @@ L0098D:
 	ADDQ.W	#4,D6		;+4 damage
 L0098E:
 	MOVEA.L	$0010(A5),A6
-	CMPA.L	_cur_weapon-BASE(A4),A6	;is the used weapon the _cur_weapon?
+	CMPA.L	_cur_weapon(A4),A6	;is the used weapon the _cur_weapon?
 	BNE.B	L00992
 
-	MOVE.L	_cur_ring_1-BASE(A4),D0	;get _cur_ring_1
+	MOVE.L	_cur_ring_1(A4),D0	;get _cur_ring_1
 	BEQ.B	L00990
 
 	MOVEA.L	D0,A6		;get _cur_ring_1
@@ -832,7 +832,7 @@ L0098F:
 	ADD.W	$0026(A6),D5	;add hit from ring
 
 L00990:
-	MOVE.L	_cur_ring_2-BASE(A4),D0	;get _cur_ring_2
+	MOVE.L	_cur_ring_2(A4),D0	;get _cur_ring_2
 	BEQ.B	L00992
 
 	MOVEA.L	D0,A6		;get _cur_ring_2
@@ -857,21 +857,21 @@ L00992:
 	AND.W	#O_ISMISL,D3	;O_ISMISL
 	BEQ.B	L00993
 
-	TST.L	_cur_weapon-BASE(A4)	;check _cur_weapon
+	TST.L	_cur_weapon(A4)	;check _cur_weapon
 	BEQ.B	L00993
 
 ;	MOVEA.L	$0010(A5),A6
 	MOVE.B	$0014(A6),D3	;get baseweapon
 	EXT.W	D3
 
-	MOVEA.L	_cur_weapon-BASE(A4),A6	;_cur_weapon
+	MOVEA.L	_cur_weapon(A4),A6	;_cur_weapon
 	CMP.W	$0020(A6),D3	;is it the corrct baseweapon?
 	BNE.B	L00993
 
 	MOVEA.L	$0010(A5),A6
 	MOVE.L	$001A(A6),-$0004(A5)	;get throw damage
 
-	MOVEA.L	_cur_weapon-BASE(A4),A6	;_cur_weapon
+	MOVEA.L	_cur_weapon(A4),A6	;_cur_weapon
 	ADD.W	$0022(A6),D5	;hplus
 	ADD.W	$0024(A6),D6	;dplus
 L00993:
@@ -886,7 +886,7 @@ L00993:
 ;	CMPI.W	#$0000,$0026(A6)
 	BGE.B	L00994
 
-	MOVE.L	_no_damage-BASE(A4),$0016(A6)	;_no_damage
+	MOVE.L	_no_damage(A4),$0016(A6)	;_no_damage
 	MOVE.L	$0016(A6),-$0004(A5)
 
 	CLR.W	$0024(A6)	;0 hit
@@ -901,17 +901,17 @@ L00994:
 	ADDQ.W	#4,D5		;hplus += 4
 L00995:
 	MOVE.W	$0008(A3),-$000A(A5)
-	LEA	_player+24-BASE(A4),A6	;_player + 24 (strength)
+	LEA	_player+24(A4),A6	;_player + 24 (strength)
 	CMPA.L	A6,A3
 	BNE.B	L00998
 
-	TST.L	_cur_armor-BASE(A4)	;_cur_armor
+	TST.L	_cur_armor(A4)	;_cur_armor
 	BEQ.B	L00996
 
-	MOVEA.L	_cur_armor-BASE(A4),A6	;_cur_armor
+	MOVEA.L	_cur_armor(A4),A6	;_cur_armor
 	MOVE.W	$0026(A6),-$000A(A5)
 L00996:
-	MOVE.L	_cur_ring_1-BASE(A4),D0	;_cur_ring_1
+	MOVE.L	_cur_ring_1(A4),D0	;_cur_ring_1
 	BEQ.B	L00997
 
 	MOVEA.L	D0,A6		;_cur_ring_1
@@ -921,7 +921,7 @@ L00996:
 	MOVE.W	$0026(A6),D3
 	SUB.W	D3,-$000A(A5)	;add extra armor from ring 1
 L00997:
-	MOVE.L	_cur_ring_2-BASE(A4),D0	;_cur_ring_2
+	MOVE.L	_cur_ring_2(A4),D0	;_cur_ring_2
 	BEQ.B	L00998
 
 	MOVEA.L	D0,A6		;_cur_ring_2
@@ -994,11 +994,11 @@ L00998:
 	ADD.W	D6,D0
 	MOVE.W	D0,D7
 	ADD.W	-$000C(A5),D7
-	LEA	_player-BASE(A4),A6	;_player + 0
+	LEA	_player(A4),A6	;_player + 0
 	CMPA.L	$000C(A5),A6	;same as creature who is fighting here?
 	BNE.B	L00999
 
-	CMPI.W	#$0001,_max_level-BASE(A4)	;_max_level
+	CMPI.W	#$0001,_max_level(A4)	;_max_level
 	BNE.B	L00999
 
 	ADDQ.W	#1,D7		;divide damage by half, if level == 1
@@ -1050,40 +1050,40 @@ _prname:
 	MOVE.L	A2,-(A7)
 
 	MOVEA.L	$0008(A5),A2
-	MOVEA.L	_tbuf-BASE(A4),A6	;_tbuf
+	MOVEA.L	_tbuf(A4),A6	;_tbuf
 	CLR.B	(A6)
 	MOVE.L	A2,D3
 	BNE.B	L009A0
 
-	MOVE.L	_you-BASE(A4),-(A7)	;_you
-	MOVE.L	_tbuf-BASE(A4),-(A7)	;_tbuf
+	MOVE.L	_you(A4),-(A7)	;_you
+	MOVE.L	_tbuf(A4),-(A7)	;_tbuf
 	JSR	_strcpy
 	ADDQ.W	#8,A7
 	BRA.B	L009A2
 L009A0:
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L009A1
 
-	MOVE.L	_it-BASE(A4),-(A7)	;_it
-	MOVE.L	_tbuf-BASE(A4),-(A7)	;_tbuf
+	MOVE.L	_it(A4),-(A7)	;_it
+	MOVE.L	_tbuf(A4),-(A7)	;_tbuf
 	JSR	_strcpy
 	ADDQ.W	#8,A7
 	BRA.B	L009A2
 L009A1:
 	PEA	L009A4(PC)
-	MOVE.L	_tbuf-BASE(A4),-(A7)	;_tbuf
+	MOVE.L	_tbuf(A4),-(A7)	;_tbuf
 	JSR	_strcpy
 	ADDQ.W	#8,A7
 	MOVE.L	A2,-(A7)
-	MOVE.L	_tbuf-BASE(A4),-(A7)	;_tbuf
+	MOVE.L	_tbuf(A4),-(A7)	;_tbuf
 	JSR	_strcat
 	ADDQ.W	#8,A7
 L009A2:
 	TST.B	$000D(A5)
 	BEQ.B	L009A3
 
-	MOVEA.L	_tbuf-BASE(A4),A6	;_tbuf
+	MOVEA.L	_tbuf(A4),A6	;_tbuf
 	MOVE.L	A6,-(A7)
 	MOVE.B	(A6),D3
 	MOVE.W	D3,-(A7)
@@ -1092,7 +1092,7 @@ L009A2:
 	MOVEA.L	(A7)+,A6
 	MOVE.B	D0,(A6)
 L009A3:
-	MOVE.L	_tbuf-BASE(A4),D0	;_tbuf
+	MOVE.L	_tbuf(A4),D0	;_tbuf
 
 	MOVEA.L	(A7)+,A2
 	UNLK	A5
@@ -1125,7 +1125,7 @@ _thunk:
 	MOVE.W	$0020(A2),D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_w_names-BASE(A4),A6	;_w_names
+	LEA	_w_names(A4),A6	;_w_names
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L009ED(PC)	;"the %s %s "
 	JSR	_addmsg
@@ -1137,11 +1137,11 @@ L009E9:
 	JSR	_addmsg
 	ADDQ.W	#8,A7
 L009EA:
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L009EB
 
-	MOVE.L	_it-BASE(A4),-(A7)	;_it
+	MOVE.L	_it(A4),-(A7)	;_it
 	JSR	_msg
 	ADDQ.W	#4,A7
 	BRA.B	L009EC
@@ -1180,10 +1180,10 @@ _hit:
 	JSR	_addmsg
 	ADDQ.W	#4,A7
 
-	TST.B	_terse-BASE(A4)	;_terse
+	TST.B	_terse(A4)	;_terse
 	BNE.B	L009A5
 
-	TST.B	_expert-BASE(A4)	;_expert
+	TST.B	_expert(A4)	;_expert
 	BEQ.B	L009A6
 L009A5:
 	MOVEQ	#$01,D0
@@ -1255,10 +1255,10 @@ _miss:
 	JSR	_addmsg
 	ADDQ.W	#4,A7
 
-	TST.B	_terse-BASE(A4)	;_terse
+	TST.B	_terse(A4)	;_terse
 	BNE.B	L009BB
 
-	TST.B	_expert-BASE(A4)	;_expert
+	TST.B	_expert(A4)	;_expert
 	BEQ.B	L009BC
 L009BB:
 	MOVEQ	#$01,D0
@@ -1334,33 +1334,33 @@ L00223:
 	PEA	L00225(PC)
 	JSR	_msg
 	ADDQ.W	#4,A7
-	PEA	_slime_split_tmp-BASE(A4)
+	PEA	_slime_split_tmp(A4)
 	MOVE.W	#$0053,-(A7)	;'S' slime
 	MOVE.L	A2,-(A7)
 	JSR	_new_monster
 	LEA	$000A(A7),A7
 
-	MOVE.W	_slime_split_tmp-BASE(A4),-(A7)
-	MOVE.W	_slime_split_tmp1-BASE(A4),-(A7)
+	MOVE.W	_slime_split_tmp(A4),-(A7)
+	MOVE.W	_slime_split_tmp1(A4),-(A7)
 	JSR	_cansee
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BEQ.B	L00224
 
-	MOVE.W	_slime_split_tmp-BASE(A4),d0
-	MOVE.W	_slime_split_tmp1-BASE(A4),d1
+	MOVE.W	_slime_split_tmp(A4),d0
+	MOVE.W	_slime_split_tmp1(A4),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	MOVE.B	$00(A6,D0.W),$0011(A2)
 
 	MOVEq	#$53,d2		;'S'
-	MOVE.W	_slime_split_tmp-BASE(A4),d1
-	MOVE.W	_slime_split_tmp1-BASE(A4),d0
+	MOVE.W	_slime_split_tmp(A4),d1
+	MOVE.W	_slime_split_tmp1(A4),d0
 	JSR	_mvaddchquick
 
 L00224:
-	PEA	_slime_split_tmp-BASE(A4)
+	PEA	_slime_split_tmp(A4)
 	JSR	_start_run
 	ADDQ.W	#4,A7
 	BRA.B	L00222
@@ -1440,7 +1440,7 @@ L0022A:
 	BRA.B	L0022C
 L0022B:
 	MOVEA.W	#$0001,A2
-	LEA	_slime_split_tmp-BASE(A4),A6
+	LEA	_slime_split_tmp(A4),A6
 	LEA	-$0004(A5),A1
 	MOVE.L	(A1)+,(A6)+
 L0022C:
@@ -1507,7 +1507,7 @@ L009F5:
 	MOVE.W	$0002(A2),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	CMP.b	#'#',$00(A6,D0.W)
 	BNE.B	L009F6
 
@@ -1543,7 +1543,7 @@ L009F7:
 L009F8:
 ;	JSR	_standend
 	MOVE.L	$000C(A5),-(A7)
-	PEA	_mlist-BASE(A4)	;_mlist
+	PEA	_mlist(A4)	;_mlist
 	JSR	__detach
 	ADDQ.W	#8,A7
 	MOVE.L	$000C(A5),-(A7)
@@ -1562,7 +1562,7 @@ _killed:
 
 	MOVEA.L	$0008(A5),A6
 	MOVE.L	$001A(A6),D3
-	ADD.L	D3,_player+26-BASE(A4)	;_player + 26 (EXP)
+	ADD.L	D3,_player+26(A4)	;_player + 26 (EXP)
 	MOVEA.L	$0008(A5),A6
 	MOVE.B	$000F(A6),D0
 	EXT.W	D0
@@ -1584,11 +1584,11 @@ L00A08:
 	PEA	L00A0B(PC)	;"you have defeated "
 	JSR	_addmsg
 	ADDQ.W	#4,A7
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L00A09
 
-	MOVE.L	_it-BASE(A4),-(A7)	;_it
+	MOVE.L	_it(A4),-(A7)	;_it
 	JSR	_msg
 	ADDQ.W	#4,A7
 	BRA.B	L00A0A
@@ -1598,7 +1598,7 @@ L00A09:
 	EXT.W	D3
 	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
-	LEA	_monsters-BASE(A4),A6	;_monsters
+	LEA	_monsters(A4),A6	;_monsters
 	MOVE.L	$00(A6,D3.L),-(A7)
 	PEA	L00A0C(PC)	;"the %s"
 	JSR	_msg
@@ -1613,7 +1613,7 @@ L00A04:
 ; killed a venus flytrap
 
 L00A02:
-	ANDI.W	#~C_ISHELD,_player+22-BASE(A4)	;clear C_ISHELD, _player + 22 (flags)
+	ANDI.W	#~C_ISHELD,_player+22(A4)	;clear C_ISHELD, _player + 22 (flags)
 	JSR	_f_restor
 	BRA.W	L00A08
 

@@ -132,13 +132,13 @@ _do_motion:
 	MOVEQ	#$22,D6
 	MOVEA.L	$0008(A5),A6
 	ADDA.L	#$0000000C,A6
-	LEA	_player+10-BASE(A4),A1	;_player + 10
+	LEA	_player+10(A4),A1	;_player + 10
 	MOVE.L	(A1)+,(A6)+
 L00604:
 	CMP.b	#$22,D6		;'"'
 	BEQ.B	L00605
 
-	PEA	_player+10-BASE(A4)	;_player + 10
+	PEA	_player+10(A4)	;_player + 10
 	MOVEA.L	$0008(A5),A6
 	PEA	$000C(A6)
 	JSR	__ce
@@ -195,7 +195,7 @@ L00605:
 	MOVE.W	$000E(A6),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	MOVE.B	$00(A6,D0.W),D6
 
 	MOVEA.L	$0008(A5),A6
@@ -223,27 +223,27 @@ L0060A:
 _fall:
 	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
-	PEA	_fall_pos-BASE(A4)
+	PEA	_fall_pos(A4)
 	MOVE.L	$0008(A5),-(A7)
 	JSR	_fallpos(PC)
 	ADDQ.W	#8,A7
 ;	EXT.L	D0
 	BRA.W	L00611
 L0060B:
-	MOVE.W	_fall_posx-BASE(A4),d0
-	MOVE.W	_fall_posy-BASE(A4),d1
+	MOVE.W	_fall_posx(A4),d0
+	MOVE.W	_fall_posy(A4),d1
 	JSR	_INDEXquick
 
 	MOVE.W	D0,D4
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	MOVEA.L	$0008(A5),A1
 	MOVE.B	$000B(A1),$00(A6,D4.W)
 	MOVEA.L	$0008(A5),A6
 	ADDA.L	#$0000000C,A6
-	LEA	_fall_pos-BASE(A4),A1
+	LEA	_fall_pos(A4),A1
 	MOVE.L	(A1)+,(A6)+
-	MOVE.W	_fall_posx-BASE(A4),-(A7)
-	MOVE.W	_fall_posy-BASE(A4),-(A7)
+	MOVE.W	_fall_posx(A4),-(A7)
+	MOVE.W	_fall_posy(A4),-(A7)
 	JSR	_cansee
 	ADDQ.W	#4,A7
 	TST.W	D0
@@ -255,7 +255,7 @@ L0060B:
 	MOVE.W	$000E(A6),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	__flags-BASE(A4),A6	;__flags
+	MOVEA.L	__flags(A4),A6	;__flags
 ;	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	AND.B	#F_SEEN,D3	;have seen this spot before
@@ -266,7 +266,7 @@ L0060B:
 ;	MOVE.W	$000E(A6),d1
 ;	JSR	_INDEXquick
 
-;	MOVEA.L	__flags-BASE(A4),A6	;__flags
+;	MOVEA.L	__flags(A4),A6	;__flags
 ;	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	AND.B	#F_DROPPED,D3	;object was dropped here
@@ -276,14 +276,14 @@ L0060C:
 L0060D:
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	$000A(A6),d2
-	MOVE.W	_fall_posx-BASE(A4),d1
-	MOVE.W	_fall_posy-BASE(A4),d0
+	MOVE.W	_fall_posx(A4),d1
+	MOVE.W	_fall_posy(A4),d0
 	JSR	_mvaddchquick
 
 	JSR	_standend
 
-	MOVE.W	_fall_posx-BASE(A4),d1
-	MOVE.W	_fall_posy-BASE(A4),d0
+	MOVE.W	_fall_posx(A4),d1
+	MOVE.W	_fall_posy(A4),d0
 	JSR	_moatquick
 
 	TST.L	D0
@@ -294,7 +294,7 @@ L0060D:
 	MOVE.B	$000B(A1),$0011(A6)
 L0060E:
 	MOVE.L	$0008(A5),-(A7)
-	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
+	PEA	_lvl_obj(A4)	;_lvl_obj
 	JSR	__attach
 	ADDQ.W	#8,A7
 L0060F:
@@ -353,7 +353,7 @@ _init_weapon:
 
 	mulu.w	#12,d0
 
-	LEA	_w_magic-BASE(A4),A6		;_w_magic
+	LEA	_w_magic(A4),A6		;_w_magic
 	MOVE.L	$00(A6,D0.w),$0016(A2)	;wield damage
 	MOVE.L	$04(A6,D0.w),$001A(A2)	;throw damage
 	MOVE.B	$08(A6,D0.w),$0014(A2)	;weapon needed for better throw
@@ -369,8 +369,8 @@ _init_weapon:
 	JSR	_rnd
 	ADDQ.W	#8,D0		; add 8 - 15
 
-	MOVE.W	_group-BASE(A4),d1	;get group for item
-	ADDQ.W	#1,_group-BASE(A4)	;_group++
+	MOVE.W	_group(A4),d1	;get group for item
+	ADDQ.W	#1,_group(A4)	;_group++
 
 1$	MOVE.W	d0,$001E(A2)	;one or the random number of items
 	MOVE.W	d1,$002C(A2)	;set group for item
@@ -399,14 +399,14 @@ _hit_monster:
 	BEQ.B	L00618
 
 	MOVEA.L	D0,A2
-	MOVE.W	D4,monster_posy-BASE(A4)
-	MOVE.W	D5,monster_posx-BASE(A4)
+	MOVE.W	D4,monster_posy(A4)
+	MOVE.W	D5,monster_posx(A4)
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	$000C(A5),-(A7)
 	MOVE.B	$000F(A2),D3
 	EXT.W	D3
 	MOVE.W	D3,-(A7)
-	PEA	monster_pos-BASE(A4)
+	PEA	monster_pos(A4)
 	JSR	_fight
 	LEA	$000C(A7),A7
 L00618:
@@ -431,7 +431,7 @@ _num:
 	PEA	L00621(PC)	;"+"
 2$
 	PEA	L0061F(PC)	;"%s%d"
-	PEA	_num_storage-BASE(A4)
+	PEA	_num_storage(A4)
 	JSR	_sprintf
 	LEA	$000E(A7),A7
 
@@ -447,16 +447,16 @@ _num:
 3$	PEA	L00621(PC)	;"+"
 
 4$	PEA	L00622(PC)	;",%s%d"
-	LEA	_num_storage-BASE(A4),A0
+	LEA	_num_storage(A4),A0
 	JSR	_strlenquick
 
-	LEA	_num_storage-BASE(A4),A6
+	LEA	_num_storage(A4),A6
 	ADD.W	D0,A6
 	MOVE.L	A6,-(A7)
 	JSR	_sprintf
 	LEA	$000E(A7),A7
 L0061E:
-	LEA	_num_storage-BASE(A4),A6
+	LEA	_num_storage(A4),A6
 	MOVE.L	A6,D0
 
 	UNLK	A5
@@ -475,13 +475,13 @@ _wield:
 	LINK	A5,#-$0000
 	MOVEM.L	A2/A3,-(A7)
 	MOVEA.L	$0008(A5),A2
-	MOVEA.L	_cur_weapon-BASE(A4),A3		;_cur_weapon
+	MOVEA.L	_cur_weapon(A4),A3		;_cur_weapon
 	MOVE.L	A3,-(A7)		;_cur_weapon
 	JSR	_can_drop(PC)
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BNE.B	L00626
-	MOVE.L	A3,_cur_weapon-BASE(A4)	;_cur_weapon
+	MOVE.L	A3,_cur_weapon(A4)	;_cur_weapon
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	A3,-(A7)	;_cur_weapon
 	JSR	_pack_name
@@ -493,7 +493,7 @@ L00625:
 
 L00626:
 	MOVE.W	#$0001,-(A7)
-	MOVE.L	A3,_cur_weapon-BASE(A4)	;_cur_weapon
+	MOVE.L	A3,_cur_weapon(A4)	;_cur_weapon
 	MOVE.L	A3,-(A7)
 	JSR	_pack_name
 	ADDQ.W	#6,A7
@@ -508,7 +508,7 @@ L00626:
 	TST.L	D0
 	BNE.B	L00628
 L00627:
-	CLR.B	_after-BASE(A4)	;_after
+	CLR.B	_after(A4)	;_after
 	BRA.B	L00625
 L00628:
 	MOVE.L	A2,-(A7)
@@ -534,7 +534,7 @@ L00629:
 	TST.W	D0
 	BNE.B	L00625
 
-	MOVE.L	A2,_cur_weapon-BASE(A4)	;_cur_weapon
+	MOVE.L	A2,_cur_weapon(A4)	;_cur_weapon
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	A3,-(A7)
 	JSR	_pack_name
@@ -582,10 +582,10 @@ L0062E:
 	SUBQ.W	#1,D5
 	BRA.W	L00636
 L0062F:
-	CMP.W	_player+12-BASE(A4),D4	;_player + 12
+	CMP.W	_player+12(A4),D4	;_player + 12
 	BNE.B	L00630
 
-	CMP.W	_player+10-BASE(A4),D5	;_player + 10
+	CMP.W	_player+10(A4),D5	;_player + 10
 	BEQ.W	L00635
 L00630:
 	MOVE.W	D5,-(A7)
@@ -599,7 +599,7 @@ L00630:
 	MOVE.W	D4,d1
 	JSR	_INDEXquick
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	MOVE.W	D3,D7

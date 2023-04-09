@@ -13,7 +13,7 @@ _nameof:
 	MOVE.W	$000C(A5),D4
 	MOVE.W	$0020(A2),D5
 	MOVEQ	#$00,D6
-	MOVE.L	_prbuf-BASE(A4),_nameof_tmp-BASE(A4)	;_prbuf
+	MOVE.L	_prbuf(A4),_nameof_tmp(A4)	;_prbuf
 
 	MOVE.L	A2,-(A7)
 	JSR	_typeof
@@ -34,14 +34,14 @@ L00ABB:
 	AND.W	#$0004,D3	;only the simple name?
 	BEQ.B	L00ABE
 
-	LEA	_s_know-BASE(A4),A6	;_s_know
+	LEA	_s_know(A4),A6	;_s_know
 	TST.B	$00(A6,D5.W)
 	BEQ.B	L00ABC
 
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#3,D3
-	LEA	_s_magic-BASE(A4),A6	;_s_magic
+	LEA	_s_magic(A4),A6	;_s_magic
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L00AF3(PC)	;"of %s"
 	JSR	_nmadd
@@ -50,13 +50,13 @@ L00ABB:
 L00ABC:
 	MOVE.W	D5,D3
 	MULU.W	#21,D3
-	LEA	_s_guess-BASE(A4),A6	;_s_guess
+	LEA	_s_guess(A4),A6	;_s_guess
 	TST.B	$00(A6,D3.L)
 	BEQ.B	L00ABD
 
 	MOVE.W	D5,D3
 	MULU.W	#21,D3
-;	LEA	_s_guess-BASE(A4),A6	;_s_guess
+;	LEA	_s_guess(A4),A6	;_s_guess
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 	PEA	L00AF4(PC)	;"called %s"
@@ -75,7 +75,7 @@ L00ABE:
 L00ABF:
 	MOVE.W	D5,D3
 	MULU.W	#21,D3
-	LEA	_s_names-BASE(A4),A6	;_s_names
+	LEA	_s_names(A4),A6	;_s_names
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 	PEA	L00AF5(PC)	;"titled '%s'"
@@ -97,19 +97,19 @@ L00AC1:
 	AND.W	#$0004,D3	;only the simple name?
 	BEQ.B	L00AC4
 
-	LEA	_p_know-BASE(A4),A6	;_p_know
+	LEA	_p_know(A4),A6	;_p_know
 	TST.B	$00(A6,D5.W)
 	BEQ.B	L00AC2
 
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_p_colors-BASE(A4),A6	;_p_colors
+	LEA	_p_colors(A4),A6	;_p_colors
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#3,D3
-	LEA	_p_magic-BASE(A4),A6	;_p_magic
+	LEA	_p_magic(A4),A6	;_p_magic
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L00AF7(PC)	;"of %s(%s)"
 	JSR	_nmadd
@@ -118,18 +118,18 @@ L00AC1:
 L00AC2:
 	MOVE.W	D5,D3
 	MULU.W	#21,D3
-	LEA	_p_guess-BASE(A4),A6	;_p_guess
+	LEA	_p_guess(A4),A6	;_p_guess
 	TST.B	$00(A6,D3.L)
 	BEQ.B	L00AC3
 
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_p_colors-BASE(A4),A6	;_p_colors
+	LEA	_p_colors(A4),A6	;_p_colors
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	D5,D3
 	MULU.W	#21,D3
-	LEA	_p_guess-BASE(A4),A6	;_p_guess
+	LEA	_p_guess(A4),A6	;_p_guess
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 	PEA	L00AF8(PC)	;"called %s(%s)"
@@ -142,11 +142,11 @@ L00AC4:
 	TST.W	D6
 	BEQ.B	L00AC5
 
-	MOVE.L	_prbuf-BASE(A4),_nameof_tmp-BASE(A4)	;_prbuf
+	MOVE.L	_prbuf(A4),_nameof_tmp(A4)	;_prbuf
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_p_colors-BASE(A4),A6	;_p_colors
+	LEA	_p_colors(A4),A6	;_p_colors
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L00AF9(PC)	;"%s potion"
 	PEA	-$0050(A5)
@@ -170,7 +170,7 @@ L00AC6:
 	AND.W	#$0002,D3	;with whats made of?
 	BEQ.B	L00AC7
 
-	PEA	_fruit-BASE(A4)
+	PEA	_fruit(A4)
 	MOVE.W	D4,-(A7)
 	MOVE.L	A2,-(A7)
 	JSR	_do_count(PC)
@@ -221,7 +221,7 @@ L00ACD:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_w_names-BASE(A4),A6	;_w_names
+	LEA	_w_names(A4),A6	;_w_names
 	MOVE.L	$00(A6,D3.w),-(A7)
 	JSR	_vowelstr(PC)
 	ADDQ.W	#4,A7
@@ -265,7 +265,7 @@ L00AD1:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_w_names-BASE(A4),A6	;_w_names
+	LEA	_w_names(A4),A6	;_w_names
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L00AFF(PC)	;"%s%s"
 	JSR	_nmadd
@@ -285,7 +285,7 @@ L00AD1:
 	EXT.W	D3
 	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
-	LEA	_monsters-BASE(A4),A6	;_monsters
+	LEA	_monsters(A4),A6	;_monsters
 	MOVE.L	$00(A6,D3.L),-(A7)
 	PEA	L00B02(PC)	;"of %s slaying"
 	JSR	_nmadd
@@ -307,14 +307,14 @@ L00AD3:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_a_names-BASE(A4),A6		;_a_names
+	LEA	_a_names(A4),A6		;_a_names
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	#$0061,-(A7)	;a armor type
 	CLR.W	-(A7)
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#1,D3
-	LEA	_a_class-BASE(A4),A6	;_a_class
+	LEA	_a_class(A4),A6	;_a_class
 	MOVE.W	$00(A6,D3.w),D2
 	SUB.W	$0026(A2),D2
 	MOVE.W	D2,-(A7)
@@ -341,7 +341,7 @@ L00AD5:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_a_names-BASE(A4),A6		;_a_names
+	LEA	_a_names(A4),A6		;_a_names
 	MOVE.L	$00(A6,D3.w),-(A7)
 	JSR	_nmadd
 	ADDQ.W	#4,A7
@@ -363,24 +363,24 @@ L00AD8:
 	AND.W	#$0004,D3	;only the simple name?
 	BEQ.W	L00ADC
 
-	LEA	_ws_know-BASE(A4),A6	;_ws_know
+	LEA	_ws_know(A4),A6	;_ws_know
 	TST.B	$00(A6,D5.W)
 	BEQ.B	L00AD9
 
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_ws_made-BASE(A4),A6	;_ws_made
+	LEA	_ws_made(A4),A6	;_ws_made
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#3,D3
-	LEA	_ws_magic-BASE(A4),A6	;_ws_magic
+	LEA	_ws_magic(A4),A6	;_ws_magic
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_ws_type-BASE(A4),A6	;_ws_type
+	LEA	_ws_type(A4),A6	;_ws_type
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L00B06(PC)	;"%s of %s(%s)"
 	PEA	-$0050(A5)
@@ -390,24 +390,24 @@ L00AD8:
 L00AD9:
 	MOVE.W	D5,D3
 	MULU.W	#21,D3
-	LEA	_ws_guess-BASE(A4),A6	;_ws_guess
+	LEA	_ws_guess(A4),A6	;_ws_guess
 	TST.B	$00(A6,D3.L)
 	BEQ.B	L00ADC
 
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_ws_made-BASE(A4),A6	;_ws_made
+	LEA	_ws_made(A4),A6	;_ws_made
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	D5,D3
 	MULU.W	#21,D3
-	LEA	_ws_guess-BASE(A4),A6	;_ws_guess
+	LEA	_ws_guess(A4),A6	;_ws_guess
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_ws_type-BASE(A4),A6	;_ws_type
+	LEA	_ws_type(A4),A6	;_ws_type
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L00B07(PC)	;"%s called %s(%s)"
 	PEA	-$0050(A5)
@@ -427,12 +427,12 @@ L00ADD:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_ws_type-BASE(A4),A6	;_ws_type
+	LEA	_ws_type(A4),A6	;_ws_type
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_ws_made-BASE(A4),A6	;_ws_made
+	LEA	_ws_made(A4),A6	;_ws_made
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L00B08(PC)	;"%s %s"
 	PEA	-$0050(A5)
@@ -443,7 +443,7 @@ L00ADE:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_ws_type-BASE(A4),A6	;_ws_type
+	LEA	_ws_type(A4),A6	;_ws_type
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	-$0050(A5)
 	JSR	_strcpy
@@ -474,19 +474,19 @@ L00AE1:
 	AND.W	#$0004,D3	;only the simple name?
 	BEQ.W	L00AE7
 
-	LEA	_r_know-BASE(A4),A6	;_r_know
+	LEA	_r_know(A4),A6	;_r_know
 	TST.B	$00(A6,D5.W)
 	BEQ.B	L00AE4
 
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_r_stones-BASE(A4),A6	;_r_stones
+	LEA	_r_stones(A4),A6	;_r_stones
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#3,D3
-	LEA	_r_magic-BASE(A4),A6
+	LEA	_r_magic(A4),A6
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	D4,D3
 	AND.W	#$0008,D3
@@ -510,18 +510,18 @@ L00AE3:
 L00AE4:
 	MOVE.W	D5,D3
 	MULU.W	#21,D3
-	LEA	_r_guess-BASE(A4),A6	;_r_guess
+	LEA	_r_guess(A4),A6	;_r_guess
 	TST.B	$00(A6,D3.L)
 	BEQ.B	L00AE7
 
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_r_stones-BASE(A4),A6	;_r_stones
+	LEA	_r_stones(A4),A6	;_r_stones
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	D5,D3
 	MULU.W	#21,D3
-	LEA	_r_guess-BASE(A4),A6	;_r_guess
+	LEA	_r_guess(A4),A6	;_r_guess
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 	PEA	L00B0B(PC)	;"ring called %s(%s)"
@@ -537,7 +537,7 @@ L00AE8:
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_r_stones-BASE(A4),A6	;_r_stones
+	LEA	_r_stones(A4),A6	;_r_stones
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L00B0C(PC)	;"%s ring"
 	PEA	-$0050(A5)
@@ -572,21 +572,21 @@ L00AEB:
 	AND.W	#$0001,D3	;should we print the wearing/worn text?
 	BEQ.B	L00AEF
 
-	CMPA.L	_cur_armor-BASE(A4),A2	;_cur_armor
+	CMPA.L	_cur_armor(A4),A2	;_cur_armor
 	BNE.B	L00AEC
 
 	PEA	L00B0D(PC)	;"(being worn)"
 	JSR	_nmadd
 	ADDQ.W	#4,A7
 L00AEC:
-	CMPA.L	_cur_weapon-BASE(A4),A2	;_cur_weapon
+	CMPA.L	_cur_weapon(A4),A2	;_cur_weapon
 	BNE.B	L00AED
 
 	PEA	L00B0E(PC)	;"(weapon in hand)"
 	JSR	_nmadd
 	ADDQ.W	#4,A7
 L00AED:
-	CMPA.L	_cur_ring_1-BASE(A4),A2	;_cur_ring_1
+	CMPA.L	_cur_ring_1(A4),A2	;_cur_ring_1
 	BNE.B	L00AEE
 
 	PEA	L00B0F(PC)	;"(on left hand)"
@@ -594,7 +594,7 @@ L00AED:
 	ADDQ.W	#4,A7
 	BRA.B	L00AEF
 L00AEE:
-	CMPA.L	_cur_ring_2-BASE(A4),A2	;_cur_ring_2
+	CMPA.L	_cur_ring_2(A4),A2	;_cur_ring_2
 	BNE.B	L00AEF
 
 	PEA	L00B10(PC)	;"(on right hand)"
@@ -605,16 +605,16 @@ L00AEF:
 	AND.W	#$0020,D3	;should we capitalize the word
 	BNE.B	L00AF0
 
-	MOVEA.L	_prbuf-BASE(A4),A6	;_prbuf
+	MOVEA.L	_prbuf(A4),A6	;_prbuf
 	MOVE.B	(A6),D0
 	JSR	_isupper
 
 	TST.W	D0
 	BEQ.B	L00AF0
 
-	MOVEA.L	_prbuf-BASE(A4),A6	;_prbuf
+	MOVEA.L	_prbuf(A4),A6	;_prbuf
 	MOVE.L	A6,-(A7)
-	MOVEA.L	_prbuf-BASE(A4),A6	;_prbuf
+	MOVEA.L	_prbuf(A4),A6	;_prbuf
 	MOVE.B	(A6),D3
 	MOVE.W	D3,-(A7)
 	JSR	_tolower
@@ -627,16 +627,16 @@ L00AF0:
 	AND.W	#$0020,D3	;should we capitalize the word
 	BEQ.B	L00AF1
 
-	MOVEA.L	_prbuf-BASE(A4),A6	;_prbuf
+	MOVEA.L	_prbuf(A4),A6	;_prbuf
 	MOVE.B	(A6),D0
 	JSR	_islower
 
 	TST.W	D0
 	BEQ.B	L00AF1
 
-	MOVEA.L	_prbuf-BASE(A4),A6	;_prbuf
+	MOVEA.L	_prbuf(A4),A6	;_prbuf
 	MOVE.L	A6,-(A7)
-	MOVEA.L	_prbuf-BASE(A4),A6	;_prbuf
+	MOVEA.L	_prbuf(A4),A6	;_prbuf
 	MOVE.B	(A6),D3
 	MOVE.W	D3,-(A7)
 	JSR	_toupper
@@ -645,7 +645,7 @@ L00AF0:
 	MOVEA.L	(A7)+,A6
 	MOVE.B	D0,(A6)
 L00AF1:
-	MOVE.L	_prbuf-BASE(A4),D0	;_prbuf
+	MOVE.L	_prbuf(A4),D0	;_prbuf
 	MOVEM.L	(A7)+,D4-D6/A2
 	UNLK	A5
 	RTS
@@ -692,7 +692,7 @@ _drop:
 
 	JSR	_INDEXplayer
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	MOVE.B	$00(A6,D0.W),D4
 	CMP.b	#$2E,D4		;'.'
 	BEQ.B	L0052D
@@ -747,23 +747,23 @@ L00532:
 	BRA.B	L0052C
 L00533:
 	MOVE.L	A3,-(A7)
-	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
+	PEA	_lvl_obj(A4)	;_lvl_obj
 	JSR	__attach
 	ADDQ.W	#8,A7
 
 	JSR	_INDEXplayer
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	MOVE.B	$000B(A3),$00(A6,D0.W)
 	MOVEA.L	A3,A6
 	ADDA.L	#$0000000C,A6
-	LEA	_player+10-BASE(A4),A1	;_player + 10
+	LEA	_player+10(A4),A1	;_player + 10
 	MOVE.L	(A1)+,(A6)+
 
 	CMPI.W	#$002C,$000A(A3)	;',' amulet of yendor
 	BNE.B	L00534
 
-	CLR.B	_amulet-BASE(A4)	;_amulet
+	CLR.B	_amulet(A4)	;_amulet
 L00534:
 	MOVE.W	#$001E,-(A7)
 	MOVE.L	A3,-(A7)
@@ -799,13 +799,13 @@ L00538:
 	RTS
 
 L00539:
-	CMPA.L	_cur_armor-BASE(A4),A2	;_cur_armor
+	CMPA.L	_cur_armor(A4),A2	;_cur_armor
 	BEQ.B	L0053A
-	CMPA.L	_cur_weapon-BASE(A4),A2	;_cur_weapon
+	CMPA.L	_cur_weapon(A4),A2	;_cur_weapon
 	BEQ.B	L0053A
-	CMPA.L	_cur_ring_1-BASE(A4),A2	;_cur_ring_1
+	CMPA.L	_cur_ring_1(A4),A2	;_cur_ring_1
 	BEQ.B	L0053A
-	CMPA.L	_cur_ring_2-BASE(A4),A2	;_cur_ring_2
+	CMPA.L	_cur_ring_2(A4),A2	;_cur_ring_2
 	BNE.B	L00538b
 L0053A:
 	MOVE.W	$0028(A2),D3
@@ -818,26 +818,26 @@ L0053A:
 	MOVEQ	#$00,D0
 	BRA.B	L00538
 L0053B:
-	CMPA.L	_cur_weapon-BASE(A4),A2	;_cur_weapon
+	CMPA.L	_cur_weapon(A4),A2	;_cur_weapon
 	BNE.B	L0053C
-	CLR.L	_cur_weapon-BASE(A4)	;_cur_weapon
+	CLR.L	_cur_weapon(A4)	;_cur_weapon
 	BRA.B	L00542
 L0053C:
-	CMPA.L	_cur_armor-BASE(A4),A2	;_cur_armor
+	CMPA.L	_cur_armor(A4),A2	;_cur_armor
 	BNE.B	L0053D
 	JSR	_waste_time
-	CLR.L	_cur_armor-BASE(A4)	;_cur_armor
+	CLR.L	_cur_armor(A4)	;_cur_armor
 	BRA.B	L00542
 L0053D:
 	MOVEQ	#$00,D3
-	LEA	_cur_ring_1-BASE(A4),A6	;_cur_ring_x
+	LEA	_cur_ring_1(A4),A6	;_cur_ring_x
 	CMPA.L	$00(A6,D3.w),A2	;ring slot 0
 	BEQ.B	L0053E
 	MOVEQ	#$04,D3
 	CMPA.L	$00(A6,D3.w),A2	;ring slot 1
 	BNE.B	L00538b
 L0053E:
-;	LEA	_cur_ring_1-BASE(A4),A6	;_cur_ring_x
+;	LEA	_cur_ring_1(A4),A6	;_cur_ring_x
 	CLR.L	$00(A6,D3.w)
 	MOVE.W	$0020(A2),D0	;ring id
 ;	EXT.L	D0
@@ -896,21 +896,21 @@ L00544:
 L00545:
 	CLR.W	$0024(A2)		;zero damage
 	CLR.W	$0022(A2)		;zero hit
-	MOVE.L	_no_damage-BASE(A4),$001A(A2)	;_no_damage throw damage
+	MOVE.L	_no_damage(A4),$001A(A2)	;_no_damage throw damage
 	MOVE.L	$001A(A2),$0016(A2)	;wield damage
 	MOVE.W	#$000B,$0026(A2)	;armor class base value
 	MOVE.W	#$0001,$001E(A2)	;one item
 	CLR.W	$002C(A2)		;no group
 	CLR.W	$0028(A2)		;flags like cursed and so on
 	CLR.B	$002A(A2)		;not a monster slayer
-	CMPI.W	#$0003,_no_food-BASE(A4)	;_no_food
+	CMPI.W	#$0003,_no_food(A4)	;_no_food
 	BLE.B	L00546
 
 	MOVEQ	#$02,D0
 	BRA.B	L00547
 L00546:
 	MOVE.W	#$0007,-(A7)
-	PEA	_things-BASE(A4)
+	PEA	_things(A4)
 	JSR	_pick_one(PC)
 	ADDQ.W	#6,A7
 L00547:
@@ -922,7 +922,7 @@ L00547:
 L00548:
 	MOVE.W	#$0021,$000A(A2)	;'!'
 	MOVE.W	#14,-(A7)
-	PEA	_p_magic-BASE(A4)	;_p_magic
+	PEA	_p_magic(A4)	;_p_magic
 	JSR	_pick_one(PC)
 	ADDQ.W	#6,A7
 	MOVE.W	D0,$0020(A2)
@@ -933,7 +933,7 @@ L00548:
 L00549:
 	MOVE.W	#$003F,$000A(A2)	;'?'
 	MOVE.W	#15,-(A7)
-	PEA	_s_magic-BASE(A4)
+	PEA	_s_magic(A4)
 	JSR	_pick_one(PC)
 	ADDQ.W	#6,A7
 	MOVE.W	D0,$0020(A2)
@@ -942,7 +942,7 @@ L00549:
 ; food
 
 L0054A:
-	CLR.W	_no_food-BASE(A4)	;_no_food
+	CLR.W	_no_food(A4)	;_no_food
 	MOVE.W	#$003A,$000A(A2)	;':'
 	MOVEq	#10,D0
 	JSR	_rnd
@@ -996,7 +996,7 @@ L00550:
 	MOVEQ	#$00,D4
 	MOVEq	#100,D0
 	JSR	_rnd
-	LEA	_a_chances-BASE(A4),A6	;_a_chances
+	LEA	_a_chances(A4),A6	;_a_chances
 	BRA.B	L00552
 L00551:
 	MOVE.W	D4,D3
@@ -1017,7 +1017,7 @@ L00553:
 	MOVE.W	D4,D3
 ;	EXT.L	D3
 	ASL.w	#1,D3
-	LEA	_a_class-BASE(A4),A6	;_a_class
+	LEA	_a_class(A4),A6	;_a_class
 	MOVE.W	$00(A6,D3.w),$0026(A2)
 
 	MOVEq	#100,D0
@@ -1049,7 +1049,7 @@ L00555:
 L00556:
 	MOVE.W	#$003D,$000A(A2)	;'='
 	MOVE.W	#14,-(A7)
-	PEA	_r_magic-BASE(A4)
+	PEA	_r_magic(A4)
 	JSR	_pick_one(PC)
 	ADDQ.W	#6,A7
 	MOVE.W	D0,$0020(A2)
@@ -1097,7 +1097,7 @@ L0055D:
 L0055E:
 	MOVE.W	#$002F,$000A(A2)	;'/' wand/staff type
 	MOVE.W	#$000E,-(A7)
-	PEA	_ws_magic-BASE(A4)	;_ws_magic
+	PEA	_ws_magic(A4)	;_ws_magic
 	BSR.B	_pick_one
 	ADDQ.W	#6,A7
 	MOVE.W	D0,$0020(A2)
@@ -1174,44 +1174,44 @@ _discovered:
 
 	MOVEq	#$0021,D7	;'!' potions
 	MOVEQ	#14,D5
-	LEA	_p_know-BASE(A4),A2	;_p_know
-	LEA	_p_guess-BASE(A4),A3	;_p_guess
+	LEA	_p_know(A4),A2	;_p_know
+	LEA	_p_guess(A4),A3	;_p_guess
 	BSR.B	_print_disc
 
 	PEA	L00567(PC)	;" ",0
-	PEA	_nullstr-BASE(A4)	;_nullstr
+	PEA	_nullstr(A4)	;_nullstr
 	JSR	_add_line(PC)
 	ADDQ.W	#8,A7
 
 	MOVEq	#$003F,D7	;'?' scrolls
 	MOVEQ	#15,D5
-	LEA	_s_know-BASE(A4),A2	;_s_know
-	LEA	_s_guess-BASE(A4),A3	;_s_guess
+	LEA	_s_know(A4),A2	;_s_know
+	LEA	_s_guess(A4),A3	;_s_guess
 	BSR.B	_print_disc
 
 	PEA	L00567(PC)	;" ",0
-	PEA	_nullstr-BASE(A4)	;_nullstr
+	PEA	_nullstr(A4)	;_nullstr
 	JSR	_add_line(PC)
 	ADDQ.W	#8,A7
 
 	MOVEq	#$003D,D7	;'=' rings
 	MOVEQ	#14,D5
-	LEA	_r_know-BASE(A4),A2	;_r_know
-	LEA	_r_guess-BASE(A4),A3	;_r_guess
+	LEA	_r_know(A4),A2	;_r_know
+	LEA	_r_guess(A4),A3	;_r_guess
 	BSR.B	_print_disc
 
 	PEA	L00567(PC)	;" ",0
-	PEA	_nullstr-BASE(A4)	;_nullstr
+	PEA	_nullstr(A4)	;_nullstr
 	JSR	_add_line(PC)
 	ADDQ.W	#8,A7
 
 	MOVEq	#$002F,D7	;'/' sticks
 	MOVEQ	#14,D5
-	LEA	_ws_know-BASE(A4),A2	;_ws_know
-	LEA	_ws_guess-BASE(A4),A3	;_ws_guess
+	LEA	_ws_know(A4),A2	;_ws_know
+	LEA	_ws_guess(A4),A3	;_ws_guess
 	BSR.B	_print_disc
 
-	PEA	_nullstr-BASE(A4)	;_nullstr
+	PEA	_nullstr(A4)	;_nullstr
 	JSR	_end_line(PC)
 	ADDQ.W	#4,A7
 
@@ -1227,18 +1227,18 @@ L00567:	dc.b	" ",0
 
 _print_disc:
 	MOVE.W	D5,-(A7)
-	PEA	disc_table-BASE(A4)
+	PEA	disc_table(A4)
 	JSR	_set_order(PC)
 	ADDQ.W	#6,A7
 
-	MOVE.W	#$0001,disc2-BASE(A4)
-	CLR.W	disc4-BASE(A4)
+	MOVE.W	#$0001,disc2(A4)
+	CLR.W	disc4(A4)
 	MOVEQ	#$00,D6		;discovery counter
 	BRA.B	L00572
 L00570:
 	MOVE.W	D5,D3
 	ASL.w	#1,D3
-	LEA	disc_table-BASE(A4),A6
+	LEA	disc_table(A4),A6
 	MOVE.W	$00(A6,D3.w),D2
 	TST.B	$00(A2,D2.W)	;did we knew it?
 	BNE.B	L00571
@@ -1247,15 +1247,15 @@ L00570:
 	TST.B	$00(A3,D2.L)	;did we guessed it?
 	BEQ.B	L00572
 L00571:
-	MOVE.W	D7,disc1-BASE(A4)
-	MOVE.W	$00(A6,D3.w),disc3-BASE(A4)
+	MOVE.W	D7,disc1(A4)
+	MOVE.W	$00(A6,D3.w),disc3(A4)
 	MOVE.W	#$0026,-(A7)
-	PEA	disc0-BASE(A4)
+	PEA	disc0(A4)
 	JSR	_nameof
 	ADDQ.W	#6,A7
 	MOVE.L	D0,-(A7)
 	PEA	L00575(PC)	;"%s"
-	PEA	_nullstr-BASE(A4)	;_nullstr
+	PEA	_nullstr(A4)	;_nullstr
 	JSR	_add_line(PC)
 	LEA	$000C(A7),A7
 	ADDQ.W	#1,D6		;increase discovery counter
@@ -1269,7 +1269,7 @@ L00572:
 	JSR	_nothing(PC)
 	ADDQ.W	#2,A7
 	MOVE.L	D0,-(A7)
-	PEA	_nullstr-BASE(A4)	;_nullstr
+	PEA	_nullstr(A4)	;_nullstr
 	JSR	_add_line(PC)
 	ADDQ.W	#8,A7
 L00574:
@@ -1325,7 +1325,7 @@ L00579:
 _clr_sel_chr:
 	CLR.W	d1
 	MOVEq	#$0015,d0
-	LEA	sel_chr_table-BASE(A4),a0
+	LEA	sel_chr_table(A4),a0
 	JSR	_memset
 
 	RTS
@@ -1333,7 +1333,7 @@ _clr_sel_chr:
 _sel_char:
 ;	LINK	A5,#-$0000
 	MOVE.W	$0004(A7),D3
-	LEA	sel_chr_table-BASE(A4),A6
+	LEA	sel_chr_table(A4),A6
 	MOVE.B	$00(A6,D3.W),D0
 ;	EXT.W	D0
 ;	UNLK	A5
@@ -1350,7 +1350,7 @@ _add_line:
 
 	MOVEQ	#$20,D4
 	JSR	_wtext
-	CMPI.W	#$0014,add_line_tmp-BASE(A4)
+	CMPI.W	#$0014,add_line_tmp(A4)
 	BGE.B	L0057A
 
 	TST.L	$000C(A5)
@@ -1374,7 +1374,7 @@ L0057B:
 	JSR	_addstr
 	ADDQ.W	#4,A7
 L0057C:
-	MOVE.B	#$01,_want_click-BASE(A4)	;_want_click
+	MOVE.B	#$01,_want_click(A4)	;_want_click
 L0057D:
 	JSR	_readchar
 	MOVE.W	D0,D4
@@ -1390,15 +1390,15 @@ L0057D:
 	TST.W	D0
 	BEQ.B	L0057D
 L0057E:
-	CLR.B	_want_click-BASE(A4)	;_want_click
-	MOVE.B	#$01,add_line_tmp2-BASE(A4)
-	CLR.W	add_line_tmp-BASE(A4)
+	CLR.B	_want_click(A4)	;_want_click
+	MOVE.B	#$01,add_line_tmp2(A4)
+	CLR.W	add_line_tmp(A4)
 	JSR	_clear
 L0057F:
 	TST.L	$000C(A5)
 	BEQ.B	L00582
 
-	TST.W	add_line_tmp-BASE(A4)
+	TST.W	add_line_tmp(A4)
 	BNE.B	L00580
 
 	MOVEA.L	$000C(A5),A6
@@ -1417,11 +1417,11 @@ L00580:
 	BNE.B	L00582
 
 	moveq	#0,d1
-	MOVE.W	add_line_tmp-BASE(A4),d0
+	MOVE.W	add_line_tmp(A4),d0
 	JSR	_movequick
 
-	MOVE.W	add_line_tmp-BASE(A4),D3
-	LEA	sel_chr_table-BASE(A4),A6
+	MOVE.W	add_line_tmp(A4),D3
+	LEA	sel_chr_table(A4),A6
 	MOVEA.L	$000C(A5),A1
 	MOVE.B	(A1),$00(A6,D3.W)
 	MOVE.L	$0010(A5),-(A7)
@@ -1437,12 +1437,12 @@ L00580:
 
 	MOVE.W	-$0004(A5),D3
 	ADDQ.W	#1,D3
-	MOVE.W	D3,add_line_tmp-BASE(A4)
+	MOVE.W	D3,add_line_tmp(A4)
 L00581:
-	MOVE.L	$000C(A5),add_line_tmp3-BASE(A4)
-	MOVE.L	$0010(A5),add_line_tmp4-BASE(A4)
+	MOVE.L	$000C(A5),add_line_tmp3(A4)
+	MOVE.L	$0010(A5),add_line_tmp4(A4)
 L00582:
-	TST.W	add_line_tmp-BASE(A4)
+	TST.W	add_line_tmp(A4)
 	BNE.B	L00583
 
 	JSR	_wmap
@@ -1469,8 +1469,8 @@ _end_line:
 	JSR	_add_line(PC)
 	ADDQ.W	#8,A7
 	MOVE.W	D0,D4
-	CLR.W	add_line_tmp-BASE(A4)
-	CLR.B	add_line_tmp2-BASE(A4)
+	CLR.W	add_line_tmp(A4)
+	CLR.B	add_line_tmp2(A4)
 	MOVE.W	D4,D0
 
 	MOVE.L	(A7)+,D4
@@ -1488,24 +1488,24 @@ _nothing:
 
 	MOVE.B	$0009(A5),D4
 	PEA	L0058D(PC)	;"Haven't discovered anything"
-	MOVE.L	_prbuf-BASE(A4),-(A7)	;_prbuf
+	MOVE.L	_prbuf(A4),-(A7)	;_prbuf
 	JSR	_sprintf
 	ADDQ.W	#8,A7
 
-	TST.B	_terse-BASE(A4)	;_terse
+	TST.B	_terse(A4)	;_terse
 	BEQ.B	L00586
 
 	PEA	L0058E(PC)	;"Nothing"
-	MOVE.L	_prbuf-BASE(A4),-(A7)	;_prbuf
+	MOVE.L	_prbuf(A4),-(A7)	;_prbuf
 	JSR	_sprintf
 	ADDQ.W	#8,A7
 L00586:
-	MOVE.L	_prbuf-BASE(A4),A0	;_prbuf
+	MOVE.L	_prbuf(A4),A0	;_prbuf
 	JSR	_strlenquick
 
 	EXT.L	D0
 	MOVEA.L	D0,A2
-	ADDA.L	_prbuf-BASE(A4),A2	;_prbuf
+	ADDA.L	_prbuf(A4),A2	;_prbuf
 	MOVEQ	#$00,D0
 	MOVE.B	D4,D0
 	BRA.B	L0058B
@@ -1537,7 +1537,7 @@ L0058C:
 
 	JSR	_sprintf
 	LEA	$000C(A7),A7
-	MOVE.L	_prbuf-BASE(A4),D0	;_prbuf
+	MOVE.L	_prbuf(A4),D0	;_prbuf
 
 	MOVEM.L	(A7)+,D4/A2/A3
 	UNLK	A5
@@ -1554,15 +1554,15 @@ L00593:	dc.b	" about any %ss",0
 _nmadd:
 	LINK	A5,#-$0000
 
-	MOVEA.L	_nameof_tmp-BASE(A4),A6
-	CMPA.L	_prbuf-BASE(A4),A6	;_prbuf
+	MOVEA.L	_nameof_tmp(A4),A6
+	CMPA.L	_prbuf(A4),A6	;_prbuf
 	BEQ.B	L00B11
 
-	MOVEA.L	_nameof_tmp-BASE(A4),A6
-	ADDQ.L	#1,_nameof_tmp-BASE(A4)
+	MOVEA.L	_nameof_tmp(A4),A6
+	ADDQ.L	#1,_nameof_tmp(A4)
 	MOVE.B	#$20,(A6)
 L00B11:
-	MOVEA.L	_nameof_tmp-BASE(A4),A6
+	MOVEA.L	_nameof_tmp(A4),A6
 	CLR.B	(A6)
 	MOVE.L	$0010(A5),-(A7)
 	MOVE.L	$000C(A5),-(A7)
@@ -1571,12 +1571,12 @@ L00B11:
 	JSR	_sprintf
 	LEA	$0010(A7),A7
 
-	MOVEA.L	_nameof_tmp-BASE(A4),A6
+	MOVEA.L	_nameof_tmp(A4),A6
 1$	TST.B	(A6)+
 	BNE.B	1$
 
 2$	SUBQ.L	#1,A6
-	MOVE.L	A6,_nameof_tmp-BASE(A4)
+	MOVE.L	A6,_nameof_tmp(A4)
 	UNLK	A5
 	RTS
 

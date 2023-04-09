@@ -7,7 +7,7 @@ _runners:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
 
-	MOVEA.L	_mlist-BASE(A4),A2	;_mlist
+	MOVEA.L	_mlist(A4),A2	;_mlist
 	BRA.W	L0023B
 L00234:
 	MOVE.W	$0016(A2),D3
@@ -27,8 +27,8 @@ L00234:
 
 	MOVE.W	$000A(A2),-(A7)
 	MOVE.W	$000C(A2),-(A7)
-	MOVE.W	_player+10-BASE(A4),-(A7)	;_player + 10
-	MOVE.W	_player+12-BASE(A4),-(A7)	;_player + 12
+	MOVE.W	_player+10(A4),-(A7)	;_player + 10
+	MOVE.W	_player+12(A4),-(A7)	;_player + 12
 	JSR	_DISTANCE
 	ADDQ.W	#8,A7
 
@@ -56,8 +56,8 @@ L00238:
 
 	MOVE.W	$000A(A2),-(A7)
 	MOVE.W	$000C(A2),-(A7)
-	MOVE.W	_player+10-BASE(A4),-(A7)	;_player + 10
-	MOVE.W	_player+12-BASE(A4),-(A7)	;_player + 12
+	MOVE.W	_player+10(A4),-(A7)	;_player + 10
+	MOVE.W	_player+12(A4),-(A7)	;_player + 12
 	JSR	_DISTANCE
 	ADDQ.W	#8,A7
 
@@ -100,12 +100,12 @@ _do_chase:
 	BNE.B	L0023C
 
 	MOVEA.L	$0008(A5),A6
-	LEA	_player+10-BASE(A4),A1	;_player + 10
+	LEA	_player+10(A4),A1	;_player + 10
 	MOVE.L	A1,$0012(A6)
 L0023C:
-	MOVE.L	_player+42-BASE(A4),D5	;_player + 42 (proom)
+	MOVE.L	_player+42(A4),D5	;_player + 42 (proom)
 	MOVEA.L	$0008(A5),A6
-	LEA	_player+10-BASE(A4),A1	;_player + 10
+	LEA	_player+10(A4),A1	;_player + 10
 	MOVEA.L	$0012(A6),A0
 	CMPA.L	A1,A0
 	BEQ.B	L0023D
@@ -129,7 +129,7 @@ L0023F:
 	MOVE.W	$000C(A6),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	cmp.b	#$2B,$00(A6,D0.W)	;'+' door
 	BNE.B	L00240
 
@@ -192,11 +192,11 @@ L00245:
 	MOVE.W	$000C(A6),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	__flags-BASE(A4),A6	;__flags
+	MOVEA.L	__flags(A4),A6	;__flags
 	MOVE.B	$00(A6,D0.W),D3
 	AND.W	#F_PNUM,D3	;get the room number
 	MULU.W	#66,D3
-	LEA	_passages-BASE(A4),A6	;_passages
+	LEA	_passages(A4),A6	;_passages
 	MOVE.L	D3,D4
 	ADD.L	A6,D4
 	CLR.B	-$0002(A5)
@@ -220,21 +220,21 @@ L00248:
 	MOVEA.L	$0008(A5),A6
 
 	MOVE.W	$000A(A6),D3
-	CMP.W	_player+10-BASE(A4),D3	;_player + 10
+	CMP.W	_player+10(A4),D3	;_player + 10
 	BEQ.B	L0024D
 
 	MOVE.W	$000C(A6),D3
-	CMP.W	_player+12-BASE(A4),D3	;_player + 12
+	CMP.W	_player+12(A4),D3	;_player + 12
 	BEQ.B	L0024D
 
-	SUB.W	_player+12-BASE(A4),D3	;_player + 12
+	SUB.W	_player+12(A4),D3	;_player + 12
 	BGE.B	L0024A
 
 	NEG.W	D3
 L0024A:
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	$000A(A6),D2
-	SUB.W	_player+10-BASE(A4),D2	;_player + 10
+	SUB.W	_player+10(A4),D2	;_player + 10
 	BGE.B	L0024B
 
 	NEG.W	D2
@@ -242,13 +242,13 @@ L0024A:
 L0024B:
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	$000A(A6),D2
-	SUB.W	_player+10-BASE(A4),D2	;_player + 10
+	SUB.W	_player+10(A4),D2	;_player + 10
 L0024C:
 	CMP.W	D2,D3
 	BNE.W	L00250
 L0024D:
-	MOVE.W	_player+10-BASE(A4),-(A7)	;_player + 10
-	MOVE.W	_player+12-BASE(A4),-(A7)	;_player + 12
+	MOVE.W	_player+10(A4),-(A7)	;_player + 10
+	MOVE.W	_player+12(A4),-(A7)	;_player + 12
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	$000A(A6),-(A7)
 	MOVE.W	$000C(A6),-(A7)
@@ -271,23 +271,23 @@ L0024D:
 	TST.W	D0		; 20% chance to get flame/frost
 	BNE.B	L00250
 
-	CLR.B	_running-BASE(A4)	;_running
+	CLR.B	_running(A4)	;_running
 	MOVEA.L	$0008(A5),A6
-	MOVE.W	_player+12-BASE(A4),D3	;_player + 12
+	MOVE.W	_player+12(A4),D3	;_player + 12
 	SUB.W	$000C(A6),D3
 	MOVE.W	D3,-(A7)
 	JSR	_sign
 	ADDQ.W	#2,A7
 
-	MOVE.W	D0,_delta+2-BASE(A4)	;_delta + 2
+	MOVE.W	D0,_delta+2(A4)	;_delta + 2
 	MOVEA.L	$0008(A5),A6
-	MOVE.W	_player+10-BASE(A4),D3	;_player + 10
+	MOVE.W	_player+10(A4),D3	;_player + 10
 	SUB.W	$000A(A6),D3
 	MOVE.W	D3,-(A7)
 	JSR	_sign
 	ADDQ.W	#2,A7
 
-	MOVE.W	D0,_delta+0-BASE(A4)	;_delta + 0
+	MOVE.W	D0,_delta+0(A4)	;_delta + 0
 	MOVEA.L	$0008(A5),A6
 	CMP.b	#$44,$000F(A6)	;'D' dragon
 	BNE.B	1$
@@ -297,7 +297,7 @@ L0024D:
 1$
 	PEA	L00264(PC)	;"frost"
 2$
-	PEA	_delta+0-BASE(A4)	;_delta + 0
+	PEA	_delta+0(A4)	;_delta + 0
 	PEA	$000A(A6)
 	JSR	_fire_bolt(PC)
 	LEA	$000C(A7),A7
@@ -307,8 +307,8 @@ L00250:
 	MOVE.L	$0008(A5),-(A7)
 	JSR	_chase(PC)
 	ADDQ.W	#8,A7
-	PEA	_player+10-BASE(A4)	;_player + 10
-	PEA	_ch_ret-BASE(A4)
+	PEA	_player+10(A4)	;_player + 10
+	PEA	_ch_ret(A4)
 	JSR	__ce
 	ADDQ.W	#8,A7
 	TST.W	D0
@@ -321,13 +321,13 @@ L00250:
 L00251:
 	MOVEA.L	$0008(A5),A6
 	MOVE.L	$0012(A6),-(A7)
-	PEA	_ch_ret-BASE(A4)
+	PEA	_ch_ret(A4)
 	JSR	__ce
 	ADDQ.W	#8,A7
 	TST.W	D0
 	BEQ.W	L00258
 
-	MOVEA.L	_lvl_obj-BASE(A4),A2	;_lvl_obj
+	MOVEA.L	_lvl_obj(A4),A2	;_lvl_obj
 	BRA.W	L00257
 L00252:
 	MOVEA.L	$0008(A5),A6
@@ -338,7 +338,7 @@ L00252:
 	BNE.W	L00256
 
 	MOVE.L	A2,-(A7)
-	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
+	PEA	_lvl_obj(A4)	;_lvl_obj
 	JSR	__detach
 	ADDQ.W	#8,A7
 	MOVE.L	A2,-(A7)
@@ -351,7 +351,7 @@ L00252:
 	MOVE.W	$000E(A2),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	MOVEA.L	$0008(A5),A1
 	MOVEA.L	$002A(A1),A0
 	MOVE.W	$000E(A0),D3
@@ -414,7 +414,7 @@ L00258:
 	MOVE.W	$000C(A6),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 
 	CMP.B	#$2E,$00(A6,D0.W)	;'.' FLOOR
 	BNE.B	L0025A
@@ -457,13 +457,13 @@ L0025C:
 	MOVEA.L	$0008(A5),A6
 	MOVEA.L	$002A(A6),A3
 	PEA	$000A(A6)
-	PEA	_ch_ret-BASE(A4)
+	PEA	_ch_ret(A4)
 	JSR	__ce
 	ADDQ.W	#8,A7
 	TST.W	D0
 	BNE.B	L0025F
 
-	PEA	_ch_ret-BASE(A4)
+	PEA	_ch_ret(A4)
 	JSR	_roomin(PC)
 	ADDQ.W	#4,A7
 
@@ -487,7 +487,7 @@ L0025C:
 L0025E:
 	MOVEA.L	$0008(A5),A6
 	ADDA.L	#$0000000A,A6
-	LEA	_ch_ret-BASE(A4),A1
+	LEA	_ch_ret(A4),A1
 	MOVE.L	(A1)+,(A6)+
 L0025F:
 	MOVE.L	$0008(A5),-(A7)
@@ -496,8 +496,8 @@ L0025F:
 	TST.W	D0
 	BEQ.B	L00260
 
-	MOVE.W	_ch_ret-BASE(A4),-(A7)
-	MOVE.W	_ch_ret+2-BASE(A4),-(A7)
+	MOVE.W	_ch_ret(A4),-(A7)
+	MOVE.W	_ch_ret+2(A4),-(A7)
 	JSR	_mvinch(PC)
 	ADDQ.W	#4,A7
 
@@ -505,8 +505,8 @@ L0025F:
 	MOVE.B	D0,$0011(A6)
 
 	MOVE.B	$0010(A6),D2
-	MOVE.W	_ch_ret-BASE(A4),d1
-	MOVE.W	_ch_ret+2-BASE(A4),d0
+	MOVE.W	_ch_ret(A4),d1
+	MOVE.W	_ch_ret+2(A4),d0
 	JSR	_mvaddchquick
 
 	BRA.B	L00261
@@ -542,7 +542,7 @@ _see_monst:
 	MOVE.L	A2,-(A7)
 
 	MOVEA.L	$0008(A5),A2
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L00266
 
@@ -558,12 +558,12 @@ L00266:
 	AND.W	#C_ISINVIS,D3	;C_ISINVIS
 	BEQ.B	L00267
 
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_CANSEE,D3	;C_CANSEE
 	BEQ.B	L00268
 L00267:
-	MOVE.W	_player+10-BASE(A4),-(A7)	;_player + 10
-	MOVE.W	_player+12-BASE(A4),-(A7)	;_player + 12
+	MOVE.W	_player+10(A4),-(A7)	;_player + 10
+	MOVE.W	_player+12(A4),-(A7)	;_player + 12
 	MOVE.W	$000A(A2),-(A7)
 	MOVE.W	$000C(A2),-(A7)
 	JSR	_DISTANCE
@@ -572,7 +572,7 @@ L00267:
 	BLT.B	L00269
 
 	MOVEA.L	$002A(A2),A6
-	CMPA.L	_player+42-BASE(A4),A6	;_player + 42 (proom)
+	CMPA.L	_player+42(A4),A6	;_player + 42 (proom)
 	BNE.B	L00268
 	MOVE.L	$002A(A2),-(A7)
 	JSR	_is_dark
@@ -666,7 +666,7 @@ L0026B:
 	TST.W	D0
 	BNE.B	L0026F
 L0026D:
-	PEA	_ch_ret-BASE(A4)
+	PEA	_ch_ret(A4)
 	MOVE.L	$0008(A5),-(A7)
 	JSR	_rndmove(PC)
 	ADDQ.W	#8,A7
@@ -674,8 +674,8 @@ L0026D:
 	MOVE.W	(A6),-(A7)
 ;	MOVEA.L	$000C(A5),A6
 	MOVE.W	$0002(A6),-(A7)
-	MOVE.W	_ch_ret-BASE(A4),-(A7)
-	MOVE.W	_ch_ret+2-BASE(A4),-(A7)
+	MOVE.W	_ch_ret(A4),-(A7)
+	MOVE.W	_ch_ret+2(A4),-(A7)
 	JSR	_DISTANCE
 	ADDQ.W	#8,A7
 	MOVE.W	D0,-$0002(A5)
@@ -702,7 +702,7 @@ L0026F:
 	ADDQ.W	#8,A7
 
 	MOVE.W	D0,-$0002(A5)
-	LEA	_ch_ret-BASE(A4),A6
+	LEA	_ch_ret(A4),A6
 	MOVEA.L	-$0008(A5),A1
 	MOVE.L	(A1)+,(A6)+
 	MOVEA.L	-$0008(A5),A6
@@ -757,7 +757,7 @@ L00271:
 	CMP.b	#$3F,D3		;'?' scrolls
 	BNE.B	L00276
 
-	MOVEA.L	_lvl_obj-BASE(A4),A2	;_lvl_obj
+	MOVEA.L	_lvl_obj(A4),A2	;_lvl_obj
 	BRA.B	L00274
 L00272:
 	CMP.W	$000E(A2),D5
@@ -792,7 +792,7 @@ L00276:
 	BGE.B	L00277
 
 	MOVE.W	#$0001,-$000C(A5)
-	LEA	_ch_ret-BASE(A4),A6
+	LEA	_ch_ret(A4),A6
 	LEA	-$0010(A5),A1
 	MOVE.L	(A1)+,(A6)+
 	MOVE.W	-$0004(A5),-$0002(A5)
@@ -808,7 +808,7 @@ L00277:
 	TST.W	D0
 	BNE.B	L00278
 
-	LEA	_ch_ret-BASE(A4),A6
+	LEA	_ch_ret(A4),A6
 	LEA	-$0010(A5),A1
 	MOVE.L	(A1)+,(A6)+
 	MOVE.W	-$0004(A5),-$0002(A5)
@@ -838,7 +838,7 @@ _roomin:
 	MOVEM.L	D4/A2/A3,-(A7)
 
 	MOVEA.L	$0008(A5),A2
-	LEA	_rooms-BASE(A4),A6	;_rooms
+	LEA	_rooms(A4),A6	;_rooms
 	MOVEA.L	A6,A3
 L0027C:
 	MOVE.W	(A3),D3
@@ -868,7 +868,7 @@ L0027D:
 
 L0027E:
 	ADDA.L	#66,A3
-	LEA	_rooms_last-BASE(A4),A6
+	LEA	_rooms_last(A4),A6
 	CMPA.L	A6,A3
 	BLS.B	L0027C
 
@@ -878,7 +878,7 @@ L0027E:
 
 	EXT.L	D0
 	MOVE.L	D0,D4
-	ADD.L	__flags-BASE(A4),D4	;__flags
+	ADD.L	__flags(A4),D4	;__flags
 	MOVEA.L	D4,A6
 	MOVE.B	(A6),D3
 	AND.W	#F_SEEN,D3	;F_SEEN
@@ -889,11 +889,11 @@ L0027E:
 	MOVE.B	(A6),D0
 	AND.W	#F_PNUM,D0
 	MULU.W	#66,D0
-	LEA	_passages-BASE(A4),A6	;_passages
+	LEA	_passages(A4),A6	;_passages
 	ADD.L	A6,D0
 	BRA.B	L0027D
 L0027F:
-	ADDQ.B	#1,_bailout-BASE(A4)	;_bailout
+	ADDQ.B	#1,_bailout(A4)	;_bailout
 	MOVE.W	(A2),-(A7)
 	MOVE.W	$0002(A2),-(A7)
 	PEA	L00280(PC)	;"Roomin bailout, in some bizzare place %d,%d"
@@ -934,7 +934,7 @@ L00283:
 	MOVE.W	$0002(A3),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	MOVE.W	D3,-(A7)
@@ -949,7 +949,7 @@ L00283:
 	MOVE.W	$0002(A2),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	MOVE.W	D3,-(A7)
@@ -971,7 +971,7 @@ _cansee:
 	MOVE.W	$000A(A5),D5
 
 	MOVEq	#C_ISBLIND,D3	;C_ISBLIND
-	AND.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	AND.W	_player+22(A4),D3	;_player + 22 (flags)
 	BEQ.B	L00287
 
 L00289:
@@ -982,8 +982,8 @@ L00286:
 	RTS
 
 L00287:
-	MOVE.W	_player+10-BASE(A4),-(A7)	;_player + 10
-	MOVE.W	_player+12-BASE(A4),-(A7)	;_player + 12
+	MOVE.W	_player+10(A4),-(A7)	;_player + 10
+	MOVE.W	_player+12(A4),-(A7)	;_player + 12
 	MOVE.W	D5,-(A7)
 	MOVE.W	D4,-(A7)
 	JSR	_DISTANCE
@@ -1001,7 +1001,7 @@ L00288:
 	PEA	-$0004(A5)
 	JSR	_roomin(PC)
 	ADDQ.W	#4,A7
-	CMP.L	_player+42-BASE(A4),D0	;_player + 42 (proom)
+	CMP.L	_player+42(A4),D0	;_player + 42 (proom)
 	BNE.B	L00289
 
 	MOVE.L	D0,-(A7)
@@ -1025,12 +1025,12 @@ _find_dest:
 	EXT.W	D3
 	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
-	LEA	_monsters-BASE(A4),A6	;_monsters
+	LEA	_monsters(A4),A6	;_monsters
 	TST.W	$04(A6,D3.L)
 	BLE.B	L0028B		;does the monster carry?
 
 	MOVEA.L	$002A(A2),A6
-	CMPA.L	_player+42-BASE(A4),A6	;_player + 42 (proom)
+	CMPA.L	_player+42(A4),A6	;_player + 42 (proom)
 	BEQ.B	L0028B
 
 	MOVE.L	A2,-(A7)
@@ -1039,7 +1039,7 @@ _find_dest:
 	TST.W	D0
 	BEQ.B	L0028D
 L0028B:
-	LEA	_player+10-BASE(A4),A6	;_player + 10
+	LEA	_player+10(A4),A6	;_player + 10
 	MOVE.L	A6,D0
 L0028C:
 	MOVEM.L	(A7)+,D4/D5/A2/A3
@@ -1048,7 +1048,7 @@ L0028C:
 
 L0028D:
 	MOVE.L	$002A(A2),D5
-	MOVEA.L	_lvl_obj-BASE(A4),A3	;_lvl_obj
+	MOVEA.L	_lvl_obj(A4),A3	;_lvl_obj
 	BRA.B	L00294
 L0028E:
 	CMPI.W	#$003F,$000A(A3)	;'?' scroll
@@ -1068,7 +1068,7 @@ L0028F:
 	CMP.W	D4,D0
 	BGE.B	L00293
 
-	MOVEA.L	_mlist-BASE(A4),A2	;_mlist
+	MOVEA.L	_mlist(A4),A2	;_mlist
 	BRA.B	L00291
 L00290:
 	MOVEA.L	A3,A6
@@ -1094,7 +1094,7 @@ L00294:
 	MOVE.L	A3,D3
 	BNE.B	L0028E
 
-	LEA	_player+10-BASE(A4),A6	;_player + 10
+	LEA	_player+10(A4),A6	;_player + 10
 	MOVE.L	A6,D0
 	BRA.B	L0028C
 

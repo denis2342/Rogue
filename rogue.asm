@@ -12,9 +12,9 @@
 
  include 'rogue.i'
 
-BASE equ __Dorg
-
 	SECTION "",CODE       ;000 084512
+
+ basereg __Dorg,a4
 
 __Corg:
 	JMP	begin
@@ -30,8 +30,8 @@ L00001:	dc.b	"staff",0,0
 _init_player:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
-	LEA	_player+24-BASE(A4),A6	;_player + 24 (strength)
-	LEA	_max_stats+0-BASE(A4),A1	;_max_stats + 0 (max strength)
+	LEA	_player+24(A4),A6	;_player + 24 (strength)
+	LEA	_max_stats+0(A4),A1	;_max_stats + 0 (max strength)
 	MOVE.L	(A1)+,(A6)+
 	MOVE.L	(A1)+,(A6)+
 	MOVE.L	(A1)+,(A6)+
@@ -40,16 +40,16 @@ _init_player:
 
 	MOVE.W	#$0514,D0	; we get 1300 food +-10%
 	JSR	_spread
-	MOVE.W	D0,_food_left-BASE(A4)	;_food_left
+	MOVE.W	D0,_food_left(A4)	;_food_left
 
 	CLR.W	d1
 	MOVE.W	#$1036,d0	;4150
-	MOVE.L	__things-BASE(A4),a0	;__things
+	MOVE.L	__things(A4),a0	;__things
 	JSR	_memset
 
 	CLR.W	d1
 	MOVE.W	#$00A6,d0	;166
-	MOVE.L	__t_alloc-BASE(A4),a0	;__t_alloc
+	MOVE.L	__t_alloc(A4),a0	;__t_alloc
 	JSR	_memset
 
 	JSR	_new_item
@@ -66,7 +66,7 @@ _init_player:
 	MOVE.L	A2,-(A7)
 	JSR	_add_pack
 	ADDQ.W	#6,A7
-	MOVE.L	A2,_cur_weapon-BASE(A4)	;_cur_weapon
+	MOVE.L	A2,_cur_weapon(A4)	;_cur_weapon
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	A2,-(A7)
 	JSR	_pack_name
@@ -109,13 +109,13 @@ _init_player:
 	MOVEA.L	D0,A2
 	MOVE.W	#$0062,$000A(A2)	;b = ring mail
 	MOVE.W	#$0001,$0020(A2)	;ring mail
-	MOVE.W	_a_class+2-BASE(A4),D3		;_a_class + 2
+	MOVE.W	_a_class+2(A4),D3		;_a_class + 2
 	SUBQ.W	#1,D3			;make the ring mail +1
 	MOVE.W	D3,$0026(A2)
 	ORI.W	#O_ISKNOW,$0028(A2)
 	MOVE.W	#$0001,$001E(A2)	;one armor
 	CLR.W	$002C(A2)	;group 0
-	MOVE.L	A2,_cur_armor-BASE(A4)	;_cur_armor
+	MOVE.L	A2,_cur_armor(A4)	;_cur_armor
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	A2,-(A7)
 	JSR	_add_pack
@@ -254,8 +254,8 @@ L00070:	dc.b	"zinc",0
 _init_things:
 	MOVE.L	A2,-(A7)
 
-	LEA	_things+8-BASE(A4),A2	;_things + 8
-	LEA	_things+48-BASE(A4),A6	;_things + 48
+	LEA	_things+8(A4),A2	;_things + 8
+	LEA	_things+48(A4),A6	;_things + 48
 
 1$	MOVE.W	-$0004(A2),D3
 	ADD.W	D3,$0004(A2)
@@ -297,13 +297,13 @@ L00074:
 	MOVE.W	D4,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_p_colors-BASE(A4),A6	;_p_colors
+	LEA	_p_colors(A4),A6	;_p_colors
 	MOVE.W	D0,D2
 ;	EXT.L	D2
 	ASL.w	#2,D2
-	LEA	_rainbow-BASE(A4),A1	;_rainbow
+	LEA	_rainbow(A4),A1	;_rainbow
 	MOVE.L	$00(A1,D2.w),$00(A6,D3.w)
-	LEA	_p_know-BASE(A4),A6	;_p_know
+	LEA	_p_know(A4),A6	;_p_know
 	CLR.B	$00(A6,D4.W)
 	CMP.W	#$0000,D4
 	BLE.B	L00075
@@ -311,13 +311,13 @@ L00074:
 	MOVE.W	D4,D3
 ;	EXT.L	D3
 	ASL.w	#3,D3
-	LEA	_p_magic+4-BASE(A4),A6	;_p_magic + 4
+	LEA	_p_magic+4(A4),A6	;_p_magic + 4
 
 	MOVE.W	D4,D2
 	SUBQ.W	#1,D2
 ;	EXT.L	D2
 	ASL.w	#3,D2
-	LEA	_p_magic+4-BASE(A4),A1	;_p_magic + 4
+	LEA	_p_magic+4(A4),A1	;_p_magic + 4
 
 	MOVE.W	$00(A1,D2.w),D1
 	ADD.W	D1,$00(A6,D3.w)
@@ -342,28 +342,28 @@ _rchr:
 	RTS
 
 _getsyl:
-	CLR.B	_getsyl_tmp+3-BASE(A4)	;zero terminated string
+	CLR.B	_getsyl_tmp+3(A4)	;zero terminated string
 
 	move.w	#21,-(a7)
 	PEA	_consonants
 	bsr	_rchr
 	ADDQ.W	#6,A7
 
-	MOVE.B	D0,_getsyl_tmp+2-BASE(A4)
+	MOVE.B	D0,_getsyl_tmp+2(A4)
 
 	move.w	#5,-(a7)
 	PEA	_vowels
 	bsr	_rchr
 	ADDQ.W	#6,A7
 
-	MOVE.B	D0,_getsyl_tmp+1-BASE(A4)
+	MOVE.B	D0,_getsyl_tmp+1(A4)
 
 	move.w	#21,-(a7)
 	PEA	_consonants
 	bsr	_rchr
 	ADDQ.W	#6,A7
 
-	LEA	_getsyl_tmp-BASE(A4),A3
+	LEA	_getsyl_tmp(A4),A3
 	MOVE.B	D0,(A3)
 
 	RTS
@@ -378,8 +378,8 @@ _init_names:
 	MOVEM.L	A2/A3,-(A7)
 	CLR.W	-$0004(A5)
 L00076:
-	MOVEA.L	_prbuf-BASE(A4),A2	;_prbuf
-	TST.B	_terse-BASE(A4)	;_terse
+	MOVEA.L	_prbuf(A4),A2	;_prbuf
+	TST.B	_terse(A4)	;_terse
 	BEQ.B	L00077
 	MOVEQ	#$03,D3
 	BRA.B	L00078
@@ -414,7 +414,7 @@ L0007A:
 	moveq	#3,d0
 
 	ADD.L	A2,D0
-	MOVEA.L	_prbuf-BASE(A4),A6	;_prbuf
+	MOVEA.L	_prbuf(A4),A6	;_prbuf
 	ADDA.L	#$00000013,A6
 	CMP.L	A6,D0
 	BLS.B	L0007B
@@ -437,18 +437,18 @@ L0007E:
 	bne	1$
 	clr.b	(a2)
 
-1$	MOVEA.L	_prbuf-BASE(A4),A6	;_prbuf
+1$	MOVEA.L	_prbuf(A4),A6	;_prbuf
 	CLR.B	$0014(A6)
 	MOVE.W	-$0004(A5),D3
 
-	LEA	_s_know-BASE(A4),A6	;_s_know
+	LEA	_s_know(A4),A6	;_s_know
 	CLR.B	$00(A6,D3.W)	;mark as unknown
 
-	MOVE.L	_prbuf-BASE(A4),-(A7)	;_prbuf
+	MOVE.L	_prbuf(A4),-(A7)	;_prbuf
 
 	MOVE.W	-$0004(A5),D3
 	MULU.W	#21,D3
-	LEA	_s_names-BASE(A4),A6	;_s_names
+	LEA	_s_names(A4),A6	;_s_names
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 
@@ -458,7 +458,7 @@ L0007E:
 	CMPI.W	#$0000,-$0004(A5)
 	BLE.B	L0007F
 
-	LEA	_s_magic+4-BASE(A4),A6	;_s_magic + 4
+	LEA	_s_magic+4(A4),A6	;_s_magic + 4
 	MOVE.W	-$0004(A5),D3
 	MOVE.W	D3,D2
 	SUBQ.W	#1,D2
@@ -505,17 +505,17 @@ L00082:
 	MOVE.W	D4,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_r_stones-BASE(A4),A6	;_r_stones
+	LEA	_r_stones(A4),A6	;_r_stones
 	MOVE.W	D5,D2
 	MULU.W	#$0006,D2
-	LEA	_stones-BASE(A4),A1	;_stones
+	LEA	_stones(A4),A1	;_stones
 	MOVE.L	$00(A1,D2.L),$00(A6,D3.w)
-	LEA	_r_know-BASE(A4),A6	;_r_know
+	LEA	_r_know(A4),A6	;_r_know
 	CLR.B	$00(A6,D4.W)
 	CMP.W	#$0000,D4
 	BLE.B	L00083
 
-	LEA	_r_magic+4-BASE(A4),A6	;_r_magic + 4
+	LEA	_r_magic+4(A4),A6	;_r_magic + 4
 	MOVE.W	D4,D3
 	MOVE.W	D4,D2
 	SUBQ.W	#1,D2
@@ -527,10 +527,10 @@ L00083:
 	MOVE.W	D4,D3
 ;	EXT.L	D3
 	ASL.w	#3,D3
-	LEA	_r_magic+6-BASE(A4),A6	;_r_magic + 6
+	LEA	_r_magic+6(A4),A6	;_r_magic + 6
 	MOVE.W	D5,D2
 	MULU.W	#6,D2
-	LEA	_stones+4-BASE(A4),A1	;_stones + 4
+	LEA	_stones+4(A4),A1	;_stones + 4
 	MOVE.W	$00(A1,D2.L),D1
 	ADD.W	D1,$00(A6,D3.w)
 
@@ -584,12 +584,12 @@ L00088:
 	MOVE.W	D4,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_ws_type-BASE(A4),A6	;_ws_type
-	MOVE.L	_ws_wand-BASE(A4),$00(A6,D3.w)	;_ws_wand
+	LEA	_ws_type(A4),A6	;_ws_type
+	MOVE.L	_ws_wand(A4),$00(A6,D3.w)	;_ws_wand
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_metal-BASE(A4),A6	;_metal
+	LEA	_metal(A4),A6	;_metal
 	MOVEA.L	$00(A6,D3.w),A2
 	LEA	-$0016(A5),A6
 	ST	$00(A6,D5.W)
@@ -607,12 +607,12 @@ L0008A:
 	MOVE.W	D4,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_ws_type-BASE(A4),A6	;_ws_type
-	MOVE.L	_ws_staff-BASE(A4),$00(A6,D3.w)	;_ws_staff
+	LEA	_ws_type(A4),A6	;_ws_type
+	MOVE.L	_ws_staff(A4),$00(A6,D3.w)	;_ws_staff
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_wood-BASE(A4),A6	;_wood
+	LEA	_wood(A4),A6	;_wood
 	MOVEA.L	$00(A6,D3.w),A2
 	LEA	-$0037(A5),A6
 	ST	$00(A6,D5.W)
@@ -623,9 +623,9 @@ L0008C:
 	MOVE.W	D4,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_ws_made-BASE(A4),A6	;_ws_made
+	LEA	_ws_made(A4),A6	;_ws_made
 	MOVE.L	A2,$00(A6,D3.w)
-	LEA	_ws_know-BASE(A4),A6	;_ws_know
+	LEA	_ws_know(A4),A6	;_ws_know
 	CLR.B	$00(A6,D4.W)
 	CMP.W	#$0000,D4
 	BLE.B	L0008D
@@ -633,12 +633,12 @@ L0008C:
 	MOVE.W	D4,D3
 ;	EXT.L	D3
 	ASL.w	#3,D3
-	LEA	_ws_magic+4-BASE(A4),A6	;_ws_magic + 4
+	LEA	_ws_magic+4(A4),A6	;_ws_magic + 4
 	MOVE.W	D4,D2
 	SUBQ.W	#1,D2
 ;	EXT.L	D2
 	ASL.w	#3,D2
-	LEA	_ws_magic+4-BASE(A4),A1	;_ws_magic + 4
+	LEA	_ws_magic+4(A4),A1	;_ws_magic + 4
 	MOVE.W	$00(A1,D2.w),D1
 	ADD.W	D1,$00(A6,D3.w)
 L0008D:
@@ -657,57 +657,57 @@ _init_ds:
 	MOVE.W	#1760,-(A7)
 	JSR	_newmem
 	ADDQ.W	#2,A7
-	MOVE.L	D0,__flags-BASE(A4)	;__flags
+	MOVE.L	D0,__flags(A4)	;__flags
 
 	MOVE.W	#$06E0,-(A7)	;1760
 	JSR	_newmem
 	ADDQ.W	#2,A7
-	MOVE.L	D0,__level-BASE(A4)	;__level
+	MOVE.L	D0,__level(A4)	;__level
 
 	MOVE.W	#$1036,-(A7)	;4150
 	JSR	_newmem
 	ADDQ.W	#2,A7
-	MOVE.L	D0,__things-BASE(A4)	;__things
+	MOVE.L	D0,__things(A4)	;__things
 
 	MOVE.W	#$00A6,-(A7)
 	JSR	_newmem
 	ADDQ.W	#2,A7
-	MOVE.L	D0,__t_alloc-BASE(A4)	;__t_alloc
+	MOVE.L	D0,__t_alloc(A4)	;__t_alloc
 
 	MOVE.W	#$0050,-(A7)
 	JSR	_newmem
 	ADDQ.W	#2,A7
-	MOVE.L	D0,_tbuf-BASE(A4)	;_tbuf
+	MOVE.L	D0,_tbuf(A4)	;_tbuf
 
 	MOVE.W	#$0080,-(A7)
 	JSR	_newmem
 	ADDQ.W	#2,A7
-	MOVE.L	D0,_msgbuf-BASE(A4)	;_msgbuf
+	MOVE.L	D0,_msgbuf(A4)	;_msgbuf
 
 	MOVE.W	#$0050,-(A7)
 	JSR	_newmem
 	ADDQ.W	#2,A7
-	MOVE.L	D0,_prbuf-BASE(A4)	_prbuf
+	MOVE.L	D0,_prbuf(A4)	_prbuf
 
 	MOVE.W	#$0006,-(A7)
 	JSR	_newmem
 	ADDQ.W	#2,A7
-	MOVE.L	D0,_ring_buf-BASE(A4)	;_ring_buf
+	MOVE.L	D0,_ring_buf(A4)	;_ring_buf
 
-	MOVE.W	_nlevels-BASE(A4),D3	;_nlevels 23
+	MOVE.W	_nlevels(A4),D3	;_nlevels 23
 	ADDQ.W	#1,D3
 	ASL.W	#2,D3
 	MOVE.W	D3,-(A7)
 	JSR	_newmem
 	ADDQ.W	#2,A7
-	MOVE.L	D0,_e_levels-BASE(A4)	;_e_levels
+	MOVE.L	D0,_e_levels(A4)	;_e_levels
 	MOVEA.L	D0,A2
 
 ;	MOVE.L	#$000000A,(A2)+	; start with 10 xp
 ;	BRA.B	L0008F
 
 	moveq	#10,D0		; start with 10 xp
-	move.w	_nlevels-BASE(A4),D3	;_nlevels 23 (means player ranks)
+	move.w	_nlevels(A4),D3	;_nlevels 23 (means player ranks)
 	subq	#1,d3
 
 1$	MOVE.L	D0,(A2)+
@@ -720,10 +720,10 @@ _init_ds:
 ;	MOVE.L	D3,(A2)+
 ;	ADDQ.L	#4,A2
 ;L0008F:
-;	MOVE.W	_nlevels-BASE(A4),D3	;_nlevels 23
+;	MOVE.W	_nlevels(A4),D3	;_nlevels 23
 ;	ASL.w	#2,D3
 ;	EXT.L	D3
-;	ADD.L	_e_levels-BASE(A4),D3	;_e_levels
+;	ADD.L	_e_levels(A4),D3	;_e_levels
 ;	add.l	d0,d3
 ;	CMPA.L	D3,A2
 ;	BCS.B	L0008E
@@ -740,8 +740,8 @@ L000FB:	dc.b	"Rogue: The Adventure game",0
 
 _SetOffset:
 ;	LINK	A5,#-$0000
-;	MOVE.W	$0004(A7),_Window2+48-BASE(A4)	;_Window2 + 48
-;	MOVE.W	$0006(A7),_Window2+50-BASE(A4)	;_Window2 + 50
+;	MOVE.W	$0004(A7),_Window2+48(A4)	;_Window2 + 48
+;	MOVE.W	$0006(A7),_Window2+50(A4)	;_Window2 + 50
 ;	UNLK	A5
 ;	RTS
 
@@ -752,7 +752,7 @@ __move:
 	MOVE.W	$0008(A5),D4
 	BGT.B	L000FC
 
-	TST.B	_map_up-BASE(A4)	;_map_up
+	TST.B	_map_up(A4)	;_map_up
 	BNE.B	L000FD
 L000FC:
 	CMP.W	#$0014,D4
@@ -767,12 +767,12 @@ L000FD:
 	MOVEQ	#$08,D3
 L000FE:
 	MULU.W	$000A(A5),D3
-	ADD.W	_Window2+50-BASE(A4),D3	;_Window2 + 50
-	MOVE.W	D3,_p_col-BASE(A4)	;_p_col
+	ADD.W	_Window2+50(A4),D3	;_Window2 + 50
+	MOVE.W	D3,_p_col(A4)	;_p_col
 
 	MULU.W	#$0009,D4
-	ADD.W	_Window2+48-BASE(A4),D4	;_Window2 + 48
-	MOVE.W	D4,_p_row-BASE(A4)	;_p_row
+	ADD.W	_Window2+48(A4),D4	;_Window2 + 48
+	MOVE.W	D4,_p_row(A4)	;_p_row
 
 	MOVE.L	(A7)+,D4
 	UNLK	A5
@@ -799,29 +799,29 @@ _alloc_raster:
 
 _standout:
 ;	LINK	A5,#-$0000
-	CLR.B	_addch_text+0-BASE(A4)	;_addch_text + 0
-	MOVE.B	#$01,_addch_text+1-BASE(A4)	;_addch_text + 1
+	CLR.B	_addch_text+0(A4)	;_addch_text + 0
+	MOVE.B	#$01,_addch_text+1(A4)	;_addch_text + 1
 ;	UNLK	A5
 	RTS
 
 _standend:
 ;	LINK	A5,#-$0000
-	MOVE.B	#$01,_addch_text+0-BASE(A4)	;_addch_text + 0
-	CLR.B	_addch_text+1-BASE(A4)	;_addch_text + 1
+	MOVE.B	#$01,_addch_text+0(A4)	;_addch_text + 0
+	CLR.B	_addch_text+1(A4)	;_addch_text + 1
 ;	UNLK	A5
 	RTS
 
 _wtext:
 ;	LINK	A5,#-$0000
 
-	TST.B	_map_up-BASE(A4)	;_map_up
+	TST.B	_map_up(A4)	;_map_up
 	BEQ.B	L00100
 
-	MOVE.L	_StdScr-BASE(A4),_Window2+30-BASE(A4)	;_StdScr,_Window2+30
-	PEA	_Window2-BASE(A4)		;_Window2
+	MOVE.L	_StdScr(A4),_Window2+30(A4)	;_StdScr,_Window2+30
+	PEA	_Window2(A4)		;_Window2
 	JSR	_OpenWindow
 	ADDQ.W	#4,A7
-	MOVE.L	D0,_TextWin-BASE(A4)	;_TextWin
+	MOVE.L	D0,_TextWin(A4)	;_TextWin
 ;	TST.L	D0
 	BNE.B	L000FF
 
@@ -829,8 +829,8 @@ _wtext:
 	JSR	_fatal
 	ADDQ.W	#4,A7
 L000FF:
-	CLR.B	_map_up-BASE(A4)	;_map_up
-	MOVE.L	_TextWin-BASE(A4),_StdWin-BASE(A4)	;_TextWin,_StdWin
+	CLR.B	_map_up(A4)	;_map_up
+	MOVE.L	_TextWin(A4),_StdWin(A4)	;_TextWin,_StdWin
 	JSR	_intui_sync(PC)
 L00100:
 ;	UNLK	A5
@@ -841,18 +841,18 @@ L00101:	dc.b	"No Alternate Window",0
 _wmap:
 ;	LINK	A5,#-$0000
 
-	TST.B	_map_up-BASE(A4)	;_map_up
+	TST.B	_map_up(A4)	;_map_up
 	BNE.B	L00102
 
-	TST.L	_TextWin-BASE(A4)	;_TextWin
+	TST.L	_TextWin(A4)	;_TextWin
 	BEQ.B	L00102
 
-	MOVE.L	_TextWin-BASE(A4),-(A7)	;_TextWin
+	MOVE.L	_TextWin(A4),-(A7)	;_TextWin
 	JSR	_CloseWindow
 	ADDQ.W	#4,A7
-	CLR.L	_TextWin-BASE(A4)	;_TextWin
-	ST	_map_up-BASE(A4)	;_map_up
-	MOVE.L	_RogueWin-BASE(A4),_StdWin-BASE(A4)	;_RogueWin,_StdWin
+	CLR.L	_TextWin(A4)	;_TextWin
+	ST	_map_up(A4)	;_map_up
+	MOVE.L	_RogueWin(A4),_StdWin(A4)	;_RogueWin,_StdWin
 	JSR	_intui_sync(PC)
 L00102:
 ;	UNLK	A5
@@ -867,7 +867,7 @@ __graphch:
 	MOVEQ	#$00,D3
 	MOVE.B	D4,D3
 	ASL.w	#1,d3
-	LEA	_char_data-BASE(A4),A1	;_char_data
+	LEA	_char_data(A4),A1	;_char_data
 	move.w	0(a1,d3.w),d1
 	BPL	L00104
 
@@ -880,17 +880,17 @@ L00103:
 	RTS
 
 L00104:
-	lea	_chbm-BASE(A4),a0	;_chbm = srcbitmap
+	lea	_chbm(A4),a0	;_chbm = srcbitmap
 
 	moveq	#0,d0
 
-	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
+	MOVEA.L	_StdWin(A4),A6	;_StdWin
 	MOVEA.L	$0032(A6),A1
 	move.l	$0004(A1),a1	;dstbitmap
-	MOVE.W	_p_col-BASE(A4),D2	;_p_col ;dstx
-	MOVE.W	_p_row-BASE(A4),D3	;_p_row = dsty
+	MOVE.W	_p_col(A4),D2	;_p_col ;dstx
+	MOVE.W	_p_row(A4),D3	;_p_row = dsty
 
-	TST.B	_map_up-BASE(A4)	;_map_up
+	TST.B	_map_up(A4)	;_map_up
 	BEQ.B	L00106
 	ADD.W	#$000C,D3	;dsty + 12
 L00106:
@@ -902,7 +902,7 @@ L00106:
 	moveq	#-1,d7		;we need $ff, mask
 	sub.l	a2,a2		;tempA
 
-	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
+	MOVEA.L	_GfxBase(A4),A6	;_GfxBase
 	JSR	_LVOBltBitMap(A6)
 
 ;	CLR.L	-(A7)	;tempA
@@ -911,15 +911,15 @@ L00106:
 ;	PEA	$0009	;sizey
 ;	PEA	$000A	;sizex
 ;	MOVE.L	D6,-(A7)	;dsty
-;	MOVE.W	_p_col-BASE(A4),D3	;_p_col
+;	MOVE.W	_p_col(A4),D3	;_p_col
 ;	EXT.L	D3
 ;	MOVE.L	D3,-(A7)	;dstx
-;	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
+;	MOVEA.L	_StdWin(A4),A6	;_StdWin
 ;	MOVEA.L	$0032(A6),A1
 ;	MOVE.L	$0004(A1),-(A7)	;dstbitmap
 ;	CLR.L	-(A7)		;srcy
 ;	CLR.L	-(A7)		;srcx
-;	PEA	_chbm-BASE(A4)	;scrbitmap, _chbm
+;	PEA	_chbm(A4)	;scrbitmap, _chbm
 ;	JSR	_BltBitMap
 ;	LEA	$002C(A7),A7
 	BRA.W	L00103
@@ -930,32 +930,32 @@ __addch:
 
 	LEA	L00107(PC),A2
 	MOVE.B	$0009(A5),(A2)
-	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
+	MOVEA.L	_StdWin(A4),A6	;_StdWin
 	MOVEA.L	$0032(A6),A1
 	MOVE.B	$0018(A1),D4
 	MOVE.B	#$01,$0018(A1)
-	MOVE.L	A2,_addch_text+12-BASE(A4)	_addch_text + 12
+	MOVE.L	A2,_addch_text+12(A4)	_addch_text + 12
 
-	MOVE.W	_p_col-BASE(A4),D0	;_p_col
-	MOVE.W	_p_row-BASE(A4),D1	;_p_row
-	lea	_addch_text+0-BASE(A4),a1	;_addch_text + 0
+	MOVE.W	_p_col(A4),D0	;_p_col
+	MOVE.W	_p_row(A4),D1	;_p_row
+	lea	_addch_text+0(A4),a1	;_addch_text + 0
 	MOVE.L	$0032(A6),a0
 
-	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase(A4),A6	;_IntuitionBase
 	JSR	_LVOPrintIText(A6)
 
-;	MOVE.W	_p_row-BASE(A4),D3	;_p_row
+;	MOVE.W	_p_row(A4),D3	;_p_row
 ;	EXT.L	D3
 ;	MOVE.L	D3,-(A7)
-;	MOVE.W	_p_col-BASE(A4),D3	;_p_col
+;	MOVE.W	_p_col(A4),D3	;_p_col
 ;	EXT.L	D3
 ;	MOVE.L	D3,-(A7)
-;	PEA	_addch_text+0-BASE(A4)	;_addch_text + 0
+;	PEA	_addch_text+0(A4)	;_addch_text + 0
 ;	MOVE.L	$0032(A6),-(A7)
 ;	JSR	_PrintIText
 ;	LEA	$0010(A7),A7
 
-	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
+	MOVEA.L	_StdWin(A4),A6	;_StdWin
 	MOVEA.L	$0032(A6),A1
 	MOVE.B	D4,$0018(A1)
 
@@ -968,20 +968,20 @@ L00107:
 
 __clearbot:
 ;	LINK	A5,#-$0000
-	MOVE.W	_p_row-BASE(A4),D3	;_p_row
+	MOVE.W	_p_row(A4),D3	;_p_row
 	EXT.L	D3
 	MOVEA.L	D3,A6
 
 	PEA	$0006(A6)
-	MOVE.W	_p_col-BASE(A4),D3	;_p_col
+	MOVE.W	_p_col(A4),D3	;_p_col
 	EXT.L	D3
 	MOVE.L	D3,-(A7)
-	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
+	MOVEA.L	_StdWin(A4),A6	;_StdWin
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_GfxMove
 	LEA	$000C(A7),A7
 
-	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
+	MOVEA.L	_StdWin(A4),A6	;_StdWin
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_ClearScreen
 	ADDQ.W	#4,A7
@@ -991,19 +991,19 @@ __clearbot:
 __clrtoeol:
 ;	LINK	A5,#-$0000
 
-	MOVE.W	_p_row-BASE(A4),D3	;_p_row
+	MOVE.W	_p_row(A4),D3	;_p_row
 	EXT.L	D3
 	MOVEA.L	D3,A6
 	PEA	$0006(A6)
-	MOVE.W	_p_col-BASE(A4),D3	;_p_col
+	MOVE.W	_p_col(A4),D3	;_p_col
 	EXT.L	D3
 	MOVE.L	D3,-(A7)
-	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
+	MOVEA.L	_StdWin(A4),A6	;_StdWin
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_GfxMove
 	LEA	$000C(A7),A7
 
-	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
+	MOVEA.L	_StdWin(A4),A6	;_StdWin
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_ClearEOL
 	ADDQ.W	#4,A7
@@ -1018,8 +1018,8 @@ _winit:
 	PEA	L00111(PC)	;"graphics.library"
 	JSR	_OpenLibrary
 	ADDQ.W	#8,A7
-	MOVE.L	D0,_GfxBase-BASE(A4)	;_GfxBase
-;	TST.L	_GfxBase-BASE(A4)
+	MOVE.L	D0,_GfxBase(A4)	;_GfxBase
+;	TST.L	_GfxBase(A4)
 	BNE.B	L00108
 
 	PEA	L00112(PC)
@@ -1030,8 +1030,8 @@ L00108:
 	PEA	L00113(PC)	;"intuition.library"
 	JSR	_OpenLibrary
 	ADDQ.W	#8,A7
-	MOVE.L	D0,_IntuitionBase-BASE(A4)	;_IntuitionBase
-;	TST.L	_IntuitionBase-BASE(A4)
+	MOVE.L	D0,_IntuitionBase(A4)	;_IntuitionBase
+;	TST.L	_IntuitionBase(A4)
 	BNE.B	L00109
 
 	PEA	L00114(PC)
@@ -1042,8 +1042,8 @@ L00109:
 ;	PEA	L00115(PC)	;"layers.library"
 ;	JSR	_OpenLibrary
 ;	ADDQ.W	#8,A7
-;	MOVE.L	D0,_LayersBase-BASE(A4)	;_LayersBase
-;	TST.L	_LayersBase-BASE(A4)
+;	MOVE.L	D0,_LayersBase(A4)	;_LayersBase
+;	TST.L	_LayersBase(A4)
 ;	BNE.B	L0010A
 
 ;	PEA	L00116(PC)	;"No layers"
@@ -1062,11 +1062,11 @@ L00109:
 	PEA	L00118(PC)	;"No rogue.char file"
 	JSR	_db_print
 	ADDQ.W	#4,A7
-	ST	_graphics_disabled-BASE(A4)	;_graphics_disabled
+	ST	_graphics_disabled(A4)	;_graphics_disabled
 	BRA	readCharEnd
 
 L0010B2:
-	LEA	_char_data-BASE(A4),A0	;_char_data
+	LEA	_char_data(A4),A0	;_char_data
 	moveq	#-1,d1
 	move.w	#255,d0
 	jsr	_memset
@@ -1084,7 +1084,7 @@ L0010B2:
 	ADDQ.W	#4,A7
 
 1$	move.l	#1344,d1	;72 * 18 + some spare
-	lea	_chbm+8-BASE(A4),A3	;_chbm + 8 (where the planes begin)
+	lea	_chbm+8(A4),A3	;_chbm + 8 (where the planes begin)
 	move.l	D0,(A3)+
 	add.l	d1,d0
 	move.l	D0,(A3)+
@@ -1107,7 +1107,7 @@ L0010B:
 	MOVEQ	#$00,D6		;start with plane 0
 	MOVE.W	-$0002(A5),D3
 
-	LEA	_char_data-BASE(A4),A6	;_char_data
+	LEA	_char_data(A4),A6	;_char_data
 	asl.w	#1,d3
 
 	move.l	d4,d2
@@ -1116,7 +1116,7 @@ L0010B:
 L0010D:
 	;calculate the position to read the bitmap to
 
-	LEA	_chbm+8-BASE(A4),A6	;_chbm + 8 (where the planes begin)
+	LEA	_chbm+8(A4),A6	;_chbm + 8 (where the planes begin)
 	add.l	d6,a6
 	move.l	(a6),a6		;get one of the four planes depending on D6
 
@@ -1143,11 +1143,11 @@ L0010E:
 	ADDQ.W	#2,A7
 readCharEnd:
 
-	PEA	_NewScreen-BASE(A4)	;_NewScreen
+	PEA	_NewScreen(A4)	;_NewScreen
 	JSR	_OpenScreen
 	ADDQ.W	#4,A7
 
-	MOVE.L	D0,_StdScr-BASE(A4)	;_StdScr
+	MOVE.L	D0,_StdScr(A4)	;_StdScr
 ;	TST.L	D0
 	BNE.B	L0010F
 
@@ -1158,17 +1158,17 @@ L0010F:
 	PEA	9*72		;height
 	PEA	10		;width
 	PEA	$0004		;number of planes (bits per color)
-	PEA	_chbm-BASE(A4)	;_chbm
+	PEA	_chbm(A4)	;_chbm
 	JSR	_InitBitMap
 	LEA	$0010(A7),A7
 
-	MOVE.L	_StdScr-BASE(A4),_Window1+30-BASE(A4)	;_StdScr
-	PEA	_Window1-BASE(A4)		;_Window1
+	MOVE.L	_StdScr(A4),_Window1+30(A4)	;_StdScr
+	PEA	_Window1(A4)		;_Window1
 	JSR	_OpenWindow
 	ADDQ.W	#4,A7
 
-	MOVE.L	D0,_RogueWin-BASE(A4)	;_RogueWin
-	MOVE.L	D0,_StdWin-BASE(A4)	;_StdWin
+	MOVE.L	D0,_RogueWin(A4)	;_RogueWin
+	MOVE.L	D0,_StdWin(A4)	;_StdWin
 ;	TST.L	D0
 	BNE.B	L00110
 
@@ -1198,51 +1198,51 @@ _wclose:
 ;	LINK	A5,#-$0000
 	MOVEM.L	D4/D5,-(A7)
 
-	TST.L	_StdScr-BASE(A4)	;_StdScr
+	TST.L	_StdScr(A4)	;_StdScr
 	BEQ.B	L0011C
 	JSR	_black_out
 L0011C:
-	TST.L	_TextWin-BASE(A4)	;_TextWin
+	TST.L	_TextWin(A4)	;_TextWin
 	BEQ.B	L0011D
-	MOVE.L	_TextWin-BASE(A4),-(A7)	;_TextWin
+	MOVE.L	_TextWin(A4),-(A7)	;_TextWin
 	JSR	_ClearMenuStrip
 	ADDQ.W	#4,A7
-	MOVE.L	_TextWin-BASE(A4),-(A7)	;_TextWin
+	MOVE.L	_TextWin(A4),-(A7)	;_TextWin
 	JSR	_CloseWindow
 	ADDQ.W	#4,A7
 L0011D:
-	TST.L	_RogueWin-BASE(A4)	;_RogueWin
+	TST.L	_RogueWin(A4)	;_RogueWin
 	BEQ.B	L0011E
 
-	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
+	MOVE.L	_RogueWin(A4),-(A7)	;_RogueWin
 	JSR	_ClearMenuStrip
 	ADDQ.W	#4,A7
 
-	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
+	MOVE.L	_RogueWin(A4),-(A7)	;_RogueWin
 	JSR	_CloseWindow
 	ADDQ.W	#4,A7
 L0011E:
-	TST.L	_StdScr-BASE(A4)	;_StdScr
+	TST.L	_StdScr(A4)	;_StdScr
 	BEQ.B	L0011F
-	MOVE.L	_StdScr-BASE(A4),-(A7)	;_StdScr
+	MOVE.L	_StdScr(A4),-(A7)	;_StdScr
 	JSR	_CloseScreen
 	ADDQ.W	#4,A7
 L0011F:
-	TST.L	_GfxBase-BASE(A4)	;_GfxBase
+	TST.L	_GfxBase(A4)	;_GfxBase
 	BEQ.B	L00120
-	MOVE.L	_GfxBase-BASE(A4),-(A7)	;_GfxBase
+	MOVE.L	_GfxBase(A4),-(A7)	;_GfxBase
 	JSR	_CloseLibrary
 	ADDQ.W	#4,A7
 L00120:
-	TST.L	_IntuitionBase-BASE(A4)	;_IntuitionBase
+	TST.L	_IntuitionBase(A4)	;_IntuitionBase
 	BEQ.B	L00121
-	MOVE.L	_IntuitionBase-BASE(A4),-(A7)	;_IntuitionBase
+	MOVE.L	_IntuitionBase(A4),-(A7)	;_IntuitionBase
 	JSR	_CloseLibrary
 	ADDQ.W	#4,A7
 L00121:
-;	TST.L	_LayersBase-BASE(A4)	;_LayersBase
+;	TST.L	_LayersBase(A4)	;_LayersBase
 ;	BEQ.B	L00122
-;	MOVE.L	_LayersBase-BASE(A4),-(A7)	;_LayersBase
+;	MOVE.L	_LayersBase(A4),-(A7)	;_LayersBase
 ;	JSR	_CloseLibrary
 ;	ADDQ.W	#4,A7
 ;L00122:
@@ -1255,13 +1255,13 @@ _ScreenTitle:
 
 	MOVE.W	#$004A,-(A7)
 	MOVE.L	$0008(A5),-(A7)
-	PEA	_ScreenTitle_tmp-BASE(A4)
+	PEA	_ScreenTitle_tmp(A4)
 	JSR	_strncpy
 	LEA	$000A(A7),A7
 
-	PEA	_ScreenTitle_tmp-BASE(A4)
+	PEA	_ScreenTitle_tmp(A4)
 	PEA	-$1
-	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
+	MOVE.L	_RogueWin(A4),-(A7)	;_RogueWin
 	JSR	_SetWindowTitles
 	LEA	$000C(A7),A7
 
@@ -1277,12 +1277,12 @@ _invert_row:
 	EXT.L	D3
 	MOVE.L	D3,D4
 	PEA	$0002
-	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
+	MOVEA.L	_StdWin(A4),A6	;_StdWin
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_SetDrMd
 	ADDQ.W	#8,A7
 	PEA	$000F
-	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
+	MOVEA.L	_StdWin(A4),A6	;_StdWin
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_SetAPen
 	ADDQ.W	#8,A7
@@ -1291,12 +1291,12 @@ _invert_row:
 	PEA	$027F
 	MOVE.L	D4,-(A7)
 	CLR.L	-(A7)
-	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
+	MOVEA.L	_StdWin(A4),A6	;_StdWin
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_RectFill
 	LEA	$0014(A7),A7
 	CLR.L	-(A7)
-	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
+	MOVEA.L	_StdWin(A4),A6	;_StdWin
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_SetDrMd
 	ADDQ.W	#8,A7
@@ -1308,33 +1308,33 @@ __zapstr:
 	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
 
-	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
+	MOVEA.L	_StdWin(A4),A6	;_StdWin
 	MOVEA.L	$0032(A6),A1
 	MOVE.B	$0018(A1),D4
 	MOVE.B	#$01,$0018(A1)
-	MOVE.L	$0008(A5),_addch_text+12-BASE(A4)	;_addch_text + 12
+	MOVE.L	$0008(A5),_addch_text+12(A4)	;_addch_text + 12
 
-	MOVE.W	_p_col-BASE(A4),D0	;_p_col
-	MOVE.W	_p_row-BASE(A4),D1	;_p_row
-	lea	_addch_text+0-BASE(A4),a1	;_addch_text + 0
+	MOVE.W	_p_col(A4),D0	;_p_col
+	MOVE.W	_p_row(A4),D1	;_p_row
+	lea	_addch_text+0(A4),a1	;_addch_text + 0
 	MOVE.L	$0032(A6),a0
 
-	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase(A4),A6	;_IntuitionBase
 	JSR	_LVOPrintIText(A6)
 
-;	MOVE.W	_p_row-BASE(A4),D3	;_p_row
+;	MOVE.W	_p_row(A4),D3	;_p_row
 ;	EXT.L	D3
 ;	MOVE.L	D3,-(A7)
-;	MOVE.W	_p_col-BASE(A4),D3	;_p_col
+;	MOVE.W	_p_col(A4),D3	;_p_col
 ;	EXT.L	D3
 ;	MOVE.L	D3,-(A7)
-;	PEA	_addch_text+0-BASE(A4)
-;	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
+;	PEA	_addch_text+0(A4)
+;	MOVEA.L	_StdWin(A4),A6	;_StdWin
 ;	MOVE.L	$0032(A6),-(A7)
 ;	JSR	_PrintIText
 ;	LEA	$0010(A7),A7
 
-	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
+	MOVEA.L	_StdWin(A4),A6	;_StdWin
 	MOVEA.L	$0032(A6),A1
 	MOVE.B	D4,$0018(A1)
 
@@ -1370,7 +1370,7 @@ _ifterse:
 	MOVE.W	$0012(A5),-(A7)
 	MOVE.W	$0010(A5),-(A7)
 
-	TST.B	_expert-BASE(A4)	;_expert
+	TST.B	_expert(A4)	;_expert
 	BEQ.B	L00138
 
 	MOVE.L	$0008(A5),-(A7)	; expert string
@@ -1529,13 +1529,13 @@ L0017C:
 	RTS
 
 _noterse:
-	TST.B	_terse-BASE(A4)	;_terse
+	TST.B	_terse(A4)	;_terse
 	BNE.B	1$
 
-	TST.B	_expert-BASE(A4)	;_expert
+	TST.B	_expert(A4)	;_expert
 	BEQ.B	2$
 
-1$	LEA	_nullstr-BASE(A4),A0	;_nullstr
+1$	LEA	_nullstr(A4),A0	;_nullstr
 2$	MOVE.L	A0,D0
 	RTS
 
@@ -1582,7 +1582,7 @@ _isprint:
 chartest:
 	ext.w	d0
 	BMI.B	2$
-	LEA	_ctp_-BASE(A4),A6		;_ctp_
+	LEA	_ctp_(A4),A6		;_ctp_
 	AND.B	$00(A6,D0.W),D3
 	move.b	d3,d0
 	RTS
@@ -1627,12 +1627,12 @@ L00482:
 _clear:
 ;	LINK	A5,#-$0000
 	MOVEM.L	D4/D5,-(A7)
-	TST.B	_map_up-BASE(A4)	;_map_up
+	TST.B	_map_up(A4)	;_map_up
 	BEQ.B	L004D5
 
 	MOVEq	#$0020,d1
 	MOVE.W	#1680,d0
-	lea	_screen_map-BASE(A4),a0	;_screen_map
+	lea	_screen_map(A4),a0	;_screen_map
 	JSR	_memset
 
 L004D5:
@@ -1663,7 +1663,7 @@ L004D7:
 	MULU.W	#$0050,D3
 	ADD.w	D5,D3
 
-	LEA	_screen_map-BASE(A4),A6	;_screen_map
+	LEA	_screen_map(A4),A6	;_screen_map
 	MOVEQ	#$00,D6
 	MOVE.B	$00(A6,D3.w),D6
 	CMP.W	#$0020,D6
@@ -1691,31 +1691,31 @@ L004D8:
 _cursor:
 ;	LINK	A5,#-$0000
 	MOVEQ	#$00,D0
-	MOVE.B	_graphics_disabled-BASE(A4),D0	;_graphics_disabled
-	MOVE.B	$0005(A7),_graphics_disabled-BASE(A4)	;_graphics_disabled
+	MOVE.B	_graphics_disabled(A4),D0	;_graphics_disabled
+	MOVE.B	$0005(A7),_graphics_disabled(A4)	;_graphics_disabled
 ;	UNLK	A5
 	RTS
 
 _clrtoeol:
 ;	LINK	A5,#-$0000
 
-	TST.B	_map_up-BASE(A4)	;_map_up
+	TST.B	_map_up(A4)	;_map_up
 	BEQ.B	1$
 
 	MOVEq	#32,d1		;space for memset
 
 	MOVEQ	#$00,D3
-	MOVE.B	_c_col-BASE(A4),D3	;_c_col
+	MOVE.B	_c_col(A4),D3	;_c_col
 
 	MOVEQ	#$00,D2
-	MOVE.B	_c_row-BASE(A4),D2	;_c_row
+	MOVE.B	_c_row(A4),D2	;_c_row
 
 	MOVEQ	#80,D0
 	mulu.w	D0,d2
 	SUB.W	D3,D0
 
 	ADD.L	D3,D2
-	LEA	_screen_map-BASE(A4),A0	;_screen_map
+	LEA	_screen_map(A4),A0	;_screen_map
 	ADD.L	D2,A0
 	JSR	_memset
 
@@ -1762,7 +1762,7 @@ _mvinch:
 	MOVE.W	D5,D2
 	EXT.L	D2
 	ADD.L	D2,D3
-	LEA	_screen_map-BASE(A4),A6	;_screen_map
+	LEA	_screen_map(A4),A6	;_screen_map
 	MOVEQ	#$00,D0
 	MOVE.B	$00(A6,D3.L),D0
 
@@ -1774,16 +1774,16 @@ _inch:
 ;	LINK	A5,#-$0000
 
 	MOVEQ	#$00,D0
-	MOVE.B	_c_row-BASE(A4),D0	;_c_row
+	MOVE.B	_c_row(A4),D0	;_c_row
 
 ;	MOVEQ	#80,D1
 ;	JSR	_mulu
 	mulu.w	#80,d0
 
 	MOVEQ	#$00,D3
-	MOVE.B	_c_col-BASE(A4),D3	;_c_col
+	MOVE.B	_c_col(A4),D3	;_c_col
 	ADD.L	D0,D3
-	LEA	_screen_map-BASE(A4),A6	;_screen_map
+	LEA	_screen_map(A4),A6	;_screen_map
 	MOVEQ	#$00,D0
 	MOVE.B	$00(A6,D3.L),D3
 
@@ -1799,7 +1799,7 @@ _addch:
 	BRA.W	L004E2
 L004DA:
 	MOVEQ	#$00,D1
-	MOVE.B	_c_row-BASE(A4),D0	;_c_row
+	MOVE.B	_c_row(A4),D0	;_c_row
 	JSR	_movequick
 
 L004DB:
@@ -1809,13 +1809,13 @@ L004DB:
 
 L004DC:
 	MOVEQ	#$00,D1
-	MOVE.B	_c_row-BASE(A4),D0	;_c_row
+	MOVE.B	_c_row(A4),D0	;_c_row
 	ADDQ.W	#1,D0
 	JSR	_movequick
 
 	BRA.B	L004DB
 L004DD:
-	TST.B	_map_up-BASE(A4)	;_map_up
+	TST.B	_map_up(A4)	;_map_up
 	BNE.B	L004DE
 
 	MOVE.W	D4,-(A7)
@@ -1824,28 +1824,28 @@ L004DD:
 	BRA.W	L004E1
 L004DE:
 	MOVEQ	#$00,D0
-	MOVE.B	_c_row-BASE(A4),D0	;_c_row
+	MOVE.B	_c_row(A4),D0	;_c_row
 
 ;	MOVEQ	#80,D1
 ;	JSR	_mulu
 	mulu.w	#80,d0
 
 	MOVEQ	#$00,D2
-	MOVE.B	_c_col-BASE(A4),D2	;_c_col
+	MOVE.B	_c_col(A4),D2	;_c_col
 	ADD.L	D2,D0
-	LEA	_screen_map-BASE(A4),A6	;_screen_map
+	LEA	_screen_map(A4),A6	;_screen_map
 	MOVE.B	$00(A6,D0.L),D2
 	CMP.B	D2,D4
 	BEQ.B	L004E1
 
-	TST.B	_c_row-BASE(A4)	;_c_row
+	TST.B	_c_row(A4)	;_c_row
 	BLS.B	L004DF
 
-	MOVE.B	_c_row-BASE(A4),D3	;_c_row
+	MOVE.B	_c_row(A4),D3	;_c_row
 	CMP.B	#$14,D3
 	BCC.B	L004DF
 
-	TST.B	_graphics_disabled-BASE(A4)	;_graphics_disabled
+	TST.B	_graphics_disabled(A4)	;_graphics_disabled
 	BNE.B	L004DF
 
 	MOVE.W	D4,-(A7)
@@ -1857,21 +1857,21 @@ L004DF:
 	JSR	__addch
 	ADDQ.W	#2,A7
 L004E0:
-	MOVE.B	_c_col-BASE(A4),D3	;_c_col
+	MOVE.B	_c_col(A4),D3	;_c_col
 	CMP.B	#$3C,D3
 	BCC.B	L004E1
 
 	MOVEQ	#$00,D0
-	MOVE.B	_c_row-BASE(A4),D0	;_c_row
+	MOVE.B	_c_row(A4),D0	;_c_row
 
 ;	MOVEQ	#80,D1
 ;	JSR	_mulu
 	mulu.w	#80,d0
 
 	MOVEQ	#$00,D3
-	MOVE.B	_c_col-BASE(A4),D3	;_c_col
+	MOVE.B	_c_col(A4),D3	;_c_col
 	ADD.L	D3,D0
-	LEA	_screen_map-BASE(A4),A6	;_screen_map
+	LEA	_screen_map(A4),A6	;_screen_map
 	MOVE.B	D4,$00(A6,D0.L)
 L004E1:
 	BRA.B	L004E3
@@ -1882,17 +1882,17 @@ L004E2:
 	BEQ.W	L004DA
 	BRA.W	L004DD
 L004E3:
-	MOVE.B	_c_col-BASE(A4),D1	;_c_col
+	MOVE.B	_c_col(A4),D1	;_c_col
 	ADDQ.W	#1,D1
-	MOVE.B	_c_row-BASE(A4),D0	;_c_row
+	MOVE.B	_c_row(A4),D0	;_c_row
 	JSR	_movequick
 
 	BRA.W	L004DB
 
 _addstr:
 	LINK	A5,#-$0002
-	MOVE.B	_graphics_disabled-BASE(A4),-$0001(A5)	;backup _graphics_disabled
-	ST	_graphics_disabled-BASE(A4)	;_graphics_disabled
+	MOVE.B	_graphics_disabled(A4),-$0001(A5)	;backup _graphics_disabled
+	ST	_graphics_disabled(A4)	;_graphics_disabled
 
 	MOVE.L	$0008(A5),-(A7)
 	JSR	__zapstr(PC)
@@ -1901,12 +1901,12 @@ _addstr:
 	MOVE.L	$0008(A5),A0
 	JSR	_strlenquick
 
-	MOVE.B	_c_col-BASE(A4),D1	;_c_col
+	MOVE.B	_c_col(A4),D1	;_c_col
 	ADD.B	D0,D1
-	MOVE.B	_c_row-BASE(A4),D0	;_c_row
+	MOVE.B	_c_row(A4),D0	;_c_row
 	JSR	_movequick
 
-	MOVE.B	-$0001(A5),_graphics_disabled-BASE(A4)	;_graphics_disabled
+	MOVE.B	-$0001(A5),_graphics_disabled(A4)	;_graphics_disabled
 	UNLK	A5
 	RTS
 
@@ -1983,11 +1983,11 @@ L004E4:
 
 	MOVEQ	#20,D0		;20 is max
 L004E5:
-	MOVE.B	D0,_c_row-BASE(A4)	;_c_row
-	MOVE.B	D1,_c_col-BASE(A4)	;_c_col
+	MOVE.B	D0,_c_row(A4)	;_c_row
+	MOVE.B	D1,_c_col(A4)	;_c_col
 
 	MOVEQ	#$00,D3
-	MOVE.B	_graphics_disabled-BASE(A4),D3	;_graphics_disabled
+	MOVE.B	_graphics_disabled(A4),D3	;_graphics_disabled
 	MOVE.W	D3,-(A7)
 ;	MOVEQ	#$00,D3
 	MOVE.B	D1,D3
@@ -2001,11 +2001,11 @@ L004E5:
 
 _getrc:
 	MOVEQ	#$00,D3
-	MOVE.B	_c_row-BASE(A4),D3	;_c_row
+	MOVE.B	_c_row(A4),D3	;_c_row
 	MOVEA.L	$0004(A7),A0
 	MOVE.W	D3,(A0)
 ;	MOVEQ	#$00,D3
-	MOVE.B	_c_col-BASE(A4),D3	;_c_col
+	MOVE.B	_c_col(A4),D3	;_c_col
 	MOVEA.L	$0008(A7),A0
 	MOVE.W	D3,(A0)
 
@@ -2026,7 +2026,7 @@ _endwin:
 _ready_to_go:
 ;	LINK	A5,#-$0000
 	MOVE.W	#$0001,-(A7)
-	PEA	_my_palette-BASE(A4)	;_my_palette
+	PEA	_my_palette(A4)	;_my_palette
 	JSR	_fade_in
 	ADDQ.W	#6,A7
 ;	UNLK	A5
@@ -2040,9 +2040,9 @@ _ready_to_go:
 _setup:
 	LINK	A5,#-$0030
 
-	CLR.B	_terse-BASE(A4)	;_terse
-	CLR.B	_expert-BASE(A4)	;_expert
-	MOVE.W	#22,_maxrow-BASE(A4)	;_maxrow
+	CLR.B	_terse(A4)	;_terse
+	CLR.B	_expert(A4)	;_expert
+	MOVE.W	#22,_maxrow(A4)	;_maxrow
 
 	CLR.L	-(A7)
 	PEA	-$0030(A5)
@@ -2051,7 +2051,7 @@ _setup:
 	JSR	_OpenDevice
 
 	LEA	$0010(A7),A7
-	MOVE.L	-$001C(A5),_ConsoleDevice-BASE(A4)	;_ConsoleDevice
+	MOVE.L	-$001C(A5),_ConsoleDevice(A4)	;_ConsoleDevice
 	BSR.B	_flush_type
 
 	JSR	_BuildFuncTable
@@ -2088,13 +2088,13 @@ L004EA:	dc.b	"10.",0,0	; F4
 _flush_type:
 	LINK	A5,#-$0000
 
-	LEA	_kb_buffer-BASE(A4),A6
-	MOVE.L	A6,_kb_tail-BASE(A4)	;_kb_tail
-	MOVE.L	A6,_kb_head-BASE(A4)
-	TST.L	_StdWin-BASE(A4)	;_StdWin
+	LEA	_kb_buffer(A4),A6
+	MOVE.L	A6,_kb_tail(A4)	;_kb_tail
+	MOVE.L	A6,_kb_head(A4)
+	TST.L	_StdWin(A4)	;_StdWin
 	BEQ.B	L004ED
 L004EB:
-	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
+	MOVEA.L	_StdWin(A4),A6	;_StdWin
 	MOVE.L	$0056(A6),-(A7)
 	JSR	_GetMsg
 	ADDQ.W	#4,A7
@@ -2135,14 +2135,14 @@ _credits:
 	JSR	_black_out
 	JSR	_wtext
 	MOVE.W	#$0001,-(A7)
-	MOVE.L	_TextWin-BASE(A4),-(A7)	;_TextWin
+	MOVE.L	_TextWin(A4),-(A7)	;_TextWin
 	PEA	L00513(PC)	; "Title.Screen"
-	st	_all_clear-BASE(A4)	;turn on _all_clear to reverse red/blue
+	st	_all_clear(A4)	;turn on _all_clear to reverse red/blue
 	JSR	_show_ilbm
 	LEA	$000A(A7),A7
 ;_SetOffset
-	MOVE.W	#$0007,_Window2+48-BASE(A4)	;_Window2 + 48
-	MOVE.W	#$0005,_Window2+50-BASE(A4)	;_Window2 + 50
+	MOVE.W	#$0007,_Window2+48(A4)	;_Window2 + 48
+	MOVE.W	#$0005,_Window2+50(A4)	;_Window2 + 50
 
 	MOVE.W	#$0001,-(A7)
 	JSR	_cursor(PC)
@@ -2160,8 +2160,8 @@ _credits:
 	ADDQ.W	#6,A7
 
 ;_SetOffset
-	CLR.W	_Window2+48-BASE(A4)	;_Window2 + 48
-	CLR.W	_Window2+50-BASE(A4)	;_Window2 + 50
+	CLR.W	_Window2+48(A4)	;_Window2 + 48
+	CLR.W	_Window2+50(A4)	;_Window2 + 50
 
 ;	CLR.W	-(A7)	;getting _graphics_disabled state back (its already on the stack)
 	JSR	_cursor(PC)
@@ -2174,7 +2174,7 @@ _credits:
 	BEQ.B	L00512
 
 	PEA	-$001B(A5)
-	PEA	_whoami-BASE(A4)	;_whoami
+	PEA	_whoami(A4)	;_whoami
 	JSR	_strcpy
 	ADDQ.W	#8,A7
 L00512:
@@ -2205,8 +2205,8 @@ L00515:	dc.b	"No Memory",0
 _beep:
 ;	LINK	A5,#-$0000
 
-	move.l	_StdScr-BASE(A4),a0	;_StdScr
-	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
+	move.l	_StdScr(A4),a0	;_StdScr
+	MOVEA.L	_IntuitionBase(A4),A6	;_IntuitionBase
 	jsr	_LVODisplayBeep(A6)
 
 ;	UNLK	A5
@@ -2242,41 +2242,41 @@ _NewRank:
 	LINK	A5,#-$0078
 
 	CLR.B	-$0078(A5)
-	CMPI.W	#$0001,_player+30-BASE(A4)	;_player + 30 (rank)
+	CMPI.W	#$0001,_player+30(A4)	;_player + 30 (rank)
 	BLE.B	L00519
 
-	MOVE.W	_player+30-BASE(A4),D3	;_player + 30 (rank)
+	MOVE.W	_player+30(A4),D3	;_player + 30 (rank)
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_he_man-BASE(A4),A6	;_he_man
+	LEA	_he_man(A4),A6	;_he_man
 	MOVE.L	$00(A6,D3.w),-(A7)
 	PEA	L00520(PC)	;' "%s"'
 	PEA	-$0078(A5)
 	JSR	_sprintf
 	LEA	$000C(A7),A7
 L00519:
-	CMPI.W	#$0001,_level-BASE(A4)	;_level
+	CMPI.W	#$0001,_level(A4)	;_level
 	BNE.B	L0051B
 
-	CMPI.W	#$0002,_player+30-BASE(A4)	;_player + 30 (rank)
+	CMPI.W	#$0002,_player+30(A4)	;_player + 30 (rank)
 	BGE.B	L0051B
 
-	TST.W	_hungry_state-BASE(A4)	;_hungry_state
+	TST.W	_hungry_state(A4)	;_hungry_state
 	BNE.B	L0051B
 L0051A:
 	UNLK	A5
 	RTS
 
 L0051B:
-	MOVE.W	_hungry_state-BASE(A4),D3	;_hungry_state
+	MOVE.W	_hungry_state(A4),D3	;_hungry_state
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_hungry_state_texts-BASE(A4),A6	;_hungry_state_texts
+	LEA	_hungry_state_texts(A4),A6	;_hungry_state_texts
 	MOVE.L	$00(A6,D3.w),-(A7)
-	MOVE.W	_level-BASE(A4),-(A7)	;_level
+	MOVE.W	_level(A4),-(A7)	;_level
 	PEA	-$0078(A5)
-	PEA	_whoami-BASE(A4)	;_whoami
+	PEA	_whoami(A4)	;_whoami
 	PEA	L00521(PC)	;"Rogue: %s%s on level %d  %s"
 	PEA	-$0050(A5)
 	JSR	_sprintf
@@ -2303,7 +2303,7 @@ _sel_line:
 
 _db_print:
 	LINK	A5,#-$0000
-	TST.B	_db_enabled-BASE(A4)	;_db_enabled
+	TST.B	_db_enabled(A4)	;_db_enabled
 	BEQ.B	1$
 
 	MOVE.L	$0024(A5),-(A7)
@@ -2390,7 +2390,7 @@ L00523:
 	PEA	-$003C(A5)
 	PEA	-$0028(A5)
 	PEA	-$0014(A5)
-	MOVE.L	_StdWin-BASE(A4),-(A7)	;_StdWin
+	MOVE.L	_StdWin(A4),-(A7)	;_StdWin
 	JSR	_AutoRequest
 	LEA	$0020(A7),A7
 	MOVEM.L	(A7)+,D4/D5
@@ -2428,7 +2428,7 @@ _scrlen:
 	EXT.L	D0
 	MOVE.L	D0,-(A7)
 	MOVE.L	$0008(A5),-(A7)
-	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
+	MOVEA.L	_StdWin(A4),A6	;_StdWin
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_TextLength
 	LEA	$000C(A7),A7
@@ -2439,17 +2439,17 @@ _scrlen:
 _choose_row:
 	LINK	A5,#-$0000
 
-	CMPI.W	#$FFFF,_choose_row_tmp-BASE(A4)
+	CMPI.W	#$FFFF,_choose_row_tmp(A4)
 	BEQ.B	L00528
 
-	MOVE.W	_choose_row_tmp-BASE(A4),D3
+	MOVE.W	_choose_row_tmp(A4),D3
 	CMP.W	$0008(A5),D3
 	BEQ.B	L00528
 
 	MOVE.W	D3,-(A7)
 	JSR	_invert_row(PC)
 	ADDQ.W	#2,A7
-	MOVE.W	#$FFFF,_choose_row_tmp-BASE(A4)
+	MOVE.W	#$FFFF,_choose_row_tmp(A4)
 L00528:
 	MOVE.W	$0008(A5),-(A7)
 	JSR	_sel_char(PC)
@@ -2458,13 +2458,13 @@ L00528:
 	BEQ.B	L00529
 
 	MOVE.W	$0008(A5),D3
-	CMP.W	_choose_row_tmp-BASE(A4),D3
+	CMP.W	_choose_row_tmp(A4),D3
 	BEQ.B	L00529
 
 	MOVE.W	D3,-(A7)
 	JSR	_invert_row(PC)
 	ADDQ.W	#2,A7
-	MOVE.W	$0008(A5),_choose_row_tmp-BASE(A4)
+	MOVE.W	$0008(A5),_choose_row_tmp(A4)
 L00529:
 	UNLK	A5
 	RTS
@@ -2478,7 +2478,7 @@ _stuck:
 	PEA	L0052A(PC)	;"%sit appears to be stuck in your pack!"
 	JSR	_msg
 	ADDQ.W	#8,A7
-	CLR.B	_after-BASE(A4)	;_after
+	CLR.B	_after(A4)	;_after
 	MOVEQ	#$00,D0
 ;	UNLK	A5
 	RTS
@@ -2528,7 +2528,7 @@ _typech:
 
 _foolish:
 ;	LINK	A5,#-$0000
-	ANDI.W	#~C_WISDOM,_player+22-BASE(A4)	;clear C_WISDOM,_player + 22 (flags)
+	ANDI.W	#~C_WISDOM,_player+22(A4)	;clear C_WISDOM,_player + 22 (flags)
 	PEA	L0063D(PC)		;"You see your destiny, but the knowledge vaporizes"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -2539,11 +2539,11 @@ L0063D:	dc.b	"You see your destiny, but the knowledge vaporizes",0
 
 _lose_vision:
 ;	LINK	A5,#-$0000
-	ANDI.W	#~C_ISFOUND,_player+22-BASE(A4)	;clear C_ISFOUND,_player + 22 (flags)
-	PEA	_player+10-BASE(A4)	;_player + 10
+	ANDI.W	#~C_ISFOUND,_player+22(A4)	;clear C_ISFOUND,_player + 22 (flags)
+	PEA	_player+10(A4)	;_player + 10
 	JSR	_leave_room
 	ADDQ.W	#4,A7
-	PEA	_player+10-BASE(A4)	;_player + 10
+	PEA	_player+10(A4)	;_player + 10
 	JSR	_enter_room
 	ADDQ.W	#4,A7
 	CLR.L	-(A7)
@@ -2573,7 +2573,7 @@ _main:
 	JSR	_init_ds
 	JSR	_initscr(PC)
 	JSR	_setup(PC)	;bugfix, now process can return from -s option
-	CLR.W	_dnum-BASE(A4)	;_dnum
+	CLR.W	_dnum(A4)	;_dnum
 L0065B:
 	SUBQ.W	#1,$0008(A5)
 	TST.W	$0008(A5)
@@ -2597,7 +2597,7 @@ L0065C:
 ;	EXT.L	D0
 	BRA.B	L0065E
 L0065D:
-	ST	_noscore-BASE(A4)	;_noscore
+	ST	_noscore(A4)	;_noscore
 
 	CLR.W	-(A7)
 	CLR.W	-(A7)
@@ -2617,14 +2617,14 @@ L0065E:
 L0065F:
 	BRA.B	L0065B
 L00660:
-	TST.W	_dnum-BASE(A4)	;_dnum
+	TST.W	_dnum(A4)	;_dnum
 	BNE.B	L00661
 	JSR	_srand(PC)
-	MOVE.W	D0,_dnum-BASE(A4)	;_dnum
+	MOVE.W	D0,_dnum(A4)	;_dnum
 L00661:
-	MOVE.W	_dnum-BASE(A4),D3	;_dnum
+	MOVE.W	_dnum(A4),D3	;_dnum
 	EXT.L	D3
-	MOVE.L	D3,_seed-BASE(A4)	;_seed
+	MOVE.L	D3,_seed(A4)	;_seed
 	JSR	_credits
 	JSR	_init_player
 	JSR	_init_things
@@ -2662,7 +2662,7 @@ L00661:
 	JSR	_noterse
 
 	MOVE.L	D0,-(A7)
-	PEA	_whoami-BASE(A4)	;_whoami
+	PEA	_whoami(A4)	;_whoami
 	PEA	L00663(PC)	; Hello...
 	JSR	_msg
 	LEA	$000C(A7),A7
@@ -2697,17 +2697,17 @@ L00665:
 	dc.b	" have to allow it",0
 
 _ran:
-	MOVE.L	_seed-BASE(A4),D0	;_seed
+	MOVE.L	_seed(A4),D0	;_seed
 	MOVEQ	#$7D,D1
 	JSR	_mulu
-	MOVE.L	D0,_seed-BASE(A4)	;_seed
-;	MOVE.L	_seed-BASE(A4),D0	;_seed
+	MOVE.L	D0,_seed(A4)	;_seed
+;	MOVE.L	_seed(A4),D0	;_seed
 	MOVE.L	#$002AAAAB,D1
 	JSR	_divu
 	MOVE.L	#$002AAAAB,D1
 	JSR	_mulu
-	SUB.L	D0,_seed-BASE(A4)	;_seed
-	MOVE.L	_seed-BASE(A4),D0	;_seed
+	SUB.L	D0,_seed(A4)	;_seed
+	MOVE.L	_seed(A4),D0	;_seed
 	RTS
 
 ;/*
@@ -2771,14 +2771,14 @@ _roll:
 _playit:
 ;	LINK	A5,#-$0000
 
-	MOVE.W	_player+10-BASE(A4),_oldpos-BASE(A4)	;_player + 10
-	MOVE.W	_player+12-BASE(A4),_oldpos+2-BASE(A4)	;_player + 12
-	PEA	_player+10-BASE(A4)	;_player + 10
+	MOVE.W	_player+10(A4),_oldpos(A4)	;_player + 10
+	MOVE.W	_player+12(A4),_oldpos+2(A4)	;_player + 12
+	PEA	_player+10(A4)	;_player + 10
 	JSR	_roomin
 	ADDQ.W	#4,A7
-	MOVE.L	D0,_oldrp-BASE(A4)	;_oldrp
+	MOVE.L	D0,_oldrp(A4)	;_oldrp
 L0066A:
-	TST.B	_playing-BASE(A4)	;_playing
+	TST.B	_playing(A4)	;_playing
 	BEQ.B	L0066B
 
 	JSR	_command(PC)
@@ -2806,10 +2806,10 @@ _quit:
 
 	CLR.W	-(A7)			;killed by
 	MOVE.W	#$0001,-(A7)
-	MOVE.W	_purse-BASE(A4),-(A7)	;_purse
+	MOVE.W	_purse(A4),-(A7)	;_purse
 	JSR	_score(PC)
 	ADDQ.W	#6,A7
-	MOVE.W	_purse-BASE(A4),-(A7)	;_purse
+	MOVE.W	_purse(A4),-(A7)	;_purse
 	PEA	L00670(PC)	;"You quit with %d gold pieces"
 	JSR	_fatal(PC)
 	ADDQ.W	#6,A7
@@ -3214,15 +3214,15 @@ L008BB:
 	RTS
 
 _INDEXplayer:
-	MOVE.W	_maxrow-BASE(A4),D0	;_maxrow
+	MOVE.W	_maxrow(A4),D0	;_maxrow
 	SUBQ.W	#1,D0
-	MULU.W	_player+10-BASE(A4),D0
-	ADD.W	_player+12-BASE(A4),D0
+	MULU.W	_player+10(A4),D0
+	ADD.W	_player+12(A4),D0
 	SUBQ.W	#1,D0
 	RTS
 
 _INDEXquick:
-	MOVE.W	_maxrow-BASE(A4),D2	;_maxrow
+	MOVE.W	_maxrow(A4),D2	;_maxrow
 	SUBQ.W	#1,D2
 	MULU.W	D2,D0
 	ADD.W	D1,D0
@@ -3232,7 +3232,7 @@ _INDEXquick:
 ;x_INDEX:
 ;	LINK	A5,#-$0000
 
-;	MOVE.W	_maxrow-BASE(A4),D0	;_maxrow
+;	MOVE.W	_maxrow(A4),D0	;_maxrow
 ;	SUBQ.W	#1,D0
 ;	MULU.W	$0006(A7),D0
 ;	ADD.W	$0004(A7),D0
@@ -3246,7 +3246,7 @@ _offmap:
 	BLT.B	L008BC
 
 	MOVE.W	$0004(A7),D3
-	CMP.W	_maxrow-BASE(A4),D3	;_maxrow
+	CMP.W	_maxrow(A4),D3	;_maxrow
 	BGE.B	L008BC
 
 	MOVE.W	$0006(A7),D3
@@ -3286,7 +3286,7 @@ L008C0:
 	MOVE.W	$0008(A5),d1
 	BSR.B	_INDEXquick
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	MOVE.W	D3,D0
@@ -3308,7 +3308,7 @@ L008F3:
 	RTS
 
 L008F4:
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISFOUND,D3	;C_ISFOUND
 	BEQ.B	L008F5
 
@@ -3326,7 +3326,7 @@ _check_wisdom:
 	MOVEM.L	A2/A3,-(A7)
 
 	MOVEA.L	$0008(A5),A2
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_WISDOM,D3	;C_WISDOM
 	BNE.B	L008F8
 
@@ -3377,7 +3377,7 @@ L008FE:
 	MOVE.L	A2,-(A7)
 	JSR	_rnd_room
 	MULU.W	#66,D0
-	LEA	_rooms-BASE(A4),A6	;_rooms
+	LEA	_rooms(A4),A6	;_rooms
 	ADD.L	A6,D0
 	MOVE.L	D0,-(A7)
 	JSR	_rnd_pos
@@ -3396,12 +3396,12 @@ L008FE:
 	MOVEQ	#$00,D4
 	JSR	_srand(PC)
 L008FF:
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	MOVE.B	$00(A6,D5.W),D3
 	CMP.b	#'.',D3		:FLOOR
 	BEQ.B	L00900
 
-;	MOVEA.L	__level-BASE(A4),A6	;__level
+;	MOVEA.L	__level(A4),A6	;__level
 ;	MOVE.B	$00(A6,D5.W),D3
 	CMP.b	#'#',D3		;PASSAGE
 	BNE.B	L008FE
@@ -3421,7 +3421,7 @@ L00900:
 ;
 
 goldcalc:
-	MOVE.W	_level-BASE(A4),D0	;_level
+	MOVE.W	_level(A4),D0	;_level
 	MULU.W	#$000A,D0
 	ADD.W	#$0032,D0
 	JSR	_rnd
@@ -3437,22 +3437,22 @@ _pick_mons:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
 
-	MOVE.L	_lvl_monster_ptr-BASE(A4),A0	;lvl_mons[]
+	MOVE.L	_lvl_monster_ptr(A4),A0	;lvl_mons[]
 	JSR	_strlenquick
 
 	EXT.L	D0
 	MOVEA.L	D0,A2
-	ADDA.L	_lvl_monster_ptr-BASE(A4),A2
+	ADDA.L	_lvl_monster_ptr(A4),A2
 
 1$	SUBQ.L	#1,A2
-	CMPA.L	_lvl_monster_ptr-BASE(A4),A2
+	CMPA.L	_lvl_monster_ptr(A4),A2
 	BCS.B	2$
 	MOVEq	#10,D0		;10% chance monster, starting with the hardest
 	JSR	_rnd
 	TST.W	D0
 	BNE.B	1$
 
-2$	CMPA.L	_lvl_monster_ptr-BASE(A4),A2	;not one match, it will be against a medusa
+2$	CMPA.L	_lvl_monster_ptr(A4),A2	;not one match, it will be against a medusa
 	BCC.B	4$
 	MOVEQ	#$4D,D0		;'M' medusa
 
@@ -3463,8 +3463,8 @@ _pick_mons:
 4$	CMP.b	#$20,(A2)	;' '
 	BNE.B	5$
 
-	SUBA.L	_lvl_monster_ptr-BASE(A4),A2
-	ADDA.L	_wnd_monster_ptr-BASE(A4),A2
+	SUBA.L	_lvl_monster_ptr(A4),A2
+	ADDA.L	_wnd_monster_ptr(A4),A2
 
 5$	MOVE.B	(A2),D0
 ;	EXT.W	D0
@@ -3473,7 +3473,7 @@ _pick_mons:
 _moatquick:
 	MOVE.L	A2,-(A7)
 
-	MOVEA.L	_mlist-BASE(A4),A2	;_mlist
+	MOVEA.L	_mlist(A4),A2	;_mlist
 	BRA.B	L00A46
 L00A43:
 	MOVE.W	$000A(A2),D3	;moster x pos

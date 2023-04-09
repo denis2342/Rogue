@@ -180,7 +180,7 @@ loop2$
 	BRA.B	L00B1A
 
 reversetitle:
-	tst.b	_all_clear-BASE(A4)	;_all_clear
+	tst.b	_all_clear(A4)	;_all_clear
 	beq	1$
 
 	moveq	#16-1,d2	;turn the color for the title.screen
@@ -190,7 +190,7 @@ loop$	move.b	(a0),d1
 	addq.l	#4,a0
 	dbra	d2,loop$
 
-	clr.b	_all_clear-BASE(A4)	;_all_clear
+	clr.b	_all_clear(A4)	;_all_clear
 1$	rts
 
 L00B1D:	dc.b	"Couldn't open %s",10,0
@@ -205,9 +205,9 @@ _black_out:
 	CLR.L	d2	;g
 	CLR.L	d3	;b
 	MOVE.W	D4,D0
-	MOVEA.L	_StdScr-BASE(A4),A6	;_StdScr
+	MOVEA.L	_StdScr(A4),A6	;_StdScr
 	LEA	$002C(A6),a0
-	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
+	MOVEA.L	_GfxBase(A4),A6	;_GfxBase
 	JSR	_LVOSetRGB4(A6)
 
 	DBRA	D4,1$
@@ -226,10 +226,10 @@ _setRGB4colors:
 	MOVE.B	(A0)+,D2	;green
 	MOVE.B	(A0),D3		;blue
 
-	MOVEA.L	_StdScr-BASE(A4),A1	;_StdScr
+	MOVEA.L	_StdScr(A4),A1	;_StdScr
 	LEA	$002C(A1),a0
 
-	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
+	MOVEA.L	_GfxBase(A4),A6	;_GfxBase
 	JSR	_LVOSetRGB4(A6)
 
 	rts

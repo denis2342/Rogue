@@ -245,13 +245,13 @@ L00A74:
 _InstallMenus:
 ;	LINK	A5,#-$0000
 
-	PEA	_menu_bar-BASE(A4)	;_menu_bar
+	PEA	_menu_bar(A4)	;_menu_bar
 	JSR	_BuildMenu(PC)
 	ADDQ.W	#4,A7
-	MOVE.L	D0,installmenus_tmp-BASE(A4)
+	MOVE.L	D0,installmenus_tmp(A4)
 
-	MOVE.L	installmenus_tmp-BASE(A4),-(A7)
-	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
+	MOVE.L	installmenus_tmp(A4),-(A7)
+	MOVE.L	_RogueWin(A4),-(A7)	;_RogueWin
 	JSR	_SetMenuStrip(PC)
 	ADDQ.W	#8,A7
 
@@ -264,7 +264,7 @@ _DoMenu:
 	MOVE.L	$0008(A5),D4
 	SUBA.L	A2,A2
 	MOVEQ	#$00,D6
-	MOVEA.L	installmenus_tmp-BASE(A4),A3
+	MOVEA.L	installmenus_tmp(A4),A3
 L00A75:
 	MOVE.L	D4,D5
 	MOVE.L	#$0000FFFF,D4
@@ -316,13 +316,13 @@ L00A80:
 	MOVEQ	#$0B,D2
 	ASR.L	D2,D5
 	AND.B	#$1F,D5
-	MOVE.B	D5,_faststate-BASE(A4)	;_faststate
+	MOVE.B	D5,_faststate(A4)	;_faststate
 	BRA.B	L00A8A
 L00A81:
 	MOVEQ	#$0B,D2
 	ASR.L	D2,D5
 	AND.B	#$1F,D5
-	MOVE.B	D5,_menu_style-BASE(A4)	;_menu_style
+	MOVE.B	D5,_menu_style(A4)	;_menu_style
 	BRA.B	L00A8A
 L00A82:
 	TST.w	D0
@@ -339,7 +339,7 @@ L00A84:
 	ASR.L	#5,D3
 	AND.w	#$003F,D3
 	ASL.w	#2,D3
-	LEA	do_menus_tmp-BASE(A4),A6
+	LEA	do_menus_tmp(A4),A6
 	MOVE.L	$00(A6,D3.w),-(A7)
 	JSR	_use_obj(PC)
 	ADDQ.W	#4,A7
@@ -349,7 +349,7 @@ L00A85:
 	MOVE.L	D5,D3
 	ASR.L	#5,D3
 	AND.w	#$003F,D3
-	MOVEA.L	command_keys_ptr-BASE(A4),A6
+	MOVEA.L	command_keys_ptr(A4),A6
 	MOVE.B	$00(A6,D3.w),D2
 	EXT.W	D2
 	MOVE.W	D2,D6
@@ -388,7 +388,7 @@ _want_a_menu:
 	LINK	A5,#-$000A
 	MOVEM.L	D4-D7/A2/A3,-(A7)
 
-	MOVE.L	installmenus_tmp-BASE(A4),-$0006(A5)
+	MOVE.L	installmenus_tmp(A4),-$0006(A5)
 	BRA.B	L00A8E
 L00A8D:
 	MOVEA.L	-$0006(A5),A6
@@ -414,7 +414,7 @@ L00A90:
 	RTS
 
 L00A91:
-	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
+	MOVE.L	_RogueWin(A4),-(A7)	;_RogueWin
 	JSR	_ClearMenuStrip
 	ADDQ.W	#4,A7
 	MOVEA.L	-$0006(A5),A6
@@ -440,14 +440,14 @@ L00A93:
 	MOVEQ	#$00,D6
 	MOVE.W	D6,D7
 	MOVE.W	D6,-$0002(A5)
-	MOVE.L	_player+46-BASE(A4),-$000A(A5)	;_player + 46 (pack)
+	MOVE.L	_player+46(A4),-$000A(A5)	;_player + 46 (pack)
 	BRA.W	L00A98
 L00A94:
 	MOVE.W	-$0002(A5),D3
 	ADDQ.W	#1,-$0002(A5)
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	do_menus_tmp-BASE(A4),A6
+	LEA	do_menus_tmp(A4),A6
 	MOVE.L	-$000A(A5),$00(A6,D3.w)
 
 	MOVE.W	#$0022,-(A7)
@@ -528,8 +528,8 @@ L00A99:
 L00A9A:
 	MOVE.L	A2,D3
 	BNE.B	L00A99
-	MOVE.L	installmenus_tmp-BASE(A4),-(A7)
-	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
+	MOVE.L	installmenus_tmp(A4),-(A7)
+	MOVE.L	_RogueWin(A4),-(A7)	;_RogueWin
 	JSR	_SetMenuStrip(PC)
 	ADDQ.W	#8,A7
 	BRA.W	L00A90
@@ -578,7 +578,7 @@ L00AA1:
 	ADDQ.W	#4,A7
 	BRA.B	L00AAA
 L00AA2:
-	CMPA.L	_cur_armor-BASE(A4),A2	;_cur_armor
+	CMPA.L	_cur_armor(A4),A2	;_cur_armor
 	BNE.B	L00AA3
 	JSR	_take_off
 	BRA.B	L00AA4
@@ -589,11 +589,11 @@ L00AA3:
 L00AA4:
 	BRA.B	L00AAA
 L00AA5:
-	MOVEA.L	_cur_ring_1-BASE(A4),A6	;_cur_ring_1
+	MOVEA.L	_cur_ring_1(A4),A6	;_cur_ring_1
 	CMPA.L	A2,A6
 	BEQ.B	L00AA6
 
-	MOVEA.L	_cur_ring_2-BASE(A4),A6	;_cur_ring_2
+	MOVEA.L	_cur_ring_2(A4),A6	;_cur_ring_2
 	CMPA.L	A2,A6
 	BNE.B	L00AA7
 L00AA6:
@@ -630,12 +630,12 @@ L00AAA:
 _fix_menu:
 	LINK	A5,#-$0000
 
-	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
+	MOVE.L	_RogueWin(A4),-(A7)	;_RogueWin
 	JSR	_ClearMenuStrip
 	ADDQ.W	#4,A7
 
 	MOVEQ	#$00,D3
-	MOVE.B	_faststate-BASE(A4),D3	;_faststate
+	MOVE.B	_faststate(A4),D3	;_faststate
 	MOVE.W	D3,-(A7)
 	CLR.W	-(A7)
 	MOVE.W	#$0001,-(A7)
@@ -643,15 +643,15 @@ _fix_menu:
 	ADDQ.W	#6,A7
 
 	MOVEQ	#$00,D3
-	MOVE.B	_menu_style-BASE(A4),D3	;_menu_style
+	MOVE.B	_menu_style(A4),D3	;_menu_style
 	MOVE.W	D3,-(A7)
 	MOVE.W	#$0001,-(A7)
 	MOVE.W	#$0001,-(A7)
 	BSR.B	_SetCheck
 	ADDQ.W	#6,A7
 
-	MOVE.L	installmenus_tmp-BASE(A4),-(A7)
-	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
+	MOVE.L	installmenus_tmp(A4),-(A7)
+	MOVE.L	_RogueWin(A4),-(A7)	;_RogueWin
 	JSR	_SetMenuStrip(PC)
 	ADDQ.W	#8,A7
 
@@ -670,7 +670,7 @@ _SetCheck:
 	OR.L	D2,D3
 
 	MOVE.L	D3,-(A7)
-	MOVE.L	installmenus_tmp-BASE(A4),-(A7)
+	MOVE.L	installmenus_tmp(A4),-(A7)
 	JSR	_ItemAddress(PC)
 	ADDQ.W	#8,A7
 
@@ -702,7 +702,7 @@ _about_rogue:
 	JSR	_wtext
 	JSR	_black_out
 	CLR.L	-(A7)
-	MOVE.L	_TextWin-BASE(A4),-(A7)	;_TextWin
+	MOVE.L	_TextWin(A4),-(A7)	;_TextWin
 	PEA	L00AAF(PC)	; "Credits"
 	JSR	_show_ilbm
 	LEA	$000C(A7),A7
@@ -710,7 +710,7 @@ _about_rogue:
 	JSR	_readchar
 	JSR	_clear
 	CLR.L	-(A7)
-	PEA	_my_palette-BASE(A4)	;_my_palette
+	PEA	_my_palette(A4)	;_my_palette
 	JSR	_fade_in
 	ADDQ.W	#8,A7
 	JSR	_wmap
@@ -721,11 +721,11 @@ L00AAF:	dc.b	"Credits.lz4",0
 
 _mouse_go:
 	LINK	A5,#-$0000
-	MOVE.W	$0008(A5),_mouse_adjust_tmp+4-BASE(A4)
-	MOVE.W	$000A(A5),_mouse_adjust_tmp+6-BASE(A4)
-	ST	_mouse_run-BASE(A4)	;_mouse_run
-	MOVE.W	_mouse_adjust_tmp+6-BASE(A4),-(A7)
-	MOVE.W	_mouse_adjust_tmp+4-BASE(A4),-(A7)
+	MOVE.W	$0008(A5),_mouse_adjust_tmp+4(A4)
+	MOVE.W	$000A(A5),_mouse_adjust_tmp+6(A4)
+	ST	_mouse_run(A4)	;_mouse_run
+	MOVE.W	_mouse_adjust_tmp+6(A4),-(A7)
+	MOVE.W	_mouse_adjust_tmp+4(A4),-(A7)
 	BSR.B	_mouse_dir
 	ADDQ.W	#4,A7
 	UNLK	A5
@@ -733,17 +733,17 @@ _mouse_go:
 
 _mouse_adjust:
 ;	LINK	A5,#-$0000
-	MOVE.W	_mouse_adjust_tmp+2-BASE(A4),D3
-	CMP.W	_player+10-BASE(A4),D3	;_player + 10
+	MOVE.W	_mouse_adjust_tmp+2(A4),D3
+	CMP.W	_player+10(A4),D3	;_player + 10
 	BNE.B	L00AB0
-	MOVE.W	_mouse_adjust_tmp-BASE(A4),D3
-	CMP.W	_player+12-BASE(A4),D3	;_player + 12
+	MOVE.W	_mouse_adjust_tmp(A4),D3
+	CMP.W	_player+12(A4),D3	;_player + 12
 	BNE.B	L00AB0
-	CLR.B	_running-BASE(A4)	;_running
-	CLR.B	_mouse_run-BASE(A4)	;_mouse_run
+	CLR.B	_running(A4)	;_running
+	CLR.B	_mouse_run(A4)	;_mouse_run
 L00AB0:
-	MOVE.W	_mouse_adjust_tmp+6-BASE(A4),-(A7)
-	MOVE.W	_mouse_adjust_tmp+4-BASE(A4),-(A7)
+	MOVE.W	_mouse_adjust_tmp+6(A4),-(A7)
+	MOVE.W	_mouse_adjust_tmp+4(A4),-(A7)
 	BSR.B	_mouse_dir
 	ADDQ.W	#4,A7
 ;	UNLK	A5
@@ -753,13 +753,13 @@ _mouse_dir:
 	LINK	A5,#-$0002
 	MOVEM.L	D4-D7/A2/A3,-(A7)
 
-	MOVE.W	_player+10-BASE(A4),d1	;_player + 10
-	MOVE.W	_player+12-BASE(A4),d0	;_player + 12
+	MOVE.W	_player+10(A4),d1	;_player + 10
+	MOVE.W	_player+12(A4),d0	;_player + 12
 	JSR	_movequick
 
-	MOVE.W	_p_col-BASE(A4),D4	;_p_col
+	MOVE.W	_p_col(A4),D4	;_p_col
 	ADDQ.W	#5,D4
-	MOVE.W	_p_row-BASE(A4),D5	;_p_row
+	MOVE.W	_p_row(A4),D5	;_p_row
 	ADDQ.W	#4,D5
 	MOVE.W	$000A(A5),D6
 	SUB.W	D4,D6
@@ -806,12 +806,12 @@ L00AB3:
 	MOVE.W	$000A(A5),D3
 	EXT.L	D3
 	DIVU.W	#$000A,D3
-	MOVE.W	D3,_mouse_adjust_tmp+2-BASE(A4)
+	MOVE.W	D3,_mouse_adjust_tmp+2(A4)
 
 	MOVE.W	$0008(A5),D3
 	EXT.L	D3
 	DIVU.W	#$0009,D3
-	MOVE.W	D3,_mouse_adjust_tmp-BASE(A4)
+	MOVE.W	D3,_mouse_adjust_tmp(A4)
 
 	MOVE.W	A2,-(A7)
 	MOVE.W	A3,-(A7)
@@ -828,10 +828,10 @@ _mouse_char:
 
 	MOVE.W	$0008(A5),D4
 	MOVE.W	$000A(A5),D5
-	MOVE.W	_player+10-BASE(A4),D3	;_player + 10
+	MOVE.W	_player+10(A4),D3	;_player + 10
 	ADD.W	D5,D3
 	MOVE.W	D3,-(A7)
-	MOVE.W	_player+12-BASE(A4),D3	;_player + 12
+	MOVE.W	_player+12(A4),D3	;_player + 12
 	ADD.W	D4,D3
 	MOVE.W	D3,-(A7)
 	JSR	_one_step(PC)
@@ -839,10 +839,10 @@ _mouse_char:
 	TST.W	D0
 	BNE.W	L00AB8
 
-	MOVE.W	_mouse_adjust_tmp+2-BASE(A4),-(A7)
-	MOVE.W	_mouse_adjust_tmp-BASE(A4),-(A7)
-	MOVE.W	_player+10-BASE(A4),-(A7)	;_player + 10
-	MOVE.W	_player+12-BASE(A4),-(A7)	;_player + 12
+	MOVE.W	_mouse_adjust_tmp+2(A4),-(A7)
+	MOVE.W	_mouse_adjust_tmp(A4),-(A7)
+	MOVE.W	_player+10(A4),-(A7)	;_player + 10
+	MOVE.W	_player+12(A4),-(A7)	;_player + 12
 	JSR	_DISTANCE
 	ADDQ.W	#8,A7
 	MOVEA.W	D0,A2
@@ -857,10 +857,10 @@ L00AB5:
 	TST.W	D6
 	BEQ.B	L00AB7
 L00AB6:
-	MOVE.W	_player+10-BASE(A4),D3	;_player + 10
+	MOVE.W	_player+10(A4),D3	;_player + 10
 	ADD.W	D6,D3
 	MOVE.W	D3,-(A7)
-	MOVE.W	_player+12-BASE(A4),D3	;_player + 12
+	MOVE.W	_player+12(A4),D3	;_player + 12
 	ADD.W	D7,D3
 	MOVE.W	D3,-(A7)
 	BSR.B	_one_step
@@ -868,12 +868,12 @@ L00AB6:
 	TST.W	D0
 	BEQ.B	L00AB7
 
-	MOVE.W	_mouse_adjust_tmp+2-BASE(A4),-(A7)
-	MOVE.W	_mouse_adjust_tmp-BASE(A4),-(A7)
-	MOVE.W	_player+10-BASE(A4),D3	;_player + 10
+	MOVE.W	_mouse_adjust_tmp+2(A4),-(A7)
+	MOVE.W	_mouse_adjust_tmp(A4),-(A7)
+	MOVE.W	_player+10(A4),D3	;_player + 10
 	ADD.W	D6,D3
 	MOVE.W	D3,-(A7)
-	MOVE.W	_player+12-BASE(A4),D3	;_player + 12
+	MOVE.W	_player+12(A4),D3	;_player + 12
 	ADD.W	D7,D3
 	MOVE.W	D3,-(A7)
 	JSR	_DISTANCE
@@ -904,7 +904,7 @@ L00AB8:
 	MULU.W	#$0003,D4
 	ADDQ.W	#1,D5
 	ADD.w	D5,D4
-	LEA	_mvt-BASE(A4),A6	;_mvt "ykuhllbjn"
+	LEA	_mvt(A4),A6	;_mvt "ykuhllbjn"
 	MOVE.B	$00(A6,D4.w),D0
 	EXT.W	D0
 
@@ -919,7 +919,7 @@ _one_step:
 	MOVE.W	$0008(A5),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	MOVEQ	#$00,D3
 	MOVE.B	$00(A6,D0.W),D3
 	MOVE.W	D3,-(A7)
@@ -937,7 +937,7 @@ L00ABA:
 	MOVE.W	$0008(A5),-$0002(A5)
 	MOVE.W	$000A(A5),-$0004(A5)
 	PEA	-$0004(A5)
-	PEA	_player+10-BASE(A4)	;_player + 10
+	PEA	_player+10(A4)	;_player + 10
 	JSR	_diag_ok
 	ADDQ.W	#8,A7
 	BRA.B	L00AB9

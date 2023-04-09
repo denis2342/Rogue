@@ -17,11 +17,11 @@ L00673:
 	JSR	_AmigaOpen(PC)
 	ADDQ.W	#6,A7
 
-	MOVE.W	D0,r_score_fd-BASE(A4)	;rogue.score filehd
+	MOVE.W	D0,r_score_fd(A4)	;rogue.score filehd
 ;	CMP.W	#$0000,D0
 	BGE.B	L00677
 
-	TST.B	_noscore-BASE(A4)	;_noscore
+	TST.B	_noscore(A4)	;_noscore
 	BNE.B	L00674
 
 	TST.W	$0008(A5)
@@ -62,17 +62,17 @@ L00677:
 	JSR	_get_scores(PC)
 	ADDQ.W	#4,A7
 
-	move.b	#-1,_MathBase-BASE(A4)	;normal is negativ, score color flag
+	move.b	#-1,_MathBase(A4)	;normal is negativ, score color flag
 
-	tst.b	_noscore-BASE(A4)	;_noscore
+	tst.b	_noscore(A4)	;_noscore
 	bne	L00679
 
 	;hiding strength, maxhp and experience points in the highscore
-	move.l	_player+26-BASE(A4),-$000E(A5)	;_player + 26 (EXP)
-	move.b	_player+25-BASE(A4),-$000A(A5)	;_player + 24 strength
-	move.b	_player+41-BASE(A4),-$0009(A5)	;_player + 40 (max HP)
+	move.l	_player+26(A4),-$000E(A5)	;_player + 26 (EXP)
+	move.b	_player+25(A4),-$000A(A5)	;_player + 24 strength
+	move.b	_player+41(A4),-$0009(A5)	;_player + 40 (max HP)
 
-	PEA	_whoami-BASE(A4)	;_whoami
+	PEA	_whoami(A4)	;_whoami
 	PEA	-$002E(A5)
 	JSR	_strcpy
 	ADDQ.W	#8,A7
@@ -86,15 +86,15 @@ L00677:
 
 	MOVE.W	$000A(A5),-$0004(A5)
 L00678:
-	MOVE.W	_max_level-BASE(A4),-$0002(A5)	;_max_level (deepest level)
-	MOVE.W	_player+30-BASE(A4),-$0008(A5)	;_player + 30 (rank)
+	MOVE.W	_max_level(A4),-$0002(A5)	;_max_level (deepest level)
+	MOVE.W	_player+30(A4),-$0008(A5)	;_player + 30 (rank)
 	PEA	-$01FA(A5)	;506 (460 + 46)
 	PEA	-$002E(A5)
 	JSR	_add_scores(PC)
 	ADDQ.W	#8,A7
 	MOVE.W	D0,D5
 L00679:
-	MOVE.W	r_score_fd-BASE(A4),-(A7)
+	MOVE.W	r_score_fd(A4),-(A7)
 	JSR	_AmigaClose(PC)
 	ADDQ.W	#2,A7
 
@@ -109,7 +109,7 @@ L00679:
 	JSR	_AmigaCreat(PC)
 	ADDQ.W	#6,A7
 
-	MOVE.W	D0,r_score_fd-BASE(A4)	;rogue.score filehd
+	MOVE.W	D0,r_score_fd(A4)	;rogue.score filehd
 ;	CMP.W	#$0000,D0
 	BLT.B	L0067A
 
@@ -117,7 +117,7 @@ L00679:
 	JSR	_put_scores(PC)
 	ADDQ.W	#4,A7
 
-	MOVE.W	r_score_fd-BASE(A4),-(A7)	;rogue.score filehd
+	MOVE.W	r_score_fd(A4),-(A7)	;rogue.score filehd
 	JSR	_AmigaClose(PC)
 	ADDQ.W	#2,A7
 L0067A:
@@ -152,7 +152,7 @@ L00681:
 
 	MOVE.W	#46,-(A7)		;read 46 bytes
 	MOVE.L	$0008(A5),-(A7)
-	MOVE.W	r_score_fd-BASE(A4),-(A7)	;rogue.score filehd
+	MOVE.W	r_score_fd(A4),-(A7)	;rogue.score filehd
 	JSR	_read
 	ADDQ.W	#8,A7
 	MOVE.W	D0,D5
@@ -184,7 +184,7 @@ loop$	MOVEA.L	$0008(A5),A6
 
 	MOVE.W	#46,-(A7)	; 46 bytes per entry
 	MOVE.L	A6,-(A7)
-	MOVE.W	r_score_fd-BASE(A4),-(A7)	;rogue.score filehd
+	MOVE.W	r_score_fd(A4),-(A7)	;rogue.score filehd
 	JSR	_write
 	ADDQ.W	#8,A7
 	CMP.W	#$0000,D0
@@ -208,7 +208,7 @@ _pr_scores:
 	JSR	_black_out
 
 	CLR.L	-(A7)
-	MOVE.L	_TextWin-BASE(A4),-(A7)	;_TextWin
+	MOVE.L	_TextWin(A4),-(A7)	;_TextWin
 	PEA	L00690(PC)	;"Hall.of.Fame"
 	JSR	_show_ilbm
 	LEA	$000C(A7),A7
@@ -227,18 +227,18 @@ L00689:
 	ADDQ.W	#7,D0
 	JSR	_movequick
 
-	move.b	#1,_addch_text+0-BASE(A4)	;set the default color in IntuiText
+	move.b	#1,_addch_text+0(A4)	;set the default color in IntuiText
 
-	cmp.b	_MathBase-BASE(A4),d4	;_all_clear + 1
+	cmp.b	_MathBase(A4),d4	;_all_clear + 1
 	bne	1$
-	move.b	#3,_addch_text+0-BASE(A4)	;changes the color in IntuiText
+	move.b	#3,_addch_text+0(A4)	;changes the color in IntuiText
 
 1$	MOVEA.L	$000A(A5),A6
 	MOVE.W	$0026(A6),D3
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_he_man-BASE(A4),A6	;_he_man
+	LEA	_he_man(A4),A6	;_he_man
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.L	$000A(A5),-(A7)
 	MOVEA.L	$000A(A5),A6
@@ -378,8 +378,8 @@ L0069D:
 
 	MOVEQ	#$00,D0
 L0069E:
-	move.b	d0,_MathBase-BASE(A4)	;_all_clear + 1
-	subq.b	#1,_MathBase-BASE(A4)
+	move.b	d0,_MathBase(A4)	;_all_clear + 1
+	subq.b	#1,_MathBase(A4)
 
 	MOVEM.L	(A7)+,A2/A3
 	UNLK	A5
@@ -406,10 +406,10 @@ _death:
 	MOVEM.L	D4/A2,-(A7)
 	MOVE.B	$0009(A5),D4
 
-	MOVE.W	_purse-BASE(A4),D3	;_purse
+	MOVE.W	_purse(A4),D3	;_purse
 	EXT.L	D3
 	DIVS.W	#10,D3
-	SUB.W	D3,_purse-BASE(A4)	;_purse
+	SUB.W	D3,_purse(A4)	;_purse
 
 	PEA	-$0054(A5)
 	JSR	_time
@@ -421,11 +421,11 @@ _death:
 	JSR	_black_out
 	JSR	_wtext
 	MOVE.W	#$0001,-(A7)
-	MOVE.L	_TextWin-BASE(A4),-(A7)	;_TextWin
+	MOVE.L	_TextWin(A4),-(A7)	;_TextWin
 	PEA	L006A5(PC)	;"Tombstone"
 	JSR	_show_ilbm
 	LEA	$000A(A7),A7
-	LEA	_whoami-BASE(A4),A6	;_whoami
+	LEA	_whoami(A4),A6	;_whoami
 	MOVE.L	A6,D3
 ;	BRA.B	L006A2
 L006A1:
@@ -436,7 +436,7 @@ L006A2:
 	MOVE.W	#$0062,-(A7)
 	JSR	_tomb_center(PC)
 	ADDQ.W	#6,A7
-	MOVE.W	_purse-BASE(A4),-(A7)	;_purse
+	MOVE.W	_purse(A4),-(A7)	;_purse
 	PEA	L006A7(PC)		;"%u Au"
 	PEA	-$0050(A5)
 	JSR	_sprintf
@@ -484,7 +484,7 @@ L006A2:
 	EXT.W	D3
 	MOVE.W	D3,-(A7)		;killed by
 	CLR.W	-(A7)
-	MOVE.W	_purse-BASE(A4),-(A7)	;_purse
+	MOVE.W	_purse(A4),-(A7)	;_purse
 	JSR	_score(PC)
 	ADDQ.W	#6,A7
 	PEA	L006AB(PC)
@@ -547,11 +547,11 @@ _tomb_center:
 
 	MOVE.W	$0008(A5),D1
 
-	MOVEA.L	_TextWin-BASE(A4),A6	;_TextWin
+	MOVEA.L	_TextWin(A4),A6	;_TextWin
 	lea	-$0014(A5),a1
 	MOVE.L	$0032(A6),a0
 
-	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase(A4),A6	;_IntuitionBase
 	JSR	_LVOPrintIText(A6)
 
 ;	MOVE.L	$0032(A6),-(A7)
@@ -616,9 +616,9 @@ _total_winner:
 	JSR	_mvaddstr
 	ADDQ.W	#8,A7
 
-	MOVE.W	_purse-BASE(A4),D6	;_purse
+	MOVE.W	_purse(A4),D6	;_purse
 	MOVEQ	#$61,D5
-	MOVEA.L	_player+46-BASE(A4),A2	;_player + 46 (pack)
+	MOVEA.L	_player+46(A4),A2	;_player + 46 (pack)
 	BRA.W	L006D9
 L006AC:
 	MOVE.L	A2,-(A7)
@@ -686,7 +686,7 @@ L006C9:
 	MOVE.W	$0020(A2),D3	;which armor did we have?
 ;	EXT.L	D3
 	ASL.w	#1,D3
-	LEA	_a_class-BASE(A4),A6	;_a_class
+	LEA	_a_class(A4),A6	;_a_class
 	MOVE.W	$00(A6,D3.w),D2	;load the base AC value
 	SUB.W	$0026(A2),D2
 	MULU.W	#10,D2		; 10 extra gold for every AC point we made it better
@@ -711,11 +711,11 @@ L006CA:
 	MOVE.W	$0020(A2),D3
 ;	EXT.L	D3
 	ASL.w	#3,D3
-	LEA	_s_magic+6-BASE(A4),A6	;_s_magic + 6
+	LEA	_s_magic+6(A4),A6	;_s_magic + 6
 	MOVE.W	$00(A6,D3.w),D4
 	MULU.W	$001E(A2),D4	;multiply by the amount we have
 	MOVE.W	$0020(A2),D3
-	LEA	_s_know-BASE(A4),A6	;_s_know
+	LEA	_s_know(A4),A6	;_s_know
 	TST.B	$00(A6,D3.W)
 	BNE.B	L006D7
 
@@ -730,11 +730,11 @@ L006CC:
 	MOVE.W	$0020(A2),D3
 ;	EXT.L	D3
 	ASL.w	#3,D3
-	LEA	_p_magic+6-BASE(A4),A6	;_p_magic + 6
+	LEA	_p_magic+6(A4),A6	;_p_magic + 6
 	MOVE.W	$00(A6,D3.w),D4
 	MULU.W	$001E(A2),D4	;multiply by the amount we have
 	MOVE.W	$0020(A2),D3
-	LEA	_p_know-BASE(A4),A6	;_p_know
+	LEA	_p_know(A4),A6	;_p_know
 	TST.B	$00(A6,D3.W)
 	BNE.B	L006D7
 
@@ -749,7 +749,7 @@ L006CE:
 	MOVE.W	$0020(A2),D3
 ;	EXT.L	D3
 	ASL.w	#3,D3
-	LEA	_r_magic+6-BASE(A4),A6	;_r_magic + 6
+	LEA	_r_magic+6(A4),A6	;_r_magic + 6
 	MOVE.W	$00(A6,D3.w),D4		;worth of the ring in gold
 	CMPI.W	#R_ADDSTR,$0020(A2)
 	BEQ.B	L006CF
@@ -782,7 +782,7 @@ L006D1:
 	ORI.W	#O_ISKNOW,$0028(A2)
 L006D2:
 	MOVE.W	$0020(A2),D3
-	LEA	_r_know-BASE(A4),A6	;_r_know
+	LEA	_r_know(A4),A6	;_r_know
 	ST	$00(A6,D3.W)
 	BRA.W	L006D7
 
@@ -792,7 +792,7 @@ L006D3:
 	MOVE.W	$0020(A2),D3
 ;	EXT.L	D3
 	ASL.w	#3,D3
-	LEA	_ws_magic+6-BASE(A4),A6
+	LEA	_ws_magic+6(A4),A6
 	MOVE.W	$00(A6,D3.w),D4
 	MOVE.W	$0026(A2),D3	;get number of charges
 	MULU.W	#20,D3
@@ -806,7 +806,7 @@ L006D3:
 	ORI.W	#O_ISKNOW,$0028(A2)
 L006D4:
 	MOVE.W	$0020(A2),D3
-	LEA	_ws_know-BASE(A4),A6	;_ws_know
+	LEA	_ws_know(A4),A6	;_ws_know
 	ST	$00(A6,D3.W)
 	BRA.B	L006D7
 L006D5:
@@ -853,7 +853,7 @@ L006D8:
 	PEA	L006E0(PC)	;"%c) %5d  %s"
 	JSR	_printw
 	LEA	$000C(A7),A7
-	ADD.W	D4,_purse-BASE(A4)	;_purse
+	ADD.W	D4,_purse(A4)	;_purse
 	ADDQ.B	#1,D5
 	MOVEA.L	(A2),A2
 L006D9:
@@ -879,7 +879,7 @@ L006D9:
 	JSR	_readchar
 
 	MOVE.W	#$0002,-(A7)
-	MOVE.W	_purse-BASE(A4),-(A7)	;_purse
+	MOVE.W	_purse(A4),-(A7)	;_purse
 	JSR	_score(PC)
 	ADDQ.W	#4,A7
 
@@ -887,7 +887,7 @@ L006D9:
 	JSR	_wtext
 
 	CLR.L	-(A7)
-	MOVE.L	_TextWin-BASE(A4),-(A7)	;_TextWin
+	MOVE.L	_TextWin(A4),-(A7)	;_TextWin
 	PEA	L006E3(PC)	;"Total.Winner"
 	JSR	_show_ilbm
 	LEA	$000C(A7),A7
@@ -924,7 +924,7 @@ _killname:
 	MOVEM.L	D4/D5/A2,-(A7)
 
 	MOVE.B	$0009(A5),D4
-	MOVEA.L	_prbuf-BASE(A4),A2	;_prbuf
+	MOVEA.L	_prbuf(A4),A2	;_prbuf
 	MOVEQ	#$01,D5
 	MOVE.B	D4,D0
 	EXT.W	D0
@@ -955,7 +955,7 @@ L006EA:
 	BGT.B	L006EB
 	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
-	LEA	_monsters-BASE(A4),A6	;_monsters
+	LEA	_monsters(A4),A6	;_monsters
 	MOVEA.L	$00(A6,D3.L),A2
 	BRA.B	L006EE
 L006EB:
@@ -984,19 +984,19 @@ L006EE:
 	ADDQ.W	#4,A7
 	MOVE.L	D0,-(A7)
 	PEA	L006F7(PC)
-	MOVE.L	_prbuf-BASE(A4),-(A7)	;_prbuf
+	MOVE.L	_prbuf(A4),-(A7)	;_prbuf
 	JSR	_sprintf
 	LEA	$000C(A7),A7
 	BRA.B	L006F0
 L006EF:
-	MOVEA.L	_prbuf-BASE(A4),A6	;_prbuf
+	MOVEA.L	_prbuf(A4),A6	;_prbuf
 	CLR.B	(A6)
 L006F0:
 	MOVE.L	A2,-(A7)
-	MOVE.L	_prbuf-BASE(A4),-(A7)	;_prbuf
+	MOVE.L	_prbuf(A4),-(A7)	;_prbuf
 	JSR	_strcat
 	ADDQ.W	#8,A7
-	MOVE.L	_prbuf-BASE(A4),D0	;_prbuf
+	MOVE.L	_prbuf(A4),D0	;_prbuf
 
 	MOVEM.L	(A7)+,D4/D5/A2
 	UNLK	A5

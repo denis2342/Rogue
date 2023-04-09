@@ -93,16 +93,16 @@ _talloc:
 L0046B:
 	MOVE.W	D4,D3
 	ASL.w	#1,D3
-	MOVEA.L	__t_alloc-BASE(A4),A6	;__t_alloc
+	MOVEA.L	__t_alloc(A4),A6	;__t_alloc
 	TST.W	$00(A6,D3.w)
 	BNE.B	L0046E
 
-	ADDQ.W	#1,_total-BASE(A4)	;_total
-	MOVE.W	_total-BASE(A4),D0	;_total
-	CMP.W	_maxitems-BASE(A4),D0	;_maxitems
+	ADDQ.W	#1,_total(A4)	;_total
+	MOVE.W	_total(A4),D0	;_total
+	CMP.W	_maxitems(A4),D0	;_maxitems
 	BLE.B	L0046C
 
-	MOVE.W	D0,_maxitems-BASE(A4)	;_total,_maxitems
+	MOVE.W	D0,_maxitems(A4)	;_total,_maxitems
 L0046C:
 	ADDQ.W	#1,$00(A6,D3.w)
 
@@ -110,13 +110,13 @@ L0046C:
 	MOVEq	#50,d0
 	MOVE.W	D4,D3
 	MULU.W	d0,D3
-	ADD.L	__things-BASE(A4),D3	;__things
+	ADD.L	__things(A4),D3	;__things
 	MOVE.L	D3,a0
 	JSR	_memset
 
 	MOVE.W	D4,D0
 	MULU.W	#50,D0
-	ADD.L	__things-BASE(A4),D0	;__things
+	ADD.L	__things(A4),D0	;__things
 L0046D:
 	MOVE.L	(A7)+,D4
 ;	UNLK	A5
@@ -162,7 +162,7 @@ _discard:
 
 1$	MOVE.W	D4,D3
 	MULU.W	#$0032,D3
-	ADD.L	__things-BASE(A4),D3	;__things
+	ADD.L	__things(A4),D3	;__things
 	CMP.L	A2,D3
 	BEQ.B	2$
 
@@ -173,11 +173,11 @@ _discard:
 	MOVEQ	#$00,D0
 	BRA.B	3$
 
-2$	SUBQ.W	#1,_total-BASE(A4)	;_total
+2$	SUBQ.W	#1,_total(A4)	;_total
 	MOVE.W	D4,D3
 ;	EXT.L	D3
 	ASL.w	#1,D3
-	MOVEA.L	__t_alloc-BASE(A4),A6	;__t_alloc
+	MOVEA.L	__t_alloc(A4),A6	;__t_alloc
 	CLR.W	$00(A6,D3.w)
 	MOVEQ	#$01,D0
 

@@ -14,16 +14,16 @@ _WBprint:
 _OffVerify:
 	LINK	A5,#-$0008
 	JSR	_Forbid
-	TST.L	_StdWin-BASE(A4)	;_StdWin
+	TST.L	_StdWin(A4)	;_StdWin
 	BEQ.B	L00127
 
-	MOVE.L	_Window1+10-BASE(A4),D3
+	MOVE.L	_Window1+10(A4),D3
 	AND.L	#$FFFFDFFF,D3
 	MOVE.L	D3,-(A7)
-	MOVE.L	_StdWin-BASE(A4),-(A7)	;_StdWin
+	MOVE.L	_StdWin(A4),-(A7)	;_StdWin
 	JSR	_ModifyIDCMP
 	ADDQ.W	#8,A7
-	MOVEA.L	_StdWin-BASE(A4),A6	;_StdWin
+	MOVEA.L	_StdWin(A4),A6	;_StdWin
 	MOVEA.L	$0056(A6),A1
 	MOVE.L	$0014(A1),-$0004(A5)
 	BRA.B	L00126
@@ -54,10 +54,10 @@ L00127:
 
 _OnVerify:
 	LINK	A5,#-$0000
-	TST.L	_StdWin-BASE(A4)	;_StdWin
+	TST.L	_StdWin(A4)	;_StdWin
 	BEQ.B	L00128
-	MOVE.L	_Window1+10-BASE(A4),-(A7)
-	MOVE.L	_StdWin-BASE(A4),-(A7)	;_StdWin
+	MOVE.L	_Window1+10(A4),-(A7)
+	MOVE.L	_StdWin(A4),-(A7)	;_StdWin
 	JSR	_ModifyIDCMP
 	ADDQ.W	#8,A7
 L00128:
@@ -66,11 +66,11 @@ L00128:
 
 _InitGadgets:
 	LINK	A5,#-$0000
-	TST.W	_DownGadget+44-BASE(A4)
+	TST.W	_DownGadget+44(A4)
 	BEQ.B	L00B9C
 	CLR.L	-(A7)
-	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
-	PEA	_SearchGadget-BASE(A4)
+	MOVE.L	_RogueWin(A4),-(A7)	;_RogueWin
+	PEA	_SearchGadget(A4)
 	JSR	_RefreshGadgets(PC)
 	LEA	$000C(A7),A7
 L00B9B:
@@ -78,7 +78,7 @@ L00B9B:
 	RTS
 
 L00B9C:
-	MOVE.W	#$0001,_DownGadget+44-BASE(A4)
+	MOVE.W	#$0001,_DownGadget+44(A4)
 	CLR.W	-(A7)
 	MOVE.W	#$0014,-(A7)
 	JSR	_malloc
@@ -89,7 +89,7 @@ L00B9C:
 	JSR	_ctointui
 	LEA	$000A(A7),A7
 
-	MOVE.L	D0,_RestGadget+26-BASE(A4)
+	MOVE.L	D0,_RestGadget+26(A4)
 	CLR.W	-(A7)
 	MOVE.W	#$0014,-(A7)
 	JSR	_malloc
@@ -100,7 +100,7 @@ L00B9C:
 	JSR	_ctointui
 	LEA	$000A(A7),A7
 
-	MOVE.L	D0,_SearchGadget+26-BASE(A4)
+	MOVE.L	D0,_SearchGadget+26(A4)
 	CLR.W	-(A7)
 	MOVE.W	#$0014,-(A7)
 	JSR	_malloc
@@ -111,40 +111,40 @@ L00B9C:
 	JSR	_ctointui
 	LEA	$000A(A7),A7
 
-	MOVE.L	D0,_DownGadget+26-BASE(A4)
+	MOVE.L	D0,_DownGadget+26(A4)
 	MOVE.W	#$FFFF,-(A7)
-	PEA	_SearchGadget-BASE(A4)
-	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
+	PEA	_SearchGadget(A4)
+	MOVE.L	_RogueWin(A4),-(A7)	;_RogueWin
 	JSR	_AddGadget(PC)
 	LEA	$000A(A7),A7
 
 	MOVE.W	#$FFFF,-(A7)
-	PEA	_RestGadget-BASE(A4)
-	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
+	PEA	_RestGadget(A4)
+	MOVE.L	_RogueWin(A4),-(A7)	;_RogueWin
 	JSR	_AddGadget(PC)
 	LEA	$000A(A7),A7
 
 	MOVE.W	#$FFFF,-(A7)
-	PEA	_DownGadget-BASE(A4)
-	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
+	PEA	_DownGadget(A4)
+	MOVE.L	_RogueWin(A4),-(A7)	;_RogueWin
 	JSR	_AddGadget(PC)
 	LEA	$000A(A7),A7
 
 	CLR.L	-(A7)
-	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
-	PEA	_SearchGadget-BASE(A4)
+	MOVE.L	_RogueWin(A4),-(A7)	;_RogueWin
+	PEA	_SearchGadget(A4)
 	JSR	_OnGadget(PC)
 	LEA	$000C(A7),A7
 
 	CLR.L	-(A7)
-	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
-	PEA	_RestGadget-BASE(A4)
+	MOVE.L	_RogueWin(A4),-(A7)	;_RogueWin
+	PEA	_RestGadget(A4)
 	JSR	_OnGadget(PC)
 	LEA	$000C(A7),A7
 
 	CLR.L	-(A7)
-	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
-	PEA	_DownGadget-BASE(A4)
+	MOVE.L	_RogueWin(A4),-(A7)	;_RogueWin
+	PEA	_DownGadget(A4)
 	JSR	_OnGadget(PC)
 	LEA	$000C(A7),A7
 
@@ -157,11 +157,11 @@ L00B9F:	dc.b	"Down",0,0
 _AmigaCreat:
 	LINK	A5,#-$0200
 	MOVEM.L	D4-D6,-(A7)
-	TST.W	_DownGadget+46-BASE(A4)
+	TST.W	_DownGadget+46(A4)
 	BEQ.B	L00BA0
 	JSR	_OffVerify
 L00BA0:
-	CLR.W	_DownGadget+46-BASE(A4)
+	CLR.W	_DownGadget+46(A4)
 	MOVE.W	#$01B6,-(A7)
 	MOVE.L	$0008(A5),-(A7)
 	JSR	_creat(PC)
@@ -230,12 +230,12 @@ L00BA9:
 
 _AmigaOpen:
 	LINK	A5,#-$0002
-	TST.W	_DownGadget+46-BASE(A4)
+	TST.W	_DownGadget+46(A4)
 	BEQ.B	L00BAA
 
 	JSR	_OffVerify
 L00BAA:
-	CLR.W	_DownGadget+46-BASE(A4)
+	CLR.W	_DownGadget+46(A4)
 	MOVE.W	$000C(A5),-(A7)
 	MOVE.L	$0008(A5),-(A7)
 	JSR	_open
@@ -252,12 +252,12 @@ L00BAB:
 
 _AmigaClose:
 	LINK	A5,#-$0000
-	TST.W	_DownGadget+46-BASE(A4)
+	TST.W	_DownGadget+46(A4)
 	BNE.B	L00BAC
 
 	JSR	_OnVerify
 L00BAC:
-	MOVE.W	#$0001,_DownGadget+46-BASE(A4)
+	MOVE.W	#$0001,_DownGadget+46(A4)
 	MOVE.W	$0008(A5),-(A7)
 	JSR	_close
 	ADDQ.W	#2,A7
@@ -308,7 +308,7 @@ _help:
 
 	JSR	_wtext
 	MOVEQ	#$00,D4
-	LEA	_help_text-BASE(A4),A6
+	LEA	_help_text(A4),A6
 	MOVEA.L	A6,A2
 	BRA.B	L00BF3
 
@@ -355,7 +355,7 @@ L00BF7:
 	SUBQ.L	#1,A2
 L00BF8:
 	MOVEQ	#$00,D4
-	LEA	_ctp_-BASE(A4),A6		;_ctp_
+	LEA	_ctp_(A4),A6		;_ctp_
 	BRA.B	L00BFA
 
 L00BF9:
@@ -406,10 +406,10 @@ begin:
 ;	ADDA.L	#$00008002,A4
 
 ;	lea	__Dorg+$7FFE,a4
-	lea	BASE,a4
+	lea	__Dorg,a4
 
-	LEA	__Uorg-BASE(A4),A1	;__Uorg
-	LEA	__Uorg-BASE(A4),A2	;__Uorg
+	LEA	__Uorg(A4),A1	;__Uorg
+	LEA	__Uorg(A4),A2	;__Uorg
 	CMPA.L	A1,A2
 	BNE.B	L00C00
 
@@ -419,9 +419,9 @@ begin:
 	CLR.L	(A1)+
 	DBF	D1,1$
 L00C00:
-	MOVE.L	A7,__savsp-BASE(A4)		;__savsp
+	MOVE.L	A7,__savsp(A4)		;__savsp
 	MOVEA.L	$0004,A6
-	MOVE.L	A6,_SysBase-BASE(A4)		;_SysBase
+	MOVE.L	A6,_SysBase(A4)		;_SysBase
 
 	MOVEM.L	D0/A0,-(A7)
 	JSR	__main(PC)
@@ -486,7 +486,7 @@ _lseek:
 	BLT.B	L00C08
 
 	MULS.W	#$0006,D3
-	LEA	__devtab-BASE(A4),A2		;__devtab
+	LEA	__devtab(A4),A2		;__devtab
 	ADDA.L	D3,A2
 
 	CMP.W	#$0013,D4
@@ -495,7 +495,7 @@ _lseek:
 	TST.L	(A2)
 	BNE.B	L00C0A
 L00C08:
-	MOVE.W	#$0003,_errno-BASE(A4)	;_errno
+	MOVE.W	#$0003,_errno(A4)	;_errno
 	MOVEQ	#-$01,D0
 L00C09:
 	MOVEM.L	(A7)+,D4/D5/A2
@@ -516,7 +516,7 @@ L00C0A:
 	BNE.B	L00C0B
 
 	JSR	_IoErr(PC)
-	MOVE.W	D0,_errno-BASE(A4)	;_errno
+	MOVE.W	D0,_errno(A4)	;_errno
 	MOVEQ	#-$01,D0
 	BRA.B	L00C09
 L00C0B:
@@ -545,7 +545,7 @@ _open:
 
 	MOVEA.L	$0008(A5),A2
 	JSR	_Chk_Abort(PC)
-	LEA	__devtab-BASE(A4),A3		;__devtab
+	LEA	__devtab(A4),A3		;__devtab
 	MOVEQ	#$00,D5
 L00C0C:
 	MOVE.W	D5,D3
@@ -635,7 +635,7 @@ L00C11:
 	ADDQ.W	#4,A7
 	MOVEQ	#$05,D6
 L00C12:
-	MOVE.W	D6,_errno-BASE(A4)	;_errno
+	MOVE.W	D6,_errno(A4)	;_errno
 	MOVEQ	#-$01,D0
 L00C13:
 	MOVEM.L	(A7)+,D4-D6/A2/A3
@@ -675,7 +675,7 @@ _read:
 	BLT.B	L00C17
 
 	MULS.W	#$0006,D3
-	LEA	__devtab-BASE(A4),A2		;__devtab
+	LEA	__devtab(A4),A2		;__devtab
 	ADDA.L	D3,A2
 
 	CMP.W	#$0013,D2
@@ -683,7 +683,7 @@ _read:
 	TST.L	(A2)
 	BNE.B	L00C19
 L00C17:
-	MOVE.W	#$0003,_errno-BASE(A4)	;_errno
+	MOVE.W	#$0003,_errno(A4)	;_errno
 	MOVEQ	#-$01,D0
 L00C18:
 	MOVE.L	(A7)+,A2
@@ -696,7 +696,7 @@ L00C19:
 	CMP.W	#$0001,D3
 	BNE.B	L00C1A
 
-	MOVE.W	#$0006,_errno-BASE(A4)	;_errno
+	MOVE.W	#$0006,_errno(A4)	;_errno
 	MOVEQ	#-$01,D0
 	BRA.B	L00C18
 L00C1A:
@@ -712,7 +712,7 @@ L00C1A:
 	BNE.B	L00C18
 
 	JSR	_IoErr(PC)
-	MOVE.W	D0,_errno-BASE(A4)	;_errno
+	MOVE.W	D0,_errno(A4)	;_errno
 	MOVEQ	#-$01,D0
 	BRA.B	L00C18
 
@@ -738,7 +738,7 @@ _sprintf:
 	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
 
-	MOVE.L	$0008(A5),_sprintf_tmp-BASE(A4)
+	MOVE.L	$0008(A5),_sprintf_tmp(A4)
 
 	PEA	$0010(A5)
 	MOVE.L	$000C(A5),-(A7)
@@ -747,7 +747,7 @@ _sprintf:
 	LEA	$000C(A7),A7
 
 	MOVE.W	D0,D4
-	MOVEA.L	_sprintf_tmp-BASE(A4),A6
+	MOVEA.L	_sprintf_tmp(A4),A6
 	CLR.B	(A6)
 	MOVE.W	D4,D0
 
@@ -757,8 +757,8 @@ _sprintf:
 
 L00C1C:
 	LINK	A5,#-$0000
-	MOVEA.L	_sprintf_tmp-BASE(A4),A6
-	ADDQ.L	#1,_sprintf_tmp-BASE(A4)
+	MOVEA.L	_sprintf_tmp(A4),A6
+	ADDQ.L	#1,_sprintf_tmp(A4)
 	MOVE.B	$0009(A5),D0
 	MOVE.B	D0,(A6)
 ;	EXT.W	D0
@@ -783,7 +783,7 @@ _localtime:
 	MOVE.L	D4,D0
 	MOVEQ	#60,D1
 	JSR	_mods
-	MOVE.W	D0,_localtime_tmp-BASE(A4)
+	MOVE.W	D0,_localtime_tmp(A4)
 	MOVE.L	D4,D0
 	MOVEQ	#60,D1
 	JSR	_divu
@@ -791,7 +791,7 @@ _localtime:
 	MOVE.L	D4,D0
 	MOVEQ	#60,D1
 	JSR	_mods
-	MOVE.W	D0,_localtime_tmp+2-BASE(A4)
+	MOVE.W	D0,_localtime_tmp+2(A4)
 	MOVE.L	D4,D0
 	MOVEQ	#60,D1
 	JSR	_divu
@@ -799,7 +799,7 @@ _localtime:
 	MOVE.L	D4,D0
 	MOVEQ	#24,D1
 	JSR	_mods
-	MOVE.W	D0,_localtime_tmp+4-BASE(A4)
+	MOVE.W	D0,_localtime_tmp+4(A4)
 	MOVE.L	D4,D0
 	MOVEQ	#24,D1
 	JSR	_divu
@@ -807,13 +807,13 @@ _localtime:
 	MOVE.L	D4,D0
 	MOVEQ	#$07,D1
 	JSR	_mods
-	MOVE.W	D0,_localtime_tmp+12-BASE(A4)
+	MOVE.W	D0,_localtime_tmp+12(A4)
 	MOVE.L	D4,D0
 	MOVE.L	#$000005B5,D1	;4 years in days + one day for leap year
 	JSR	_divu
 	ASL.L	#2,D0
 	ADD.L	#$0000004E,D0	;78
-	MOVE.W	D0,_localtime_tmp+10-BASE(A4)
+	MOVE.W	D0,_localtime_tmp+10(A4)
 	MOVE.L	D4,D0
 	MOVE.L	#$000005B5,D1
 	JSR	_mods
@@ -822,7 +822,7 @@ L00C1D:
 	TST.L	D4
 	BEQ.B	L00C1F
 	MOVE.L	#$0000016D,D5
-	MOVE.W	_localtime_tmp+10-BASE(A4),D3
+	MOVE.W	_localtime_tmp+10(A4),D3
 	AND.W	#$0003,D3
 	BNE.B	L00C1E
 	ADDQ.L	#1,D5
@@ -831,24 +831,24 @@ L00C1E:
 	BLT.B	L00C1F
 
 	SUB.L	D5,D4
-	ADDQ.W	#1,_localtime_tmp+10-BASE(A4)
+	ADDQ.W	#1,_localtime_tmp+10(A4)
 	BRA.B	L00C1D
 L00C1F:
 	ADDQ.L	#1,D4
-	MOVE.W	D4,_localtime_tmp+14-BASE(A4)
+	MOVE.W	D4,_localtime_tmp+14(A4)
 	MOVEQ	#$00,D6
 L00C20:
 	MOVE.W	D6,D3
 	EXT.L	D3
 	ASL.L	#1,D3
-	LEA	localtime_storage-BASE(A4),A6
+	LEA	localtime_storage(A4),A6
 	MOVE.W	$00(A6,D3.L),D2
 	EXT.L	D2
 	MOVE.L	D2,D5
 	CMP.W	#$0001,D6
 	BNE.B	L00C21
 
-	MOVE.W	_localtime_tmp+10-BASE(A4),D3
+	MOVE.W	_localtime_tmp+10(A4),D3
 	AND.W	#$0003,D3
 	BNE.B	L00C21
 
@@ -862,9 +862,9 @@ L00C21:
 	CMP.W	#$000C,D6
 	BLT.B	L00C20
 L00C22:
-	MOVE.W	D6,_localtime_tmp+8-BASE(A4)
-	MOVE.W	D4,_localtime_tmp+6-BASE(A4)
-	LEA	_localtime_tmp-BASE(A4),A6
+	MOVE.W	D6,_localtime_tmp+8(A4)
+	MOVE.W	D4,_localtime_tmp+6(A4)
+	LEA	_localtime_tmp(A4),A6
 	MOVE.L	A6,D0
 
 	MOVEM.L	(A7)+,D4-D6
@@ -936,36 +936,36 @@ _printf:
 	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
 
-	LEA	_printf_tmp-BASE(A4),A6
-	MOVE.L	A6,_printf_tmp0-BASE(A4)
+	LEA	_printf_tmp(A4),A6
+	MOVE.L	A6,_printf_tmp0(A4)
 	PEA	$000C(A5)
 	MOVE.L	$0008(A5),-(A7)
 	PEA	L00C29(PC)
 	JSR	_format(PC)
 	LEA	$000C(A7),A7
 	MOVE.W	D0,D4
-	CMPI.W	#$0001,_Cbuffs+38-BASE(A4)
+	CMPI.W	#$0001,_Cbuffs+38(A4)
 	BNE.B	L00C27
 
-	LEA	_printf_tmp-BASE(A4),A6
-	MOVE.L	_printf_tmp0-BASE(A4),D3
+	LEA	_printf_tmp(A4),A6
+	MOVE.L	_printf_tmp0(A4),D3
 	SUB.L	A6,D3
 	MOVE.W	D3,-(A7)
-	PEA	_printf_tmp-BASE(A4)
-	MOVE.B	_Cbuffs+35-BASE(A4),D3
+	PEA	_printf_tmp(A4)
+	MOVE.B	_Cbuffs+35(A4),D3
 	EXT.W	D3
 	MOVE.W	D3,-(A7)
 	JSR	_write
 	ADDQ.W	#8,A7
 	BRA.B	L00C28
 L00C27:
-	PEA	_Cbuffs+22-BASE(A4)
-	LEA	_printf_tmp-BASE(A4),A6
-	MOVE.L	_printf_tmp0-BASE(A4),D3
+	PEA	_Cbuffs+22(A4)
+	LEA	_printf_tmp(A4),A6
+	MOVE.L	_printf_tmp0(A4),D3
 	SUB.L	A6,D3
 	MOVE.W	D3,-(A7)
 	MOVE.W	#$0001,-(A7)
-	PEA	_printf_tmp-BASE(A4)
+	PEA	_printf_tmp(A4)
 	JSR	_fwrite(PC)
 	LEA	$000C(A7),A7
 L00C28:
@@ -976,42 +976,42 @@ L00C28:
 
 L00C29:
 	LINK	A5,#-$0000
-	MOVEA.L	_printf_tmp0-BASE(A4),A6
-	ADDQ.L	#1,_printf_tmp0-BASE(A4)
+	MOVEA.L	_printf_tmp0(A4),A6
+	ADDQ.L	#1,_printf_tmp0(A4)
 	MOVE.B	$0009(A5),(A6)
-	LEA	_printf_tmp-BASE(A4),A6
-	MOVE.L	_printf_tmp0-BASE(A4),D3
+	LEA	_printf_tmp(A4),A6
+	MOVE.L	_printf_tmp0(A4),D3
 	SUB.L	A6,D3
 	CMP.W	#$0028,D3
 	BNE.B	L00C2C
 
-	CMPI.W	#$0001,_Cbuffs+38-BASE(A4)
+	CMPI.W	#$0001,_Cbuffs+38(A4)
 	BNE.B	L00C2A
 
-	LEA	_printf_tmp-BASE(A4),A6
-	MOVE.L	_printf_tmp0-BASE(A4),D3
+	LEA	_printf_tmp(A4),A6
+	MOVE.L	_printf_tmp0(A4),D3
 	SUB.L	A6,D3
 	MOVE.W	D3,-(A7)
-	PEA	_printf_tmp-BASE(A4)
-	MOVE.B	_Cbuffs+35-BASE(A4),D3
+	PEA	_printf_tmp(A4)
+	MOVE.B	_Cbuffs+35(A4),D3
 	EXT.W	D3
 	MOVE.W	D3,-(A7)
 	JSR	_write
 	ADDQ.W	#8,A7
 	BRA.B	L00C2B
 L00C2A:
-	PEA	_Cbuffs+22-BASE(A4)
-	LEA	_printf_tmp-BASE(A4),A6
-	MOVE.L	_printf_tmp0-BASE(A4),D3
+	PEA	_Cbuffs+22(A4)
+	LEA	_printf_tmp(A4),A6
+	MOVE.L	_printf_tmp0(A4),D3
 	SUB.L	A6,D3
 	MOVE.W	D3,-(A7)
 	MOVE.W	#$0001,-(A7)
-	PEA	_printf_tmp-BASE(A4)
+	PEA	_printf_tmp(A4)
 	JSR	_fwrite(PC)
 	LEA	$000C(A7),A7
 L00C2B:
-	LEA	_printf_tmp-BASE(A4),A6
-	MOVE.L	A6,_printf_tmp0-BASE(A4)
+	LEA	_printf_tmp(A4),A6
+	MOVE.L	A6,_printf_tmp0(A4)
 L00C2C:
 	MOVE.W	$0008(A5),D0
 	AND.W	#$00FF,D0
@@ -1055,7 +1055,7 @@ L00C31:
 	MOVE.W	$000C(A5),D1
 	EXT.L	D1
 	JSR	_modu(PC)
-	LEA	hexdigits-BASE(A4),A6
+	LEA	hexdigits(A4),A6
 	MOVE.B	$00(A6,D0.W),(A2)
 	MOVE.L	D4,D0
 	MOVE.W	$000C(A5),D1
@@ -1150,7 +1150,7 @@ L00C37:
 	EXT.W	D3
 	MOVE.W	D3,D4
 L00C38:
-	LEA	_ctp_-BASE(A4),A6		;_ctp_
+	LEA	_ctp_(A4),A6		;_ctp_
 	moveq	#$0004,D2
 	AND.B	$00(A6,D4.W),D2
 	BNE.B	L00C37
@@ -1190,7 +1190,7 @@ L00C3B:
 	EXT.W	D3
 	MOVE.W	D3,D4
 L00C3C:
-	LEA	_ctp_-BASE(A4),A6		;_ctp_
+	LEA	_ctp_(A4),A6		;_ctp_
 	moveq	#$0004,D2
 	AND.B	$00(A6,D4.W),D2
 	BNE.B	L00C3B
@@ -1547,7 +1547,7 @@ L00C72:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
 
-	LEA	_Cbuffs-BASE(A4),A2	;_Cbuffs
+	LEA	_Cbuffs(A4),A2	;_Cbuffs
 L00C73:
 	MOVE.L	A2,-(A7)
 	BSR.B	_fclose
@@ -1555,7 +1555,7 @@ L00C73:
 
 	ADDA.L	#$00000016,A2
 
-	LEA	_cls_-BASE(A4),A6	;_cls_
+	LEA	_cls_(A4),A6	;_cls_
 	CMPA.L	A6,A2
 	BCS.B	L00C73
 
@@ -1633,7 +1633,7 @@ _flsh_:
 
 	MOVEA.L	$0008(A5),A2
 	LEA	L00C72(PC),A6
-	MOVE.L	A6,_cls_-BASE(A4)	;_cls_
+	MOVE.L	A6,_cls_(A4)	;_cls_
 	MOVE.B	$000C(A2),D3
 ;	EXT.W	D3
 	AND.W	#$0010,D3
@@ -1722,8 +1722,8 @@ L00C7F:
 ;_newstream:
 ;;	LINK	A5,#-$0000
 ;	MOVE.L	A2,-(A7)
-;	LEA	_Cbuffs-BASE(A4),A2	;_Cbuffs
-;	LEA	_cls_-BASE(A4),A6	;_cls_
+;	LEA	_Cbuffs(A4),A2	;_Cbuffs
+;	LEA	_cls_(A4),A6	;_cls_
 ;
 ;1$	TST.B	$000C(A2)
 ;	BEQ.B	3$
@@ -1783,7 +1783,7 @@ L00C87:
 	LINK	A5,#-$0000
 	MOVEM.L	A2/A3,-(A7)
 
-	MOVEA.L	freemem_tmp-BASE(A4),A2
+	MOVEA.L	freemem_tmp(A4),A2
 	BRA.B	L00C89
 L00C88:
 	MOVEA.L	(A2),A3
@@ -1797,7 +1797,7 @@ L00C89:
 	MOVE.L	A2,D3
 	BNE.B	L00C88
 
-	CLR.L	freemem_tmp-BASE(A4)
+	CLR.L	freemem_tmp(A4)
 
 	MOVEM.L	(A7)+,A2/A3
 	UNLK	A5
@@ -1810,7 +1810,7 @@ _lmalloc2:
 	MOVE.L	A2,-(A7)
 
 	LEA	L00C87(PC),A6
-	MOVE.L	A6,__cln-BASE(A4)	;__cln
+	MOVE.L	A6,__cln(A4)	;__cln
 	move.l	#2,-(a7)	; chip memory
 
 	MOVEA.L	$0008(A5),A6
@@ -1831,7 +1831,7 @@ _lmalloc:
 	MOVE.L	A2,-(A7)
 
 	LEA	L00C87(PC),A6
-	MOVE.L	A6,__cln-BASE(A4)	;__cln
+	MOVE.L	A6,__cln(A4)	;__cln
 	CLR.L	-(A7)		; any sort of memory
 
 	MOVEA.L	$0008(A5),A6
@@ -1849,9 +1849,9 @@ L00C8A:
 	RTS
 
 L00C8B:
-	MOVE.L	freemem_tmp-BASE(A4),(A2)
+	MOVE.L	freemem_tmp(A4),(A2)
 	MOVE.L	$0008(A5),$0004(A2)
-	MOVE.L	A2,freemem_tmp-BASE(A4)
+	MOVE.L	A2,freemem_tmp(A4)
 	MOVE.L	A2,D0
 	ADDQ.L	#8,D0
 	BRA.B	L00C8A
@@ -1875,7 +1875,7 @@ _free:
 	MOVEM.L	A2/A3,-(A7)
 
 	SUBA.L	A3,A3
-	MOVEA.L	freemem_tmp-BASE(A4),A2
+	MOVEA.L	freemem_tmp(A4),A2
 	BRA.B	L00C8D
 L00C8C:
 	MOVEA.L	$0008(A5),A6
@@ -1902,7 +1902,7 @@ L00C8F:
 	MOVE.L	(A2),(A3)
 	BRA.B	L00C91
 L00C90:
-	MOVE.L	(A2),freemem_tmp-BASE(A4)
+	MOVE.L	(A2),freemem_tmp(A4)
 L00C91:
 	MOVEA.L	$0004(A2),A6
 
@@ -1918,7 +1918,7 @@ _isatty:
 	LINK	A5,#-$0000
 	MOVE.W	$0008(A5),D3
 	MULS.W	#$0006,D3
-	LEA	__devtab-BASE(A4),A6		;__devtab
+	LEA	__devtab(A4),A6		;__devtab
 	MOVE.L	$00(A6,D3.L),-(A7)
 	JSR	_IsInteractive(PC)
 	ADDQ.W	#4,A7
@@ -1941,7 +1941,7 @@ _unlink:
 	BNE.B	L00C95
 
 	JSR	_IoErr(PC)
-	MOVE.W	D0,_errno-BASE(A4)	;_errno
+	MOVE.W	D0,_errno(A4)	;_errno
 	MOVEQ	#-$01,D0
 L00C94:
 ;	UNLK	A5
@@ -1960,7 +1960,7 @@ _write:
 	BLT.B	L00C96
 
 	MULS.W	#$0006,D3
-	LEA	__devtab-BASE(A4),A2		;__devtab
+	LEA	__devtab(A4),A2		;__devtab
 	ADDA.L	D3,A2
 
 	CMP.W	#$0013,D4
@@ -1969,7 +1969,7 @@ _write:
 	TST.L	(A2)
 	BNE.B	L00C98
 L00C96:
-	MOVE.W	#$0003,_errno-BASE(A4)	;_errno
+	MOVE.W	#$0003,_errno(A4)	;_errno
 L00C97b:
 	MOVEQ	#-$01,D0
 L00C97:
@@ -1982,7 +1982,7 @@ L00C98:
 	AND.W	#$0003,D3
 	BNE.B	L00C99
 
-	MOVE.W	#$0006,_errno-BASE(A4)	;_errno
+	MOVE.W	#$0006,_errno(A4)	;_errno
 	BRA.B	L00C97b
 L00C99:
 	MOVEQ	#$00,D3
@@ -1996,7 +1996,7 @@ L00C99:
 	BNE.B	L00C97
 
 	JSR	_IoErr(PC)
-	MOVE.W	D0,_errno-BASE(A4)	;_errno
+	MOVE.W	D0,_errno(A4)	;_errno
 	BRA.B	L00C97b
 
 _Chk_Abort:
@@ -2017,7 +2017,7 @@ L00C9B:
 	RTS
 
 L00C9C:
-	TST.W	_Enable_Abort-BASE(A4)
+	TST.W	_Enable_Abort(A4)
 	BNE.B	L00C9D
 
 	MOVE.L	-$0004(A5),D0
@@ -2038,10 +2038,10 @@ L00C9E:
 
 _exit:
 	LINK	A5,#-$0000
-	TST.L	_cls_-BASE(A4)	;_cls_
+	TST.L	_cls_(A4)	;_cls_
 	BEQ.B	L00C9F
 
-	MOVEA.L	_cls_-BASE(A4),A6	;_cls_
+	MOVEA.L	_cls_(A4),A6	;_cls_
 	JSR	(A6)
 L00C9F:
 	MOVE.W	$0008(A5),-(A7)
@@ -2057,7 +2057,7 @@ __main:
 	PEA	L00CAF(PC)		; dos.library
 	JSR	_OpenLibrary(PC)
 	ADDQ.W	#8,A7
-	MOVE.L	D0,_DOSBase-BASE(A4)		;_DOSBase
+	MOVE.L	D0,_DOSBase(A4)		;_DOSBase
 ;	TST.L	D0
 ;	BNE.B	L00CA1
 	bne	L00CA2		; no need for mathffp.library
@@ -2067,7 +2067,7 @@ __main:
 	JSR	_Alert(PC)
 	ADDQ.W	#8,A7
 L00CA0:
-	MOVEA.L	__savsp-BASE(A4),A7		;__savsp
+	MOVEA.L	__savsp(A4),A7		;__savsp
 	RTS
 
 ;L00CA1:
@@ -2075,7 +2075,7 @@ L00CA0:
 ;	PEA	L00CB0(PC)		;mathffp.library
 ;	JSR	__OpenLibrary(PC)
 ;	ADDQ.W	#8,A7
-;	MOVE.L	D0,_MathBase-BASE(A4)
+;	MOVE.L	D0,_MathBase(A4)
 ;;	TST.L	D0
 ;	BNE.B	L00CA2
 ;	CLR.L	-(A7)
@@ -2103,26 +2103,26 @@ L00CA2:
 	EXT.L	D3
 	ADD.L	$0008(A5),D3
 	ADDQ.L	#2,D3
-	MOVE.W	D3,main_tmp+2-BASE(A4)
+	MOVE.W	D3,main_tmp+2(A4)
 	CLR.L	-(A7)
-	MOVE.W	main_tmp+2-BASE(A4),D3
+	MOVE.W	main_tmp+2(A4),D3
 	EXT.L	D3
 	MOVE.L	D3,-(A7)
 	JSR	_AllocMem(PC)
 	ADDQ.W	#8,A7
-	MOVE.L	D0,main_tmp+8-BASE(A4)
+	MOVE.L	D0,main_tmp+8(A4)
 	MOVE.B	(A2),D3
 	EXT.W	D3
 	MOVE.W	D3,-(A7)
 	PEA	$0001(A2)
-	MOVE.L	main_tmp+8-BASE(A4),-(A7)
+	MOVE.L	main_tmp+8(A4),-(A7)
 	JSR	_strncpy
 	LEA	$000A(A7),A7
 	PEA	L00CB1(PC)
 	MOVE.B	(A2),D3
 	EXT.W	D3
 	EXT.L	D3
-	ADD.L	main_tmp+8-BASE(A4),D3
+	ADD.L	main_tmp+8(A4),D3
 	MOVE.L	D3,-(A7)
 	JSR	_strcpy
 	ADDQ.W	#8,A7
@@ -2130,14 +2130,14 @@ L00CA2:
 	ADDQ.W	#1,D3
 	MOVE.W	D3,-(A7)
 	MOVE.L	$000C(A5),-(A7)
-	MOVE.L	main_tmp+8-BASE(A4),-(A7)
+	MOVE.L	main_tmp+8(A4),-(A7)
 	JSR	_strncat(PC)
 	LEA	$000A(A7),A7
-	CLR.W	main_tmp-BASE(A4)
-	MOVEA.L	main_tmp+8-BASE(A4),A2
+	CLR.W	main_tmp(A4)
+	MOVEA.L	main_tmp+8(A4),A2
 L00CA3:
 	moveq	#0,d3
-	LEA	_ctp_-BASE(A4),A6		;_ctp_
+	LEA	_ctp_(A4),A6		;_ctp_
 
 1$	MOVE.B	(A2),D3
 	moveq	#$0010,D2
@@ -2152,7 +2152,7 @@ L00CA4:
 	CMP.b	#$20,D3		;' '
 	BLT.B	L00CA7
 
-	LEA	_ctp_-BASE(A4),A6		;_ctp_
+	LEA	_ctp_(A4),A6		;_ctp_
 	moveq	#0,d4
 1$
 	MOVE.B	(A2),D4
@@ -2170,26 +2170,26 @@ L00CA6:
 	TST.W	D4
 	BEQ.B	L00CA7
 
-	ADDQ.W	#1,main_tmp-BASE(A4)
+	ADDQ.W	#1,main_tmp(A4)
 	BRA.B	L00CA3
 L00CA7:
 	CLR.B	(A2)
 	CLR.L	-(A7)
-	MOVE.W	main_tmp-BASE(A4),D3
+	MOVE.W	main_tmp(A4),D3
 	ADDQ.W	#1,D3
 	EXT.L	D3
 	ASL.L	#2,D3
 	MOVE.L	D3,-(A7)
 	JSR	_AllocMem
 	ADDQ.W	#8,A7
-	MOVE.L	D0,main_tmp+4-BASE(A4)
+	MOVE.L	D0,main_tmp+4(A4)
 	MOVEQ	#$00,D4
-	MOVEA.L	main_tmp+8-BASE(A4),A2
+	MOVEA.L	main_tmp+8(A4),A2
 	BRA.B	L00CAA
 
 L00CA8:
 	moveq	#0,d3
-	LEA	_ctp_-BASE(A4),A6		;_ctp_
+	LEA	_ctp_(A4),A6		;_ctp_
 
 1$	MOVE.B	(A2),D3
 	moveq	#$0010,D2
@@ -2202,7 +2202,7 @@ L00CA9:
 	MOVEQ	#$00,D3
 	MOVE.W	D4,D3
 	ASL.L	#2,D3
-	MOVEA.L	main_tmp+4-BASE(A4),A6
+	MOVEA.L	main_tmp+4(A4),A6
 	MOVE.L	A2,$00(A6,D3.L)
 	MOVE.L	A2,A0
 	JSR	_strlenquick
@@ -2212,26 +2212,26 @@ L00CA9:
 	ADDA.L	D0,A2
 	ADDQ.W	#1,D4
 L00CAA:
-	CMP.W	main_tmp-BASE(A4),D4
+	CMP.W	main_tmp(A4),D4
 	BCS.B	L00CA8
 
 	MOVEQ	#$00,D3
 	MOVE.W	D4,D3
 	ASL.L	#2,D3
-	MOVEA.L	main_tmp+4-BASE(A4),A6
+	MOVEA.L	main_tmp+4(A4),A6
 	CLR.L	$00(A6,D3.L)
 	JSR	_Input
-	MOVE.L	D0,__devtab-BASE(A4)		;__devtab
-	MOVE.W	#$8000,__devtab+4-BASE(A4)
+	MOVE.L	D0,__devtab(A4)		;__devtab
+	MOVE.W	#$8000,__devtab+4(A4)
 	JSR	_Output(PC)
-	MOVE.L	D0,__devtab+6-BASE(A4)
-	MOVE.W	#$8001,__devtab+10-BASE(A4)
+	MOVE.L	D0,__devtab+6(A4)
+	MOVE.W	#$8001,__devtab+10(A4)
 	JSR	_Output
-	MOVE.L	D0,__devtab+12-BASE(A4)
-	MOVE.W	#$8001,__devtab+16-BASE(A4)
-	MOVE.W	#$0001,_Enable_Abort-BASE(A4)	;_Enable_Abort
-	MOVE.L	main_tmp+4-BASE(A4),-(A7)
-	MOVE.W	main_tmp-BASE(A4),-(A7)
+	MOVE.L	D0,__devtab+12(A4)
+	MOVE.W	#$8001,__devtab+16(A4)
+	MOVE.W	#$0001,_Enable_Abort(A4)	;_Enable_Abort
+	MOVE.L	main_tmp+4(A4),-(A7)
+	MOVE.W	main_tmp(A4),-(A7)
 	JSR	_main
 	ADDQ.W	#6,A7
 	CLR.W	-(A7)
@@ -2245,42 +2245,42 @@ L00CAB:
 	PEA	$005C(A3)
 	JSR	_GetMsg
 	ADDQ.W	#4,A7
-	MOVE.L	D0,main_tmp+12-BASE(A4)
-	MOVEA.L	main_tmp+12-BASE(A4),A6
+	MOVE.L	D0,main_tmp+12(A4)
+	MOVEA.L	main_tmp+12(A4),A6
 	TST.L	$0024(A6)
 	BEQ.B	L00CAC
 
-	MOVEA.L	main_tmp+12-BASE(A4),A6
+	MOVEA.L	main_tmp+12(A4),A6
 	MOVEA.L	$0024(A6),A1
 	MOVE.L	(A1),-(A7)
 	JSR	_CurrentDir
 	ADDQ.W	#4,A7
 L00CAC:
-	MOVEA.L	main_tmp+12-BASE(A4),A6
+	MOVEA.L	main_tmp+12(A4),A6
 	TST.L	$0020(A6)
 	BEQ.B	L00CAD
 
 	PEA	$03ED
-	MOVEA.L	main_tmp+12-BASE(A4),A6
+	MOVEA.L	main_tmp+12(A4),A6
 	MOVE.L	$0020(A6),-(A7)
 	JSR	_Open
 	ADDQ.W	#8,A7
-	MOVE.L	D0,__devtab-BASE(A4)		;__devtab
+	MOVE.L	D0,__devtab(A4)		;__devtab
 ;	TST.L	D0
 	BEQ.B	L00CAD
 
 	MOVE.L	D0,D3
-	MOVE.L	D3,__devtab+12-BASE(A4)
-	MOVE.L	D3,__devtab+6-BASE(A4)
-	MOVE.W	#$8000,__devtab+4-BASE(A4)
-	MOVE.W	#$8001,__devtab+16-BASE(A4)
-	MOVE.W	#$8001,__devtab+10-BASE(A4)
+	MOVE.L	D3,__devtab+12(A4)
+	MOVE.L	D3,__devtab+6(A4)
+	MOVE.W	#$8000,__devtab+4(A4)
+	MOVE.W	#$8001,__devtab+16(A4)
+	MOVE.W	#$8001,__devtab+10(A4)
 	ASL.L	#2,D3
 	MOVE.L	D3,-$0004(A5)
 	MOVEA.L	-$0004(A5),A6
 	MOVE.L	$0008(A6),$00A4(A3)
 L00CAD:
-	MOVE.L	main_tmp+12-BASE(A4),-(A7)
+	MOVE.L	main_tmp+12(A4),-(A7)
 	CLR.W	-(A7)
 	JSR	_main
 	ADDQ.W	#6,A7
@@ -2307,40 +2307,40 @@ L00CB2:
 	CMPI.W	#$000A,-$0002(A5)
 	BLT.B	L00CB2
 
-	TST.L	__cln-BASE(A4)	;__cln
+	TST.L	__cln(A4)	;__cln
 	BEQ.B	L00CB3
 
-	MOVEA.L	__cln-BASE(A4),A6	;__cln
+	MOVEA.L	__cln(A4),A6	;__cln
 	JSR	(A6)
 L00CB3:
-;	TST.L	_MathTransBase-BASE(A4)		;_MathTransBase
+;	TST.L	_MathTransBase(A4)		;_MathTransBase
 ;	BEQ.B	L00CB4
-;	MOVE.L	_MathTransBase-BASE(A4),-(A7)
+;	MOVE.L	_MathTransBase(A4),-(A7)
 ;	JSR	_CloseLibrary(PC)
 ;	ADDQ.W	#4,A7
 L00CB4:
-;	TST.L	_MathBase-BASE(A4)		;_MathBase
+;	TST.L	_MathBase(A4)		;_MathBase
 ;	BEQ.B	L00CB5
-;	MOVE.L	_MathBase-BASE(A4),-(A7)
+;	MOVE.L	_MathBase(A4),-(A7)
 ;	JSR	_CloseLibrary(PC)
 ;	ADDQ.W	#4,A7
 L00CB5:
-	TST.L	main_tmp+12-BASE(A4)
+	TST.L	main_tmp+12(A4)
 	BNE.B	L00CB6
 
-	MOVE.W	main_tmp+2-BASE(A4),D3
+	MOVE.W	main_tmp+2(A4),D3
 	EXT.L	D3
 	MOVE.L	D3,-(A7)
-	MOVE.L	main_tmp+8-BASE(A4),-(A7)
+	MOVE.L	main_tmp+8(A4),-(A7)
 	JSR	_FreeMem
 	ADDQ.W	#8,A7
 
-	MOVE.W	main_tmp-BASE(A4),D3
+	MOVE.W	main_tmp(A4),D3
 	ADDQ.W	#1,D3
 	EXT.L	D3
 	ASL.L	#2,D3
 	MOVE.L	D3,-(A7)
-	MOVE.L	main_tmp+4-BASE(A4),-(A7)
+	MOVE.L	main_tmp+4(A4),-(A7)
 	JSR	_FreeMem(PC)
 	ADDQ.W	#8,A7
 
@@ -2352,11 +2352,11 @@ L00CB5:
 	BRA.B	L00CB7
 L00CB6:
 	JSR	_Forbid
-	MOVE.L	main_tmp+12-BASE(A4),-(A7)
+	MOVE.L	main_tmp+12(A4),-(A7)
 	JSR	_ReplyMsg
 	ADDQ.W	#4,A7
 	MOVE.L	$0008(A5),D0
-	MOVEA.L	__savsp-BASE(A4),A7		;__savsp
+	MOVEA.L	__savsp(A4),A7		;__savsp
 	RTS
 
 L00CB7:
@@ -2444,7 +2444,7 @@ _close:
 	BLT.B	L00CC1
 
 	MULS.W	#$0006,D3
-	LEA	__devtab-BASE(A4),A2		;__devtab
+	LEA	__devtab(A4),A2		;__devtab
 	ADDA.L	D3,A2
 
 	CMP.W	#$0013,D4
@@ -2453,7 +2453,7 @@ _close:
 	TST.L	(A2)
 	BNE.B	L00CC3
 L00CC1:
-	MOVE.W	#$0003,_errno-BASE(A4)	;_errno
+	MOVE.W	#$0003,_errno(A4)	;_errno
 	MOVEQ	#-$01,D0
 L00CC2:
 	MOVEM.L	(A7)+,D4-D6/A2
@@ -2475,76 +2475,76 @@ L00CC4:
 
 _Close:
 	MOVE.L	$0004(A7),D1
-	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase(A4),A6	;_DOSBase
 	JMP	_LVOClose(A6)
 _CurrentDir:
 	MOVE.L	$0004(A7),D1
-	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase(A4),A6	;_DOSBase
 	JMP	_LVOCurrentDir(A6)
 _DateStamp:
 	MOVE.L	$0004(A7),D1
-	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase(A4),A6	;_DOSBase
 	JMP	_LVODateStamp(A6)
 _DeleteFile:
 	MOVE.L	$0004(A7),D1
-	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase(A4),A6	;_DOSBase
 	JMP	_LVODeleteFile(A6)
 _Exit:
 	MOVE.L	$0004(A7),D1
-	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase(A4),A6	;_DOSBase
 	JMP	_LVOExit(A6)
 _Input:
-	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase(A4),A6	;_DOSBase
 	JMP	_LVOInput(A6)
 _IoErr:
-	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase(A4),A6	;_DOSBase
 	JMP	_LVOIoErr(A6)
 _IsInteractive:
 	MOVE.L	$0004(A7),D1
-	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase(A4),A6	;_DOSBase
 	JMP	_LVOIsInteractive(A6)
 _Lock:
 	MOVEM.L	$0004(A7),D1/D2
-	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase(A4),A6	;_DOSBase
 	JMP	_LVOLock(A6)
 _Open:
 	MOVEM.L	$0004(A7),D1/D2
-	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase(A4),A6	;_DOSBase
 	JMP	_LVOOpen(A6)
 _Output:
-	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase(A4),A6	;_DOSBase
 	JMP	_LVOOutput(A6)
 _Read:
 	MOVEM.L	$0004(A7),D1-D3
-	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase(A4),A6	;_DOSBase
 	JMP	_LVORead(A6)
 _Seek:
 	MOVEM.L	$0004(A7),D1-D3
-	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase(A4),A6	;_DOSBase
 	JMP	_LVOSeek(A6)
 _UnLock:
 	MOVE.L	$0004(A7),D1
-	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase(A4),A6	;_DOSBase
 	JMP	_LVOUnLock(A6)
 _Write:
 	MOVEM.L	$0004(A7),D1-D3
-	MOVEA.L	_DOSBase-BASE(A4),A6	;_DOSBase
+	MOVEA.L	_DOSBase(A4),A6	;_DOSBase
 	JMP	_LVOWrite(A6)
 
 _Alert:
 	MOVEM.L	D7/A5,-(A7)
 	MOVEM.L	$000C(A7),D7/A5
-	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
+	MOVEA.L	_SysBase(A4),A6		;_SysBase
 	JSR	_LVOAlert(A6)
 	MOVEM.L	(A7)+,D7/A5
 	RTS
 _CloseDevice:
 	MOVEA.L	$0004(A7),A1
-	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
+	MOVEA.L	_SysBase(A4),A6		;_SysBase
 	JMP	_LVOCloseDevice(A6)
 _CloseLibrary:
 	MOVEA.L	$0004(A7),A1
-	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
+	MOVEA.L	_SysBase(A4),A6		;_SysBase
 	JMP	_LVOCloseLibrary(A6)
 
 _CreatePort:
@@ -2626,39 +2626,39 @@ L00CCA:
 
 _AddPort:
 	MOVEA.L	$0004(A7),A1
-	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
+	MOVEA.L	_SysBase(A4),A6		;_SysBase
 	JMP	_LVOAddPort(A6)
 _AllocSignal:
 	MOVE.L	$0004(A7),D0
-	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
+	MOVEA.L	_SysBase(A4),A6		;_SysBase
 	JMP	_LVOAllocSignal(A6)
 _AllocMem:
 	MOVEM.L	$0004(A7),D0/D1
-	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
+	MOVEA.L	_SysBase(A4),A6		;_SysBase
 	JMP	_LVOAllocMem(A6)
 _DoIO:
 	MOVEA.L	$0004(A7),A1
-	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
+	MOVEA.L	_SysBase(A4),A6		;_SysBase
 	JMP	_LVODoIO(A6)
 _FindTask:
 	MOVEA.L	$0004(A7),A1
-	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
+	MOVEA.L	_SysBase(A4),A6		;_SysBase
 	JMP	_LVOFindTask(A6)
 _Forbid:
-	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
+	MOVEA.L	_SysBase(A4),A6		;_SysBase
 	JMP	_LVOForbid(A6)
 _FreeMem:
 	MOVEA.L	$0004(A7),A1
 	MOVE.L	$0008(A7),D0
-	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
+	MOVEA.L	_SysBase(A4),A6		;_SysBase
 	JMP	_LVOFreeMem(A6)
 _FreeSignal:
 	MOVE.L	$0004(A7),D0
-	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
+	MOVEA.L	_SysBase(A4),A6		;_SysBase
 	JMP	_LVOFreeSignal(A6)
 _GetMsg:
 	MOVEA.L	$0004(A7),A0
-	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
+	MOVEA.L	_SysBase(A4),A6		;_SysBase
 	JMP	_LVOGetMsg(A6)
 
 _NewList:
@@ -2673,35 +2673,35 @@ _OpenDevice:
 	MOVEA.L	$0004(A7),A0
 	MOVEM.L	$0008(A7),D0/A1
 	MOVE.L	$0010(A7),D1
-	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
+	MOVEA.L	_SysBase(A4),A6		;_SysBase
 	JMP	_LVOOpenDevice(A6)
 _OpenLibrary:
-	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
+	MOVEA.L	_SysBase(A4),A6		;_SysBase
 	MOVEA.L	$0004(A7),A1
 	MOVE.L	$0008(A7),D0
 	JMP	_LVOOpenLibrary(A6)
 _Permit:
-	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
+	MOVEA.L	_SysBase(A4),A6		;_SysBase
 	JMP	_LVOPermit(A6)
 _Remove:
 	MOVEA.L	$0004(A7),A1
-	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
+	MOVEA.L	_SysBase(A4),A6		;_SysBase
 	JMP	_LVORemove(A6)
 _RemPort:
 	MOVEA.L	$0004(A7),A1
-	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
+	MOVEA.L	_SysBase(A4),A6		;_SysBase
 	JMP	_LVORemPort(A6)
 _ReplyMsg:
 	MOVEA.L	$0004(A7),A1
-	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
+	MOVEA.L	_SysBase(A4),A6		;_SysBase
 	JMP	_LVOReplyMsg(A6)
 _SetSignal:
 	MOVEM.L	$0004(A7),D0/D1
-	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
+	MOVEA.L	_SysBase(A4),A6		;_SysBase
 	JMP	_LVOSetSignal(A6)
 _WaitPort:
 	MOVEA.L	$0004(A7),A0
-	MOVEA.L	_SysBase-BASE(A4),A6		;_SysBase
+	MOVEA.L	_SysBase(A4),A6		;_SysBase
 	JMP	_LVOWaitPort(A6)
 
 ;_BltBitMap:
@@ -2709,165 +2709,165 @@ _WaitPort:
 ;	MOVEA.L	$0018(A7),A0
 ;	MOVEM.L	$001C(A7),D0/D1/A1
 ;	MOVEM.L	$0028(A7),D2-D7/A2
-;	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
+;	MOVEA.L	_GfxBase(A4),A6	;_GfxBase
 ;	JSR	_LVOBltBitMap(A6)
 ;	MOVEM.L	(A7)+,D4-D7/A2
 ;	RTS
 _ClearEOL:
 	MOVEA.L	$0004(A7),A1
-	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
+	MOVEA.L	_GfxBase(A4),A6	;_GfxBase
 	JMP	_LVOClearEOL(A6)
 _ClearScreen:
 	MOVEA.L	$0004(A7),A1
-	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
+	MOVEA.L	_GfxBase(A4),A6	;_GfxBase
 	JMP	_LVOClearScreen(A6)
 _InitBitMap:
 	MOVEA.L	$0004(A7),A0
 	MOVEM.L	$0008(A7),D0-D2
-	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
+	MOVEA.L	_GfxBase(A4),A6	;_GfxBase
 	JMP	_LVOInitBitMap(A6)
 _GfxMove:
 	MOVEA.L	$0004(A7),A1
 	MOVEM.L	$0008(A7),D0/D1
-	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
+	MOVEA.L	_GfxBase(A4),A6	;_GfxBase
 	JMP	_LVOMove(A6)
 
 _RectFill:
 	MOVEA.L	$0004(A7),A1
 	MOVEM.L	$0008(A7),D0-D3
-	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
+	MOVEA.L	_GfxBase(A4),A6	;_GfxBase
 	JMP	_LVORectFill(A6)
 
 _SetAPen:
 	MOVEA.L	$0004(A7),A1
 	MOVE.L	$0008(A7),D0
-	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
+	MOVEA.L	_GfxBase(A4),A6	;_GfxBase
 	JMP	_LVOSetAPen(A6)
 
 _SetDrMd:
 	MOVEA.L	$0004(A7),A1
 	MOVE.L	$0008(A7),D0
-	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
+	MOVEA.L	_GfxBase(A4),A6	;_GfxBase
 	JMP	_LVOSetDrMd(A6)
 
 _SetRGB4:
 ;	MOVEA.L	$0004(A7),A0
 ;	MOVEM.L	$0008(A7),D0-D3
-;	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
+;	MOVEA.L	_GfxBase(A4),A6	;_GfxBase
 ;	JMP	_LVOSetRGB4(A6)
 
 _TextLength:
 	MOVEA.L	$0004(A7),A1
 	MOVEA.L	$0008(A7),A0
 	MOVE.L	$000C(A7),D0
-	MOVEA.L	_GfxBase-BASE(A4),A6	;_GfxBase
+	MOVEA.L	_GfxBase(A4),A6	;_GfxBase
 	JMP	_LVOTextLength(A6)
 
 _AddGadget:
 	MOVEM.L	$0004(A7),A0/A1
 	MOVE.L	$000C(A7),D0
-	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase(A4),A6	;_IntuitionBase
 	JMP	_LVOAddGadget(A6)
 
 _AutoRequest:
 	MOVEM.L	A2/A3,-(A7)
 	MOVEM.L	$000C(A7),A0-A3
 	MOVEM.L	$001C(A7),D0-D3
-	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase(A4),A6	;_IntuitionBase
 	JSR	_LVOAutoRequest(A6)
 	MOVEM.L	(A7)+,A2/A3
 	RTS
 
 _ClearMenuStrip:
 	MOVEA.L	$0004(A7),A0
-	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase(A4),A6	;_IntuitionBase
 	JMP	_LVOClearMenuStrip(A6)
 
 _CloseScreen:
 	MOVEA.L	$0004(A7),A0
-	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase(A4),A6	;_IntuitionBase
 	JMP	_LVOCloseScreen(A6)
 
 _CloseWindow:
 	MOVEA.L	$0004(A7),A0
-	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase(A4),A6	;_IntuitionBase
 	JMP	_LVOCloseWindow(A6)
 
 _CurrentTime:
 	MOVEM.L	$0004(A7),A0/A1
-	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase(A4),A6	;_IntuitionBase
 	JMP	_LVOCurrentTime(A6)
 
 _ItemAddress:
 	MOVEA.L	$0004(A7),A0
 	MOVE.L	$0008(A7),D0
-	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase(A4),A6	;_IntuitionBase
 	JMP	_LVOItemAddress(A6)
 
 _ModifyIDCMP:
 	MOVEA.L	$0004(A7),A0
 	MOVE.L	$0008(A7),D0
-	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase(A4),A6	;_IntuitionBase
 	JMP	_LVOModifyIDCMP(A6)
 
 _OnGadget:
 	MOVE.L	A2,-(A7)
 	MOVEM.L	$0008(A7),A0-A2
-	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase(A4),A6	;_IntuitionBase
 	JSR	_LVOOnGadget(A6)
 	MOVEA.L	(A7)+,A2
 	RTS
 
 _OpenScreen:
 	MOVEA.L	$0004(A7),A0
-	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase(A4),A6	;_IntuitionBase
 	JMP	_LVOOpenScreen(A6)
 
 _OpenWindow:
 	MOVEA.L	$0004(A7),A0
-	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase(A4),A6	;_IntuitionBase
 	JMP	_LVOOpenWindow(A6)
 
 ;_PrintIText:
 ;	MOVEM.L	$0004(A7),A0/A1
 ;	MOVEM.L	$000C(A7),D0/D1
-;	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
+;	MOVEA.L	_IntuitionBase(A4),A6	;_IntuitionBase
 ;	JMP	_LVOPrintIText(A6)
 
 _RefreshGadgets:
 	MOVE.L	A2,-(A7)
 	MOVEM.L	$0008(A7),A0-A2
-	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase(A4),A6	;_IntuitionBase
 	JSR	_LVORefreshGadgets(A6)
 	MOVEA.L	(A7)+,A2
 	RTS
 
 _SetMenuStrip:
 	MOVEM.L	$0004(A7),A0/A1
-	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase(A4),A6	;_IntuitionBase
 	JMP	_LVOSetMenuStrip(A6)
 
 _SetWindowTitles:
 	MOVE.L	A2,-(A7)
 	MOVEM.L	$0008(A7),A0-A2
-	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase(A4),A6	;_IntuitionBase
 	JSR	_LVOSetWindowTitles(A6)
 	MOVEA.L	(A7)+,A2
 	RTS
 
 _WBenchToBack:
-	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase(A4),A6	;_IntuitionBase
 	JMP	_LVOWBenchToBack(A6)
 
 _WBenchToFront:
-	MOVEA.L	_IntuitionBase-BASE(A4),A6	;_IntuitionBase
+	MOVEA.L	_IntuitionBase(A4),A6	;_IntuitionBase
 	JMP	_LVOWBenchToBack(A6)
 
 _RawKeyConvert:
 	MOVE.L	A2,-(A7)
 	MOVEM.L	$0008(A7),A0/A1
 	MOVEM.L	$0010(A7),D1/A2
-	MOVEA.L	_ConsoleDevice-BASE(A4),A6	;_ConsoleDevice
+	MOVEA.L	_ConsoleDevice(A4),A6	;_ConsoleDevice
 	JSR	-$0030(A6)
 	MOVEA.L	(A7)+,A2
 	RTS

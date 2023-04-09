@@ -11,10 +11,10 @@ _randmonster:
 	TST.B	$0009(A5)	;wandering sets one here
 	BEQ.B	L00A0F
 
-	MOVEA.L	_wnd_monster_ptr-BASE(A4),A2	;normal monster list
+	MOVEA.L	_wnd_monster_ptr(A4),A2	;normal monster list
 	BRA.B	L00A10
 L00A0F:
-	MOVEA.L	_lvl_monster_ptr-BASE(A4),A2	;wandering monster list
+	MOVEA.L	_lvl_monster_ptr(A4),A2	;wandering monster list
 L00A10:
 	MOVEq	#$0005,D0
 	JSR	_rnd
@@ -25,7 +25,7 @@ L00A10:
 
 	MOVE.W	(A7)+,D4
 	ADD.W	D0,D4		;0-4 + 0-5
-	ADD.W	_level-BASE(A4),D4	;_level
+	ADD.W	_level(A4),D4	;_level
 	SUBQ.W	#5,D4
 	CMP.W	#$0001,D4
 	BGE.B	L00A11
@@ -68,7 +68,7 @@ _new_monster:
 
 	MOVEA.L	$0008(A5),A2
 	MOVE.B	#$01,$0008(A2)
-	MOVE.W	_level-BASE(A4),D4	;dungeon _level
+	MOVE.W	_level(A4),D4	;dungeon _level
 	SUB.W	#26,D4
 ;	CMP.W	#$0000,D4
 	BGE.B	1$
@@ -76,7 +76,7 @@ _new_monster:
 	MOVEQ	#$00,D4
 
 1$	MOVE.L	A2,-(A7)
-	PEA	_mlist-BASE(A4)	;_mlist
+	PEA	_mlist(A4)	;_mlist
 	JSR	__attach
 	ADDQ.W	#8,A7
 
@@ -97,7 +97,7 @@ _new_monster:
 	EXT.W	D3
 	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
-	LEA	_monsters-BASE(A4),A3	;_monsters
+	LEA	_monsters(A4),A3	;_monsters
 	ADDA.L	D3,A3
 	MOVE.W	$000E(A3),D3	; number for xd8 HP
 	ADD.W	D4,D3
@@ -132,17 +132,17 @@ _new_monster:
 	MOVE.B	#$01,$000E(A2)
 	CLR.L	$002E(A2)	;start with empty pack
 
-	TST.L	_cur_ring_1-BASE(A4)	;_cur_ring_1
+	TST.L	_cur_ring_1(A4)	;_cur_ring_1
 	BEQ.B	L00A14
 
-	MOVEA.L	_cur_ring_1-BASE(A4),A6	;_cur_ring_1
+	MOVEA.L	_cur_ring_1(A4),A6	;_cur_ring_1
 	CMPI.W	#R_AGGR,$0020(A6)	;aggravate monster
 	BEQ.B	L00A15
 L00A14:
-	TST.L	_cur_ring_2-BASE(A4)	;_cur_ring_2
+	TST.L	_cur_ring_2(A4)	;_cur_ring_2
 	BEQ.B	L00A16
 
-	MOVEA.L	_cur_ring_2-BASE(A4),A6	;_cur_ring_2
+	MOVEA.L	_cur_ring_2(A4),A6	;_cur_ring_2
 	CMPI.W	#R_AGGR,$0020(A6)	;aggravate monster
 	BNE.B	L00A16
 L00A15:
@@ -154,14 +154,14 @@ L00A16:
 	CMP.b	#$46,D3		; 'F' flytrap
 	BNE.B	1$
 
-	LEA	_f_damage-BASE(A4),A6	;_f_damage
+	LEA	_f_damage(A4),A6	;_f_damage
 	MOVE.L	A6,$0024(A2)
 
 1$	CMP.b	#$58,D3		; 'X' xerox
 	BNE.W	L00A26
 
 	MOVEQ	#$08,D3
-	CMPI.W	#25,_level-BASE(A4)	;_level
+	CMPI.W	#25,_level(A4)	;_level
 	BLE.B	L00A18
 
 	ADDQ.w	#$01,D3		;disguise as amulet only from level 25 onwards
@@ -227,10 +227,10 @@ L00A26:
 _f_restor:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
-	CLR.W	_fung_hit-BASE(A4)	;_fung_hit
-	LEA	_venus_flytrap-BASE(A4),A2	;venus flytrap struct
+	CLR.W	_fung_hit(A4)	;_fung_hit
+	LEA	_venus_flytrap(A4),A2	;venus flytrap struct
 	MOVE.L	$0014(A2),-(A7)	;"%%%d0"
-	PEA	_f_damage-BASE(A4)	;_f_damage
+	PEA	_f_damage(A4)	;_f_damage
 	JSR	_strcpy
 	ADDQ.W	#8,A7
 	MOVEA.L	(A7)+,A2
@@ -286,7 +286,7 @@ _wanderer:
 	LINK	A5,#-$0004
 	MOVEM.L	D4/A2/A3,-(A7)
 
-	TST.B	_no_more_fears-BASE(A4)	;_no_more_fears
+	TST.B	_no_more_fears(A4)	;_no_more_fears
 	BNE.B	L00A2B
 
 	JSR	_new_item
@@ -303,17 +303,17 @@ L00A2C:
 	MOVE.W	D0,D4
 	MOVE.W	D4,D3
 	MULU.W	#$0042,D3
-	LEA	_rooms-BASE(A4),A6	;_rooms
+	LEA	_rooms(A4),A6	;_rooms
 	MOVEA.L	D3,A2
 	ADDA.L	A6,A2
-	CMPA.L	_player+42-BASE(A4),A2	;_player + 42 (proom)
+	CMPA.L	_player+42(A4),A2	;_player + 42 (proom)
 	BEQ.B	L00A2D
 	PEA	-$0004(A5)
 	MOVE.L	A2,-(A7)
 	JSR	_rnd_pos
 	ADDQ.W	#8,A7
 L00A2D:
-	CMPA.L	_player+42-BASE(A4),A2	;_player + 42 (proom)
+	CMPA.L	_player+42(A4),A2	;_player + 42 (proom)
 	BEQ.B	L00A2C
 	MOVE.W	-$0004(A5),-(A7)
 	MOVE.W	-$0002(A5),-(A7)
@@ -332,14 +332,14 @@ L00A2D:
 	MOVE.L	A3,-(A7)
 	JSR	_new_monster(PC)
 	LEA	$000A(A7),A7
-	TST.B	_wizard-BASE(A4)	;_wizard
+	TST.B	_wizard(A4)	;_wizard
 	BEQ.B	L00A2E
 
 	MOVE.B	$000F(A3),D3
 	EXT.W	D3
 	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
-	LEA	_monsters-BASE(A4),A6	;_monsters
+	LEA	_monsters(A4),A6	;_monsters
 	MOVE.L	$00(A6,D3.L),-(A7)
 	PEA	L00A2F(PC)	;"started a wandering %s"
 	JSR	_msg
@@ -394,28 +394,28 @@ L00A31:
 	AND.W	#C_ISHELD,D3	;C_ISHELD
 	BNE.B	L00A34
 
-	MOVE.L	_cur_ring_1-BASE(A4),D0	;_cur_ring_1
+	MOVE.L	_cur_ring_1(A4),D0	;_cur_ring_1
 	BEQ.B	L00A32
 
 	MOVEA.L	D0,A6		;_cur_ring_1
 	CMPI.W	#R_STEALTH,$0020(A6)	; ring of stealth
 	BEQ.B	L00A34
 L00A32:
-	MOVE.L	_cur_ring_2-BASE(A4),D0	;_cur_ring_2
+	MOVE.L	_cur_ring_2(A4),D0	;_cur_ring_2
 	BEQ.B	L00A33
 
 	MOVEA.L	D0,A6		;_cur_ring_2
 	CMPI.W	#R_STEALTH,$0020(A6)	; ring of stealth
 	BEQ.B	L00A34
 L00A33:
-	LEA	_player+10-BASE(A4),A6	;_player + 10
+	LEA	_player+10(A4),A6	;_player + 10
 	MOVE.L	A6,$0012(A2)
 	ORI.W	#C_ISRUN,$0016(A2)	;C_ISRUN
 L00A34:
 	CMP.B	#$4D,D4		;'M' medusa
 	BNE.W	L00A39
 
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;we are blind, so we can't see the medusas gaze
 	BNE.W	L00A39
 
@@ -431,9 +431,9 @@ L00A34:
 	AND.W	#C_ISRUN,D3	;shes coming at us
 	BEQ.W	L00A39
 
-	MOVEA.L	_player+42-BASE(A4),A3	;_player + 42 (proom)
-	MOVE.W	_player+10-BASE(A4),-(A7)	;_player + 10
-	MOVE.W	_player+12-BASE(A4),-(A7)	;_player + 12
+	MOVEA.L	_player+42(A4),A3	;_player + 42 (proom)
+	MOVE.W	_player+10(A4),-(A7)	;_player + 10
+	MOVE.W	_player+12(A4),-(A7)	;_player + 12
 	MOVE.W	$000A(A5),-(A7)
 	MOVE.W	$0008(A5),-(A7)
 	JSR	_DISTANCE
@@ -469,7 +469,7 @@ L00A36:
 	ADD.W	D0,D3
 	MOVE.W	D3,-(A7)
 
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISHUH,D3	;C_ISHUH
 	BEQ.B	1$
 
@@ -483,7 +483,7 @@ L00A36:
 	JSR	_fuse(PC)
 	ADDQ.W	#8,A7
 2$
-	ORI.W	#C_ISHUH,_player+22-BASE(A4)	;set C_ISHUH,_player + 22 (flags)
+	ORI.W	#C_ISHUH,_player+22(A4)	;set C_ISHUH,_player + 22 (flags)
 	PEA	L00A3C(PC)	;"the medusa's gaze has confused you"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -497,16 +497,16 @@ L00A39:
 	BNE.B	L00A3B
 
 	ORI.W	#C_ISRUN,$0016(A2)	;C_ISRUN
-	MOVEA.L	_player+42-BASE(A4),A6	;_player + 42 (proom)
+	MOVEA.L	_player+42(A4),A6	;_player + 42 (proom)
 	TST.W	$000C(A6)
 	BEQ.B	L00A3A
 
-	MOVE.L	_player+42-BASE(A4),D3	;_player + 42 (proom)
+	MOVE.L	_player+42(A4),D3	;_player + 42 (proom)
 	ADDQ.L	#8,D3
 	MOVE.L	D3,$0012(A2)
 	BRA.B	L00A3B
 L00A3A:
-	LEA	_player+10-BASE(A4),A6	;_player + 10
+	LEA	_player+10(A4),A6	;_player + 10
 	MOVE.L	A6,$0012(A2)
 L00A3B:
 	MOVE.L	A2,D0
@@ -524,7 +524,7 @@ _give_pack:
 	MOVE.L	A2,-(A7)
 
 	MOVEA.L	$0008(A5),A2
-	CMPI.W	#$0053,_total-BASE(A4)	;83 objects _total
+	CMPI.W	#$0053,_total(A4)	;83 objects _total
 	BGE.B	L00A3D
 
 	MOVEq	#100,D0
@@ -533,7 +533,7 @@ _give_pack:
 	EXT.W	D3
 	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
-	LEA	_monsters-BASE(A4),A6	;_monsters
+	LEA	_monsters(A4),A6	;_monsters
 	CMP.W	$04(A6,D3.L),D0	;compare with monster treasure chance
 	BGE.B	L00A3D
 
@@ -595,21 +595,21 @@ _save:
 	CMP.W	#VS_MAGIC,D4	;VS_MAGIC
 	BNE.B	L009DA
 
-	MOVE.L	_cur_ring_1-BASE(A4),D0	;_cur_ring_1
+	MOVE.L	_cur_ring_1(A4),D0	;_cur_ring_1
 	BEQ.B	L009D9
 	MOVEA.L	D0,A6		;_cur_ring_1
 	CMP.W	#R_PROTECT,$0020(A6)
 	BNE.B	L009D9
 	SUB.W	$0026(A6),D4
 L009D9:
-	MOVE.L	_cur_ring_2-BASE(A4),D0	;_cur_ring_2
+	MOVE.L	_cur_ring_2(A4),D0	;_cur_ring_2
 	BEQ.B	L009DA
 	MOVEA.L	D0,A6		;_cur_ring_2
 	CMP.W	#R_PROTECT,$0020(A6)
 	BNE.B	L009DA
 	SUB.W	$0026(A6),D4
 L009DA:
-	PEA	_player-BASE(A4)	;_player + 0
+	PEA	_player(A4)	;_player + 0
 	MOVE.W	D4,-(A7)
 	JSR	_save_throw(PC)
 	ADDQ.W	#6,A7

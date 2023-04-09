@@ -11,7 +11,7 @@ _whatis:
 	MOVE.L	A2,D3
 	BNE.B	L007B6
 
-	TST.L	_player+46-BASE(A4)	;_player + 46 (pack)
+	TST.L	_player+46(A4)	;_player + 46 (pack)
 	BNE.B	L007B5
 
 	PEA	L007C2(PC)	;"You don't have anything in your pack to identify"
@@ -40,7 +40,7 @@ L007B5:
 	PEA	L007C5(PC)	;" "
 	JSR	_msg
 	ADDQ.W	#4,A7
-	CLR.W	_mpos-BASE(A4)	;_mpos
+	CLR.W	_mpos(A4)	;_mpos
 	BRA.B	L007B5
 
 L007B6:
@@ -54,11 +54,11 @@ L007B6:
 
 L007B9:
 	MOVE.W	$0020(A2),D3
-	LEA	_s_know-BASE(A4),A6	;_s_know
+	LEA	_s_know(A4),A6	;_s_know
 	ST	$00(A6,D3.W)
 ;	MOVE.W	$0020(A2),D3
 	MULU.W	#21,D3
-	LEA	_s_guess-BASE(A4),A6	;_s_guess
+	LEA	_s_guess(A4),A6	;_s_guess
 	CLR.B	$00(A6,D3.L)
 	BRA.W	L007BF
 
@@ -66,11 +66,11 @@ L007B9:
 
 L007BA:
 	MOVE.W	$0020(A2),D3
-	LEA	_p_know-BASE(A4),A6	;_p_know
+	LEA	_p_know(A4),A6	;_p_know
 	ST	$00(A6,D3.W)
 ;	MOVE.W	$0020(A2),D3
 	MULU.W	#21,D3
-	LEA	_p_guess-BASE(A4),A6	;_p_guess
+	LEA	_p_guess(A4),A6	;_p_guess
 	CLR.B	$00(A6,D3.L)
 	BRA.W	L007BF
 
@@ -78,12 +78,12 @@ L007BA:
 
 L007BB:
 	MOVE.W	$0020(A2),D3
-	LEA	_ws_know-BASE(A4),A6	;_ws_know
+	LEA	_ws_know(A4),A6	;_ws_know
 	ST	$00(A6,D3.W)
 	ORI.W	#O_ISKNOW,$0028(A2)
 ;	MOVE.W	$0020(A2),D3
 	MULU.W	#21,D3
-	LEA	_ws_guess-BASE(A4),A6	;_ws_guess
+	LEA	_ws_guess(A4),A6	;_ws_guess
 	CLR.B	$00(A6,D3.L)
 	BRA.B	L007BF
 
@@ -97,12 +97,12 @@ L007BC:
 
 L007BD:
 	MOVE.W	$0020(A2),D3
-	LEA	_r_know-BASE(A4),A6	;_r_know
+	LEA	_r_know(A4),A6	;_r_know
 	ST	$00(A6,D3.W)
 	ORI.W	#O_ISKNOW,$0028(A2)
 	MOVE.W	$0020(A2),D3
 	MULU.W	#21,D3
-	LEA	_r_guess-BASE(A4),A6	;_r_guess
+	LEA	_r_guess(A4),A6	;_r_guess
 	CLR.B	$00(A6,D3.L)
 	BRA.B	L007BF
 L007BE:
@@ -163,7 +163,7 @@ L007C5:	dc.b	" ",0
 
 _pack_update:
 	move.l	a3,-(a7)
-	MOVE.L	_player+46-BASE(A4),a3	;_player + 46 (pack)
+	MOVE.L	_player+46(A4),a3	;_player + 46 (pack)
 
 ;	MOVE.W	$0A(A2),d6	;item type we want to update
 	move.w	$20(A2),d5	;subtype
@@ -213,16 +213,16 @@ L007C6:
 	RTS
 
 L007C7:
-	TST.B	_again-BASE(A4)	;_again
+	TST.B	_again(A4)	;_again
 	BNE.B	1$
 
 	PEA	L007EE(PC)	;"type of item: "
 	JSR	_msg
 	ADDQ.W	#4,A7
 	JSR	_readchar
-	MOVE.W	D0,create_object_tmp+4-BASE(A4)
+	MOVE.W	D0,create_object_tmp+4(A4)
 1$
-	MOVE.W	create_object_tmp+4-BASE(A4),D0
+	MOVE.W	create_object_tmp+4(A4),D0
 
 	MOVEA.L	-$0004(A5),A6
 
@@ -261,31 +261,31 @@ L007D0b:
 	BRA	L007EB
 
 L007C9:
-	MOVE.W	create_object_tmp+4-BASE(A4),$000A(A6)	; potion, stick, ring, scroll
+	MOVE.W	create_object_tmp+4(A4),$000A(A6)	; potion, stick, ring, scroll
 ;	BRA.B	L007D2
 
 L007D2:
-	CLR.W	_mpos-BASE(A4)	;_mpos
+	CLR.W	_mpos(A4)	;_mpos
 	MOVEA.L	-$0004(A5),A6
 	MOVE.W	$000A(A6),-(A7)
 	PEA	L007EF(PC)	;"which %c do you want? (0-f)"
 	JSR	_msg
 	ADDQ.W	#6,A7
-	TST.B	_again-BASE(A4)	;_again
+	TST.B	_again(A4)	;_again
 	BEQ.B	L007D3
 
-	MOVE.B	create_object_tmp+3-BASE(A4),create_object_tmp-BASE(A4)
+	MOVE.B	create_object_tmp+3(A4),create_object_tmp(A4)
 	BRA.B	L007D4
 L007D3:
 	JSR	_readchar
-	MOVE.B	D0,create_object_tmp-BASE(A4)
+	MOVE.B	D0,create_object_tmp(A4)
 	MOVEQ	#$00,D3
 	MOVE.B	D0,D3
-	MOVE.W	D3,create_object_tmp+2-BASE(A4)
+	MOVE.W	D3,create_object_tmp+2(A4)
 L007D4:
 	MOVEA.L	-$0004(A5),A6
 	MOVE.L	A6,-(A7)
-	MOVE.B	create_object_tmp-BASE(A4),D0
+	MOVE.B	create_object_tmp(A4),D0
 
 	JSR	_isdigit(PC)
 
@@ -295,13 +295,13 @@ L007D4:
 	BEQ.B	L007D5
 
 	MOVEQ	#$00,D3
-	MOVE.B	create_object_tmp-BASE(A4),D3
+	MOVE.B	create_object_tmp(A4),D3
 	SUB.W	#$0030,D3	; - '0'
 	MOVE.W	D3,$0020(A6)
 	BRA.B	L007D6
 L007D5:
 	MOVEQ	#$00,D3
-	MOVE.B	create_object_tmp-BASE(A4),D3
+	MOVE.B	create_object_tmp(A4),D3
 	SUB.W	#$0057,D3	; - 'a' + 10
 	MOVE.W	D3,$0020(A6)
 L007D6:
@@ -313,7 +313,7 @@ L007D6:
 	LEA	L007F0(PC),A1	;"0d0"
 	MOVE.L	A1,$001A(A6)
 	MOVE.L	$001A(A6),$0016(A6)
-	CLR.W	_mpos-BASE(A4)	;_mpos
+	CLR.W	_mpos(A4)	;_mpos
 ;	MOVEA.L	-$0004(A5),A6
 	CMPI.W	#$006D,$000A(A6)	; 'm' weapon type
 	BEQ.B	L007D7
@@ -322,17 +322,17 @@ L007D6:
 	CMPI.W	#$0061,$000A(A6)	; 'a' armor type
 	BNE.W	L007DF
 L007D7:
-	TST.B	_again-BASE(A4)	;_again
+	TST.B	_again(A4)	;_again
 	BNE.B	L007D8
 
 	PEA	L007F1(PC)	;"blessing? (+,-,n)"
 	JSR	_msg
 	ADDQ.W	#4,A7
 	JSR	_readchar
-	MOVE.B	D0,create_object_tmp+1-BASE(A4)
-	CLR.W	_mpos-BASE(A4)	;_mpos
+	MOVE.B	D0,create_object_tmp+1(A4)
+	CLR.W	_mpos(A4)	;_mpos
 L007D8:
-	CMP.B	#$2D,create_object_tmp+1-BASE(A4)	; '-'
+	CMP.B	#$2D,create_object_tmp+1(A4)	; '-'
 	BNE.B	L007D9
 
 	MOVEA.L	-$0004(A5),A6
@@ -352,12 +352,12 @@ L007D9:
 	ADDQ.W	#1,D0
 	MOVEA.L	-$0004(A5),A6
 
-	CMP.B	#$2D,create_object_tmp+1-BASE(A4)	; '-'
+	CMP.B	#$2D,create_object_tmp+1(A4)	; '-'
 	BNE.B	1$
 
 	SUB.W	D0,$0022(A6)
 1$
-	CMP.B	#$2B,create_object_tmp+1-BASE(A4)	; '+'
+	CMP.B	#$2B,create_object_tmp+1(A4)	; '+'
 	BNE.B	L007DB
 
 	ADD.W	D0,$0022(A6)
@@ -372,7 +372,7 @@ L007DC:
 	MOVE.W	$0020(A6),D3
 ;	EXT.L	D3
 	ASL.w	#1,D3
-	LEA	_a_class-BASE(A4),A1	;_a_class
+	LEA	_a_class(A4),A1	;_a_class
 	MOVE.W	$00(A1,D3.w),$0026(A6)
 
 	MOVEq	#$0003,D0
@@ -380,12 +380,12 @@ L007DC:
 	ADDQ.W	#1,D0
 	MOVEA.L	-$0004(A5),A6
 
-	CMP.B	#$2D,create_object_tmp+1-BASE(A4)	; -
+	CMP.B	#$2D,create_object_tmp+1(A4)	; -
 	BNE.B	1$
 
 	ADD.W	D0,$0026(A6)
 1$
-	CMP.B	#$2B,create_object_tmp+1-BASE(A4)	; +
+	CMP.B	#$2B,create_object_tmp+1(A4)	; +
 	BNE.B	L007DE
 
 	SUB.W	D0,$0026(A6)
@@ -401,17 +401,17 @@ L007DF:
 ;	EXT.L	D0
 	BRA.W	L007E7
 L007E0:
-	TST.B	_again-BASE(A4)	;_again
+	TST.B	_again(A4)	;_again
 	BNE.B	L007E1
 
 	PEA	L007F1(PC)	;"blessing? (+,-,n)"
 	JSR	_msg
 	ADDQ.W	#4,A7
 	JSR	_readchar
-	MOVE.B	D0,create_object_tmp+1-BASE(A4)
-	CLR.W	_mpos-BASE(A4)	;_mpos
+	MOVE.B	D0,create_object_tmp+1(A4)
+	CLR.W	_mpos(A4)	;_mpos
 L007E1:
-	CMP.B	#$2D,create_object_tmp+1-BASE(A4)	; '-'
+	CMP.B	#$2D,create_object_tmp+1(A4)	; '-'
 	BNE.B	L007E3
 
 	MOVE.W	#-1,$0026(A6)
@@ -464,7 +464,7 @@ L007EB:
 	CMPI.W	#$002A,$000A(A6)	; '*'
 	BNE.B	L007EC
 
-	CLR.W	_mpos-BASE(A4)	;_mpos
+	CLR.W	_mpos(A4)	;_mpos
 	PEA	L007F3(PC)	;"how much? "
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -474,7 +474,7 @@ L007EB:
 	JSR	_get_num(PC)
 	ADDQ.W	#4,A7
 
-	CLR.W	_mpos-BASE(A4)	;_mpos
+	CLR.W	_mpos(A4)	;_mpos
 
 	MOVEA.L	-$0004(A5),A6
 	move.w	$0026(A6),-(a7)
@@ -509,11 +509,11 @@ _teleport:
 
 	JSR	_INDEXplayer
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 
 	MOVE.B	$00(A6,D0.W),D2
-	MOVE.W	_player+10-BASE(A4),d1	;_player + 10
-	MOVE.W	_player+12-BASE(A4),d0	;_player + 12
+	MOVE.W	_player+10(A4),d1	;_player + 10
+	MOVE.W	_player+12(A4),d0	;_player + 12
 	JSR	_mvaddchquick
 
 L007F4:
@@ -522,7 +522,7 @@ L007F4:
 	PEA	-$0004(A5)
 	MOVE.W	D4,D3
 	MULU.W	#66,D3
-	LEA	_rooms-BASE(A4),A6	;_rooms
+	LEA	_rooms(A4),A6	;_rooms
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 	JSR	_rnd_pos
@@ -542,25 +542,25 @@ L007F4:
 
 	MOVE.W	D4,D3
 	MULU.W	#66,D3
-	LEA	_rooms-BASE(A4),A6	;_rooms
+	LEA	_rooms(A4),A6	;_rooms
 	ADD.L	A6,D3
-	CMP.L	_player+42-BASE(A4),D3	;_player + 42 (proom)
+	CMP.L	_player+42(A4),D3	;_player + 42 (proom)
 	BEQ.B	L007F5
 
-	PEA	_player+10-BASE(A4)	;_player + 10
+	PEA	_player+10(A4)	;_player + 10
 	JSR	_leave_room
 	ADDQ.W	#4,A7
 
-	LEA	_player+10-BASE(A4),A6	;_player + 10
+	LEA	_player+10(A4),A6	;_player + 10
 	LEA	-$0004(A5),A1
 	MOVE.L	(A1)+,(A6)+
-	PEA	_player+10-BASE(A4)	;_player + 10
+	PEA	_player+10(A4)	;_player + 10
 	JSR	_enter_room
 	ADDQ.W	#4,A7
 
 	BRA.B	L007F6
 L007F5:
-	LEA	_player+10-BASE(A4),A6	;_player + 10
+	LEA	_player+10(A4),A6	;_player + 10
 	LEA	-$0004(A5),A1
 	MOVE.L	(A1)+,(A6)+
 	MOVE.W	#$0001,-(A7)
@@ -568,26 +568,26 @@ L007F5:
 	ADDQ.W	#2,A7
 L007F6:
 	MOVEq	#$0040,d2	;'@' PLAYER
-	MOVE.W	_player+10-BASE(A4),d1	;_player + 10
-	MOVE.W	_player+12-BASE(A4),d0	;_player + 12
+	MOVE.W	_player+10(A4),d1	;_player + 10
+	MOVE.W	_player+12(A4),d0	;_player + 12
 	JSR	_mvaddchquick
 
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISHELD,D3	;C_ISHELD
 	BEQ.B	L007F7
 
-	ANDI.W	#~C_ISHELD,_player+22-BASE(A4)	;clear C_ISHELD,_player + 22 (flags)
+	ANDI.W	#~C_ISHELD,_player+22(A4)	;clear C_ISHELD,_player + 22 (flags)
 	JSR	_f_restor
 L007F7:
-	CLR.W	_no_move-BASE(A4)	;_no_move
-	CLR.W	_count-BASE(A4)	;_count
-	CLR.B	_running-BASE(A4)	;_running
+	CLR.W	_no_move(A4)	;_no_move
+	CLR.W	_count(A4)	;_count
+	CLR.B	_running(A4)	;_running
 	JSR	_flush_type
 
-	TST.B	_wizard-BASE(A4)	;_wizard
+	TST.B	_wizard(A4)	;_wizard
 	BNE.B	L007FA
 
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISHUH,D3	;C_ISHUH
 	BEQ.B	L007F8
 
@@ -609,7 +609,7 @@ L007F8:
 	JSR	_fuse(PC)
 	ADDQ.W	#8,A7
 L007F9:
-	ORI.W	#C_ISHUH,_player+22-BASE(A4)	;ISHUH,_player + 22 (flags)
+	ORI.W	#C_ISHUH,_player+22(A4)	;ISHUH,_player + 22 (flags)
 L007FA:
 	MOVE.W	D4,D0
 
@@ -635,7 +635,7 @@ L007FC:
 	MOVE.W	D4,d1
 	JSR	_INDEXquick
 
-	MOVEA.L	__flags-BASE(A4),A6	;__flags
+	MOVEA.L	__flags(A4),A6	;__flags
 	MOVE.B	$00(A6,D0.W),D6
 	AND.W	#F_REAL,D6
 	TST.W	D6
@@ -646,7 +646,7 @@ L007FD:
 	MOVE.W	D5,d0
 	MOVE.W	D4,d1
 	JSR	_INDEXquick
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 
 	MOVE.B	$00(A6,D0.W),D2
 	MOVE.W	D5,d1
@@ -664,7 +664,7 @@ L007FE:
 
 	ADDQ.W	#1,D4
 L007FF:
-	CMP.W	_maxrow-BASE(A4),D4	;_maxrow
+	CMP.W	_maxrow(A4),D4	;_maxrow
 	BLT.B	L007FB
 
 	MOVEM.L	(A7)+,D4-D6

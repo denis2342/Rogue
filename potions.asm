@@ -42,10 +42,10 @@ L00485:
 
 	BRA.B	L00483
 L00486:
-	CMPA.L	_cur_weapon-BASE(A4),A2	;_cur_weapon
+	CMPA.L	_cur_weapon(A4),A2	;_cur_weapon
 	BNE.B	L00487
 
-	CLR.L	_cur_weapon-BASE(A4)	;_cur_weapon
+	CLR.L	_cur_weapon(A4)	;_cur_weapon
 L00487:
 	MOVE.W	$0020(A2),D0
 ;	EXT.L	D0
@@ -54,7 +54,7 @@ L00487:
 ; potion of confusion
 
 L00488:
-	ST	_p_know-BASE(A4)	;_p_know + 0 (potion of confusion)
+	ST	_p_know(A4)	;_p_know + 0 (potion of confusion)
 	JSR	_p_confuse(PC)
 	PEA	L004B0(PC)	;"wait, what's going on? Huh? What? Who?"
 	JSR	_msg
@@ -67,16 +67,16 @@ L00488:
 L00489:
 	LEA	L004B1(PC),A6	;"you feel %s sick."
 	MOVE.L	A6,-$0004(A5)
-	ST	_p_know+2-BASE(A4)	;_p_know + 2 (potion of poison)
+	ST	_p_know+2(A4)	;_p_know + 2 (potion of poison)
 
-	MOVE.L	_cur_ring_1-BASE(A4),D0	;_cur_ring_1
+	MOVE.L	_cur_ring_1(A4),D0	;_cur_ring_1
 	BEQ.B	L0048A
 
 	MOVEA.L	D0,A6		;_cur_ring_1
 	CMPI.W	#R_SUSTSTR,$0020(A6)
 	BEQ.B	L0048C
 L0048A:
-	MOVE.L	_cur_ring_2-BASE(A4),D0	;_cur_ring_2
+	MOVE.L	_cur_ring_2(A4),D0	;_cur_ring_2
 	BEQ.B	L0048B
 
 	MOVEA.L	D0,A6		;_cur_ring_2
@@ -108,19 +108,19 @@ L0048D:
 ; potion of healing
 
 L0048E:
-	ST	_p_know+5-BASE(A4)	;_p_know + 5 (potion of healing)
+	ST	_p_know+5(A4)	;_p_know + 5 (potion of healing)
 	MOVE.W	#$0004,-(A7)	;xd4
-	MOVE.W	_player+30-BASE(A4),-(A7)	;_player + 30 (rank)
+	MOVE.W	_player+30(A4),-(A7)	;_player + 30 (rank)
 	JSR	_roll
 	ADDQ.W	#4,A7
 
-	ADD.W	D0,_player+34-BASE(A4)	;_player + 34 (hp)
-	MOVE.W	_player+34-BASE(A4),D3	;_player + 34 (hp)
-	CMP.W	_player+40-BASE(A4),D3	;_player + 40 (max hp)
+	ADD.W	D0,_player+34(A4)	;_player + 34 (hp)
+	MOVE.W	_player+34(A4),D3	;_player + 34 (hp)
+	CMP.W	_player+40(A4),D3	;_player + 40 (max hp)
 	BLE.B	L0048F
 
-	ADDQ.W	#1,_player+40-BASE(A4)	;_player + 40 (max hp)
-	MOVE.W	_player+40-BASE(A4),_player+34-BASE(A4)	;_player + 34 (hp),_player + 40 (max hp)
+	ADDQ.W	#1,_player+40(A4)	;_player + 40 (max hp)
+	MOVE.W	_player+40(A4),_player+34(A4)	;_player + 34 (hp),_player + 40 (max hp)
 L0048F:
 	JSR	_sight(PC)
 	PEA	L004B4(PC)	;"you begin to feel better"
@@ -132,7 +132,7 @@ L0048F:
 ; potion of gain strength
 
 L00490:
-	ST	_p_know+3-BASE(A4)	;_p_know + 3 (potion of gain strength)
+	ST	_p_know+3(A4)	;_p_know + 3 (potion of gain strength)
 	MOVE.W	#$0001,-(A7)	; plus one strength point
 	JSR	_chg_str
 	ADDQ.W	#2,A7
@@ -150,7 +150,7 @@ L00491:
 
 	MOVE.W	D0,-(A7)
 
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISFOUND,D3	;C_ISFOUND
 	BEQ.B	L00492
 
@@ -169,12 +169,12 @@ L00493:
 	JSR	_msg
 	ADDQ.W	#4,A7
 
-	ORI.W	#C_ISFOUND,_player+22-BASE(A4)	;_player + 22 (flags)
-	PEA	_player+10-BASE(A4)	;_player + 10
+	ORI.W	#C_ISFOUND,_player+22(A4)	;_player + 22 (flags)
+	PEA	_player+10(A4)	;_player + 10
 	JSR	_leave_room
 	ADDQ.W	#4,A7
 
-	PEA	_player+10-BASE(A4)	;_player + 10
+	PEA	_player+10(A4)	;_player + 10
 	JSR	_enter_room
 	ADDQ.W	#4,A7
 	BRA.W	L004AD
@@ -187,7 +187,7 @@ L00494:
 
 	MOVE.W	D0,-(A7)
 
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_WISDOM,D3
 	BEQ.B	1$
 
@@ -196,7 +196,7 @@ L00494:
 	ADDQ.W	#6,A7
 	BRA.B	2$
 1$
-	ORI.W	#C_WISDOM,_player+22-BASE(A4)	;WISDOM, _player + 22 (flags)
+	ORI.W	#C_WISDOM,_player+22(A4)	;WISDOM, _player + 22 (flags)
 
 	CLR.W	-(A7)
 	PEA	_foolish(PC)
@@ -211,13 +211,13 @@ L00494:
 ; potion of paralysis
 
 L00497:
-	ST	_p_know+1-BASE(A4)	;_p_know + 1 (potion of paralysis)
+	ST	_p_know+1(A4)	;_p_know + 1 (potion of paralysis)
 
 	MOVEq	#$0002,D0
 	JSR	_spread
 
-	MOVE.W	D0,_no_command-BASE(A4)	;_no_command
-	ANDI.W	#~C_ISRUN,_player+22-BASE(A4)	;clear C_ISRUN, _player + 22 (flags)
+	MOVE.W	D0,_no_command(A4)	;_no_command
+	ANDI.W	#~C_ISRUN,_player+22(A4)	;clear C_ISRUN, _player + 22 (flags)
 	PEA	L004B8(PC)	;"you can't move"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -226,7 +226,7 @@ L00497:
 ; potion of see invisible
 
 L00498:
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_CANSEE,D3	;C_CANSEE
 	BNE.B	1$
 
@@ -245,7 +245,7 @@ L00498:
 	JSR	_invis_on(PC)
 1$
 	JSR	_sight(PC)
-	PEA	_fruit-BASE(A4)
+	PEA	_fruit(A4)
 	PEA	L004B9(PC)	;"this potion tastes like %s juice"
 	JSR	_msg
 	ADDQ.W	#8,A7
@@ -254,12 +254,12 @@ L00498:
 ; potion of raise level
 
 L0049A:
-	ST	_p_know+8-BASE(A4)	;_p_know + 8 (potion of raise level)
-	MOVE.W	_player+30-BASE(A4),D3	;_player + 30 (rank)
+	ST	_p_know+8(A4)	;_p_know + 8 (potion of raise level)
+	MOVE.W	_player+30(A4),D3	;_player + 30 (rank)
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	MOVEA.L	_e_levels-BASE(A4),A6	;_e_levels
+	MOVEA.L	_e_levels(A4),A6	;_e_levels
 	TST.L	$00(A6,D3.w)
 	BEQ.B	1$
 
@@ -278,14 +278,14 @@ L0049A:
 ; potion of extra healing
 
 L0049D:
-	ST	_p_know+9-BASE(A4)	;_p_know + 9 (potion of extra healing)
-	MOVE.W	_player+34-BASE(A4),D3	;_player + 34 (hp)
-	CMP.W	_player+40-BASE(A4),D3	;_player + 40 (max hp)
+	ST	_p_know+9(A4)	;_p_know + 9 (potion of extra healing)
+	MOVE.W	_player+34(A4),D3	;_player + 34 (hp)
+	CMP.W	_player+40(A4),D3	;_player + 40 (max hp)
 	BNE.B	1$
 
-	ADDQ.W	#1,_player+40-BASE(A4)	;_player + 40 (max hp)
+	ADDQ.W	#1,_player+40(A4)	;_player + 40 (max hp)
 1$
-	MOVE.W	_player+40-BASE(A4),_player+34-BASE(A4)	;_player + 40 (max hp),_player + 34 (hp)
+	MOVE.W	_player+40(A4),_player+34(A4)	;_player + 40 (max hp),_player + 34 (hp)
 	JSR	_sight(PC)
 	PEA	L004BC(PC)	;"you begin to feel much better"
 	JSR	_msg
@@ -295,7 +295,7 @@ L0049D:
 ; potion of haste self
 
 L0049F:
-	ST	_p_know+10-BASE(A4)	;_p_know + 10 (potion of haste self)
+	ST	_p_know+10(A4)	;_p_know + 10 (potion of haste self)
 	MOVE.W	#$0001,-(A7)
 	JSR	_add_haste(PC)
 	ADDQ.W	#2,A7
@@ -311,7 +311,7 @@ L0049F:
 ; restore strength
 
 L004A1:
-	MOVE.L	_cur_ring_1-BASE(A4),D0	;_cur_ring_1
+	MOVE.L	_cur_ring_1(A4),D0	;_cur_ring_1
 	BEQ.B	L004A2
 
 	MOVEA.L	D0,A6		;_cur_ring_1
@@ -321,11 +321,11 @@ L004A1:
 	MOVE.W	$0026(A6),D3
 	NEG.W	D3
 	MOVE.W	D3,-(A7)
-	PEA	_player+24-BASE(A4)	;_player + 24 (strength)
+	PEA	_player+24(A4)	;_player + 24 (strength)
 	JSR	_add_str(PC)
 	ADDQ.W	#6,A7
 L004A2:
-	MOVE.L	_cur_ring_2-BASE(A4),D0	;_cur_ring_2
+	MOVE.L	_cur_ring_2(A4),D0	;_cur_ring_2
 	BEQ.B	L004A3
 
 	MOVEA.L	D0,A6		;_cur_ring_2
@@ -335,17 +335,17 @@ L004A2:
 	MOVE.W	$0026(A6),D3
 	NEG.W	D3
 	MOVE.W	D3,-(A7)
-	PEA	_player+24-BASE(A4)	;_player + 24 (strength)
+	PEA	_player+24(A4)	;_player + 24 (strength)
 	JSR	_add_str(PC)
 	ADDQ.W	#6,A7
 L004A3:
-	MOVE.W	_player+24-BASE(A4),D3	;_player + 24 (strength)
-	CMP.W	_max_stats+0-BASE(A4),D3	;_max_stats + 0 (max strength)
+	MOVE.W	_player+24(A4),D3	;_player + 24 (strength)
+	CMP.W	_max_stats+0(A4),D3	;_max_stats + 0 (max strength)
 	BCC.B	L004A4
 
-	MOVE.W	_max_stats+0-BASE(A4),_player+24-BASE(A4)	;_max_stats + 0 (max strength),_player + 24 (strength)
+	MOVE.W	_max_stats+0(A4),_player+24(A4)	;_max_stats + 0 (max strength),_player + 24 (strength)
 L004A4:
-	MOVE.L	_cur_ring_1-BASE(A4),D0	;_cur_ring_1
+	MOVE.L	_cur_ring_1(A4),D0	;_cur_ring_1
 	BEQ.B	L004A5
 
 	MOVEA.L	D0,A6		;_cur_ring_1
@@ -353,11 +353,11 @@ L004A4:
 	BNE.B	L004A5
 
 	MOVE.W	$0026(A6),-(A7)
-	PEA	_player+24-BASE(A4)	;_player + 24 (strength)
+	PEA	_player+24(A4)	;_player + 24 (strength)
 	JSR	_add_str(PC)
 	ADDQ.W	#6,A7
 L004A5:
-	MOVE.L	_cur_ring_2-BASE(A4),D0	;_cur_ring_2
+	MOVE.L	_cur_ring_2(A4),D0	;_cur_ring_2
 	BEQ.B	L004A6
 
 	MOVEA.L	D0,A6		;_cur_ring_2
@@ -365,7 +365,7 @@ L004A5:
 	BNE.B	L004A6
 
 	MOVE.W	$0026(A6),-(A7)
-	PEA	_player+24-BASE(A4)	;_player + 24 (strength)
+	PEA	_player+24(A4)	;_player + 24 (strength)
 	JSR	_add_str(PC)
 	ADDQ.W	#6,A7
 L004A6:
@@ -381,7 +381,7 @@ L004A6:
 ; potion of blindness
 
 L004A7:
-	ST	_p_know+12-BASE(A4)	;_p_know + 12 (potion of blindness)
+	ST	_p_know+12(A4)	;_p_know + 12 (potion of blindness)
 	JSR	_p_blind(PC)
 	PEA	L004C0(PC)	;"a cloak of darkness falls around you"
 	JSR	_msg
@@ -429,11 +429,11 @@ L004AD:
 
 	MOVE.W	$0020(A2),D3
 	MULU.W	#21,D3
-	LEA	_p_guess-BASE(A4),A6	;_p_guess
+	LEA	_p_guess(A4),A6	;_p_guess
 	ADD.L	A6,D3
 	MOVE.L	D3,-(A7)
 	MOVE.W	$0020(A2),D3
-	LEA	_p_know-BASE(A4),A6	;_p_know
+	LEA	_p_know(A4),A6	;_p_know
 	MOVEQ	#$00,D2
 	MOVE.B	$00(A6,D3.W),D2
 	MOVE.W	D2,-(A7)
@@ -495,7 +495,7 @@ L009F9:
 	MOVE.W	$0020(A2),D3
 ;	EXT.L	D3
 	ASL.w	#1,D3
-	LEA	_a_class-BASE(A4),A6	;_a_class
+	LEA	_a_class(A4),A6	;_a_class
 	MOVE.W	$00(A6,D3.w),D2
 	CMP.W	$0026(A2),D2
 	BEQ.B	L009FA
@@ -543,9 +543,9 @@ _invis_on:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
 
-	ORI.W	#C_CANSEE,_player+22-BASE(A4)	;_player + 22 (flags)
+	ORI.W	#C_CANSEE,_player+22(A4)	;_player + 22 (flags)
 
-	MOVEA.L	_mlist-BASE(A4),A2	;_mlist
+	MOVEA.L	_mlist(A4),A2	;_mlist
 	BRA.B	3$
 
 1$	MOVE.W	$0016(A2),D3
@@ -590,7 +590,7 @@ L004C6:
 	EXT.W	D3
 	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
-	LEA	_monsters-BASE(A4),A6	;_monsters
+	LEA	_monsters(A4),A6	;_monsters
 	MOVE.L	$00(A6,D3.L),-(A7)
 	PEA	L004D0(PC)	;"the %s appears confused"
 	JSR	_msg
@@ -678,7 +678,7 @@ _p_confuse:
 
 	ADD.W	D0,(A7)		;add spread to rnd on stack
 
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISHUH,D3	;C_ISHUH
 	BEQ.B	1$
 
@@ -692,17 +692,17 @@ _p_confuse:
 	JSR	_fuse(PC)
 	ADDQ.W	#8,A7
 
-2$	ORI.W	#C_ISHUH,_player+22-BASE(A4)	;C_ISHUH,_player + 22 (flags)
+2$	ORI.W	#C_ISHUH,_player+22(A4)	;C_ISHUH,_player + 22 (flags)
 ;	UNLK	A5
 	RTS
 
 _p_blind:
 ;	LINK	A5,#-$0000
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3
 	BNE.B	L004D4
 
-	ORI.W	#C_ISBLIND,_player+22-BASE(A4)	;_player + 22 (flags)
+	ORI.W	#C_ISBLIND,_player+22(A4)	;_player + 22 (flags)
 
 	MOVE.W	#300,D0
 	JSR	_spread
@@ -727,14 +727,14 @@ L004D4:
 _raise_level:
 ;	LINK	A5,#-$0000
 
-	MOVE.W	_player+30-BASE(A4),D3	;_player + 30 (rank)
+	MOVE.W	_player+30(A4),D3	;_player + 30 (rank)
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	MOVEA.L	_e_levels-BASE(A4),A6	;_e_levels
+	MOVEA.L	_e_levels(A4),A6	;_e_levels
 	MOVE.L	$00(A6,D3.w),D2
 	ADDQ.L	#1,D2
-	MOVE.L	D2,_player+26-BASE(A4)	;_player + 26 (EXP)
+	MOVE.L	D2,_player+26(A4)	;_player + 26 (EXP)
 	JSR	_check_level(PC)
 
 ;	UNLK	A5

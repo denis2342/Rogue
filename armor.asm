@@ -8,7 +8,7 @@ _wear:
 	MOVEM.L	A2/A3,-(A7)
 
 	MOVEA.L	$0008(A5),A2
-	TST.L	_cur_armor-BASE(A4)	;_cur_armor
+	TST.L	_cur_armor(A4)	;_cur_armor
 	BEQ.B	L0012A
 
 	LEA	L0012F(PC),a0	;".  You'll have to take it off first"
@@ -18,7 +18,7 @@ _wear:
 	PEA	L0012E(PC)	;"you are already wearing some%s."
 	JSR	_msg
 	ADDQ.W	#8,A7
-	CLR.B	_after-BASE(A4)	;_after
+	CLR.B	_after(A4)	;_after
 L00129:
 	MOVEM.L	(A7)+,A2/A3
 	UNLK	A5
@@ -59,7 +59,7 @@ L0012C:
 	JSR	_waste_time(PC)
 
 	ORI.W	#O_ISKNOW,$0028(A2)
-	MOVE.L	A2,_cur_armor-BASE(A4)	;_cur_armor
+	MOVE.L	A2,_cur_armor(A4)	;_cur_armor
 
 	MOVE.W	#$005C,-(A7)
 	MOVE.L	A2,-(A7)
@@ -93,11 +93,11 @@ _take_off:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
 
-	MOVEA.L	_cur_armor-BASE(A4),A2	;_cur_armor
+	MOVEA.L	_cur_armor(A4),A2	;_cur_armor
 	MOVE.L	A2,D3
 	BNE.B	L00134
 
-	CLR.B	_after-BASE(A4)	;_after
+	CLR.B	_after(A4)	;_after
 	PEA	L00136(PC)	;"you aren't wearing any armor"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -107,13 +107,13 @@ L00133:
 	RTS
 
 L00134:
-	MOVE.L	_cur_armor-BASE(A4),-(A7)	;_cur_armor
+	MOVE.L	_cur_armor(A4),-(A7)	;_cur_armor
 	JSR	_can_drop
 	ADDQ.W	#4,A7
 	TST.W	D0
 	BEQ.B	L00133
 
-	CLR.L	_cur_armor-BASE(A4)	;_cur_armor
+	CLR.L	_cur_armor(A4)	;_cur_armor
 	MOVE.W	#$005C,-(A7)
 	MOVE.L	A2,-(A7)
 	JSR	_nameof

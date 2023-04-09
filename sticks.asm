@@ -47,7 +47,7 @@ _ws_setdam:
 	MOVE.W	$0020(A2),D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_ws_type-BASE(A4),A6	;_ws_type
+	LEA	_ws_type(A4),A6	;_ws_type
 	MOVE.L	$00(A6,D3.w),-(A7)
 	JSR	_strcmp
 	ADDQ.W	#8,A7
@@ -112,7 +112,7 @@ L00310:
 	PEA	L00348(PC)	;"you can't zap with that!"
 	JSR	_msg
 	ADDQ.W	#4,A7
-	CLR.B	_after-BASE(A4)	;_after
+	CLR.B	_after(A4)	;_after
 	BRA.B	L0030F
 L00311:
 	MOVEA.L	$0008(A5),A6
@@ -131,7 +131,7 @@ L00312:
 ; light
 
 L00313:
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;check player C_ISBLIND
 	BEQ.B	L00314
 
@@ -140,8 +140,8 @@ L00313:
 	ADDQ.W	#4,A7
 	BRA.B	L00316
 L00314:
-	ST	_ws_know-BASE(A4)	;_ws_know
-	MOVEA.L	_player+42-BASE(A4),A6	;_player + 42 (proom)
+	ST	_ws_know(A4)	;_ws_know
+	MOVEA.L	_player+42(A4),A6	;_player + 42 (proom)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3	;check for room ISDARK
 	BEQ.B	L00315
@@ -155,14 +155,14 @@ L00315:
 	JSR	_msg
 	ADDQ.W	#4,A7
 L00316:
-	MOVEA.L	_player+42-BASE(A4),A6	;_player + 42 (proom)
+	MOVEA.L	_player+42(A4),A6	;_player + 42 (proom)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3	;check for room ISDARK
 	BNE.B	L00317
 
-	MOVEA.L	_player+42-BASE(A4),A6	;_player + 42 (proom)
+	MOVEA.L	_player+42(A4),A6	;_player + 42 (proom)
 	ANDI.W	#$FFFE,$000E(A6)	;clear room ISDARK
-	PEA	_player+10-BASE(A4)	;_player + 10
+	PEA	_player+10(A4)	;_player + 10
 	JSR	_enter_room
 	ADDQ.W	#4,A7
 L00317:
@@ -171,7 +171,7 @@ L00317:
 ; drain life
 
 L00318:
-	CMPI.W	#$0002,_player+34-BASE(A4)	;_player + 34 (hp)
+	CMPI.W	#$0002,_player+34(A4)	;_player + 34 (hp)
 	BGE.B	L00319
 
 	PEA	L0034D(PC)	;"you are too weak to use it"
@@ -185,8 +185,8 @@ L00319:
 ; polymorph, teleport to, teleport away and cancellation
 
 L0031A:
-	MOVE.W	_player+12-BASE(A4),D4	;_player + 12
-	MOVE.W	_player+10-BASE(A4),D5	;_player + 10
+	MOVE.W	_player+12(A4),D4	;_player + 12
+	MOVE.W	_player+10(A4),D5	;_player + 10
 L0031B:
 	MOVE.W	D5,-(A7)
 	MOVE.W	D4,-(A7)
@@ -199,8 +199,8 @@ L0031B:
 	TST.W	D0
 	BEQ.B	L0031C
 
-	ADD.W	_delta+2-BASE(A4),D4	;_delta + 2
-	ADD.W	_delta+0-BASE(A4),D5	;_delta + 0
+	ADD.W	_delta+2(A4),D4	;_delta + 2
+	ADD.W	_delta+0(A4),D5	;_delta + 0
 	BRA.B	L0031B
 L0031C:
 	MOVE.W	D5,d1
@@ -217,7 +217,7 @@ L0031C:
 	CMP.b	#$46,D6		;'F'
 	BNE.B	L0031D
 
-	ANDI.W	#~C_ISHELD,_player+22-BASE(A4)	;clear C_ISHELD ($80) for _player + 22 (flags)
+	ANDI.W	#~C_ISHELD,_player+22(A4)	;clear C_ISHELD ($80) for _player + 22 (flags)
 L0031D:
 	CMPI.W	#WS_POLYMORPH,-$0006(A5)	;5 = polymorph
 	BNE.W	L00322
@@ -225,7 +225,7 @@ L0031D:
 	MOVEA.L	-$0004(A5),A6
 	MOVE.L	$002E(A6),-$000C(A5)
 	MOVE.L	-$0004(A5),-(A7)
-	PEA	_mlist-BASE(A4)	;_mlist
+	PEA	_mlist(A4)	;_mlist
 	JSR	__detach
 	ADDQ.W	#8,A7
 	MOVE.L	-$0004(A5),-(A7)
@@ -238,7 +238,7 @@ L0031D:
 	MOVE.W	D4,d1
 	JSR	_INDEXquick
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 
 	MOVE.B	$00(A6,D0.W),D2
 	MOVE.W	D5,d1
@@ -248,9 +248,9 @@ L0031D:
 L0031E:
 	MOVEA.L	-$0004(A5),A6
 	MOVE.B	$0011(A6),D7
-	MOVE.W	D4,_delta+2-BASE(A4)	;_delta + 2
-	MOVE.W	D5,_delta+0-BASE(A4)	;_delta + 0
-	PEA	_delta+0-BASE(A4)	;_delta + 0
+	MOVE.W	D4,_delta+2(A4)	;_delta + 2
+	MOVE.W	D5,_delta+0(A4)	;_delta + 0
+	PEA	_delta+0(A4)	;_delta + 0
 
 	MOVEq	#26,D0
 	JSR	_rnd
@@ -284,7 +284,7 @@ L0031F:
 L00320:
 	CLR.W	D3
 L00321:
-	OR.B	D3,_ws_know+5-BASE(A4)	;_ws_know+5
+	OR.B	D3,_ws_know+5(A4)	;_ws_know+5
 	BRA.W	L0032A
 L00322:
 	CMPI.W	#WS_CANCEL,-$0006(A5)	;is it a cancellation wand/staff?
@@ -335,11 +335,11 @@ L00325:
 	BRA.B	L00327
 L00326:
 	MOVEA.L	-$0004(A5),A6
-	MOVE.W	_player+12-BASE(A4),D3	;_player + 12
-	ADD.W	_delta+2-BASE(A4),D3	;_delta + 2
+	MOVE.W	_player+12(A4),D3	;_player + 12
+	ADD.W	_delta+2(A4),D3	;_delta + 2
 	MOVE.W	D3,$000C(A6)
-	MOVE.W	_player+10-BASE(A4),D3	;_player + 10
-	ADD.W	_delta+0-BASE(A4),D3	;_delta + 0
+	MOVE.W	_player+10(A4),D3	;_player + 10
+	ADD.W	_delta+0(A4),D3	;_delta + 0
 	MOVE.W	D3,$000A(A6)
 L00327:
 	MOVEA.L	-$0004(A5),A6
@@ -349,7 +349,7 @@ L00327:
 	cmp.b	#$46,$000F(A6)
 	BNE.B	L00328
 
-	ANDI.W	#~C_ISHELD,_player+22-BASE(A4)	;clear C_ISHELD ($80) for _player + 22 (flags)
+	ANDI.W	#~C_ISHELD,_player+22(A4)	;clear C_ISHELD ($80) for _player + 22 (flags)
 L00328:
 	MOVEA.L	-$0004(A5),A6
 	MOVE.W	$000C(A6),D3
@@ -369,7 +369,7 @@ L00328:
 	MOVE.B	D0,$0011(A6)
 L0032A:
 	MOVEA.L	-$0004(A5),A6
-	LEA	_player+10-BASE(A4),A1	;_player + 10
+	LEA	_player+10(A4),A1	;_player + 10
 	MOVE.L	A1,$0012(A6)
 	ORI.W	#C_ISRUN,$0016(A6)	;C_ISRUN
 L0032B:
@@ -378,7 +378,7 @@ L0032B:
 ; magic missile
 
 L0032C:
-	ST	_ws_know+6-BASE(A4)		;set _ws_know + 6
+	ST	_ws_know+6(A4)		;set _ws_know + 6
 	MOVE.W	#$000A,-$0018(A5)	;subtype of weapon 10
 	MOVE.W	#$0077,-$002E(A5)	;'w' wand type
 	LEA	L0034E(PC),A6		;"1d8"
@@ -387,16 +387,16 @@ L0032C:
 	MOVE.W	#$0001,-$0014(A5)	;dplus 1
 	MOVE.W	#O_ISMISL,-$0010(A5)	;flags of object
 
-	TST.L	_cur_weapon-BASE(A4)	;_cur_weapon
+	TST.L	_cur_weapon(A4)	;_cur_weapon
 	BEQ.B	L0032D
 
-	MOVEA.L	_cur_weapon-BASE(A4),A6	;_cur_weapon
+	MOVEA.L	_cur_weapon(A4),A6	;_cur_weapon
 	MOVE.B	$0021(A6),-$0024(A5)	;baseweapon
 L0032D:
 	LEA	L0034F(PC),A6	;"missile"
-	MOVE.L	A6,missile_name-BASE(A4)
-	MOVE.W	_delta+0-BASE(A4),-(A7)	;_delta + 0
-	MOVE.W	_delta+2-BASE(A4),-(A7)	;_delta + 2
+	MOVE.L	A6,missile_name(A4)
+	MOVE.W	_delta+0(A4),-(A7)	;_delta + 0
+	MOVE.W	_delta+2(A4),-(A7)	;_delta + 2
 	PEA	-$0038(A5)
 	JSR	_do_motion(PC)
 	ADDQ.W	#8,A7
@@ -432,13 +432,13 @@ L0032F:
 ; striking
 
 L00330:
-	MOVE.W	_player+12-BASE(A4),D3	;_player + 12
-	ADD.W	D3,_delta+2-BASE(A4)	;_delta + 2
-	MOVE.W	_player+10-BASE(A4),D3	;_player + 10
-	ADD.W	D3,_delta+0-BASE(A4)	;_delta + 0
+	MOVE.W	_player+12(A4),D3	;_player + 12
+	ADD.W	D3,_delta+2(A4)	;_delta + 2
+	MOVE.W	_player+10(A4),D3	;_player + 10
+	ADD.W	D3,_delta+0(A4)	;_delta + 0
 
-	MOVE.W	_delta+0-BASE(A4),d1	;_delta + 0
-	MOVE.W	_delta+2-BASE(A4),d0	;_delta + 2
+	MOVE.W	_delta+0(A4),d1	;_delta + 0
+	MOVE.W	_delta+2(A4),d0	;_delta + 2
 	JSR	_moatquick
 
 	MOVE.L	D0,-$0004(A5)
@@ -468,7 +468,7 @@ L00332:
 	MOVE.B	$000F(A6),D3
 	EXT.W	D3
 	MOVE.W	D3,-(A7)
-	PEA	_delta+0-BASE(A4)	;_delta + 0
+	PEA	_delta+0(A4)	;_delta + 0
 	JSR	_fight
 	LEA	$000E(A7),A7
 L00333:
@@ -477,8 +477,8 @@ L00333:
 ; haste monster, slow monster
 
 L00334:
-	MOVE.W	_player+12-BASE(A4),D4	;_player + 12
-	MOVE.W	_player+10-BASE(A4),D5	;_player + 10
+	MOVE.W	_player+12(A4),D4	;_player + 12
+	MOVE.W	_player+10(A4),D5	;_player + 10
 L00335:
 	MOVE.W	D5,-(A7)
 	MOVE.W	D4,-(A7)
@@ -490,8 +490,8 @@ L00335:
 	TST.W	D0
 	BEQ.B	L00336
 
-	ADD.W	_delta+2-BASE(A4),D4	;_delta + 2
-	ADD.W	_delta+0-BASE(A4),D5	;_delta + 0
+	ADD.W	_delta+2(A4),D4	;_delta + 2
+	ADD.W	_delta+0(A4),D5	;_delta + 0
 	BRA.B	L00335
 L00336:
 	MOVE.W	D5,d1
@@ -528,9 +528,9 @@ L00339:
 2$
 	MOVE.B	#$01,$000E(A6)
 L0033C:
-	MOVE.W	D4,_delta+2-BASE(A4)	;_delta + 2
-	MOVE.W	D5,_delta+0-BASE(A4)	;_delta + 0
-	PEA	_delta+0-BASE(A4)	;_delta + 0
+	MOVE.W	D4,_delta+2(A4)	;_delta + 2
+	MOVE.W	D5,_delta+0(A4)	;_delta + 0
+	PEA	_delta+0(A4)	;_delta + 0
 	JSR	_start_run
 	ADDQ.W	#4,A7
 L0033D:
@@ -554,12 +554,12 @@ L00340:
 	LEA	L00355(PC),A2	;"ice"
 L00341:
 	MOVE.L	A2,-(A7)
-	PEA	_delta+0-BASE(A4)	;_delta + 0
-	PEA	_player+10-BASE(A4)	;_player + 10
+	PEA	_delta+0(A4)	;_delta + 0
+	PEA	_player+10(A4)	;_player + 10
 	JSR	_fire_bolt(PC)
 	LEA	$000C(A7),A7
 	MOVE.W	-$0006(A5),D3
-	LEA	_ws_know-BASE(A4),A6	;_ws_know
+	LEA	_ws_know(A4),A6	;_ws_know
 	ST	$00(A6,D3.W)
 	BRA.B	L00345
 L00342:
@@ -627,35 +627,35 @@ _drain:
 
 	JSR	_INDEXplayer
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	CMP.b	#$2B,$00(A6,D0.W)	;'+'?
 	BNE.B	L00356
 
 ;	JSR	_INDEXplayer
 
-	MOVEA.L	__flags-BASE(A4),A6	;__flags
+	MOVEA.L	__flags(A4),A6	;__flags
 	MOVE.B	$00(A6,D0.W),D3
 	AND.W	#F_PNUM,D3	;passage number mask
 	MULU.W	#66,D3
-	LEA	_passages-BASE(A4),A6	;_passages
+	LEA	_passages(A4),A6	;_passages
 	MOVEA.L	D3,A2
 	ADDA.L	A6,A2
 	BRA.B	L00357
 L00356:
 	SUBA.L	A2,A2
 L00357:
-	MOVEA.L	_player+42-BASE(A4),A6	;_player + 42 (proom)
+	MOVEA.L	_player+42(A4),A6	;_player + 42 (proom)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3
 	MOVE.B	D3,D5
 	LEA	-$00A4(A5),A6
 	MOVEA.L	A6,A3
-	MOVE.L	_mlist-BASE(A4),-$0004(A5)	;_mlist
+	MOVE.L	_mlist(A4),-$0004(A5)	;_mlist
 	BRA.W	L0035B
 L00358:
 	MOVEA.L	-$0004(A5),A6
 	MOVEA.L	$002A(A6),A1
-	CMPA.L	_player+42-BASE(A4),A1	;_player + 42 (proom)
+	CMPA.L	_player+42(A4),A1	;_player + 42 (proom)
 	BEQ.B	L00359
 
 	MOVEA.L	-$0004(A5),A6
@@ -671,7 +671,7 @@ L00358:
 	MOVE.W	$000C(A6),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	CMP.b	#$2B,$00(A6,D0.W)	;'+'?
 	BNE.B	L0035A
 
@@ -680,13 +680,13 @@ L00358:
 ;	MOVE.W	$000C(A6),d1
 ;	JSR	_INDEXquick
 
-	MOVEA.L	__flags-BASE(A4),A6	;__flags
+	MOVEA.L	__flags(A4),A6	;__flags
 	MOVE.B	$00(A6,D0.W),D3
 	AND.W	#F_PNUM,D3	;passage number mask
 	MULU.W	#66,D3
-	LEA	_passages-BASE(A4),A6	;_passages
+	LEA	_passages(A4),A6	;_passages
 	ADD.L	A6,D3
-	CMP.L	_player+42-BASE(A4),D3	;_player + 42 (proom)
+	CMP.L	_player+42(A4),D3	;_player + 42 (proom)
 	BNE.B	L0035A
 L00359:
 	MOVEA.L	A3,A6
@@ -717,10 +717,10 @@ L0035C:
 
 L0035D:
 	CLR.L	(A3)
-	MOVE.W	_player+34-BASE(A4),D3	;_player + 34 (hp)
+	MOVE.W	_player+34(A4),D3	;_player + 34 (hp)
 	ASR.W	#1,D3		;hp cut in half
-	MOVE.W	D3,_player+34-BASE(A4)	;_player + 34 (hp)
-;	MOVE.W	_player+34-BASE(A4),D3	;_player + 34 (hp)
+	MOVE.W	D3,_player+34(A4)	;_player + 34 (hp)
+;	MOVE.W	_player+34(A4),D3	;_player + 34 (hp)
 	EXT.L	D3
 	DIVS.W	D4,D3
 	MOVE.W	D3,D4
@@ -788,12 +788,12 @@ L00364:
 	MOVE.L	A6,-$006C(A5)		;wield damage
 	MOVE.W	#$001E,-$0060(A5)	;hplus 24
 	CLR.W	-$005E(A5)		;dplus 0
-	MOVE.L	$0010(A5),missile_name-BASE(A4)
+	MOVE.L	$0010(A5),missile_name(A4)
 	MOVE.B	-$0077(A5),D4
 	LEA	-$0008(A5),A6
 	MOVEA.L	$0008(A5),A1
 	MOVE.L	(A1)+,(A6)+
-	LEA	_player+10-BASE(A4),A6	;_player + 10
+	LEA	_player+10(A4),A6	;_player + 10
 	MOVEA.L	$0008(A5),A1
 	CMPA.L	A6,A1
 	BEQ.B	L00365
@@ -903,7 +903,7 @@ L0036F:
 	MOVE.W	-$0006(A5),d1
 	JSR	_INDEXquick
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	MOVE.B	$00(A6,D0.W),$0011(A2)
 L00370:
 	MOVE.L	A2,-(A7)
@@ -972,7 +972,7 @@ L00374:
 	CMP.B	#$58,$0010(A2)	;'X'
 	BNE.B	L00377
 L00375:
-	LEA	_player+10-BASE(A4),A6	;_player + 10
+	LEA	_player+10(A4),A6	;_player + 10
 	MOVEA.L	$0008(A5),A1
 	CMPA.L	A6,A1
 	BNE.B	L00376
@@ -985,7 +985,7 @@ L00376:
 	MOVE.B	D5,D3
 	SUB.W	#$0041,D3	;'A'
 	MULU.W	#26,D3
-	LEA	_monsters-BASE(A4),A6	;_monsters
+	LEA	_monsters(A4),A6	;_monsters
 	MOVE.L	$00(A6,D3.L),-(A7)
 	MOVE.L	$0010(A5),-(A7)
 	PEA	L00390(PC)	;"the %s whizzes past the %s"
@@ -997,7 +997,7 @@ L00378:
 	TST.B	D6
 	BEQ.W	L00381
 
-	PEA	_player+10-BASE(A4)	;_player + 10
+	PEA	_player+10(A4)	;_player + 10
 	PEA	-$0008(A5)
 	JSR	__ce
 	ADDQ.W	#8,A7
@@ -1030,13 +1030,13 @@ L0037A:
 	PEA	L00391(PC)	;"You are frozen by a blast of frost%s."
 	JSR	_msg
 	ADDQ.W	#8,A7
-	CMPI.W	#$0014,_no_command-BASE(A4)	;_no_command
+	CMPI.W	#$0014,_no_command(A4)	;_no_command
 	BGE.B	L0037B
 
 	MOVEq	#$0007,D0
 	JSR	_spread
 
-	ADD.W	D0,_no_command-BASE(A4)	;_no_command
+	ADD.W	D0,_no_command(A4)	;_no_command
 L0037B:
 	BRA.B	L0037E
 L0037C:
@@ -1044,10 +1044,10 @@ L0037C:
 	MOVE.W	#$0006,-(A7)
 	JSR	_roll
 	ADDQ.W	#4,A7
-	SUB.W	D0,_player+34-BASE(A4)	;_player + 34 (hp)
+	SUB.W	D0,_player+34(A4)	;_player + 34 (hp)
 	BGT.B	L0037E
 
-	LEA	_player+10-BASE(A4),A6	;_player + 10
+	LEA	_player+10(A4),A6	;_player + 10
 	MOVEA.L	$0008(A5),A1
 	CMPA.L	A6,A1
 	BNE.B	L0037D
@@ -1187,16 +1187,16 @@ _charge_str:
 	AND.W	#O_ISKNOW,D3
 	BNE.B	L00395
 
-	CLR.B	charge_string-BASE(A4)
+	CLR.B	charge_string(A4)
 	BRA.B	L00396
 L00395:
 	MOVE.W	$0026(A2),-(A7)
 	PEA	L00397(PC)	;" [%d charges]"
-	PEA	charge_string-BASE(A4)
+	PEA	charge_string(A4)
 	JSR	_sprintf
 	LEA	$000A(A7),A7
 L00396:
-	LEA	charge_string-BASE(A4),A6
+	LEA	charge_string(A4),A6
 	MOVE.L	A6,D0
 
 	MOVEA.L	(A7)+,A2

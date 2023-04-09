@@ -10,13 +10,13 @@ _BuildFuncTable:
 	MOVE.W	-$0002(A5),D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	MOVEA.L	_FuncKeys-BASE(A4),A6	;_FuncKeys
+	MOVEA.L	_FuncKeys(A4),A6	;_FuncKeys
 
 ; macro bugfix
 
 	MOVE.L	D0,$00(A6,D3.w)
 ;	PEA	L00B94(PC)	;"v"
-	PEA	_macro-BASE(A4)	;_macro
+	PEA	_macro(A4)	;_macro
 	ADDQ.W	#1,-$0002(A5)
 	MOVE.W	-$0002(A5),D3
 
@@ -38,7 +38,7 @@ _NewFuncString:
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	MOVEA.L	_FuncKeys-BASE(A4),A6	;_FuncKeys
+	MOVEA.L	_FuncKeys(A4),A6	;_FuncKeys
 	MOVE.L	$00(A6,D3.w),-(A7)
 	MOVE.W	$0008(A5),-(A7)
 	BSR.B	_CopyFuncString
@@ -120,7 +120,7 @@ L00B97:
 	SUBQ.W	#1,D3
 	EXT.L	D3
 	ASL.L	#2,D3
-	MOVEA.L	_FuncKeys-BASE(A4),A6	;_FuncKeys
+	MOVEA.L	_FuncKeys(A4),A6	;_FuncKeys
 
 	MOVE.L	$00(A6,D3.L),-(A7)
 	PEA	-$001F(A5)
@@ -167,7 +167,7 @@ _do_macro:
 	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
 
-	MOVEA.L	_prbuf-BASE(A4),A2	;_prbuf
+	MOVEA.L	_prbuf(A4),A2	;_prbuf
 	MOVE.L	$0008(A5),-(A7)	;show old macro content
 	PEA	L008F1(PC)	;"F9 was %s, enter new macro: "
 	JSR	_msg
@@ -177,7 +177,7 @@ _do_macro:
 	SUBQ.W	#1,D3
 
 	MOVE.W	D3,-(A7)
-	MOVE.L	_prbuf-BASE(A4),-(A7)	;_prbuf
+	MOVE.L	_prbuf(A4),-(A7)	;_prbuf
 	JSR	_getinfo
 	ADDQ.W	#6,A7
 

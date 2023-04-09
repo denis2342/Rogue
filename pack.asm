@@ -44,7 +44,7 @@ L00295:
 	TST.W	$002C(A6)	;check for group
 	BNE.B	L00296
 
-	SUBQ.W	#1,_inpack-BASE(A4)	;_inpack
+	SUBQ.W	#1,_inpack(A4)	;_inpack
 L00296:
 	MOVE.L	A2,D0
 L00297:
@@ -64,13 +64,13 @@ L00299:
 
 	MOVE.W	$001E(A6),D3	;get number of items
 
-1$	SUB.W	D3,_inpack-BASE(A4)	;_inpack
+1$	SUB.W	D3,_inpack(A4)	;_inpack
 	BRA.B	L0029F
 L0029E:
-	SUBQ.W	#1,_inpack-BASE(A4)	;_inpack
+	SUBQ.W	#1,_inpack(A4)	;_inpack
 L0029F:
 	MOVE.L	$0008(A5),-(A7)
-	PEA	_player+46-BASE(A4)	;_player + 46 (pack)
+	PEA	_player+46(A4)	;_player + 46 (pack)
 	JSR	__detach
 	ADDQ.W	#8,A7
 
@@ -83,7 +83,7 @@ L0029F:
 	CMPI.W	#$002C,$000A(A6)	;did we unpack the amulet?
 	BNE.B	L002A0
 
-	CLR.B	_amulet-BASE(A4)	;_amulet
+	CLR.B	_amulet(A4)	;_amulet
 L002A0:
 	MOVE.L	$0008(A5),D0
 	BRA.B	L00297
@@ -137,7 +137,7 @@ _pack_obj:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/A2,-(A7)
 
-	MOVEA.L	_player+46-BASE(A4),A2	;_player + 46 (pack)
+	MOVEA.L	_player+46(A4),A2	;_player + 46 (pack)
 	MOVEQ	#$61,D4	;'a'
 	BRA.B	L002A6
 
@@ -180,8 +180,8 @@ _add_pack:
 
 	MOVEQ	#$01,D6
 
-	MOVE.W	_player+10-BASE(A4),-(A7)	;_player + 10
-	MOVE.W	_player+12-BASE(A4),-(A7)	;_player + 12
+	MOVE.W	_player+10(A4),-(A7)	;_player + 10
+	MOVE.W	_player+12(A4),-(A7)	;_player + 12
 	JSR	_find_obj
 	ADDQ.W	#4,A7
 
@@ -196,7 +196,7 @@ L002A7:
 L002A9:
 	MOVEQ	#$00,D6
 L002AA:
-	MOVEA.L	_player+42-BASE(A4),A6	;_player + 42 (proom)
+	MOVEA.L	_player+42(A4),A6	;_player + 42 (proom)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3	;ISGONE?
 
@@ -210,7 +210,7 @@ L002AC:
 	TST.W	$002C(A2)	;is it in a group?
 	BEQ.B	L002B1
 
-	MOVEA.L	_player+46-BASE(A4),A3	;_player + 46 (pack)
+	MOVEA.L	_player+46(A4),A3	;_player + 46 (pack)
 	BRA.B	L002B0
 L002AD:
 	MOVE.W	$002C(A3),D3
@@ -223,18 +223,18 @@ L002AD:
 	BEQ.B	L002AE
 
 	MOVE.L	A2,-(A7)
-	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
+	PEA	_lvl_obj(A4)	;_lvl_obj
 	JSR	__detach
 	ADDQ.W	#8,A7
 
 	MOVE.B	D7,D2
-	MOVE.W	_player+10-BASE(A4),d1	;_player + 10
-	MOVE.W	_player+12-BASE(A4),d0	;_player + 12
+	MOVE.W	_player+10(A4),d1	;_player + 10
+	MOVE.W	_player+12(A4),d0	;_player + 12
 	JSR	_mvaddchquick
 
 	JSR	_INDEXplayer
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	MOVE.B	D7,$00(A6,D0.W)
 L002AE:
 	MOVE.L	A2,-(A7)
@@ -249,7 +249,7 @@ L002B0:
 	BNE.B	L002AD
 
 L002B1:
-	CMPI.W	#22,_inpack-BASE(A4)	;_inpack, max items in inventory
+	CMPI.W	#22,_inpack(A4)	;_inpack, max items in inventory
 	BLT.B	L002B2
 
 	PEA	L002CC(PC)	;"you can't carry anything else"
@@ -268,18 +268,18 @@ L002B2:
 	BEQ.B	L002B3
 
 	MOVE.L	A2,-(A7)
-	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
+	PEA	_lvl_obj(A4)	;_lvl_obj
 	JSR	__detach
 	ADDQ.W	#8,A7
 
 	MOVE.B	D7,D2
-	MOVE.W	_player+10-BASE(A4),d1	;_player + 10
-	MOVE.W	_player+12-BASE(A4),d0	;_player + 12
+	MOVE.W	_player+10(A4),d1	;_player + 10
+	MOVE.W	_player+12(A4),d0	;_player + 12
 	JSR	_mvaddchquick
 
 	JSR	_INDEXplayer
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	MOVE.B	D7,$00(A6,D0.W)
 
 	LEA	L002CE(PC),a0	;" as you pick it up"
@@ -294,27 +294,27 @@ L002B2:
 L002B3:
 	ORI.W	#O_SCAREUSED,$0028(A2)	;set scare bit used
 L002B4:
-	ADDQ.W	#1,_inpack-BASE(A4)	;_inpack++
+	ADDQ.W	#1,_inpack(A4)	;_inpack++
 	TST.B	D6
 	BEQ.B	L002B5
 
 	MOVE.L	A2,-(A7)
-	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
+	PEA	_lvl_obj(A4)	;_lvl_obj
 	JSR	__detach
 	ADDQ.W	#8,A7
 
 	MOVE.B	D7,D2
-	MOVE.W	_player+10-BASE(A4),d1	;_player + 10
-	MOVE.W	_player+12-BASE(A4),d0	;_player + 12
+	MOVE.W	_player+10(A4),d1	;_player + 10
+	MOVE.W	_player+12(A4),d0	;_player + 12
 	JSR	_mvaddchquick
 
 	JSR	_INDEXplayer
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	MOVE.B	D7,$00(A6,D0.W)
 L002B5:
 	MOVEQ	#$00,D5
-	MOVEA.L	_player+46-BASE(A4),A3	;_player + 46 (pack)
+	MOVEA.L	_player+46(A4),A3	;_player + 46 (pack)
 
 	MOVE.L	A2,-(A7)
 	JSR	_typeof
@@ -338,7 +338,7 @@ L002B8:
 	MOVE.L	A3,D3		;did we find something?
 	BNE.B	L002BC
 
-	MOVEA.L	_player+46-BASE(A4),A3	;_player + 46 (pack)
+	MOVEA.L	_player+46(A4),A3	;_player + 46 (pack)
 	BRA.B	L002BA
 L002B9:
 	CMPI.W	#$003A,$000A(A3)	;':' food
@@ -380,10 +380,10 @@ L002BE:
 	MOVE.L	A3,D3		;is there another item in the pack?
 	BNE.B	L002C1
 
-	TST.L	_player+46-BASE(A4)	;_player + 46 (pack)
+	TST.L	_player+46(A4)	;_player + 46 (pack)
 	BNE.B	L002BF
 
-	MOVE.L	A2,_player+46-BASE(A4)	;_player + 46 (pack)
+	MOVE.L	A2,_player+46(A4)	;_player + 46 (pack)
 	BRA.B	L002C6
 L002BF:
 	MOVEA.L	D4,A6
@@ -420,12 +420,12 @@ L002C3:
 	MOVE.L	A2,(A6)
 	BRA.B	L002C5
 L002C4:
-	MOVE.L	A2,_player+46-BASE(A4)	;_player + 46 (pack)
+	MOVE.L	A2,_player+46(A4)	;_player + 46 (pack)
 L002C5:
 	MOVE.L	A3,(A2)
 	MOVE.L	A2,$0004(A3)
 L002C6:
-	MOVEA.L	_mlist-BASE(A4),A3	;_mlist
+	MOVEA.L	_mlist(A4),A3	;_mlist
 	BRA.B	L002C9
 L002C7:
 	MOVEA.L	A2,A6
@@ -433,7 +433,7 @@ L002C7:
 	CMPA.L	$0012(A3),A6
 	BNE.B	L002C8
 
-	LEA	_player+10-BASE(A4),A6	;_player + 10
+	LEA	_player+10(A4),A6	;_player + 10
 	MOVE.L	A6,$0012(A3)
 L002C8:
 	MOVEA.L	(A3),A3
@@ -444,8 +444,8 @@ L002C9:
 	CMPI.W	#$002C,$000A(A2)	;',' amulet of yendor
 	BNE.B	L002CA
 
-	ST	_amulet-BASE(A4)	;_amulet
-	ST	_saw_amulet-BASE(A4)	;_saw_amulet
+	ST	_amulet(A4)	;_amulet
+	ST	_saw_amulet(A4)	;_saw_amulet
 L002CA:
 	MOVE.W	#$0001,-(A7)
 	MOVE.L	A2,-(A7)
@@ -540,8 +540,8 @@ L002D2:
 	CMPI.W	#$0020,-$0056(A5)
 	BEQ.B	L002D4
 
-	CLR.W	add_line_tmp-BASE(A4)	;former function _end_add() inlined
-	CLR.B	add_line_tmp2-BASE(A4)
+	CLR.W	add_line_tmp(A4)	;former function _end_add() inlined
+	CLR.B	add_line_tmp2(A4)
 	JSR	_wmap
 
 	MOVE.W	-$0056(A5),D0
@@ -612,8 +612,8 @@ _pick_up:
 	CMP.b	#$2A,$0009(A5)	;'*' gold
 	BNE.B	L002DF
 
-	MOVE.W	_player+10-BASE(A4),-(A7)	;_player + 10
-	MOVE.W	_player+12-BASE(A4),-(A7)	;_player + 12
+	MOVE.W	_player+10(A4),-(A7)	;_player + 10
+	MOVE.W	_player+12(A4),-(A7)	;_player + 12
 	JSR	_find_obj
 	ADDQ.W	#4,A7
 	MOVEA.L	D0,A2
@@ -625,7 +625,7 @@ _pick_up:
 	ADDQ.W	#2,A7
 
 	MOVE.L	A2,-(A7)
-	PEA	_lvl_obj-BASE(A4)	;_lvl_obj
+	PEA	_lvl_obj(A4)	;_lvl_obj
 	JSR	__detach
 	ADDQ.W	#8,A7
 
@@ -633,7 +633,7 @@ _pick_up:
 	JSR	_discard
 	ADDQ.W	#4,A7
 
-	MOVEA.L	_player+42-BASE(A4),A6	;_player + 42 (proom)
+	MOVEA.L	_player+42(A4),A6	;_player + 42 (proom)
 	CLR.W	$000C(A6)
 	BRA.B	L002DD
 
@@ -656,7 +656,7 @@ _get_item:
 	LINK	A5,#-$0004
 	MOVEM.L	D4/A2,-(A7)
 	CLR.W	-$0004(A5)
-	CMP.B	#$02,_menu_style-BASE(A4)	;_menu_style
+	CMP.B	#$02,_menu_style(A4)	;_menu_style
 	BNE.B	L002E1
 
 	PEA	L002F2(PC)	;"eat"
@@ -673,16 +673,16 @@ _get_item:
 	TST.W	D0
 	BNE.B	L002E2
 L002E1:
-	CMP.B	#$01,_menu_style-BASE(A4)	;_menu_style
+	CMP.B	#$01,_menu_style(A4)	;_menu_style
 	BEQ.B	L002E2
 
-	TST.B	_com_from_menu-BASE(A4)	;_com_from_menu
+	TST.B	_com_from_menu(A4)	;_com_from_menu
 	BEQ.B	L002E3
 L002E2:
 	MOVE.W	#$0001,-$0004(A5)
 L002E3:
-	MOVE.B	_again-BASE(A4),-$0002(A5)	;_again
-	TST.L	_player+46-BASE(A4)	;_player + 46 (pack)
+	MOVE.B	_again(A4),-$0002(A5)	;_again
+	TST.L	_player+46(A4)	;_player + 46 (pack)
 	BNE.B	L002E4
 
 	PEA	L002F4(PC)	;"you aren't carrying anything"
@@ -690,7 +690,7 @@ L002E3:
 	ADDQ.W	#4,A7
 	BRA.W	L002F1
 L002E4:
-	MOVE.B	_slime_split_tmp2-BASE(A4),D4
+	MOVE.B	_slime_split_tmp2(A4),D4
 L002E5:
 	TST.B	-$0002(A5)
 	BEQ.B	L002E6
@@ -701,7 +701,7 @@ L002E5:
 	MOVE.W	D3,-(A7)
 	JSR	_pack_obj(PC)
 	ADDQ.W	#6,A7
-	CMP.L	_in_dist+4-BASE(A4),D0
+	CMP.L	_in_dist+4(A4),D0
 	BEQ.B	L002E9
 L002E6:
 	TST.W	-$0004(A5)
@@ -710,10 +710,10 @@ L002E6:
 	MOVEQ	#$2A,D4		;'*'
 	BRA.B	L002E9
 L002E7:
-	TST.B	_terse-BASE(A4)	;_terse
+	TST.B	_terse(A4)	;_terse
 	BNE.B	L002E8
 
-	TST.B	_expert-BASE(A4)	;_expert
+	TST.B	_expert(A4)	;_expert
 	BNE.B	L002E8
 
 	PEA	L002F5(PC)	;"which object do you want to "
@@ -724,12 +724,12 @@ L002E8:
 	PEA	L002F6(PC)	;"%s? (* for list): "
 	JSR	_msg
 	ADDQ.W	#8,A7
-	MOVE.B	#$01,_want_click-BASE(A4)	;_want_click
+	MOVE.B	#$01,_want_click(A4)	;_want_click
 	JSR	_readchar
 	MOVE.B	D0,D4
-	CLR.B	_want_click-BASE(A4)	;_want_click
+	CLR.B	_want_click(A4)	;_want_click
 L002E9:
-	CLR.W	_mpos-BASE(A4)	;_mpos
+	CLR.W	_mpos(A4)	;_mpos
 	CLR.B	-$0002(A5)
 	CLR.W	-$0004(A5)
 	CMP.B	#$2A,D4		;'*'
@@ -737,14 +737,14 @@ L002E9:
 
 	MOVE.L	$0008(A5),-(A7)
 	MOVE.W	$000C(A5),-(A7)
-	MOVE.L	_player+46-BASE(A4),-(A7)	;_player + 46 (pack)
+	MOVE.L	_player+46(A4),-(A7)	;_player + 46 (pack)
 	JSR	_inventory(PC)
 	LEA	$000A(A7),A7
 	MOVE.B	D0,D4
 	TST.B	D0
 	BNE.B	L002EB
 
-	CLR.B	_after-BASE(A4)	;_after
+	CLR.B	_after(A4)	;_after
 	MOVEQ	#$00,D0
 L002EA:
 	MOVEM.L	(A7)+,D4/A2
@@ -755,12 +755,12 @@ L002EB:
 	CMP.B	#$20,D4		;' '
 	BEQ.B	L002F0
 
-	MOVE.B	D4,_slime_split_tmp2-BASE(A4)
+	MOVE.B	D4,_slime_split_tmp2(A4)
 L002EC:
 	CMP.B	#$1B,D4		;escape
 	BNE.B	L002ED
 
-	CLR.B	_after-BASE(A4)	;_after
+	CLR.B	_after(A4)	;_after
 	PEA	L002F7(PC)
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -794,8 +794,8 @@ L002EE:
 	TST.W	D0
 	BEQ.B	L002EF
 
-	MOVE.B	D4,_slime_split_tmp2-BASE(A4)
-	MOVE.L	A2,_in_dist+4-BASE(A4)
+	MOVE.B	D4,_slime_split_tmp2(A4)
+	MOVE.L	A2,_in_dist+4(A4)
 L002EF:
 	MOVE.L	A2,D0
 	BRA.W	L002EA
@@ -823,7 +823,7 @@ L002FA:	dc.b	"identify",0
 _pack_char:
 	MOVEA.L	$0004(A7),A1
 	MOVEQ	#'a',D1
-	MOVEA.L	_player+46-BASE(A4),A0	;_player + 46 (pack)
+	MOVEA.L	_player+46(A4),A0	;_player + 46 (pack)
 	BRA.B	L002FE
 L002FB:
 	CMPA.L	A1,A0
@@ -851,7 +851,7 @@ _money:
 	LINK	A5,#-$0000
 	MOVE.L	D5,-(A7)
 
-	MOVEA.L	_player+42-BASE(A4),A6	;_player + 42 (room)
+	MOVEA.L	_player+42(A4),A6	;_player + 42 (room)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3	;ISGONE
 	BEQ.B	1$
@@ -862,17 +862,17 @@ _money:
 	MOVEQ	#$2E,D5		;'.' floor
 2$
 	MOVE.B	D5,D2
-	MOVE.W	_player+10-BASE(A4),d1	;_player + 10
-	MOVE.W	_player+12-BASE(A4),d0	;_player + 12
+	MOVE.W	_player+10(A4),d1	;_player + 10
+	MOVE.W	_player+12(A4),d0	;_player + 12
 	JSR	_mvaddchquick
 
 	JSR	_INDEXplayer
 
-	MOVEA.L	__level-BASE(A4),A6	;__level
+	MOVEA.L	__level(A4),A6	;__level
 	MOVE.B	D5,$00(A6,D0.W)
 
 	MOVE.W	$0008(A5),D3
-	ADD.W	D3,_purse-BASE(A4)	;_purse
+	ADD.W	D3,_purse(A4)	;_purse
 	CMP.W	#$0000,D3	;no gold?
 	BLE.B	3$
 

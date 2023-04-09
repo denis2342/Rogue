@@ -7,23 +7,23 @@ _doctor:
 ;	LINK	A5,#-$0000
 	MOVEM.L	D4/D5,-(A7)
 
-	MOVE.W	_player+30-BASE(A4),D4	;_player + 30 (rank)
-	MOVE.W	_player+34-BASE(A4),D5	;_player + 34 (hp)
-	ADDQ.W	#1,_quiet-BASE(A4)	;_quiet
+	MOVE.W	_player+30(A4),D4	;_player + 30 (rank)
+	MOVE.W	_player+34(A4),D5	;_player + 34 (hp)
+	ADDQ.W	#1,_quiet(A4)	;_quiet
 	CMP.W	#$0008,D4
 	BGE.B	L00640
 
 	MOVE.W	D4,D3
 	ASL.W	#1,D3
-	ADD.W	_quiet-BASE(A4),D3	;_quiet
+	ADD.W	_quiet(A4),D3	;_quiet
 	CMP.W	#$0014,D3
 	BLE.B	L0063F
 
-	ADDQ.W	#1,_player+34-BASE(A4)	;_player + 34 (hp)
+	ADDQ.W	#1,_player+34(A4)	;_player + 34 (hp)
 L0063F:
 	BRA.B	L00641
 
-L00640:	CMPI.W	#$0003,_quiet-BASE(A4)	;_quiet
+L00640:	CMPI.W	#$0003,_quiet(A4)	;_quiet
 	BLT.B	L00641
 
 	MOVE.W	D4,D3
@@ -31,36 +31,36 @@ L00640:	CMPI.W	#$0003,_quiet-BASE(A4)	;_quiet
 	MOVE.W	D3,D0
 	JSR	_rnd
 	ADDQ.W	#1,D0
-	ADD.W	D0,_player+34-BASE(A4)	;_player + 34 (hp)
+	ADD.W	D0,_player+34(A4)	;_player + 34 (hp)
 
-L00641:	MOVE.L	_cur_ring_1-BASE(A4),D3	;_cur_ring_1
+L00641:	MOVE.L	_cur_ring_1(A4),D3	;_cur_ring_1
 	BEQ.B	L00642
 
 	MOVEA.L	D3,A6
 	CMPI.W	#R_REGEN,$0020(A6)	; 9 = ring of regeneration
 	BNE.B	L00642
 
-	ADDQ.W	#1,_player+34-BASE(A4)	;_player + 34 (hp)
+	ADDQ.W	#1,_player+34(A4)	;_player + 34 (hp)
 
-L00642:	MOVE.L	_cur_ring_2-BASE(A4),D3	;_cur_ring_2
+L00642:	MOVE.L	_cur_ring_2(A4),D3	;_cur_ring_2
 	BEQ.B	L00643
 
 	MOVEA.L	D3,A6
 	CMPI.W	#R_REGEN,$0020(A6)	; 9 = ring of regeneration
 	BNE.B	L00643
 
-	ADDQ.W	#1,_player+34-BASE(A4)	;_player + 34 (hp)
+	ADDQ.W	#1,_player+34(A4)	;_player + 34 (hp)
 
-L00643:	CMP.W	_player+34-BASE(A4),D5	;_player + 34 (hp)
+L00643:	CMP.W	_player+34(A4),D5	;_player + 34 (hp)
 	BEQ.B	L00645
 
-	MOVE.W	_player+34-BASE(A4),D3	;_player + 34 (hp)
-	CMP.W	_player+40-BASE(A4),D3	;_player + 40 (max hp)
+	MOVE.W	_player+34(A4),D3	;_player + 34 (hp)
+	CMP.W	_player+40(A4),D3	;_player + 40 (max hp)
 	BLE.B	L00644
 
-	MOVE.W	_player+40-BASE(A4),_player+34-BASE(A4)	;_player + 40 (max hp),_player + 34 (hp)
+	MOVE.W	_player+40(A4),_player+34(A4)	;_player + 40 (max hp),_player + 34 (hp)
 L00644:
-	CLR.W	_quiet-BASE(A4)	;_quiet
+	CLR.W	_quiet(A4)	;_quiet
 L00645:
 	MOVEM.L	(A7)+,D4/D5
 ;	UNLK	A5
@@ -87,11 +87,11 @@ _swander:
 
 _rollwand:
 ;	LINK	A5,#-$0000
-	ADDQ.W	#1,_between-BASE(A4)	;_between
+	ADDQ.W	#1,_between(A4)	;_between
 	MOVEq	#$0003,D0
 	JSR	_rnd
 	ADDQ.W	#3,D0
-	MOVE.W	_between-BASE(A4),D3	;_between
+	MOVE.W	_between(A4),D3	;_between
 	CMP.W	D0,D3
 	BLT.B	L00647
 
@@ -116,7 +116,7 @@ _rollwand:
 	JSR	_fuse(PC)
 	ADDQ.W	#8,A7
 L00646:
-	CLR.W	_between-BASE(A4)	;_between
+	CLR.W	_between(A4)	;_between
 L00647:
 ;	UNLK	A5
 	RTS
@@ -128,7 +128,7 @@ L00647:
 
 _unconfuse:
 ;	LINK	A5,#-$0000
-	ANDI.W	#~C_ISHUH,_player+22-BASE(A4)	;clear ISHUH,_player + 22 (flags)
+	ANDI.W	#~C_ISHUH,_player+22(A4)	;clear ISHUH,_player + 22 (flags)
 	PEA	L00648(PC)	;"you feel less confused now"
 	JSR	_msg
 	ADDQ.W	#4,A7
@@ -145,7 +145,7 @@ L00648:	dc.b	"you feel less confused now",0,0
 _unsee:
 ;	LINK	A5,#-$0000
 	MOVE.L	A2,-(A7)
-	MOVEA.L	_mlist-BASE(A4),A2	;_mlist
+	MOVEA.L	_mlist(A4),A2	;_mlist
 	BRA.B	3$
 
 1$	MOVE.W	$0016(A2),D3
@@ -174,7 +174,7 @@ _unsee:
 3$	MOVE.L	A2,D3
 	BNE.B	1$
 
-	ANDI.W	#~C_CANSEE,_player+22-BASE(A4)	;clear CANSEE, _player + 22 (flags)
+	ANDI.W	#~C_CANSEE,_player+22(A4)	;clear CANSEE, _player + 22 (flags)
 
 	MOVEA.L	(A7)+,A2
 ;	UNLK	A5
@@ -187,20 +187,20 @@ _unsee:
 
 _sight:
 ;	LINK	A5,#-$0000
-	MOVE.W	_player+22-BASE(A4),D3	;_player + 22 (flags)
+	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BEQ.B	L0064D
 
 	PEA	_sight(PC)
 	JSR	_extinguish(PC)
 	ADDQ.W	#4,A7
-	ANDI.W	#~C_ISBLIND,_player+22-BASE(A4)	;clear C_ISBLIND, _player + 22 (flags)
-	MOVEA.L	_player+42-BASE(A4),A6	;_player + 42 (proom)
+	ANDI.W	#~C_ISBLIND,_player+22(A4)	;clear C_ISBLIND, _player + 22 (flags)
+	MOVEA.L	_player+42(A4),A6	;_player + 42 (proom)
 	MOVE.W	$000E(A6),D3
 	AND.W	#$0002,D3
 	BNE.B	L0064C
 
-	PEA	_player+10-BASE(A4)	;_player + 10
+	PEA	_player+10(A4)	;_player + 10
 	JSR	_enter_room
 	ADDQ.W	#4,A7
 L0064C:
@@ -220,7 +220,7 @@ L0064E:	dc.b	"the veil of darkness lifts",0,0
 
 _nohaste:
 ;	LINK	A5,#-$0000
-	ANDI.W	#~C_ISHASTE,_player+22-BASE(A4)	;clear C_ISHASTE,_player + 22 (flags)
+	ANDI.W	#~C_ISHASTE,_player+22(A4)	;clear C_ISHASTE,_player + 22 (flags)
 
 	PEA	L0064F(PC)	;"you feel yourself slowing down"
 	JSR	_msg
@@ -239,10 +239,10 @@ _stomach:
 ;	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
 
-	MOVE.W	_food_left-BASE(A4),D4	;_food_left
+	MOVE.W	_food_left(A4),D4	;_food_left
 	BGT.B	L00653
 
-	SUBQ.W	#1,_food_left-BASE(A4)	;_food_left
+	SUBQ.W	#1,_food_left(A4)	;_food_left
 	CMP.W	#$FCAE,D4	;-352
 	BGE.B	L00650
 
@@ -250,7 +250,7 @@ _stomach:
 	JSR	_death
 	ADDQ.W	#2,A7
 L00650:
-	TST.W	_no_command-BASE(A4)	;_no_command
+	TST.W	_no_command(A4)	;_no_command
 	BNE	L00656
 
 	MOVEq	#$0005,D0	;20% chance
@@ -261,11 +261,11 @@ L00650:
 	MOVEq	#$0008,D0
 	JSR	_rnd
 	ADDQ.W	#4,D0
-	ADD.W	D0,_no_command-BASE(A4)	;_no_command
-	ANDI.W	#~C_ISRUN,_player+22-BASE(A4)	;clear C_ISRUN, _player + 22 (flags)
-	CLR.B	_running-BASE(A4)	;_running
-	CLR.W	_count-BASE(A4)	;_count
-	MOVE.W	#$0003,_hungry_state-BASE(A4)	;_hungry_state
+	ADD.W	D0,_no_command(A4)	;_no_command
+	ANDI.W	#~C_ISRUN,_player+22(A4)	;clear C_ISRUN, _player + 22 (flags)
+	CLR.B	_running(A4)	;_running
+	CLR.W	_count(A4)	;_count
+	MOVE.W	#$0003,_hungry_state(A4)	;_hungry_state
 
 	LEA	L00658(PC),a0	;"you feel very weak. "
 	JSR	_noterse
@@ -291,33 +291,33 @@ L00653:
 	ADD.W	D0,D3
 	ADDQ.W	#1,D3
 
-	TST.B	_terse-BASE(A4)	;_terse
+	TST.B	_terse(A4)	;_terse
 	BEQ.B	1$
 
 	MULU.W	#$0002,D3
 
-1$	SUB.W	D3,_food_left-BASE(A4)	;_food_left
+1$	SUB.W	D3,_food_left(A4)	;_food_left
 
-	CMPI.W	#150,_food_left-BASE(A4)	;_food_left
+	CMPI.W	#150,_food_left(A4)	;_food_left
 	BGE.B	2$
 
 	CMP.W	#150,D4
 	BLT.B	2$
 
-	MOVE.W	#$0002,_hungry_state-BASE(A4)	;_hungry_state
+	MOVE.W	#$0002,_hungry_state(A4)	;_hungry_state
 	JSR	_NewRank(PC)
 	PEA	L00659(PC)	;"you are starting to feel weak"
 	JSR	_msg
 	ADDQ.W	#4,A7
 	BRA.B	L00656
 
-2$	CMPI.W	#300,_food_left-BASE(A4)	;_food_left
+2$	CMPI.W	#300,_food_left(A4)	;_food_left
 	BGE.B	L00656
 
 	CMP.W	#300,D4
 	BLT.B	L00656
 
-	MOVE.W	#$0001,_hungry_state-BASE(A4)	;_hungry_state
+	MOVE.W	#$0001,_hungry_state(A4)	;_hungry_state
 	JSR	_NewRank(PC)
 	PEA	L0065A(PC)	;"you are starting to get hungry"
 	JSR	_msg
