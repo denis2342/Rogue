@@ -157,11 +157,11 @@ L00B9F:	dc.b	"Down",0,0
 _AmigaCreat:
 	LINK	A5,#-$0200
 	MOVEM.L	D4-D6,-(A7)
-	TST.W	-$580E(A4)
+	TST.W	_DownGadget+46-BASE(A4)
 	BEQ.B	L00BA0
 	JSR	_OffVerify
 L00BA0:
-	CLR.W	-$580E(A4)
+	CLR.W	_DownGadget+46-BASE(A4)
 	MOVE.W	#$01B6,-(A7)
 	MOVE.L	$0008(A5),-(A7)
 	JSR	_creat(PC)
@@ -230,12 +230,12 @@ L00BA9:
 
 _AmigaOpen:
 	LINK	A5,#-$0002
-	TST.W	-$580E(A4)
+	TST.W	_DownGadget+46-BASE(A4)
 	BEQ.B	L00BAA
 
 	JSR	_OffVerify
 L00BAA:
-	CLR.W	-$580E(A4)
+	CLR.W	_DownGadget+46-BASE(A4)
 	MOVE.W	$000C(A5),-(A7)
 	MOVE.L	$0008(A5),-(A7)
 	JSR	_open
@@ -252,12 +252,12 @@ L00BAB:
 
 _AmigaClose:
 	LINK	A5,#-$0000
-	TST.W	-$580E(A4)
+	TST.W	_DownGadget+46-BASE(A4)
 	BNE.B	L00BAC
 
 	JSR	_OnVerify
 L00BAC:
-	MOVE.W	#$0001,-$580E(A4)
+	MOVE.W	#$0001,_DownGadget+46-BASE(A4)
 	MOVE.W	$0008(A5),-(A7)
 	JSR	_close
 	ADDQ.W	#2,A7
