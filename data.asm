@@ -1727,7 +1727,12 @@ _restore_bool:
 	dc.w	0	;bool
 
 _save_game_tmp:
-	ds.w	15
+	ds.w	1
+
+_sprintf_tmp:
+	ds.l	1
+
+	ds.w	12
 
 _printf_tmp:
 	ds.b	60

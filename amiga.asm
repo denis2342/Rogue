@@ -738,7 +738,7 @@ _sprintf:
 	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
 
-	MOVE.L	$0008(A5),-$532A(A4)
+	MOVE.L	$0008(A5),_sprintf_tmp-BASE(A4)
 
 	PEA	$0010(A5)
 	MOVE.L	$000C(A5),-(A7)
@@ -747,7 +747,7 @@ _sprintf:
 	LEA	$000C(A7),A7
 
 	MOVE.W	D0,D4
-	MOVEA.L	-$532A(A4),A6
+	MOVEA.L	_sprintf_tmp-BASE(A4),A6
 	CLR.B	(A6)
 	MOVE.W	D4,D0
 
@@ -757,8 +757,8 @@ _sprintf:
 
 L00C1C:
 	LINK	A5,#-$0000
-	MOVEA.L	-$532A(A4),A6
-	ADDQ.L	#1,-$532A(A4)
+	MOVEA.L	_sprintf_tmp-BASE(A4),A6
+	ADDQ.L	#1,_sprintf_tmp-BASE(A4)
 	MOVE.B	$0009(A5),D0
 	MOVE.B	D0,(A6)
 ;	EXT.W	D0
