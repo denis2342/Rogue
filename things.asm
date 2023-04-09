@@ -910,7 +910,7 @@ L00545:
 	BRA.B	L00547
 L00546:
 	MOVE.W	#$0007,-(A7)
-	PEA	-$6A04(A4)
+	PEA	_things-BASE(A4)
 	JSR	_pick_one(PC)
 	ADDQ.W	#6,A7
 L00547:
