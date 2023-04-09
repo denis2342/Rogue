@@ -1718,7 +1718,10 @@ do_menus_tmp:
 	ds.b	88
 
 _mouse_adjust_tmp:
-	ds.w	8
+	ds.w	4
+
+_nameof_tmp:
+	ds.l	2
 
 _restore_bool:
 	dc.w	0	;bool

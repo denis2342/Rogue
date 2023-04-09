@@ -13,7 +13,7 @@ _nameof:
 	MOVE.W	$000C(A5),D4
 	MOVE.W	$0020(A2),D5
 	MOVEQ	#$00,D6
-	MOVE.L	_prbuf-BASE(A4),-$5336(A4)	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),_nameof_tmp-BASE(A4)	;_prbuf
 
 	MOVE.L	A2,-(A7)
 	JSR	_typeof
@@ -142,7 +142,7 @@ L00AC4:
 	TST.W	D6
 	BEQ.B	L00AC5
 
-	MOVE.L	_prbuf-BASE(A4),-$5336(A4)	;_prbuf
+	MOVE.L	_prbuf-BASE(A4),_nameof_tmp-BASE(A4)	;_prbuf
 	MOVE.W	D5,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
@@ -1554,15 +1554,15 @@ L00593:	dc.b	" about any %ss",0
 _nmadd:
 	LINK	A5,#-$0000
 
-	MOVEA.L	-$5336(A4),A6
+	MOVEA.L	_nameof_tmp-BASE(A4),A6
 	CMPA.L	_prbuf-BASE(A4),A6	;_prbuf
 	BEQ.B	L00B11
 
-	MOVEA.L	-$5336(A4),A6
-	ADDQ.L	#1,-$5336(A4)
+	MOVEA.L	_nameof_tmp-BASE(A4),A6
+	ADDQ.L	#1,_nameof_tmp-BASE(A4)
 	MOVE.B	#$20,(A6)
 L00B11:
-	MOVEA.L	-$5336(A4),A6
+	MOVEA.L	_nameof_tmp-BASE(A4),A6
 	CLR.B	(A6)
 	MOVE.L	$0010(A5),-(A7)
 	MOVE.L	$000C(A5),-(A7)
@@ -1571,12 +1571,12 @@ L00B11:
 	JSR	_sprintf
 	LEA	$0010(A7),A7
 
-	MOVEA.L	-$5336(A4),A6
+	MOVEA.L	_nameof_tmp-BASE(A4),A6
 1$	TST.B	(A6)+
 	BNE.B	1$
 
 2$	SUBQ.L	#1,A6
-	MOVE.L	A6,-$5336(A4)
+	MOVE.L	A6,_nameof_tmp-BASE(A4)
 	UNLK	A5
 	RTS
 
