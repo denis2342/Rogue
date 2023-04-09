@@ -89,7 +89,7 @@ L00B9C:
 	JSR	_ctointui
 	LEA	$000A(A7),A7
 
-	MOVE.L	D0,-$584E(A4)
+	MOVE.L	D0,_RestGadget+26-BASE(A4)
 	CLR.W	-(A7)
 	MOVE.W	#$0014,-(A7)
 	JSR	_malloc
