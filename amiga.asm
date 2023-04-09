@@ -2103,9 +2103,9 @@ L00CA2:
 	EXT.L	D3
 	ADD.L	$0008(A5),D3
 	ADDQ.L	#2,D3
-	MOVE.W	D3,-$52E0(A4)
+	MOVE.W	D3,main_tmp+2-BASE(A4)
 	CLR.L	-(A7)
-	MOVE.W	-$52E0(A4),D3
+	MOVE.W	main_tmp+2-BASE(A4),D3
 	EXT.L	D3
 	MOVE.L	D3,-(A7)
 	JSR	_AllocMem(PC)
@@ -2328,7 +2328,7 @@ L00CB5:
 	TST.L	main_tmp+12-BASE(A4)
 	BNE.B	L00CB6
 
-	MOVE.W	-$52E0(A4),D3
+	MOVE.W	main_tmp+2-BASE(A4),D3
 	EXT.L	D3
 	MOVE.L	D3,-(A7)
 	MOVE.L	main_tmp+8-BASE(A4),-(A7)
