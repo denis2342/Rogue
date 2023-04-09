@@ -1735,7 +1735,10 @@ _sprintf_tmp:
 _localtime_tmp:
 	ds.w	8
 
-	ds.w	4
+	ds.w	2
+
+_printf_tmp0:
+	ds.l	1
 
 _printf_tmp:
 	ds.b	60

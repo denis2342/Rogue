@@ -937,7 +937,7 @@ _printf:
 	MOVE.L	D4,-(A7)
 
 	LEA	_printf_tmp-BASE(A4),A6
-	MOVE.L	A6,-$5312(A4)
+	MOVE.L	A6,_printf_tmp0-BASE(A4)
 	PEA	$000C(A5)
 	MOVE.L	$0008(A5),-(A7)
 	PEA	L00C29(PC)
@@ -948,7 +948,7 @@ _printf:
 	BNE.B	L00C27
 
 	LEA	_printf_tmp-BASE(A4),A6
-	MOVE.L	-$5312(A4),D3
+	MOVE.L	_printf_tmp0-BASE(A4),D3
 	SUB.L	A6,D3
 	MOVE.W	D3,-(A7)
 	PEA	_printf_tmp-BASE(A4)
@@ -961,7 +961,7 @@ _printf:
 L00C27:
 	PEA	-$5774(A4)
 	LEA	_printf_tmp-BASE(A4),A6
-	MOVE.L	-$5312(A4),D3
+	MOVE.L	_printf_tmp0-BASE(A4),D3
 	SUB.L	A6,D3
 	MOVE.W	D3,-(A7)
 	MOVE.W	#$0001,-(A7)
@@ -976,11 +976,11 @@ L00C28:
 
 L00C29:
 	LINK	A5,#-$0000
-	MOVEA.L	-$5312(A4),A6
-	ADDQ.L	#1,-$5312(A4)
+	MOVEA.L	_printf_tmp0-BASE(A4),A6
+	ADDQ.L	#1,_printf_tmp0-BASE(A4)
 	MOVE.B	$0009(A5),(A6)
 	LEA	_printf_tmp-BASE(A4),A6
-	MOVE.L	-$5312(A4),D3
+	MOVE.L	_printf_tmp0-BASE(A4),D3
 	SUB.L	A6,D3
 	CMP.W	#$0028,D3
 	BNE.B	L00C2C
@@ -989,7 +989,7 @@ L00C29:
 	BNE.B	L00C2A
 
 	LEA	_printf_tmp-BASE(A4),A6
-	MOVE.L	-$5312(A4),D3
+	MOVE.L	_printf_tmp0-BASE(A4),D3
 	SUB.L	A6,D3
 	MOVE.W	D3,-(A7)
 	PEA	_printf_tmp-BASE(A4)
@@ -1002,7 +1002,7 @@ L00C29:
 L00C2A:
 	PEA	-$5774(A4)
 	LEA	_printf_tmp-BASE(A4),A6
-	MOVE.L	-$5312(A4),D3
+	MOVE.L	_printf_tmp0-BASE(A4),D3
 	SUB.L	A6,D3
 	MOVE.W	D3,-(A7)
 	MOVE.W	#$0001,-(A7)
@@ -1011,7 +1011,7 @@ L00C2A:
 	LEA	$000C(A7),A7
 L00C2B:
 	LEA	_printf_tmp-BASE(A4),A6
-	MOVE.L	A6,-$5312(A4)
+	MOVE.L	A6,_printf_tmp0-BASE(A4)
 L00C2C:
 	MOVE.W	$0008(A5),D0
 	AND.W	#$00FF,D0
