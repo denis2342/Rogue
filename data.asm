@@ -952,6 +952,7 @@ _commands:
 	dc.l	$00000000
 	dc.l	$00000000
 	dc.l	$00000000
+command_keys_ptr:
 	dc.l	L00A54
 _game_items:
 	dc.l	L00A55		; About Rogue
