@@ -879,7 +879,7 @@ _xfer_monster:
 	CMPA.L	A6,A2
 	BNE.B	L00B7C
 
-	MOVE.L	-$69AA(A4),$0024(A2)
+	MOVE.L	_hero_damage-BASE(A4),$0024(A2)
 	BRA.B	L00B7E
 L00B7C:
 	MOVE.B	$000F(A2),D3
