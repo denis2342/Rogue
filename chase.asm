@@ -497,7 +497,7 @@ L0025F:
 	BEQ.B	L00260
 
 	MOVE.W	_ch_ret-BASE(A4),-(A7)
-	MOVE.W	-$48BA(A4),-(A7)
+	MOVE.W	_ch_ret+2-BASE(A4),-(A7)
 	JSR	_mvinch(PC)
 	ADDQ.W	#4,A7
 
@@ -506,7 +506,7 @@ L0025F:
 
 	MOVE.B	$0010(A6),D2
 	MOVE.W	_ch_ret-BASE(A4),d1
-	MOVE.W	-$48BA(A4),d0
+	MOVE.W	_ch_ret+2-BASE(A4),d0
 	JSR	_mvaddchquick
 
 	BRA.B	L00261
@@ -675,7 +675,7 @@ L0026D:
 ;	MOVEA.L	$000C(A5),A6
 	MOVE.W	$0002(A6),-(A7)
 	MOVE.W	_ch_ret-BASE(A4),-(A7)
-	MOVE.W	-$48BA(A4),-(A7)
+	MOVE.W	_ch_ret+2-BASE(A4),-(A7)
 	JSR	_DISTANCE
 	ADDQ.W	#8,A7
 	MOVE.W	D0,-$0002(A5)
