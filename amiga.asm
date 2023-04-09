@@ -2228,7 +2228,7 @@ L00CAA:
 	MOVE.W	#$8001,__devtab+10-BASE(A4)
 	JSR	_Output
 	MOVE.L	D0,__devtab+12-BASE(A4)
-	MOVE.W	#$8001,-$4748(A4)
+	MOVE.W	#$8001,__devtab+16-BASE(A4)
 	MOVE.W	#$0001,_Enable_Abort-BASE(A4)	;_Enable_Abort
 	MOVE.L	main_tmp+4-BASE(A4),-(A7)
 	MOVE.W	main_tmp-BASE(A4),-(A7)
@@ -2273,7 +2273,7 @@ L00CAC:
 	MOVE.L	D3,__devtab+12-BASE(A4)
 	MOVE.L	D3,__devtab+6-BASE(A4)
 	MOVE.W	#$8000,__devtab+4-BASE(A4)
-	MOVE.W	#$8001,-$4748(A4)
+	MOVE.W	#$8001,__devtab+16-BASE(A4)
 	MOVE.W	#$8001,__devtab+10-BASE(A4)
 	ASL.L	#2,D3
 	MOVE.L	D3,-$0004(A5)
