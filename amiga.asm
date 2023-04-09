@@ -308,7 +308,7 @@ _help:
 
 	JSR	_wtext
 	MOVEQ	#$00,D4
-	LEA	-$580C(A4),A6
+	LEA	_help_text-BASE(A4),A6
 	MOVEA.L	A6,A2
 	BRA.B	L00BF3
 
