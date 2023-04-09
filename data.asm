@@ -1182,7 +1182,8 @@ _oldpos:
 _delta:
 	dc.l	$00000000
 
-_rooms:	ds.b	9*66	;room struct is 66 bytes, 9 rooms per level
+_rooms:	ds.b	8*66	;room struct is 66 bytes, 9 rooms per level
+_rooms_last:	ds.b	66
 _passages:
 
 ; for 13 passages, last one is different
