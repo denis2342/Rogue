@@ -1454,6 +1454,8 @@ localtime_storage:
 	dc.l	$001F001F
 	dc.l	$001E001F
 	dc.l	$001E001F
+
+hexdigits:
 	dc.l	"0123"
 	dc.l	"4567"
 	dc.l	"89ab"
