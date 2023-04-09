@@ -69,7 +69,7 @@ L00677:
 
 	;hiding strength, maxhp and experience points in the highscore
 	move.l	_player+26-BASE(A4),-$000E(A5)	;_player + 26 (EXP)
-	move.b	-$52B1(A4),-$000A(A5)	;_player + 24 strength
+	move.b	_player+25-BASE(A4),-$000A(A5)	;_player + 24 strength
 	move.b	_player+41-BASE(A4),-$0009(A5)	;_player + 40 (max HP)
 
 	PEA	_whoami-BASE(A4)	;_whoami
