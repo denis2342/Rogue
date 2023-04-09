@@ -2110,19 +2110,19 @@ L00CA2:
 	MOVE.L	D3,-(A7)
 	JSR	_AllocMem(PC)
 	ADDQ.W	#8,A7
-	MOVE.L	D0,-$52DA(A4)
+	MOVE.L	D0,main_tmp+8-BASE(A4)
 	MOVE.B	(A2),D3
 	EXT.W	D3
 	MOVE.W	D3,-(A7)
 	PEA	$0001(A2)
-	MOVE.L	-$52DA(A4),-(A7)
+	MOVE.L	main_tmp+8-BASE(A4),-(A7)
 	JSR	_strncpy
 	LEA	$000A(A7),A7
 	PEA	L00CB1(PC)
 	MOVE.B	(A2),D3
 	EXT.W	D3
 	EXT.L	D3
-	ADD.L	-$52DA(A4),D3
+	ADD.L	main_tmp+8-BASE(A4),D3
 	MOVE.L	D3,-(A7)
 	JSR	_strcpy
 	ADDQ.W	#8,A7
@@ -2130,11 +2130,11 @@ L00CA2:
 	ADDQ.W	#1,D3
 	MOVE.W	D3,-(A7)
 	MOVE.L	$000C(A5),-(A7)
-	MOVE.L	-$52DA(A4),-(A7)
+	MOVE.L	main_tmp+8-BASE(A4),-(A7)
 	JSR	_strncat(PC)
 	LEA	$000A(A7),A7
 	CLR.W	main_tmp-BASE(A4)
-	MOVEA.L	-$52DA(A4),A2
+	MOVEA.L	main_tmp+8-BASE(A4),A2
 L00CA3:
 	moveq	#0,d3
 	LEA	_ctp_-BASE(A4),A6		;_ctp_
@@ -2184,7 +2184,7 @@ L00CA7:
 	ADDQ.W	#8,A7
 	MOVE.L	D0,-$52DE(A4)
 	MOVEQ	#$00,D4
-	MOVEA.L	-$52DA(A4),A2
+	MOVEA.L	main_tmp+8-BASE(A4),A2
 	BRA.B	L00CAA
 
 L00CA8:
@@ -2331,7 +2331,7 @@ L00CB5:
 	MOVE.W	-$52E0(A4),D3
 	EXT.L	D3
 	MOVE.L	D3,-(A7)
-	MOVE.L	-$52DA(A4),-(A7)
+	MOVE.L	main_tmp+8-BASE(A4),-(A7)
 	JSR	_FreeMem
 	ADDQ.W	#8,A7
 
