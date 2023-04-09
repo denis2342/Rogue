@@ -704,6 +704,7 @@ L00985:
 	ASL.w	#2,D3
 	LEA	_he_man(A4),A6	;_he_man
 	MOVE.L	$00(A6,D3.w),D4
+
 	MOVE.L	D4,-(A7)
 	PEA	L00987(PC)	;'and achieve the rank of "%s"'
 	JSR	_msg

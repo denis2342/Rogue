@@ -886,4 +886,3 @@ _money:
 	RTS
 
 L00302:	dc.b	"you found %d gold pieces",0,0
-

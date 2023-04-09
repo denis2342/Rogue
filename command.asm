@@ -57,7 +57,6 @@ L0039F:
 
 	MOVEA.L	D0,A1
 	MOVE.W	$0020(A1),D0
-;	EXT.L	D0
 	BRA.B	L003A3
 L003A0:
 	JSR	_search(PC)
@@ -83,6 +82,7 @@ L003A4:
 	BRA.W	L0039B
 L003A5:
 	JSR	_do_daemons(PC)
+
 	MOVEM.L	(A7)+,D4/D5
 	UNLK	A5
 	RTS

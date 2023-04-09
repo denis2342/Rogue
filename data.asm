@@ -1653,7 +1653,7 @@ _is_pickup_tmp:	ds.b	1
 
 	dc.b	0
 
-_numpass_tmp:	ds.w	2	;$54C0
+_numpass_tmp:	ds.w	2
 
 add_line_tmp:	ds.w	1
 add_line_tmp2:	ds.b	2
@@ -1688,10 +1688,10 @@ r_score_fd:
 	ds.w	1
 
 maze_tmp:
-	ds.w	9	;$53be
+	ds.w	9
 
 maze_tmp2:
-	ds.l	1	;$53ac
+	ds.l	1
 
 create_object_tmp:
 	ds.b	5
@@ -1702,7 +1702,7 @@ installmenus_tmp:
 	ds.l	1
 
 do_menus_tmp:
-	ds.l	1	;$539a
+	ds.l	1
 
 	ds.b	88
 
@@ -1710,7 +1710,7 @@ _mouse_adjust_tmp:
 	ds.w	4
 
 _nameof_tmp:
-	ds.l	2	;$5336
+	ds.l	2
 
 _restore_bool:
 	dc.w	0	;bool
@@ -1764,7 +1764,7 @@ _player:	dc.l	0	;$00 0	next item in list
 		dc.w	0	;$0A 10 position
 		dc.w	0	;$0C 12 position
 		dc.b	0	;$0E 14 set to 1 at monster creation
-		dc.b	0	;$0F 15 xerox stuff
+		dc.b	0	;$0F 15 xeroc stuff
 		dc.w	0	;$10 16 disguise
 		dc.w	0	;$12 18 maybe the runto destination for the monster
 		dc.w	0	;$14 20

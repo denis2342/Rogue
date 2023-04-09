@@ -154,7 +154,7 @@ L00B1B:
 	MOVEA.L	$000C(A5),A3	;screen
 	MOVEA.L	$0032(A3),A3	;get the rastport
 	MOVEA.L	$0004(A3),A3	;get the bitmap
-	addq.l	#8,A3
+	addq.l	#8,A3		;pointer to the bitmap planes
 
 	add.l	#64,tmpbuf
 loop2$
@@ -217,7 +217,7 @@ _black_out:
 	RTS
 
 _setRGB4colors:
-	MOVE.W	D0,D6
+	MOVE.W	D0,D6		;the color number
 	ASL.w	#2,D6
 
 	add.w	d6,a0
@@ -227,7 +227,7 @@ _setRGB4colors:
 	MOVE.B	(A0),D3		;blue
 
 	MOVEA.L	_StdScr(A4),A1	;_StdScr
-	LEA	$002C(A1),a0
+	LEA	$002C(A1),a0	;pointer to  viewport structure
 
 	MOVEA.L	_GfxBase(A4),A6	;_GfxBase
 	JSR	_LVOSetRGB4(A6)

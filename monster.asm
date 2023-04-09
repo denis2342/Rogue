@@ -81,7 +81,7 @@ _new_monster:
 	ADDQ.W	#8,A7
 
 	MOVE.B	$000D(A5),$000F(A2)	; monster type ABC...
-	MOVE.B	$000D(A5),$0010(A2)	; xerox puts his disguise type here
+	MOVE.B	$000D(A5),$0010(A2)	; xeroc puts his disguise type here
 	MOVEA.L	A2,A6
 	ADDA.L	#$0000000A,A6
 	MOVEA.L	$000E(A5),A1
@@ -157,7 +157,7 @@ L00A16:
 	LEA	_f_damage(A4),A6	;_f_damage
 	MOVE.L	A6,$0024(A2)
 
-1$	CMP.b	#$58,D3		; 'X' xerox
+1$	CMP.b	#$58,D3		; 'X' xeroc
 	BNE.W	L00A26
 
 	MOVEQ	#$08,D3

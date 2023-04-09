@@ -2393,6 +2393,7 @@ L00523:
 	MOVE.L	_StdWin(A4),-(A7)	;_StdWin
 	JSR	_AutoRequest
 	LEA	$0020(A7),A7
+
 	MOVEM.L	(A7)+,D4/D5
 	UNLK	A5
 	RTS
@@ -2539,6 +2540,7 @@ L0063D:	dc.b	"You see your destiny, but the knowledge vaporizes",0
 
 _lose_vision:
 ;	LINK	A5,#-$0000
+
 	ANDI.W	#~C_ISFOUND,_player+22(A4)	;clear C_ISFOUND,_player + 22 (flags)
 	PEA	_player+10(A4)	;_player + 10
 	JSR	_leave_room
@@ -2552,6 +2554,7 @@ _lose_vision:
 	PEA	L0063E(PC)	;"The light from your lamp seems dimmer now."
 	JSR	_msg
 	ADDQ.W	#4,A7
+
 ;	UNLK	A5
 	RTS
 

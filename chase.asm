@@ -571,6 +571,8 @@ L00267:
 	CMP.W	#$0003,D0
 	BLT.B	L00269
 
+	; check if monster and player are in the same room
+
 	MOVEA.L	$002A(A2),A6
 	CMPA.L	_player+42(A4),A6	;_player + 42 (proom)
 	BNE.B	L00268
@@ -605,6 +607,7 @@ _start_run:
 
 	TST.L	D0
 	BEQ.B	1$
+
 	MOVEA.L	D0,A3
 
 	ORI.W	#C_ISRUN,$0016(A3)	;set C_ISRUN

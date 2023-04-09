@@ -293,7 +293,7 @@ L00322:
 	MOVEA.L	-$0004(A5),A6
 	ORI.W	#C_ISCANC,$0016(A6)	;C_ISCANC
 	ANDI.W	#$FBEF,$0016(A6)	;clear C_ISINVIS|C_CANHUH
-	MOVE.B	$000F(A6),$0010(A6)	;make the xerox visible
+	MOVE.B	$000F(A6),$0010(A6)	;make the xeroc visible
 	BRA.W	L0032A
 L00323:
 	MOVE.L	-$0004(A5),-(A7)

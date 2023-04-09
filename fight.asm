@@ -251,14 +251,14 @@ _attack:
 	CLR.W	_count(A4)	;_count
 
 	MOVEA.L	$0008(A5),A6
-	CMP.B	#$58,$000F(A6)	;'X' xerox
+	CMP.B	#$58,$000F(A6)	;'X' xeroc
 	BNE.B	1$
 
 	MOVE.W	_player+22(A4),D3	;_player + 22 (flags)
 	AND.W	#C_ISBLIND,D3	;C_ISBLIND
 	BNE.B	1$
 
-	MOVE.B	#$58,$0010(A6)	;'X' xerox
+	MOVE.B	#$58,$0010(A6)	;'X' xeroc
 
 1$	MOVE.B	$000F(A6),D3
 	EXT.W	D3
