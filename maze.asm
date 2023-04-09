@@ -54,7 +54,7 @@ L0079C:
 	JSR	_rnd_pos
 	ADDQ.W	#8,A7
 	CLR.W	-$0192(A5)
-	LEA	-$69A6(A4),A6
+	LEA	_hero_damage+4-BASE(A4),A6
 	MOVE.L	A6,-$019A(A5)
 	MOVE.W	#$0001,-$019C(A5)
 	BRA.B	L0079F
