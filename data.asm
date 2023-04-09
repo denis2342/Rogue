@@ -1741,7 +1741,10 @@ _printf_tmp0:
 	ds.l	1
 
 _printf_tmp:
-	ds.b	60
+	ds.b	44
+
+main_tmp:
+	ds.b	16
 
 __things:
 	dc.l	$00000000

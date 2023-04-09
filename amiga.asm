@@ -2133,7 +2133,7 @@ L00CA2:
 	MOVE.L	-$52DA(A4),-(A7)
 	JSR	_strncat(PC)
 	LEA	$000A(A7),A7
-	CLR.W	-$52E2(A4)
+	CLR.W	main_tmp-BASE(A4)
 	MOVEA.L	-$52DA(A4),A2
 L00CA3:
 	moveq	#0,d3
@@ -2170,12 +2170,12 @@ L00CA6:
 	TST.W	D4
 	BEQ.B	L00CA7
 
-	ADDQ.W	#1,-$52E2(A4)
+	ADDQ.W	#1,main_tmp-BASE(A4)
 	BRA.B	L00CA3
 L00CA7:
 	CLR.B	(A2)
 	CLR.L	-(A7)
-	MOVE.W	-$52E2(A4),D3
+	MOVE.W	main_tmp-BASE(A4),D3
 	ADDQ.W	#1,D3
 	EXT.L	D3
 	ASL.L	#2,D3
@@ -2212,7 +2212,7 @@ L00CA9:
 	ADDA.L	D0,A2
 	ADDQ.W	#1,D4
 L00CAA:
-	CMP.W	-$52E2(A4),D4
+	CMP.W	main_tmp-BASE(A4),D4
 	BCS.B	L00CA8
 
 	MOVEQ	#$00,D3
@@ -2231,7 +2231,7 @@ L00CAA:
 	MOVE.W	#$8001,-$4748(A4)
 	MOVE.W	#$0001,_Enable_Abort-BASE(A4)	;_Enable_Abort
 	MOVE.L	-$52DE(A4),-(A7)
-	MOVE.W	-$52E2(A4),-(A7)
+	MOVE.W	main_tmp-BASE(A4),-(A7)
 	JSR	_main
 	ADDQ.W	#6,A7
 	CLR.W	-(A7)
@@ -2335,7 +2335,7 @@ L00CB5:
 	JSR	_FreeMem
 	ADDQ.W	#8,A7
 
-	MOVE.W	-$52E2(A4),D3
+	MOVE.W	main_tmp-BASE(A4),D3
 	ADDQ.W	#1,D3
 	EXT.L	D3
 	ASL.L	#2,D3
