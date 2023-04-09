@@ -1713,9 +1713,12 @@ installmenus_tmp:
 	ds.l	1
 
 do_menus_tmp:
-	ds.l	1
+	ds.l	1	;$539a
 
-	ds.b	104
+	ds.b	88
+
+_mouse_adjust_tmp:
+	ds.w	8
 
 _restore_bool:
 	dc.w	0	;bool

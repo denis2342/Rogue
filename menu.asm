@@ -721,11 +721,11 @@ L00AAF:	dc.b	"Credits.lz4",0
 
 _mouse_go:
 	LINK	A5,#-$0000
-	MOVE.W	$0008(A5),-$533A(A4)
-	MOVE.W	$000A(A5),-$5338(A4)
+	MOVE.W	$0008(A5),_mouse_adjust_tmp+4-BASE(A4)
+	MOVE.W	$000A(A5),_mouse_adjust_tmp+6-BASE(A4)
 	ST	_mouse_run-BASE(A4)	;_mouse_run
-	MOVE.W	-$5338(A4),-(A7)
-	MOVE.W	-$533A(A4),-(A7)
+	MOVE.W	_mouse_adjust_tmp+6-BASE(A4),-(A7)
+	MOVE.W	_mouse_adjust_tmp+4-BASE(A4),-(A7)
 	BSR.B	_mouse_dir
 	ADDQ.W	#4,A7
 	UNLK	A5
@@ -733,17 +733,17 @@ _mouse_go:
 
 _mouse_adjust:
 ;	LINK	A5,#-$0000
-	MOVE.W	-$533C(A4),D3
+	MOVE.W	_mouse_adjust_tmp+2-BASE(A4),D3
 	CMP.W	_player+10-BASE(A4),D3	;_player + 10
 	BNE.B	L00AB0
-	MOVE.W	-$533E(A4),D3
+	MOVE.W	_mouse_adjust_tmp-BASE(A4),D3
 	CMP.W	_player+12-BASE(A4),D3	;_player + 12
 	BNE.B	L00AB0
 	CLR.B	_running-BASE(A4)	;_running
 	CLR.B	_mouse_run-BASE(A4)	;_mouse_run
 L00AB0:
-	MOVE.W	-$5338(A4),-(A7)
-	MOVE.W	-$533A(A4),-(A7)
+	MOVE.W	_mouse_adjust_tmp+6-BASE(A4),-(A7)
+	MOVE.W	_mouse_adjust_tmp+4-BASE(A4),-(A7)
 	BSR.B	_mouse_dir
 	ADDQ.W	#4,A7
 ;	UNLK	A5
@@ -806,12 +806,12 @@ L00AB3:
 	MOVE.W	$000A(A5),D3
 	EXT.L	D3
 	DIVU.W	#$000A,D3
-	MOVE.W	D3,-$533C(A4)
+	MOVE.W	D3,_mouse_adjust_tmp+2-BASE(A4)
 
 	MOVE.W	$0008(A5),D3
 	EXT.L	D3
 	DIVU.W	#$0009,D3
-	MOVE.W	D3,-$533E(A4)
+	MOVE.W	D3,_mouse_adjust_tmp-BASE(A4)
 
 	MOVE.W	A2,-(A7)
 	MOVE.W	A3,-(A7)
@@ -839,8 +839,8 @@ _mouse_char:
 	TST.W	D0
 	BNE.W	L00AB8
 
-	MOVE.W	-$533C(A4),-(A7)
-	MOVE.W	-$533E(A4),-(A7)
+	MOVE.W	_mouse_adjust_tmp+2-BASE(A4),-(A7)
+	MOVE.W	_mouse_adjust_tmp-BASE(A4),-(A7)
 	MOVE.W	_player+10-BASE(A4),-(A7)	;_player + 10
 	MOVE.W	_player+12-BASE(A4),-(A7)	;_player + 12
 	JSR	_DISTANCE
@@ -868,8 +868,8 @@ L00AB6:
 	TST.W	D0
 	BEQ.B	L00AB7
 
-	MOVE.W	-$533C(A4),-(A7)
-	MOVE.W	-$533E(A4),-(A7)
+	MOVE.W	_mouse_adjust_tmp+2-BASE(A4),-(A7)
+	MOVE.W	_mouse_adjust_tmp-BASE(A4),-(A7)
 	MOVE.W	_player+10-BASE(A4),D3	;_player + 10
 	ADD.W	D6,D3
 	MOVE.W	D3,-(A7)
