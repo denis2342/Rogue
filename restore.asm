@@ -51,10 +51,10 @@ L00B29:
 	PEA	-$0050(A5)
 	JSR	_AmigaOpen(PC)
 	ADDQ.W	#6,A7
-	MOVE.W	D0,-$532C(A4)
+	MOVE.W	D0,_save_game_tmp-BASE(A4)
 ;	CMP.W	#$0000,D0
 	BLE.B	L00B2B
-	MOVE.W	-$532C(A4),-(A7)
+	MOVE.W	_save_game_tmp-BASE(A4),-(A7)
 	JSR	_AmigaClose(PC)
 	ADDQ.W	#2,A7
 	JSR	_WBenchToBack(PC)
@@ -75,7 +75,7 @@ L00B2A:
 	JSR	_WBenchToFront
 	BRA.B	L00B2C
 L00B2B:
-	MOVE.W	-$532C(A4),-(A7)
+	MOVE.W	_save_game_tmp-BASE(A4),-(A7)
 	JSR	_AmigaClose(PC)
 	ADDQ.W	#2,A7
 L00B2C:
@@ -83,7 +83,7 @@ L00B2C:
 	PEA	-$0050(A5)
 	JSR	_AmigaCreat(PC)
 	ADDQ.W	#6,A7
-	MOVE.W	D0,-$532C(A4)
+	MOVE.W	D0,_save_game_tmp-BASE(A4)
 ;	CMP.W	#$0000,D0
 	BGE.B	L00B2D
 	JSR	_WBenchToBack(PC)
@@ -171,7 +171,7 @@ L00B39:
 	PEA	-$0050(A5)
 	JSR	_AmigaOpen(PC)
 	ADDQ.W	#6,A7
-	MOVE.W	D0,-$532C(A4)
+	MOVE.W	D0,_save_game_tmp-BASE(A4)
 ;	CMP.W	#$0000,D0
 	BGE.B	L00B3A
 	JSR	_WBenchToBack(PC)
@@ -321,7 +321,7 @@ L00B44:
 	ADDQ.W	#6,A7
 	JSR	_dm_xfer
 	JSR	_XferKeys(PC)
-	MOVE.W	-$532C(A4),-(A7)
+	MOVE.W	_save_game_tmp-BASE(A4),-(A7)
 	JSR	_AmigaClose(PC)
 	ADDQ.W	#2,A7
 
@@ -360,7 +360,7 @@ _xfer:
 
 	MOVE.W	$000C(A5),-(A7)
 	MOVE.L	$0008(A5),-(A7)
-	MOVE.W	-$532C(A4),-(A7)
+	MOVE.W	_save_game_tmp-BASE(A4),-(A7)
 	JSR	_write
 	ADDQ.W	#8,A7
 	MOVE.W	D0,D4
@@ -368,7 +368,7 @@ _xfer:
 L00B45:
 	MOVE.W	$000C(A5),-(A7)
 	MOVE.L	$0008(A5),-(A7)
-	MOVE.W	-$532C(A4),-(A7)
+	MOVE.W	_save_game_tmp-BASE(A4),-(A7)
 	JSR	_read
 	ADDQ.W	#8,A7
 	MOVE.W	D0,D4

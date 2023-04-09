@@ -1721,12 +1721,13 @@ _mouse_adjust_tmp:
 	ds.w	4
 
 _nameof_tmp:
-	ds.l	2
+	ds.l	2	;$5336
 
 _restore_bool:
 	dc.w	0	;bool
 
-	ds.b	30
+_save_game_tmp:
+	ds.w	15
 
 _printf_tmp:
 	ds.b	60
