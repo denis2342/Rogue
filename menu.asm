@@ -248,7 +248,7 @@ _InstallMenus:
 	PEA	_menu_bar-BASE(A4)	;_menu_bar
 	JSR	_BuildMenu(PC)
 	ADDQ.W	#4,A7
-	MOVE.L	D0,-$53A2(A4)
+	MOVE.L	D0,installmenus_tmp-BASE(A4)
 
 	MOVE.L	installmenus_tmp-BASE(A4),-(A7)
 	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
