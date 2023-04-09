@@ -111,7 +111,7 @@ L00B9C:
 	JSR	_ctointui
 	LEA	$000A(A7),A7
 
-	MOVE.L	D0,-$5822(A4)
+	MOVE.L	D0,_DownGadget+26-BASE(A4)
 	MOVE.W	#$FFFF,-(A7)
 	PEA	_SearchGadget-BASE(A4)
 	MOVE.L	_RogueWin-BASE(A4),-(A7)	;_RogueWin
