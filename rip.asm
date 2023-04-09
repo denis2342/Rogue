@@ -792,7 +792,7 @@ L006D3:
 	MOVE.W	$0020(A2),D3
 ;	EXT.L	D3
 	ASL.w	#3,D3
-	LEA	-$6D92(A4),A6
+	LEA	_ws_magic+6-BASE(A4),A6
 	MOVE.W	$00(A6,D3.w),D4
 	MOVE.W	$0026(A2),D3	;get number of charges
 	MULU.W	#20,D3
