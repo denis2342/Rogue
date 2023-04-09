@@ -1446,6 +1446,7 @@ _help_text:
 	dc.l	L00BF1
 	dc.l	$00000000
 
+localtime_storage:
 	dc.l	$001F001C
 	dc.l	$001F001E
 	dc.l	$001F001E

@@ -841,7 +841,7 @@ L00C20:
 	MOVE.W	D6,D3
 	EXT.L	D3
 	ASL.L	#1,D3
-	LEA	-$57B4(A4),A6
+	LEA	localtime_storage-BASE(A4),A6
 	MOVE.W	$00(A6,D3.L),D2
 	EXT.L	D2
 	MOVE.L	D2,D5
