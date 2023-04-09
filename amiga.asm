@@ -2224,7 +2224,7 @@ L00CAA:
 	MOVE.L	D0,__devtab-BASE(A4)		;__devtab
 	MOVE.W	#$8000,-$4754(A4)
 	JSR	_Output(PC)
-	MOVE.L	D0,-$4752(A4)
+	MOVE.L	D0,__devtab+6-BASE(A4)
 	MOVE.W	#$8001,-$474E(A4)
 	JSR	_Output
 	MOVE.L	D0,__devtab+12-BASE(A4)
@@ -2271,7 +2271,7 @@ L00CAC:
 
 	MOVE.L	D0,D3
 	MOVE.L	D3,__devtab+12-BASE(A4)
-	MOVE.L	D3,-$4752(A4)
+	MOVE.L	D3,__devtab+6-BASE(A4)
 	MOVE.W	#$8000,-$4754(A4)
 	MOVE.W	#$8001,-$4748(A4)
 	MOVE.W	#$8001,-$474E(A4)
