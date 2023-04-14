@@ -448,14 +448,12 @@ L006A2:
 	JSR	_tomb_center(PC)
 	ADDQ.W	#6,A7
 
-	MOVE.B	D4,D3
-	EXT.W	D3
-	MOVE.W	D3,-(A7)
+	EXT.W	D4
+	MOVE.W	D4,-(A7)
 	JSR	_killname(PC)
 	ADDQ.W	#2,A7
 
-	MOVE.L	D0,D3
-	MOVE.L	D3,-(A7)
+	MOVE.L	D0,-(A7)
 	PEA	L006A8(PC)	;"Killed by %s"
 	PEA	-$0050(A5)
 	JSR	_sprintf
