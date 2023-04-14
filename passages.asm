@@ -340,20 +340,16 @@ _passnum:
 	CMPA.L	A6,A2
 	BCS.B	1$
 
-	LEA	_rooms(A4),A6	;_rooms
-	MOVEA.L	A6,A2
+	LEA	_rooms(A4),A2	;_rooms
 L00458:
 	MOVEQ	#$00,D4
 	BRA.B	L0045A
 L00459:
 	ADDQ.B	#1,_numpass_tmp+2(A4)
 	MOVE.W	D4,D3
-	EXT.L	D3
-	ASL.L	#2,D3
-	MOVEA.L	D3,A6
-	ADDA.L	A2,A6
-	MOVE.W	$0012(A6),-(A7)
-	MOVE.W	$0014(A6),-(A7)
+	ASL.w	#2,D3
+	MOVE.W	$0012(A2,D3.w),-(A7)
+	MOVE.W	$0014(A2,D3.w),-(A7)
 	BSR.B	_numpass
 	ADDQ.W	#4,A7
 	ADDQ.W	#1,D4
