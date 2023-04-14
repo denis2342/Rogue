@@ -259,9 +259,7 @@ L00689:
 	BGE.B	L0068B
 
 	MOVEA.L	$000A(A5),A6
-	MOVE.W	$002A(A6),D3
-	AND.W	#$00FF,D3
-	MOVE.W	D3,-(A7)
+	MOVE.W	$002A(A6),-(A7)
 	JSR	_killname(PC)
 	ADDQ.W	#2,A7
 
@@ -448,7 +446,6 @@ L006A2:
 	JSR	_tomb_center(PC)
 	ADDQ.W	#6,A7
 
-	EXT.W	D4
 	MOVE.W	D4,-(A7)
 	JSR	_killname(PC)
 	ADDQ.W	#2,A7
