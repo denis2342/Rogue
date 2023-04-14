@@ -436,42 +436,50 @@ L006A2:
 	MOVE.W	#$0062,-(A7)
 	JSR	_tomb_center(PC)
 	ADDQ.W	#6,A7
+
 	MOVE.W	_purse(A4),-(A7)	;_purse
 	PEA	L006A7(PC)		;"%u Au"
 	PEA	-$0050(A5)
 	JSR	_sprintf
 	LEA	$000A(A7),A7
+
 	PEA	-$0050(A5)
 	MOVE.W	#$0072,-(A7)
 	JSR	_tomb_center(PC)
 	ADDQ.W	#6,A7
+
 	MOVE.B	D4,D3
 	EXT.W	D3
 	MOVE.W	D3,-(A7)
 	JSR	_killname(PC)
 	ADDQ.W	#2,A7
+
 	MOVE.L	D0,D3
 	MOVE.L	D3,-(A7)
 	PEA	L006A8(PC)	;"Killed by %s"
 	PEA	-$0050(A5)
 	JSR	_sprintf
 	LEA	$000C(A7),A7
+
 	PEA	-$0050(A5)
 	MOVE.W	#$0082,-(A7)
 	JSR	_tomb_center(PC)
 	ADDQ.W	#6,A7
+
 	MOVEA.L	-$0058(A5),A6
 	MOVE.W	$000A(A6),D3
-	ADD.W	#$076C,D3
+	ADD.W	#$076C,D3	;add 1900 years
 	MOVE.W	D3,-(A7)
 	PEA	L006AA(PC)	;"%d"
 	PEA	-$0050(A5)
 	JSR	_sprintf
 	LEA	$000A(A7),A7
+
 	PEA	-$0050(A5)
 	MOVE.W	#$0092,-(A7)
 	JSR	_tomb_center(PC)
 	ADDQ.W	#6,A7
+
 	JSR	_flush_type
 	JSR	_readchar
 	JSR	_clear
@@ -487,9 +495,11 @@ L006A2:
 	MOVE.W	_purse(A4),-(A7)	;_purse
 	JSR	_score(PC)
 	ADDQ.W	#6,A7
+
 	PEA	L006AB(PC)
 	JSR	_fatal
 	ADDQ.W	#4,A7
+
 	MOVEM.L	(A7)+,D4/A2
 	UNLK	A5
 	RTS
