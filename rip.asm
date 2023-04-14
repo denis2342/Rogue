@@ -238,16 +238,15 @@ L00689:
 	SUBQ.W	#1,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
-	LEA	_he_man(A4),A6	;_he_man
-	MOVE.L	$00(A6,D3.w),-(A7)
-	MOVE.L	$000A(A5),-(A7)
-	MOVEA.L	$000A(A5),A6
+	LEA	_he_man(A4),A0	;_he_man
+	MOVE.L	$00(A0,D3.w),-(A7)
+	MOVE.L	A6,-(A7)
 	MOVE.W	$0028(A6),-(A7)
 	PEA	L00691(PC)	;'%5d %s, "%s"'
 	JSR	_printw
 	LEA	$000E(A7),A7
-	MOVEA.L	$000A(A5),A6
 
+	MOVEA.L	$000A(A5),A6
 	MOVE.W	$002A(A6),d0
 	JSR	_isalpha(PC)
 
@@ -258,7 +257,6 @@ L00689:
 	CMPI.W	#26,$002C(A6)
 	BGE.B	L0068B
 
-	MOVEA.L	$000A(A5),A6
 	MOVE.W	$002A(A6),-(A7)
 	JSR	_killname(PC)
 	ADDQ.W	#2,A7
