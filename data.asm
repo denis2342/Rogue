@@ -1071,6 +1071,12 @@ _noscore:
 	dc.b	$00
 _again:
 	dc.b	$00
+
+_s_know:	ds.b	15
+_p_know:	ds.b	14
+_r_know:	ds.b	14
+_ws_know:	ds.b	14
+
 _amulet:
 	dc.b	$00
 _saw_amulet:
@@ -1747,11 +1753,6 @@ _s_guess:	ds.b	15*21
 _p_guess:	ds.b	14*21
 _r_guess:	ds.b	14*21
 _ws_guess:	ds.b	14*21
-
-_s_know:	ds.b	15
-_p_know:	ds.b	14
-_r_know:	ds.b	14
-_ws_know:	ds.b	14
 
 __things:
 	dc.l	$00000000
