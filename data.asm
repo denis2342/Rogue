@@ -517,29 +517,29 @@ _ws_magic:
 	dc.w	$0005,280
 
 _he_man:
-	dc.l	L00743		; 0 ""
-	dc.l	L00744		; 10 Guild Novice
-	dc.l	L00745		; 20 Apprentice
-	dc.l	L00746		; 40 Journeyman
-	dc.l	L00747		; 80 Adventurer
-	dc.l	L00748		; 160 Fighter
-	dc.l	L00749		; 320 Warrior
-	dc.l	L0074A		; 640 Rogue
-	dc.l	L0074B		; 1280 Champion
-	dc.l	L0074C		; 2560 Master Rogue
-	dc.l	L0074D		; 5120 Warlord
-	dc.l	L0074E		; 10240 Hero
-	dc.l	L0074F		; 20480 Guild Master
-	dc.l	L00750		; 40960 Dragonlord
-	dc.l	L00751		; 81960 Wizard
-	dc.l	L00752		; 163840 Rogue Geek
-	dc.l	L00753		; 327680 Rogue Addict
-	dc.l	L00754		; 655360 Schmendrick
-	dc.l	L00755		; 1310720 Gunfighter
-	dc.l	L00756		; 2621440 Time Waster
-	dc.l	L00757		; 5242880 Bug Chaser
-	dc.l	L00758		; 10485760 Penultimate Rogue
-	dc.l	L00759		; 20971520 Ultimate Rogue
+	dc.l	L00743		; 12 0 ""
+	dc.l	L00744		; 18 10 Guild Novice
+	dc.l	L00745		; 23 20 Apprentice
+	dc.l	L00746		; 29 40 Journeyman
+	dc.l	L00747		; 34 80 Adventurer
+	dc.l	L00748		; 40 160 Fighter
+	dc.l	L00749		; 45 320 Warrior
+	dc.l	L0074A		; 51 640 Rogue
+	dc.l	L0074B		; 56 1280 Champion
+	dc.l	L0074C		; 62 2560 Master Rogue
+	dc.l	L0074D		; 67 5120 Warlord
+	dc.l	L0074E		; 73 10240 Hero
+	dc.l	L0074F		; 78 20480 Guild Master
+	dc.l	L00750		; 84 40960 Dragonlord
+	dc.l	L00751		; 89 81960 Wizard
+	dc.l	L00752		; 95 163840 Rogue Geek
+	dc.l	L00753		; 100 327680 Rogue Addict
+	dc.l	L00754		; 106 655360 Schmendrick
+	dc.l	L00755		; 111 1310720 Gunfighter
+	dc.l	L00756		; 117 2621440 Time Waster
+	dc.l	L00757		; 122 5242880 Bug Chaser
+	dc.l	L00758		; 128 10485760 Penultimate Rogue
+	dc.l	L00759		; 133 20971520 Ultimate Rogue
 
 _nlevels:
 	dc.w	$0017		; 23 user level
@@ -851,19 +851,19 @@ _venus_flytrap:
 	dc.w	$0000
 
 _things:
-	dc.l	$00000000
+	dc.l	$00000000	;27% potions
 	dc.l	$001B0000
-	dc.l	$00000000
+	dc.l	$00000000	;30% scrolls
 	dc.l	$001E0000
-	dc.l	$00000000
+	dc.l	$00000000	;17% food
 	dc.l	$00110000
-	dc.l	$00000000
+	dc.l	$00000000	; 8% weapons
 	dc.l	$00080000
-	dc.l	$00000000
+	dc.l	$00000000	; 8% armor
 	dc.l	$00080000
-	dc.l	$00000000
+	dc.l	$00000000	; 5% rings
 	dc.l	$00050000
-	dc.l	$00000000
+	dc.l	$00000000	; 5% wands/staffs
 	dc.l	$00050000
 _nullstr:
 	dc.w	$0000

@@ -12,10 +12,10 @@ _new_level:
 	CLR.B	_no_more_fears(A4)	;_no_more_fears
 	MOVE.W	_level(A4),D3	;_level
 	CMP.W	_max_level(A4),D3	;_max_level
-	BLE.B	L00183
+	BLE.B	1$
 
 	MOVE.W	_level(A4),_max_level(A4)	;_level,_max_level
-L00183:
+1$
 	MOVEq	#$0020,d1
 	MOVE.W	#1760,d0
 	MOVE.L	__level(A4),a0	;__level
@@ -27,15 +27,15 @@ L00183:
 	JSR	_memset
 
 	MOVEA.L	_mlist(A4),A2	;_mlist
-	BRA.B	L00185
-L00184:
+	BRA.B	3$
+2$
 	PEA	$002E(A2)
 	JSR	__free_list(PC)
 	ADDQ.W	#4,A7
 	MOVEA.L	(A2),A2
-L00185:
+3$
 	MOVE.L	A2,D3
-	BNE.B	L00184
+	BNE.B	2$
 
 	PEA	_mlist(A4)	;_mlist
 	JSR	__free_list(PC)

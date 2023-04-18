@@ -882,6 +882,7 @@ L00543:	dc.b	"you can't.  It appears to be cursed",0
 _new_thing:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/D5/A2,-(A7)
+
 	JSR	_new_item
 	MOVEA.L	D0,A2
 	TST.L	D0
@@ -903,17 +904,19 @@ L00545:
 	CLR.W	$002C(A2)		;no group
 	CLR.W	$0028(A2)		;flags like cursed and so on
 	CLR.B	$002A(A2)		;not a monster slayer
-	CMPI.W	#$0003,_no_food(A4)	;_no_food
-	BLE.B	L00546
 
-	MOVEQ	#$02,D0
-	BRA.B	L00547
-L00546:
-	MOVE.W	#$0007,-(A7)
+	CMPI.W	#$0003,_no_food(A4)	;_no_food
+	BLE.B	1$
+
+	MOVEQ	#$02,D0		;generate food
+	BRA.B	2$
+
+1$	MOVE.W	#$0007,-(A7)
 	PEA	_things(A4)
 	JSR	_pick_one(PC)
 	ADDQ.W	#6,A7
-L00547:
+
+2$
 ;	EXT.L	D0
 	BRA.W	L00560
 
@@ -1132,9 +1135,9 @@ _pick_one:
 	LINK	A5,#-$0000
 	MOVEM.L	D4/D5/A2/A3,-(A7)
 
-	MOVEA.L	$0008(A5),A2
+	MOVEA.L	$0008(A5),A2	;pointer to _things or similar
 	MOVE.L	A2,D5
-	MOVE.W	$000C(A5),D3
+	MOVE.W	$000C(A5),D3	;possibility in percent
 	EXT.L	D3
 	ASL.L	#3,D3
 	MOVEA.L	D3,A3
@@ -1154,6 +1157,7 @@ L00564:
 L00565:
 	CMPA.L	A3,A2
 	BNE.B	L00566
+
 	MOVEA.L	D5,A2
 L00566:
 	MOVE.L	A2,D0

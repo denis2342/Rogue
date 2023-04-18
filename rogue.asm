@@ -373,6 +373,7 @@ _getsyl:
 _init_names:
 	LINK	A5,#-$0006
 	MOVEM.L	A2/A3,-(A7)
+
 	CLR.W	-$0004(A5)
 L00076:
 	MOVEQ	#$03,D0
