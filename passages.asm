@@ -330,6 +330,7 @@ L00456:
 _passnum:
 ;	LINK	A5,#-$0000
 	MOVEM.L	D4/A2,-(A7)
+
 	CLR.W	_numpass_tmp(A4)
 	CLR.B	_numpass_tmp+2(A4)
 	LEA	_passages(A4),A2	;_passages
@@ -412,15 +413,15 @@ L0045E:
 	MOVE.B	$00(A6,D0.W),D4
 
 	MOVE.B	D4,D3
-	CMP.B	#$2B,D3
+	CMP.B	#$2B,D3		;'+' DOOR
 	BEQ.B	L0045F
 
 	MOVE.B	(A2),D3
-	AND.B	#$10,D3
+	AND.B	#F_REAL,D3	;F_REAL
 	BNE.B	L00460
 
 	MOVE.B	D4,D3
-	CMP.B	#$2E,D3
+	CMP.B	#$2E,D3		;'.' FLOOR
 	BEQ.B	L00460
 L0045F:
 	MOVE.W	_numpass_tmp(A4),D3

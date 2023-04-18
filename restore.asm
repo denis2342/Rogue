@@ -233,6 +233,7 @@ _xfer_all:
 	PEA	_whoami(A4)	;_whoami
 	JSR	_xfer
 	ADDQ.W	#6,A7
+
 	LEA	_SV_END(A4),A6	;_SV_END
 	LEA	_SV_START(A4),A1
 	SUBA.L	A1,A6
@@ -240,57 +241,71 @@ _xfer_all:
 	PEA	_SV_START(A4)
 	JSR	_xfer
 	ADDQ.W	#6,A7
+
 	MOVE.W	#$000F,-(A7)
 	PEA	_s_names(A4)
 	JSR	_xfer_strs(PC)
 	ADDQ.W	#6,A7
+
 	MOVE.W	#$000F,-(A7)
 	PEA	_s_guess(A4)	;_s_guess
 	JSR	_xfer_strs(PC)
 	ADDQ.W	#6,A7
+
 	MOVE.W	#$000E,-(A7)
 	PEA	_p_guess(A4)	;_p_guess
 	JSR	_xfer_strs(PC)
 	ADDQ.W	#6,A7
+
 	MOVE.W	#$000E,-(A7)
 	PEA	_r_guess(A4)	;_r_guess
 	JSR	_xfer_strs(PC)
 	ADDQ.W	#6,A7
+
 	MOVE.W	#$000E,-(A7)
 	PEA	_ws_guess(A4)	;_ws_guess
 	JSR	_xfer_strs(PC)
 	ADDQ.W	#6,A7
+
 	JSR	_xfer_choice(PC)
 	CLR.L	-(A7)
 	PEA	_oldrp(A4)	;_oldrp
 	JSR	_xfer_proom(PC)
 	ADDQ.W	#8,A7
+
 	CLR.L	-(A7)
 	PEA	_lvl_obj(A4)	;_lvl_obj
 	JSR	_xfer_pthing
 	ADDQ.W	#8,A7
+
 	CLR.L	-(A7)
 	PEA	_mlist(A4)	;_mlist
 	JSR	_xfer_pthing
 	ADDQ.W	#8,A7
+
 	CLR.L	-(A7)
 	PEA	_cur_weapon(A4)	;_cur_weapon
 	JSR	_xfer_pthing
 	ADDQ.W	#8,A7
+
 	CLR.L	-(A7)
 	PEA	_cur_armor(A4)	;_cur_armor
 	JSR	_xfer_pthing
 	ADDQ.W	#8,A7
+
 	CLR.L	-(A7)
 	PEA	_cur_ring_1(A4)	;_cur_ring_1
 	JSR	_xfer_pthing
 	ADDQ.W	#8,A7
+
 	CLR.L	-(A7)
 	PEA	_cur_ring_2(A4)	;_cur_ring_2
 	JSR	_xfer_pthing
 	ADDQ.W	#8,A7
+
 	TST.W	_restore_bool(A4)
 	BNE.B	L00B44
+
 	MOVE.W	#$0032,-(A7)
 	PEA	_player(A4)	;_player + 0
 	BSR.B	_xfer
@@ -299,19 +314,23 @@ L00B44:
 	PEA	_player(A4)	;_player + 0
 	JSR	_xfer_monster(PC)
 	ADDQ.W	#4,A7
+
 	MOVE.W	#$00A6,-(A7)
 	MOVE.L	__t_alloc(A4),-(A7)	;__t_alloc
 	BSR.B	_xfer
 	ADDQ.W	#6,A7
+
 	JSR	_xfer_things(PC)
 	MOVE.W	#$04EC,-(A7)
 	MOVE.L	__level(A4),-(A7)	;__level
 	BSR.B	_xfer
 	ADDQ.W	#6,A7
+
 	MOVE.W	#$04EC,-(A7)
 	MOVE.L	__flags(A4),-(A7)	;__flags
 	BSR.B	_xfer
 	ADDQ.W	#6,A7
+
 	LEA	_CURSES_END(A4),A6
 	LEA	_CURSES_START(A4),A1
 	SUBA.L	A1,A6
@@ -319,6 +338,7 @@ L00B44:
 	PEA	_CURSES_START(A4)
 	BSR.B	_xfer
 	ADDQ.W	#6,A7
+
 	JSR	_dm_xfer
 	JSR	_XferKeys(PC)
 	MOVE.W	_save_game_tmp(A4),-(A7)
@@ -684,7 +704,7 @@ _xfer_proom:
 	MOVE.L	(A6),D0
 	LEA	_rooms(A4),A6	;_rooms
 	SUB.L	A6,D0
-	MOVEQ	#$42,D1
+	MOVEQ	#66,D1
 	JSR	_divu
 	ADD.W	#$2000,D0
 	MOVE.W	D0,-$0002(A5)
@@ -694,7 +714,7 @@ L00B66:
 	MOVE.L	(A6),D0
 	LEA	_passages(A4),A6	;_passages
 	SUB.L	A6,D0
-	MOVEQ	#$42,D1
+	MOVEQ	#66,D1
 	JSR	_divu
 	ADD.W	#$1000,D0
 	MOVE.W	D0,-$0002(A5)
@@ -812,7 +832,7 @@ L00B75:
 	MOVEA.L	$0008(A5),A6
 	MOVE.W	-$0002(A5),D3
 	AND.W	#$0FFF,D3
-	MULU.W	#$0032,D3
+	MULU.W	#50,D3
 	ADD.L	__things(A4),D3	;__things
 	MOVE.L	D3,(A6)
 	BRA.B	L00B77
@@ -836,13 +856,13 @@ L00B78:
 	BEQ.B	L00B7B
 
 	MOVE.W	D4,D3
-	MULS.W	#$0032,D3
+	MULS.W	#50,D3
 	MOVEA.L	D3,A2
 	ADDA.L	__things(A4),A2	;__things
 	TST.W	_restore_bool(A4)
 	BNE.B	L00B79
 
-	MOVE.W	#$0032,-(A7)
+	MOVE.W	#50,-(A7)
 	MOVE.L	A2,-(A7)
 	JSR	_xfer
 	ADDQ.W	#6,A7
@@ -860,7 +880,7 @@ L00B7A:
 	ADDQ.W	#4,A7
 L00B7B:
 	ADDQ.W	#1,D4
-	CMP.W	#$0053,D4	;'S'
+	CMP.W	#$0053,D4
 	BLT.B	L00B78
 
 	MOVEM.L	(A7)+,D4/A2
