@@ -576,15 +576,19 @@ L00267:
 	MOVEA.L	$002A(A2),A6
 	CMPA.L	_player+42(A4),A6	;_player + 42 (proom)
 	BNE.B	L00268
-	MOVE.L	$002A(A2),-(A7)
+
+	; is room a maze?
+
+	MOVE.W	$000E(A6),D3
+	AND.W	#$0004,D3	;ISMAZE
+	BNE.B	L00268
+
+	; is the room dark?
+
+	MOVE.L	A6,-(A7)
 	JSR	_is_dark
 	ADDQ.W	#4,A7
 	TST.W	D0
-	BNE.B	L00268
-
-	MOVEA.L	$002A(A2),A6
-	MOVE.W	$000E(A6),D3
-	AND.W	#$0004,D3
 	BNE.B	L00268
 L00269:
 	MOVEQ	#$01,D0
