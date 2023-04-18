@@ -223,9 +223,7 @@ L00829:
 	MOVE.W	A2,D3
 	MOVEA.L	__level(A4),A6	;__level
 	MOVE.B	$00(A6,D3.W),D6
-	MOVEQ	#$00,D3
-	MOVE.B	D7,D3
-	CMP.W	#$002B,D3	;'+' DOOR
+	CMP.B	#$2B,D7		;'+' DOOR
 	BEQ.B	L0082C
 
 	CMP.B	#$2B,D6		;'+' DOOR
