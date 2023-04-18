@@ -378,16 +378,14 @@ _init_names:
 	MOVEM.L	A2/A3,-(A7)
 	CLR.W	-$0004(A5)
 L00076:
+	MOVEQ	#$03,D0
 	MOVEA.L	_prbuf(A4),A2	;_prbuf
 	TST.B	_terse(A4)	;_terse
-	BEQ.B	L00077
-	MOVEQ	#$03,D3
-	BRA.B	L00078
-L00077:
-	MOVEQ	#$04,D3
-L00078:
-	MOVE.W	D3,D0
-	JSR	_rnd
+	BNE.B	1$
+
+	ADDQ	#1,D0
+
+1$	JSR	_rnd
 	ADDQ.W	#2,D0		;3-5 syllable pairs
 	MOVE.W	D0,-$0006(A5)
 L00079:
