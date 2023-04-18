@@ -502,11 +502,7 @@ _scrl:
 
 	LEA	L00154(PC),A6
 	MOVE.L	A6,-$0004(A5)
-	BRA.B	L0014F
 
-	dc.l	$4DFA008A	;"M   "
-	dc.l	$2B4EFFFC	;"+N  "
-L0014F:
 	TST.L	$000A(A5)
 	BNE.B	L00151
 
@@ -545,9 +541,9 @@ L00151:
 	JSR	_strlenquick
 
 	CMP.W	#$004F,D0
-	BGE.B	L00152
+	BGE.B	L00151
+
 	JSR	_clrtoeol
-L00152:
 	BRA.B	L00151
 L00153:
 	MOVEM.L	(A7)+,D4/D5
