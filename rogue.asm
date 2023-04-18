@@ -252,18 +252,15 @@ L0006F:	dc.b	"tungsten",0
 L00070:	dc.b	"zinc",0
 
 _init_things:
-	MOVE.L	A2,-(A7)
-
-	LEA	_things+8(A4),A2	;_things + 8
+	LEA	_things+8(A4),A0	;_things + 8
 	LEA	_things+48(A4),A6	;_things + 48
 
-1$	MOVE.W	-$0004(A2),D3
-	ADD.W	D3,$0004(A2)
-	ADDQ.L	#8,A2
-	CMPA.L	A6,A2
+1$	MOVE.W	-$0004(A0),D3
+	ADD.W	D3,$0004(A0)
+	ADDQ.L	#8,A0
+	CMPA.L	A6,A0
 	BLS.B	1$
 
-	MOVEA.L	(A7)+,A2
 	RTS
 
 ;/*
