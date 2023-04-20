@@ -3473,12 +3473,10 @@ _moatquick:
 	MOVEA.L	_mlist(A4),A2	;_mlist
 	BRA.B	L00A46
 L00A43:
-	MOVE.W	$000A(A2),D3	;moster x pos
-	CMP.W	D1,D3
+	CMP.W	$000A(A2),D1	;moster x pos
 	BNE.B	L00A45
 
-	MOVE.W	$000C(A2),D3	;monster y pos
-	CMP.W	D0,D3
+	CMP.W	$000C(A2),D0	;monster y pos
 	BNE.B	L00A45
 
 	MOVE.L	A2,D0		;return found monster
