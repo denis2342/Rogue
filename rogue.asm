@@ -314,9 +314,9 @@ L00074:
 	SUBQ.W	#1,D2
 ;	EXT.L	D2
 	ASL.w	#3,D2
-	LEA	_p_magic+4(A4),A1	;_p_magic + 4
+;	LEA	_p_magic+4(A4),A1	;_p_magic + 4
 
-	MOVE.W	$00(A1,D2.w),D1
+	MOVE.W	$00(A6,D2.w),D1
 	ADD.W	D1,$00(A6,D3.w)
 L00075:
 	ADDQ.W	#1,D4
