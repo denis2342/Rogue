@@ -306,7 +306,7 @@ _treas_room:
 	MOVEM.L	A2/A3,-(A7)
 
 	JSR	_rnd_room(PC)
-	MULU.W	#$0042,D0
+	MULU.W	#66,D0
 	LEA	_rooms(A4),A6	;_rooms
 
 	MOVEA.L	D0,A3

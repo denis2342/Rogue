@@ -416,7 +416,7 @@ _inrange:
 	MOVE.W	_maxrow(A4),D3	;_maxrow
 	ADDQ.W	#1,D3
 	EXT.L	D3
-	DIVS.W	#$0003,D3
+	DIVU.W	#$0003,D3
 	ADD.W	maze_tmp+6(A4),D3
 	MOVE.W	$0008(A5),D2
 	CMP.W	D3,D2
