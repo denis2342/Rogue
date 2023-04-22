@@ -1442,13 +1442,19 @@ _help_text:
 	dc.l	L00BF1
 	dc.l	$00000000
 
-localtime_storage:
-	dc.l	$001F001C
-	dc.l	$001F001E
-	dc.l	$001F001E
-	dc.l	$001F001F
-	dc.l	$001E001F
-	dc.l	$001E001F
+days_in_month:
+	dc.w	31	;days in january
+	dc.w	28	;feb
+	dc.w	31	;mar
+	dc.w	30	;apr
+	dc.w	31	;may
+	dc.w	30	;jun
+	dc.w	31	;jul
+	dc.w	31	;aug
+	dc.w	30	;sep
+	dc.w	31	;oct
+	dc.w	30	;nov
+	dc.w	31	;dec
 
 hexdigits:
 	dc.l	"0123"
