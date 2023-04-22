@@ -634,8 +634,8 @@ L0008C:
 	SUBQ.W	#1,D2
 ;	EXT.L	D2
 	ASL.w	#3,D2
-	LEA	_ws_magic+4(A4),A1	;_ws_magic + 4
-	MOVE.W	$00(A1,D2.w),D1
+;	LEA	_ws_magic+4(A4),A1	;_ws_magic + 4
+	MOVE.W	$00(A6,D2.w),D1
 	ADD.W	D1,$00(A6,D3.w)
 L0008D:
 	ADDQ.W	#1,D4
