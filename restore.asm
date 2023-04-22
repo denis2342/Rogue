@@ -238,7 +238,7 @@ _xfer_all:
 	LEA	_SV_START(A4),A1
 	SUBA.L	A1,A6
 	MOVE.W	A6,-(A7)
-	PEA	_SV_START(A4)
+	move.l	A1,-(A7)
 	JSR	_xfer
 	ADDQ.W	#6,A7
 
