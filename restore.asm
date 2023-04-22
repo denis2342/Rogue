@@ -688,19 +688,19 @@ _xfer_proom:
 	TST.L	(A6)
 	BEQ.B	L00B67
 
-	MOVEA.L	$0008(A5),A6
+;	MOVEA.L	$0008(A5),A6
 	LEA	_rooms(A4),A1	;_rooms
 	MOVEA.L	(A6),A0
 	CMPA.L	A1,A0
 	BCS.B	L00B66
 
-	MOVEA.L	$0008(A5),A6
+;	MOVEA.L	$0008(A5),A6
 	LEA	_passages(A4),A1	;_passages
 	MOVEA.L	(A6),A0
 	CMPA.L	A1,A0
 	BCC.B	L00B66
 
-	MOVEA.L	$0008(A5),A6
+;	MOVEA.L	$0008(A5),A6
 	MOVE.L	(A6),D0
 	LEA	_rooms(A4),A6	;_rooms
 	SUB.L	A6,D0
