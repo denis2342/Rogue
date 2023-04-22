@@ -1034,19 +1034,6 @@ L00108:
 	JSR	_fatal
 	ADDQ.W	#4,A7
 L00109:
-;	PEA	$001D		;version 29
-;	PEA	L00115(PC)	;"layers.library"
-;	JSR	_OpenLibrary
-;	ADDQ.W	#8,A7
-;	MOVE.L	D0,_LayersBase(A4)	;_LayersBase
-;	TST.L	_LayersBase(A4)
-;	BNE.B	L0010A
-
-;	PEA	L00116(PC)	;"No layers"
-;	JSR	_fatal
-;	ADDQ.W	#4,A7
-
-;L0010A:
 	CLR.W	-(A7)
 	PEA	L00117(PC)	;"rogue.char"
 	JSR	_open
@@ -1182,8 +1169,6 @@ L00111:	dc.b	"graphics.library",0
 L00112:	dc.b	"No graphics",0
 L00113:	dc.b	"intuition.library",0
 L00114:	dc.b	"No intuition",0
-;L00115:	dc.b	"layers.library",0
-;L00116:	dc.b	"No layers",0
 L00117:	dc.b	"rogue.char",0
 L00118:	dc.b	"No rogue.char file",10,0
 L00119:	dc.b	"No memory for character data",0
@@ -1195,20 +1180,22 @@ _wclose:
 	MOVEM.L	D4/D5,-(A7)
 
 	TST.L	_StdScr(A4)	;_StdScr
-	BEQ.B	L0011C
+	BEQ.B	1$
+
 	JSR	_black_out
-L0011C:
-	TST.L	_TextWin(A4)	;_TextWin
-	BEQ.B	L0011D
+
+1$	TST.L	_TextWin(A4)	;_TextWin
+	BEQ.B	2$
+
 	MOVE.L	_TextWin(A4),-(A7)	;_TextWin
 	JSR	_ClearMenuStrip
 	ADDQ.W	#4,A7
 	MOVE.L	_TextWin(A4),-(A7)	;_TextWin
 	JSR	_CloseWindow
 	ADDQ.W	#4,A7
-L0011D:
-	TST.L	_RogueWin(A4)	;_RogueWin
-	BEQ.B	L0011E
+
+2$	TST.L	_RogueWin(A4)	;_RogueWin
+	BEQ.B	3$
 
 	MOVE.L	_RogueWin(A4),-(A7)	;_RogueWin
 	JSR	_ClearMenuStrip
@@ -1217,32 +1204,29 @@ L0011D:
 	MOVE.L	_RogueWin(A4),-(A7)	;_RogueWin
 	JSR	_CloseWindow
 	ADDQ.W	#4,A7
-L0011E:
-	TST.L	_StdScr(A4)	;_StdScr
-	BEQ.B	L0011F
+
+3$	TST.L	_StdScr(A4)	;_StdScr
+	BEQ.B	4$
+
 	MOVE.L	_StdScr(A4),-(A7)	;_StdScr
 	JSR	_CloseScreen
 	ADDQ.W	#4,A7
-L0011F:
-	TST.L	_GfxBase(A4)	;_GfxBase
-	BEQ.B	L00120
+
+4$	TST.L	_GfxBase(A4)	;_GfxBase
+	BEQ.B	5$
+
 	MOVE.L	_GfxBase(A4),-(A7)	;_GfxBase
 	JSR	_CloseLibrary
 	ADDQ.W	#4,A7
-L00120:
-	TST.L	_IntuitionBase(A4)	;_IntuitionBase
-	BEQ.B	L00121
+
+5$	TST.L	_IntuitionBase(A4)	;_IntuitionBase
+	BEQ.B	6$
+
 	MOVE.L	_IntuitionBase(A4),-(A7)	;_IntuitionBase
 	JSR	_CloseLibrary
 	ADDQ.W	#4,A7
-L00121:
-;	TST.L	_LayersBase(A4)	;_LayersBase
-;	BEQ.B	L00122
-;	MOVE.L	_LayersBase(A4),-(A7)	;_LayersBase
-;	JSR	_CloseLibrary
-;	ADDQ.W	#4,A7
-;L00122:
-	MOVEM.L	(A7)+,D4/D5
+
+6$	MOVEM.L	(A7)+,D4/D5
 ;	UNLK	A5
 	RTS
 
@@ -1267,21 +1251,25 @@ _ScreenTitle:
 _invert_row:
 	LINK	A5,#-$0000
 	MOVE.L	D4,-(A7)
+
 	MOVE.W	$0008(A5),D3
 	MULU.W	#$0009,D3
 	SUBQ.W	#1,D3
 	EXT.L	D3
 	MOVE.L	D3,D4
+
 	PEA	$0002
 	MOVEA.L	_StdWin(A4),A6	;_StdWin
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_SetDrMd
 	ADDQ.W	#8,A7
+
 	PEA	$000F
 	MOVEA.L	_StdWin(A4),A6	;_StdWin
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_SetAPen
 	ADDQ.W	#8,A7
+
 	MOVEA.L	D4,A6
 	PEA	$0009(A6)
 	PEA	$027F
@@ -1291,11 +1279,13 @@ _invert_row:
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_RectFill
 	LEA	$0014(A7),A7
+
 	CLR.L	-(A7)
 	MOVEA.L	_StdWin(A4),A6	;_StdWin
 	MOVE.L	$0032(A6),-(A7)
 	JSR	_SetDrMd
 	ADDQ.W	#8,A7
+
 	MOVE.L	(A7)+,D4
 	UNLK	A5
 	RTS
@@ -1340,18 +1330,20 @@ __zapstr:
 
 _intui_sync:
 	LINK	A5,#-$000C
+
 	PEA	-$0008(A5)
 	PEA	-$0004(A5)
 	JSR	_CurrentTime
 	ADDQ.W	#8,A7
-L00123:
+1$
 	PEA	-$000C(A5)
 	PEA	-$0004(A5)
 	JSR	_CurrentTime
 	ADDQ.W	#8,A7
 	MOVE.L	-$000C(A5),D3
 	CMP.L	-$0008(A5),D3
-	BEQ.B	L00123
+	BEQ.B	1$
+
 	UNLK	A5
 	RTS
 

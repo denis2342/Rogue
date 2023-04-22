@@ -563,7 +563,7 @@ _mlist:
 ; 4=treasure, 6=flags, 8=strength, 10=EXP, 14=xd8 HP, 16=AC, 18=$1
 
 _monsters:
-	dc.l	L0075D		; #12 aquator, 7-17
+	dc.l	L0075D		; #12 aquator, 8-17
 	dc.w	$0000
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -574,7 +574,7 @@ _monsters:
 	dc.l	L0075E		;0d0/0d0
 	dc.w	$0000
 
-	dc.l	L0075F		; #3 bat, 0-8
+	dc.l	L0075F		; #3 bat, 1-8
 	dc.w	$0000
 	dc.w	C_ISFLY		;flags
 	dc.w	$000A
@@ -585,7 +585,7 @@ _monsters:
 	dc.l	L00760		;1d2
 	dc.w	$0000
 
-	dc.l	L00761		; #11 centaur, 6-15
+	dc.l	L00761		; #11 centaur, 7-15
 	dc.w	$000F
 	dc.w	0		;flags
 	dc.w	$000A
@@ -596,7 +596,7 @@ _monsters:
 	dc.l	L00762		;1d6/1d6
 	dc.w	$0000
 
-	dc.l	L00763		; #26 dragon, 21-...
+	dc.l	L00763		; #26 dragon, 22-...
 	dc.w	$0064
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -607,7 +607,7 @@ _monsters:
 	dc.l	L00764		; 1d8/1d8/3d10
 	dc.w	$0000
 
-	dc.l	L00765		; #2 emu, 0-8
+	dc.l	L00765		; #2 emu, 1-8
 	dc.w	$0000
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -619,7 +619,7 @@ _monsters:
 	dc.w	$0000
 
 _venus_flytrap:
-	dc.l	L00767		; #18 venus flytrap, 13-23
+	dc.l	L00767		; #18 venus flytrap, 14-23
 	dc.w	$0000
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -630,7 +630,7 @@ _venus_flytrap:
 	dc.l	L00768		; %%%d0
 	dc.w	$0000
 
-	dc.l	L00769		; #21 griffin, 16-26
+	dc.l	L00769		; #21 griffin, 17-26
 	dc.w	$0014
 	dc.w	C_ISMEAN|C_ISFLY|C_ISREGEN	;flags
 	dc.w	$000A
@@ -641,7 +641,7 @@ _venus_flytrap:
 	dc.l	L0076A		; 4d3/3d5/4d3
 	dc.w	$0000
 
-	dc.l	L0076B		; #4 hobgoblin, 0-9
+	dc.l	L0076B		; #4 hobgoblin, 1-9
 	dc.w	$0000
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -652,7 +652,7 @@ _venus_flytrap:
 	dc.l	L0076C		; 1d8
 	dc.w	$0000
 
-	dc.l	L0076D		; #5 ice monster, 0-10
+	dc.l	L0076D		; #5 ice monster, 1-10
 	dc.w	$0000
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -663,7 +663,7 @@ _venus_flytrap:
 	dc.l	L0076E		; 1d2
 	dc.w	$0000
 
-	dc.l	L0076F		; #25 jabberwock, 20-...
+	dc.l	L0076F		; #25 jabberwock, 21-...
 	dc.w	$0046
 	dc.w	0		;flags
 	dc.w	$000A
@@ -674,7 +674,7 @@ _venus_flytrap:
 	dc.l	L00770		; 2d12/2d4
 	dc.w	$0000
 
-	dc.l	L00771		; #1 kestral, 0-8
+	dc.l	L00771		; #1 kestral, 1-8
 	dc.w	$0000
 	dc.w	C_ISMEAN|C_ISFLY	;flags
 	dc.w	$000A
@@ -685,7 +685,7 @@ _venus_flytrap:
 	dc.l	L00772		; 1d4
 	dc.w	$0000
 
-	dc.l	L00773		; #10 leprechaun, 5-15
+	dc.l	L00773		; #10 leprechaun, 6-15
 	dc.w	$0040
 	dc.w	0		;flags
 	dc.w	$000A
@@ -707,7 +707,7 @@ _venus_flytrap:
 	dc.l	L00776		; 3d4/3d4
 	dc.w	$0000
 
-	dc.l	L00777		; #14 nymph, 9-19
+	dc.l	L00777		; #14 nymph, 10-19
 	dc.w	$0064
 	dc.w	0		;flags
 	dc.w	$000A
@@ -718,7 +718,7 @@ _venus_flytrap:
 	dc.l	L00778		; 0d0
 	dc.w	$0000
 
-	dc.l	L00779		; #7 orc, 2-12
+	dc.l	L00779		; #7 orc, 3-12
 	dc.w	$000F
 	dc.w	C_ISGREED	;flags
 	dc.w	$000A
@@ -729,7 +729,7 @@ _venus_flytrap:
 	dc.l	L0077A		; 1d8
 	dc.w	$0000
 
-	dc.l	L0077B		; #19 phantom, 14-24
+	dc.l	L0077B		; #19 phantom, 15-24
 	dc.w	$0000
 	dc.w	C_ISINVIS	;flags
 	dc.w	$000A
@@ -740,7 +740,7 @@ _venus_flytrap:
 	dc.l	L0077C		; 4d4
 	dc.w	$0000
 
-	dc.l	L0077D		; #13 quagga, 8-18
+	dc.l	L0077D		; #13 quagga, 9-18
 	dc.w	$001E
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -751,7 +751,7 @@ _venus_flytrap:
 	dc.l	L0077E		; 1d2/1d2/1d4
 	dc.w	$0000
 
-	dc.l	L0077F		; #8 rattlesnake, 4-14
+	dc.l	L0077F		; #8 rattlesnake, 4-13
 	dc.w	$0000
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -762,7 +762,7 @@ _venus_flytrap:
 	dc.l	L00780		; 1d6
 	dc.w	$0000
 
-	dc.l	L00781		; #6 slime, 1-11
+	dc.l	L00781		; #6 slime, 2-11
 	dc.w	$0000
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -773,7 +773,7 @@ _venus_flytrap:
 	dc.l	L00782		; 1d3
 	dc.w	$0000
 
-	dc.l	L00783		; #16 troll, 11-21
+	dc.l	L00783		; #16 troll, 12-21
 	dc.w	$0032
 	dc.w	C_ISMEAN|C_ISREGEN	;flags
 	dc.w	$000A
@@ -784,7 +784,7 @@ _venus_flytrap:
 	dc.l	L00784		; 1d8/1d8/2d6
 	dc.w	$0000
 
-	dc.l	L00785		; #20 ur-vile, 15-25
+	dc.l	L00785		; #20 ur-vile, 16-25
 	dc.w	$0000
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -795,7 +795,7 @@ _venus_flytrap:
 	dc.l	L00786		; 1d3/1d3/1d3/4d6
 	dc.w	$0000
 
-	dc.l	L00787		; #24 vampire, 19-...
+	dc.l	L00787		; #24 vampire, 20-...
 	dc.w	$0014
 	dc.w	C_ISMEAN|C_ISREGEN	;flags
 	dc.w	$000A
@@ -806,7 +806,7 @@ _venus_flytrap:
 	dc.l	L00788		; 1d10
 	dc.w	$0000
 
-	dc.l	L00789		; #17 wraith, 12-22
+	dc.l	L00789		; #17 wraith, 13-22
 	dc.w	$0000
 	dc.w	0		;flags
 	dc.w	$000A
@@ -817,7 +817,7 @@ _venus_flytrap:
 	dc.l	L0078A		; 1d6
 	dc.w	$0000
 
-	dc.l	L0078B		; #23 xeroc, 18-...
+	dc.l	L0078B		; #23 xeroc, 19-...
 	dc.w	$001E
 	dc.w	0		;flags
 	dc.w	$000A
@@ -828,7 +828,7 @@ _venus_flytrap:
 	dc.l	L0078C		; 3d4
 	dc.w	$0000
 
-	dc.l	L0078D		; #15 yeti, 10-20
+	dc.l	L0078D		; #15 yeti, 11-20
 	dc.w	$001E
 	dc.w	0		;flags
 	dc.w	$000A
@@ -839,7 +839,7 @@ _venus_flytrap:
 	dc.l	L0078E		; 1d6/1d6
 	dc.w	$0000
 
-	dc.l	L0078F		; #9 zombie, 4-14
+	dc.l	L0078F		; #9 zombie, 5-14
 	dc.w	$0000
 	dc.w	C_ISMEAN	;flags
 	dc.w	$000A
@@ -852,19 +852,26 @@ _venus_flytrap:
 
 _things:
 	dc.l	$00000000	;27% potions
-	dc.l	$001B0000
+	dc.w	$001B,$0000
+
 	dc.l	$00000000	;30% scrolls
-	dc.l	$001E0000
+	dc.w	$001E,$0000
+
 	dc.l	$00000000	;17% food
-	dc.l	$00110000
+	dc.w	$0011,$0000
+
 	dc.l	$00000000	; 8% weapons
-	dc.l	$00080000
+	dc.w	$0008,$0000
+
 	dc.l	$00000000	; 8% armor
-	dc.l	$00080000
+	dc.w	$0008,$0000
+
 	dc.l	$00000000	; 5% rings
-	dc.l	$00050000
+	dc.w	$0005,$0000
+
 	dc.l	$00000000	; 5% wands/staffs
-	dc.l	$00050000
+	dc.w	$0005,$0000
+
 _nullstr:
 	dc.w	$0000
 _typeahead:

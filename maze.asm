@@ -1,6 +1,7 @@
 _draw_maze:
 	LINK	A5,#-$019C
 	MOVEM.L	D4/D5,-(A7)
+
 	LEA	-$00C8(A5),A6
 	MOVE.L	A6,maze_tmp+14(A4)
 	LEA	-$0190(A5),A6
@@ -109,6 +110,7 @@ L0079F:
 	MOVE.W	-$0194(A5),-(A7)
 	JSR	_splat(PC)
 	ADDQ.W	#4,A7
+
 	MOVEM.L	(A7)+,D4/D5
 	UNLK	A5
 	RTS
@@ -149,6 +151,7 @@ _new_frontier:
 
 _add_frnt:
 	LINK	A5,#-$0000
+
 	MOVE.W	$000A(A5),-(A7)
 	MOVE.W	$0008(A5),-(A7)
 	JSR	_inrange(PC)
@@ -374,19 +377,20 @@ L007AF:
 	BRA.B	L007AE
 _splat:
 	LINK	A5,#-$0000
+
 	MOVE.W	$000A(A5),d0
 	MOVE.W	$0008(A5),d1
 	JSR	_INDEXquick
 
 	MOVEA.L	__level(A4),A6	;__level
-	MOVE.B	#$23,$00(A6,D0.W)
+	MOVE.B	#$23,$00(A6,D0.W)	;PASSAGE
 
 ;	MOVE.W	$000A(A5),d0
 ;	MOVE.W	$0008(A5),d1
 ;	JSR	_INDEXquick
 
 	MOVEA.L	__flags(A4),A6	;__flags
-	MOVE.B	#$30,$00(A6,D0.W)
+	MOVE.B	#$30,$00(A6,D0.W)	;F_LOCKED|F_REAL?
 	MOVE.W	$000A(A5),D3
 	CMP.W	maze_tmp+10(A4),D3
 	BLE.B	L007B0
@@ -396,6 +400,7 @@ L007B0:
 	MOVE.W	$0008(A5),D3
 	CMP.W	maze_tmp+12(A4),D3
 	BLE.B	L007B1
+
 	MOVE.W	$0008(A5),maze_tmp+12(A4)
 L007B1:
 	UNLK	A5
