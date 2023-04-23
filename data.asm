@@ -258,6 +258,7 @@ _do_passages_tmp:
 	dc.l	$00000000
 	dc.l	$00000000
 	dc.l	$00000000
+_do_passages_tmp_end:
 
 _CURSES_START:
 	dc.w	$0000
@@ -1179,6 +1180,8 @@ _delta:
 
 _rooms:	ds.b	8*66	;room struct is 66 bytes, 9 rooms per level
 _rooms_last:	ds.b	66
+_rooms_end:
+
 _passages:
 
 ; for 13 passages, last one is different
@@ -1220,6 +1223,7 @@ _passages:
 	ds.b	50
 
 	ds.b	66
+_passages_end:
 
 _SV_END:
 	dc.w	$0000

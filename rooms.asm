@@ -375,7 +375,7 @@ L00901:
 	CLR.W	$0010(A6)
 	CLR.W	$000C(A6)
 	ADDI.L	#$00000042,-$0004(A5)
-	LEA	_passages(A4),A6	;_passages
+	LEA	_rooms_end(A4),A6	;_rooms_end
 	MOVEA.L	-$0004(A5),A1
 	CMPA.L	A6,A1
 	BCS.B	L00901

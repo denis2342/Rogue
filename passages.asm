@@ -24,7 +24,7 @@ L00441:
 	MOVEA.L	-$0006(A5),A6
 	CLR.B	$0012(A6)
 	ADDI.L	#$00000014,-$0006(A5)
-	LEA	_CURSES_START(A4),A6
+	LEA	_do_passages_tmp_end(A4),A6
 	MOVEA.L	-$0006(A5),A1
 	CMPA.L	A6,A1
 	BCS.B	L00440
@@ -334,7 +334,7 @@ _passnum:
 	CLR.W	_numpass_tmp(A4)
 	CLR.B	_numpass_tmp+2(A4)
 	LEA	_passages(A4),A2	;_passages
-	LEA	_SV_END(A4),A6	;_SV_END
+	LEA	_passages_end(A4),A6	;_SV_END
 1$
 	CLR.W	$0010(A2)
 	ADDA.L	#$00000042,A2
@@ -357,8 +357,9 @@ L00459:
 L0045A:
 	CMP.W	$0010(A2),D4
 	BLT.B	L00459
-	ADDA.L	#$00000042,A2
-	LEA	_passages(A4),A6	;_passages
+
+	ADDA.L	#66,A2
+	LEA	_rooms_end(A4),A6	;_passages
 	CMPA.L	A6,A2
 	BCS.B	L00458
 
