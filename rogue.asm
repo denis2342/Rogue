@@ -2197,11 +2197,10 @@ _beep:
 	RTS
 
 _tick_pause:
-	BSR.B	_one_tick
-	BSR.B	_one_tick
-	BSR.B	_one_tick
-	BSR.B	_one_tick
-	RTS
+	move.l	#2,d1
+	MOVEA.L	_DOSBase(A4),A6	;_DOSBase
+	jmp	_LVODelay(a6)
+;	RTS
 
 _one_tick:
 	LINK	A5,#-$000C
