@@ -2204,20 +2204,20 @@ _tick_pause:
 
 _one_tick:
 	LINK	A5,#-$000C
-	MOVE.L	D4,-(A7)
+
 	PEA	-$000C(A5)
 	JSR	_DateStamp
 	ADDQ.W	#4,A7
-	MOVE.L	-$0004(A5),D4
+
+	MOVE.L	-$0004(A5),D3
 L00517:
 	PEA	-$000C(A5)
 	JSR	_DateStamp
 	ADDQ.W	#4,A7
 
-	CMP.L	-$0004(A5),D4
+	CMP.L	-$0004(A5),D3
 	BEQ.B	L00517
 
-	MOVE.L	(A7)+,D4
 	UNLK	A5
 	RTS
 
