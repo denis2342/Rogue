@@ -9,28 +9,22 @@ _dm_null:
 ; */
 
 _d_slot:
-;	LINK	A5,#-$0000
-	MOVE.L	A2,-(A7)
-
-	LEA	dm_list(A4),A2	;starting $2bb4
+	LEA	dm_list(A4),A0	;starting $2bb4
 	LEA	dm_list_end(A4),A6	;ending $2c2c
-L00594:
-	TST.W	(A2)
-	BEQ.B	L00596
 
-	ADDQ.L	#6,A2
-	CMPA.L	A6,A2
-	BCS.B	L00594
+1$	TST.W	(A0)
+	BEQ.B	3$
+
+	ADDQ.L	#6,A0
+	CMPA.L	A6,A0
+	BCS.B	1$
 
 	MOVEQ	#$00,D0
-L00595:
-	MOVEA.L	(A7)+,A2
-;	UNLK	A5
-	RTS
 
-L00596:
-	MOVE.L	A2,D0
-	BRA.B	L00595
+2$	RTS
+
+3$	MOVE.L	A0,D0
+	BRA.B	2$
 
 ;/*
 ; * find_slot:
