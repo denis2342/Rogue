@@ -732,7 +732,8 @@ L004F9:
 	MOVE.W	D0,-$001C(A5)
 ;	TST.W	D0
 	BEQ.B	L004FA
-	MOVE.B	#$01,_com_from_menu(A4)	;_com_from_menu
+
+	ST	_com_from_menu(A4)	;_com_from_menu
 	MOVEA.L	_kb_head(A4),A6
 	ADDQ.L	#1,_kb_head(A4)
 	MOVE.B	-$001B(A5),(A6)
