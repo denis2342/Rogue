@@ -266,8 +266,8 @@ _doadd:
 
 _step_ok:
 	LINK	A5,#-$0000
+
 	MOVE.W	$0008(A5),D0
-;	EXT.L	D0
 	BRA.B	L008A0
 L0089A:
 	MOVEQ	#$00,D0
@@ -275,16 +275,7 @@ L0089B:
 	UNLK	A5
 	RTS
 
-L0089C:
-	CMPI.W	#$0041,$0008(A5)	; 'A'
-	BLT.B	L0089D
-	CMPI.W	#$005A,$0008(A5)	; 'Z'
-	BLE.B	L0089A
-L0089D:
-	MOVEq	#$0001,D0
-	BRA.B	L0089B
-L008A0:
-	SUB.w	#$0020,D0	; ' '
+L008A0:	SUB.w	#$0020,D0	; ' '
 	BEQ.B	L0089A
 	SUB.w	#$000D,D0	; '-'
 	BEQ.B	L0089A
@@ -298,8 +289,14 @@ L008A0:
 	BEQ.B	L0089A
 	SUBQ.w	#1,D0		; '}'
 	BEQ.B	L0089A
-	BRA.B	L0089C
-;	BRA.B	L0089B
+
+	CMPI.W	#$0041,$0008(A5)	; 'A'
+	BLT.B	L0089D
+	CMPI.W	#$005A,$0008(A5)	; 'Z'
+	BLE.B	L0089A
+L0089D:
+	MOVEq	#$0001,D0
+	BRA.B	L0089B
 
 ; check if items are good or bad (return + for bad items)
 
