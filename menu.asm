@@ -628,7 +628,7 @@ L00AAA:
 	RTS
 
 _fix_menu:
-	LINK	A5,#-$0000
+;	LINK	A5,#-$0000
 
 	MOVE.L	_RogueWin(A4),-(A7)	;_RogueWin
 	JSR	_ClearMenuStrip
@@ -655,7 +655,7 @@ _fix_menu:
 	JSR	_SetMenuStrip(PC)
 	ADDQ.W	#8,A7
 
-	UNLK	A5
+;	UNLK	A5
 	RTS
 
 _SetCheck:
