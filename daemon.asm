@@ -32,31 +32,24 @@ _d_slot:
 ; */
 
 _find_slot:
-	LINK	A5,#-$0000
-	MOVE.L	A2,-(A7)
-
-	LEA	dm_list(A4),A2
+	LEA	dm_list(A4),A0
 	LEA	dm_list_end(A4),A6
 
-	MOVE.W	$0008(A5),D3	;looking for this
+	MOVE.W	$0004(A7),D3	;looking for this
 
-L00597:
-	CMP.W	(A2),D3
-	BEQ.B	L00599
+1$	CMP.W	(A0),D3
+	BEQ.B	3$
 
-	ADDQ.L	#6,A2
-	CMPA.L	A6,A2
-	BCS.B	L00597
+	ADDQ.L	#6,A0
+	CMPA.L	A6,A0
+	BCS.B	1$
 
 	MOVEQ	#$00,D0
-L00598:
-	MOVEA.L	(A7)+,A2
-	UNLK	A5
-	RTS
 
-L00599:
-	MOVE.L	A2,D0
-	BRA.B	L00598
+2$	RTS
+
+3$	MOVE.L	A0,D0
+	BRA.B	2$
 
 ;/*
 ; * start_daemon:
