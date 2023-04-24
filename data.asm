@@ -1725,9 +1725,7 @@ installmenus_tmp:
 	ds.l	1
 
 do_menus_tmp:
-	ds.l	1
-
-	ds.b	88
+	ds.l	23
 
 _mouse_adjust_tmp:
 	ds.w	4
