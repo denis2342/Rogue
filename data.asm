@@ -39,57 +39,57 @@ _rainbow:
 ;	ds.l	1		; UNUSED
 
 _stones:
-	dc.l	L00020		; agate
+	dc.l	L00020		;  25 agate
 	dc.w	$0019
-	dc.l	L00021		; alexandrite
+	dc.l	L00021		;  40 alexandrite
 	dc.w	$0028
-	dc.l	L00022		; amethyst
+	dc.l	L00022		;  50 amethyst
 	dc.w	$0032
-	dc.l	L00023		; carnelian
+	dc.l	L00023		;  40 carnelian
 	dc.w	$0028
-	dc.l	L00024		; diamond
+	dc.l	L00024		; 300 diamond
 	dc.w	$012C
-	dc.l	L00025		; emerald
+	dc.l	L00025		; 300 emerald
 	dc.w	$012C
-	dc.l	L00026		; germanium
+	dc.l	L00026		; 225 germanium
 	dc.w	$00E1
-	dc.l	L00027		; granite
+	dc.l	L00027		;   5 granite
 	dc.w	$0005
-	dc.l	L00028		; garnet
+	dc.l	L00028		;  50 garnet
 	dc.w	$0032
-	dc.l	L00029		; jade
+	dc.l	L00029		; 150 jade
 	dc.w	$0096
-	dc.l	L0002A		; kryptonite
+	dc.l	L0002A		; 300 kryptonite
 	dc.w	$012C
-	dc.l	L0002B		; lapis lazuli
+	dc.l	L0002B		;  50 lapis lazuli
 	dc.w	$0032
-	dc.l	L0002C		; moonstone
+	dc.l	L0002C		;  50 moonstone
 	dc.w	$0032
-	dc.l	L0002D		; obsidian
+	dc.l	L0002D		;  15 obsidian
 	dc.w	$000F
-	dc.l	L0002E		; onyx
+	dc.l	L0002E		;  60 onyx
 	dc.w	$003C
-	dc.l	L0002F		; opal
+	dc.l	L0002F		; 200 opal
 	dc.w	$00C8
-	dc.l	L00030		; pearl
+	dc.l	L00030		; 220 pearl
 	dc.w	$00DC
-	dc.l	L00031		; peridot
+	dc.l	L00031		;  63 peridot
 	dc.w	$003F
-	dc.l	L00032		; ruby
+	dc.l	L00032		; 350 ruby
 	dc.w	$015E
-	dc.l	L00033		; sapphire
+	dc.l	L00033		; 285 sapphire
 	dc.w	$011D
-	dc.l	L00034		; stibotantalite
+	dc.l	L00034		; 200 stibotantalite
 	dc.w	$00C8
-	dc.l	L00035		; tiger eye
+	dc.l	L00035		;  50 tiger eye
 	dc.w	$0032
-	dc.l	L00036		; topaz
+	dc.l	L00036		;  60 topaz
 	dc.w	$003C
-	dc.l	L00037		; turqoise
+	dc.l	L00037		;  70 turqoise
 	dc.w	$0046
-	dc.l	L00038		; taaffeite
+	dc.l	L00038		; 300 taaffeite
 	dc.w	$012C
-	dc.l	L00039		; zircon
+	dc.l	L00039		;  80 zircon
 	dc.w	$0050
 _wood:
 	dc.l	L0003A		; avocado wood
