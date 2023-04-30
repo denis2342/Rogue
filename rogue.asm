@@ -455,12 +455,8 @@ L0007E:
 
 	LEA	_s_magic+4(A4),A6	;_s_magic + 4
 	MOVE.W	-$0004(A5),D3
-	MOVE.W	D3,D2
-	SUBQ.W	#1,D2
-
 	ASL.w	#3,D3
-	ASL.w	#3,D2
-	MOVE.W	$00(A6,D2.w),D1
+	MOVE.W	-$08(A6,D3.w),D1
 	ADD.W	D1,$00(A6,D3.w)
 L0007F:
 	ADDQ.W	#1,-$0004(A5)
