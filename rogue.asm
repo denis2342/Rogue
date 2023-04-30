@@ -285,12 +285,11 @@ L00074:
 
 ;	LEA	-$001B(A5),A6
 ;	TST.B	$00(A6,D0.W)
-	TST.B	-$1B(A5,D0.W)
+	TST.B	-$1B(A5,D0.W)	;check if used already
 
 	BNE.B	L00074
 
-	LEA	-$001B(A5),A6
-	ST	$00(A6,D0.W)
+	ST	-$1B(A5,D0.W)	;mark as used
 	MOVE.W	D4,D3
 ;	EXT.L	D3
 	ASL.w	#2,D3
