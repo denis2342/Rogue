@@ -560,17 +560,16 @@ _init_materials:
 
 	MOVEQ	#$00,D4
 L00088:
-	MOVEq	#$0002,D0
+	MOVEq	#$0002,D0	;roll for wand or staff
 	JSR	_rnd
 	TST.W	D0
-	BNE.B	L0008A
+	BNE.B	L0008A		;jump for staff
 
-	MOVEq	#22,D0
+	MOVEq	#22,D0		;it was a wand
 	JSR	_rnd
 	MOVE.W	D0,D5
-	LEA	-$0016(A5),A6
-	TST.B	$00(A6,D5.W)
-	BNE.B	L00089
+	TST.B	-$16(A5,D5.W)	;look for unused entry
+	BNE.B	L00088
 
 	MOVE.W	D4,D3
 ;	EXT.L	D3
@@ -582,18 +581,14 @@ L00088:
 	ASL.w	#2,D3
 	LEA	_metal(A4),A6	;_metal
 	MOVEA.L	$00(A6,D3.w),A2
-	LEA	-$0016(A5),A6
-	ST	$00(A6,D5.W)
+	ST	-$16(A5,D5.W)	;mark as used
 	BRA.B	L0008C
-L00089:
-	BRA.B	L0008B
 L0008A:
-	MOVEq	#33,D0
+	MOVEq	#33,D0		;it was a staff
 	JSR	_rnd
 	MOVE.W	D0,D5
-	LEA	-$0037(A5),A6
-	TST.B	$00(A6,D5.W)
-	BNE.B	L0008B
+	TST.B	-$37(A5,D5.W)	;look for unused entry
+	BNE.B	L00088
 
 	MOVE.W	D4,D3
 ;	EXT.L	D3
@@ -605,11 +600,8 @@ L0008A:
 	ASL.w	#2,D3
 	LEA	_wood(A4),A6	;_wood
 	MOVEA.L	$00(A6,D3.w),A2
-	LEA	-$0037(A5),A6
-	ST	$00(A6,D5.W)
-	BRA.B	L0008C
-L0008B:
-	BRA.W	L00088
+	ST	-$37(A5,D5.W)	;mark as used
+
 L0008C:
 	MOVE.W	D4,D3
 ;	EXT.L	D3
