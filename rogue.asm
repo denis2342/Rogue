@@ -512,11 +512,8 @@ L00082:
 
 	LEA	_r_magic+4(A4),A6	;_r_magic + 4
 	MOVE.W	D4,D3
-	MOVE.W	D4,D2
-	SUBQ.W	#1,D2
 	ASL.w	#3,D3
-	ASL.w	#3,D2
-	MOVE.W	$00(A6,D2.w),D1
+	MOVE.W	-$08(A6,D3.w),D1
 	ADD.W	D1,$00(A6,D3.w)
 L00083:
 	MOVE.W	D4,D3
