@@ -1828,7 +1828,6 @@ _cur_ring_2:	ds.l	1
 
 _IntuitionBase:	ds.l	1
 _GfxBase:	ds.l	1
-;_LayersBase:	ds.l	1
 
 _chbm:	ds.w	1	;BytesPerRow
 	ds.w	1	;Rows

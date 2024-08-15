@@ -315,18 +315,18 @@ L00B44:
 	JSR	_xfer_monster(PC)
 	ADDQ.W	#4,A7
 
-	MOVE.W	#$00A6,-(A7)
+	MOVE.W	#$00A6,-(A7)		;166
 	MOVE.L	__t_alloc(A4),-(A7)	;__t_alloc
 	BSR.B	_xfer
 	ADDQ.W	#6,A7
 
 	JSR	_xfer_things(PC)
-	MOVE.W	#$04EC,-(A7)
+	MOVE.W	#$04EC,-(A7)		;1260
 	MOVE.L	__level(A4),-(A7)	;__level
 	BSR.B	_xfer
 	ADDQ.W	#6,A7
 
-	MOVE.W	#$04EC,-(A7)
+	MOVE.W	#$04EC,-(A7)		;1260
 	MOVE.L	__flags(A4),-(A7)	;__flags
 	BSR.B	_xfer
 	ADDQ.W	#6,A7

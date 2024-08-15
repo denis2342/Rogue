@@ -742,6 +742,7 @@ L004FA:
 L004FB:
 	TST.W	-$001E(A5)
 	BEQ.B	L004FC
+
 	MOVE.W	D7,-(A7)
 	JSR	_sel_line(PC)
 	ADDQ.W	#2,A7

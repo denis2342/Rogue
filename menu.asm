@@ -721,6 +721,7 @@ L00AAF:	dc.b	"Credits.lz4",0
 
 _mouse_go:
 	LINK	A5,#-$0000
+
 	MOVE.W	$0008(A5),_mouse_adjust_tmp+4(A4)
 	MOVE.W	$000A(A5),_mouse_adjust_tmp+6(A4)
 	ST	_mouse_run(A4)	;_mouse_run
@@ -728,24 +729,28 @@ _mouse_go:
 	MOVE.W	_mouse_adjust_tmp+4(A4),-(A7)
 	BSR.B	_mouse_dir
 	ADDQ.W	#4,A7
+
 	UNLK	A5
 	RTS
 
 _mouse_adjust:
 ;	LINK	A5,#-$0000
+
 	MOVE.W	_mouse_adjust_tmp+2(A4),D3
 	CMP.W	_player+10(A4),D3	;_player + 10
-	BNE.B	L00AB0
+	BNE.B	1$
+
 	MOVE.W	_mouse_adjust_tmp(A4),D3
 	CMP.W	_player+12(A4),D3	;_player + 12
-	BNE.B	L00AB0
+	BNE.B	1$
 	CLR.B	_running(A4)	;_running
 	CLR.B	_mouse_run(A4)	;_mouse_run
-L00AB0:
+1$
 	MOVE.W	_mouse_adjust_tmp+6(A4),-(A7)
 	MOVE.W	_mouse_adjust_tmp+4(A4),-(A7)
 	BSR.B	_mouse_dir
 	ADDQ.W	#4,A7
+
 ;	UNLK	A5
 	RTS
 
